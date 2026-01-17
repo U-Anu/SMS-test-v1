@@ -1,0 +1,57 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Other Download List</h4>
+        </div>
+    </div>
+    
+   
+    <div class="col-md-12">
+
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+
+            <div class="table-responsive">
+                <table id="tableID" class="display">
+                    <thead>
+                        <tr>
+                            <th>Content Title</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in records %}
+                        <tr>
+                            <td>{{data.content_title}}</td>
+                            <td>{{data.content_type}}</td>
+                            <td>{{data.upload_date}}</td>
+                            <td>
+                                <a href="{{ data.file.url }}" style="color: black;" download><i
+                                    class='fa fa-download'></i></a>                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

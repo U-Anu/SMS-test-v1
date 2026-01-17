@@ -1,0 +1,166 @@
+{% extends 'base copy.html' %} 
+{% block body_block %} 
+{% load static %} 
+{% load custom_filter %}  
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                    <h3 class="card-title">
+                        {{ screen_name }}
+                        <!-- Excel Download Icon -->
+                        <a id="downloadExcel" href="#" class="text-success ms-2" title="Download Excel">
+                            <i class="fas fa-file-excel fa-lg"></i>
+                        </a>
+                    </h3>
+
+                    <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                            <thead class="bg-col">
+                                <tr>
+                                    <th>GL Line</th>
+                                    <th>Description</th>
+                                    <th>Amount (USD)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for records in records %}
+                                <tr>
+
+                                    <td><strong>{{ records.Catogory }}</strong></td>
+                                </tr>
+                                    {% for datas in records.account_list %}
+                                        <tr>
+                                            <td><strong>{{ datas.gl_name }}</strong></td>  
+                                        </tr>
+                                        {% for i in datas.accounts%}
+                                        <tr>
+                                            <td>{{i.account_number}}</td>
+                                            <td>{{i.short_description}}</td>
+                                            <td>
+                                                {% if i.total_balance < 0 %}
+                                                    ({{ i.total_balance|convert_positive|floatformat:2 }})
+                                                {% else %}
+                                                    {{ i.total_balance|floatformat:2 }}
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                            
+                                            {% endfor %}
+                                        <tr>
+                                            <td colspan="2"><strong>Total</strong></td>
+                                            <td>
+                                            {% if datas.gl_total < 0 %}
+                                                ({{ datas.gl_total|convert_positive|floatformat:2 }})
+                                            {% else %}
+                                                {{ datas.gl_total|floatformat:2 }}
+                                            {% endif %}
+                                        </td>
+                                        </tr>
+                                        
+                                       
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="2"><strong>Total-{{ records.Catogory}}</strong></td>
+                                        <td>
+                                            {% if records.overall_cat_total < 0 %}
+                                                ({{ records.overall_cat_total|convert_positive|floatformat:2 }})
+                                            {% else %}
+                                                {{ records.overall_cat_total|floatformat:2 }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+
+                                    {% for i in cal_total %}
+                                    {% if records.catogory_id == i.position%}
+                                    <tr>
+                                        <td colspan="2">
+                                            <strong>{{i.name}}</strong>
+                                        </td>
+                                        <td>
+                                            {% if i.total < 0 %}
+                                                ({{ i.total|convert_positive|floatformat:2 }})
+                                            {% else %}
+                                                {{ i.total|floatformat:2 }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                             {% endfor %}
+                             
+                           
+
+                            
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include SheetJS Library for Excel Export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<!-- JavaScript for Excel Export -->
+<script>
+document.getElementById("downloadExcel").addEventListener("click", function () {
+    let table = document.getElementById("tableID");
+    let wb = XLSX.utils.book_new();
+    let ws_data = [];
+
+    // Get table headers
+    let headers = Array.from(table.querySelectorAll("thead tr th")).map(th => th.innerText.trim());
+    ws_data.push(headers);
+
+    // Get table rows
+    let rows = table.querySelectorAll("tbody tr");
+    rows.forEach(row => {
+        let cells = row.querySelectorAll("td");
+        let rowData = [];
+
+        cells.forEach(td => {
+            let text = td.innerText.trim().replace(/\s+/g, " "); // Remove extra spaces
+            rowData.push(text);
+        });
+
+        ws_data.push(rowData);
+    });
+
+    // Create worksheet
+    let ws = XLSX.utils.aoa_to_sheet(ws_data);
+
+    // Auto-adjust column widths based on content length
+    let colWidths = headers.map((_, i) => {
+        let maxLength = Math.max(...ws_data.map(row => row[i] ? row[i].length : 0));
+        return { wch: Math.min(Math.max(maxLength + 2, 10), 30) }; // Limit max width to 30
+    });
+    ws["!cols"] = colWidths;
+
+    // Prevent text wrapping in Excel
+    let range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let R = range.s.r; R <= range.e.r; ++R) {
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            let cell_address = XLSX.utils.encode_cell({ r: R, c: C });
+            if (ws[cell_address]) {
+                if (!ws[cell_address].s) ws[cell_address].s = {};  // Ensure style object exists
+                ws[cell_address].s.alignment = { wrapText: false, vertical: "center", horizontal: "left" };
+            }
+        }
+    }
+
+    // Append sheet and trigger download
+    XLSX.utils.book_append_sheet(wb, ws, "Financial Report");
+    XLSX.writeFile(wb, "profit_loss_statement.xlsx");
+});
+</script>
+
+<!-- Font Awesome for Excel Icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+{% endblock %}

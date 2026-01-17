@@ -1,0 +1,533 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+
+
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+    }
+
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    /*Style 6*/
+
+    .toggler-wrapper.style-6 {
+        width: 54px;
+        -webkit-box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0))), #ddd;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0)), #ddd;
+        border-radius: 100px;
+    }
+
+    .toggler-wrapper.style-6 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+        left: calc(100% - 19px - 3px + 5px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-slider {
+        -webkit-box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0.1))), #d0d0d0;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0.1)), #d0d0d0;
+        top: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-knob {
+        width: calc(25px - 6px);
+        height: calc(25px - 6px);
+        border-radius: 50%;
+        left: calc(3px - 5px);
+        top: calc(3px - 5px);
+        -webkit-box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #f5f5f5), to(#eeeeee));
+        background: linear-gradient(#f5f5f5 10%, #eeeeee);
+    }
+</style>
+<br>
+
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Student</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Parent</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Staff</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="pills-admin-tab" data-toggle="pill" href="#pills-admin" role="tab" aria-controls="pills-admin" aria-selected="false">admin</a>
+      </li>
+  </ul>
+
+<div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+                <table id="tableID1" class="display">
+                    <thead>
+                        <tr>
+                            <th>Admission No</th>
+                            <th>Student Name</th>
+                            <th>Username</th>
+                            <th>Class</th>
+                            <th>Mobile Number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in student_login_id %}
+                        <tr>
+                            <td>{{ data.student.admission_no }}</td>
+                            <td>{{ data.student.first_name }} ({{ data.student.last_name }})</td>
+
+                            <td>{{ data.student_username}}</td>
+                            <td>{{ data.student.Class }}( {{ data.student.section }})</td>
+                            <td>{{ data.student.mobile_number }}</td>
+                            <td>
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="data_idd"
+                                        onclick="pass_id('{{data.id}}')" data-toggle="modal"  {% if data.student.user_student.is_active == True %} checked {% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+                <table id="tableID2" class="display">
+                    <thead>
+                        <tr>
+
+
+                            <th>Guardian Name</th>
+                            <th>Guardian Phone</th>
+                            <th>Username</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for data in guardian_get %}
+                        <tr>
+                            <td>{{ data.name }}</td>
+                            <td>{{ data.phone }}</td>
+                            <td>{{ data.student.user_parent }}</td>
+                            <td>
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="data_idd"
+                                        onclick="pass_parent_id('{{data.id}}')" data-toggle="modal"  {% if data.student.user_parent.is_active == True %} checked {% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab"> <div class="card" style="padding: 10px;border-top: 5px solid black;">
+        <div class="table-responsive">
+            <table id="tableID3" class="display">
+                <thead>
+                    <tr>
+
+                        <th>Staff ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in staff_login_id %}
+                    <tr>
+                        <td>{{ data.staff_id }}</td>
+                        <td>{{ data.first_name}}</td>
+                        <td>{{ data.email}}</td>
+                        <td>{{ data.roles.name}}</td>
+                        <td>{{ data.designation }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.phone_no }}</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="data_idd"
+                                    onclick="pass_staff_id('{{data.id}}')" data-toggle="modal"  {% if data.user.is_active == True %} checked {% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div></div>
+    <div class="tab-pane fade" id="pills-admin" role="tabpanel" aria-labelledby="pills-admin-tab">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+                <table id="tableID4" class="display">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Last Name</th>
+                            <th>Date of Birth</th>
+                            <th>Phone Number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for data in user_list %}
+                        {% if data.is_superuser %}
+                        <tr>
+                            <td>{{ data.username }}</td>
+                            <td>{{ data.first_name }}</td>
+                            <td>{{ data.dob }}</td>
+                            <td>{{ data.phone_number }}</td>
+                            <td>
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="data_idd"
+                                        onclick="pass_admin_id('{{data.id}}')" data-toggle="modal"  {% if data.is_active == True %} checked {% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+                                
+                                
+                            </td>
+
+
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                        
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        function pass_admin_id(id) {
+            var url = "{% url 'toggle_status' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'active_id': id
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+    </script>
+
+
+<script>
+    function pass_id(id) {
+        var url = "{% url 'active_js' %}";
+        $.ajax({
+            url: url,
+            data: {
+                'active_id': id
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+
+<script>
+    function pass_parent_id(id) {
+        var url = "{% url 'active_parent_js' %}";
+        $.ajax({
+            url: url,
+            data: {
+                'active_parent_id': id
+            },
+
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+<script>
+    function pass_staff_id(id) {
+        var url = "{% url 'active_staff_js' %}";
+        $.ajax({
+            url: url,
+            data: {
+                'active_staff_id': id
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+<!-- <script>
+    var tabEl = document.querySelector('button[data-bs-toggle="tab"]')
+tabEl.addEventListener('shown.bs.tab', function (event) {
+  event.target // newly activated tab
+  event.relatedTarget // previous active tab
+  var someTabTriggerEl = document.querySelector('#someTabTrigger')
+  var tab = new bootstrap.Tab(someTabTriggerEl)
+
+  tab.show()
+})
+</script> -->
+<script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID1').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID2').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+
+  <script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID3').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID4').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+
+
+{% endblock %}

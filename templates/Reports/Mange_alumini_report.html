@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Mange Alumni Report</h4>
+       </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Pass Out Session</label>
+                        <select class="form-control" name="session">
+                            <option value="" >---Select---</option>
+                            {% for data in session_records %}
+                            <option value="{{data.id}}">{{data.session}}</option>
+                            {% endfor %}
+
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="id_Class">
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}">{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="section">Section</label>
+                        <select class="form-control" name="section" id="id_section">
+                            <option value="">---Select--- </option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}">{{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+    </div>
+
+     {% if records %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Admission No </th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Gender</th>
+                        <th>Current Email</th>
+                        <th>Date of Birth</th>
+                        <th>Current Address</th>
+                        <th>Occupation</th>
+                        <th>Current Phone</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.students_id.admission_no}}</td>
+                        <td>{{data.students_id.first_name}}</td>
+                        <td>{{data.students_id.Class}}</td>
+                        <td>{{data.students_id.gender}}</td>
+                        <td>{{data.current_email}}</td>
+                        <td>{{data.students_id.date_of_birth}}</td>
+                        <td>{{data.address}}</td>
+                        <td>{{data.Occupation}}</td>
+                        <td>{{data.Current_phone}}</td>
+
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+
+            </table>
+            </div>
+         </div>
+     </div>
+     {% endif %}
+ </div>
+
+ {% endblock %}
+ {% block script_block %}
+ <script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+ {% endblock  %}

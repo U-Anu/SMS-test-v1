@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Edit Book List</h4>
+        </div>
+    </div>
+<div class="col-md-12">
+    <div class="card">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                        {{ data }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <br>
+                <center>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </center>
+            </form>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

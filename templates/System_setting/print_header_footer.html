@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    @charset "UTF-8";
+
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+    }
+
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    /*Style 6*/
+
+    .toggler-wrapper.style-6 {
+        width: 54px;
+        -webkit-box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0))), #ddd;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0)), #ddd;
+        border-radius: 100px;
+    }
+
+    .toggler-wrapper.style-6 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+        left: calc(100% - 19px - 3px + 5px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-slider {
+        -webkit-box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0.1))), #d0d0d0;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0.1)), #d0d0d0;
+        top: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-knob {
+        width: calc(25px - 6px);
+        height: calc(25px - 6px);
+        border-radius: 50%;
+        left: calc(3px - 5px);
+        top: calc(3px - 5px);
+        -webkit-box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #f5f5f5), to(#eeeeee));
+        background: linear-gradient(#f5f5f5 10%, #eeeeee);
+    }
+</style>
+<br>
+<div class="container-fluid">
+    <div class="card">
+    <h4>Print Header Footer</h4>
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+           <li class="nav-item" style="float:right;" role="presentation">
+        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Payslip</a>
+        </li>
+        <li class="nav-item" style="float:right;" role="presentation">
+        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Fees Receipt</a>
+        </li>
+       </ul>
+
+  <div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+      <div class="card" style="padding: 10px;border-top: 5px solid black;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="field">
+              <input type="file" name="image_fees_receipt"  required>
+
+            </div>
+            <img src="{{records.image_fees_receipt.url}}"  class="img-fluid img-responsive" style="height: 180px;width: auto;">
+            <br>
+              <div class="field">
+                  <textarea type="text" rows="10" cols="148" name="note_fees_receipt" required>{{records.note_fees_receipt}} </textarea>
+
+              </div>
+              <button type="submit" value="fees_receipt" name="fees_receipt" class="btn btn-primary" style="float: right;">Save</button><br><br>
+        </form>
+    </div>
+    </div>
+    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="field">
+                      <input type="file" name="image_payslip" required>
+                  </div>
+                  
+                  {% if records.image_payslip %}
+                      <img src="{{ records.image_payslip.url }}" class="img-fluid img-responsive" style="height: 180px; width: auto;">
+                  {% else %}
+                      <p>No payslip image uploaded.</p>
+                  {% endif %}
+                  
+                  <br>
+                  
+                  <div class="field">
+                      <textarea type="text" rows="10" cols="148" name="note_payslip" required>{{ records.note_payslip }}</textarea>
+                  </div>
+
+                  <button type="submit" value="pay_roll_receipt" name="pay_roll_receipt"  class="btn btn-primary" style="float: right;">Save</button><br><br>
+                </form>
+            </div>
+        </div>
+    </div>
+
+  </div>
+  </div>
+  </div>
+
+
+
+<script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID2').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID3').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+{% endblock %}

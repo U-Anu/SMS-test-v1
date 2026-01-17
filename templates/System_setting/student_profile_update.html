@@ -1,0 +1,825 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    @charset "UTF-8";
+
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+
+    }
+
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    /*Style 6*/
+
+    .toggler-wrapper.style-6 {
+        width: 54px;
+        -webkit-box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0))), #ddd;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0)), #ddd;
+        border-radius: 100px;
+    }
+
+    .toggler-wrapper.style-6 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+        left: calc(100% - 19px - 3px + 5px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-slider {
+        -webkit-box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0.1))), #d0d0d0;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0.1)), #d0d0d0;
+        top: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-knob {
+        width: calc(25px - 6px);
+        height: calc(25px - 6px);
+        border-radius: 50%;
+        left: calc(3px - 5px);
+        top: calc(3px - 5px);
+        -webkit-box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #f5f5f5), to(#eeeeee));
+        background: linear-gradient(#f5f5f5 10%, #eeeeee);
+    }
+</style>
+<br>
+<form id="myForm4" method="post">
+    {% csrf_token %}
+<div class="container-fluid">
+    <div class="form-group row">
+    <h4 class="col-sm-4">Allow Editable Form Fields</h4>
+       <div class="col-sm-8">
+           <label class="radio-inline">
+               <input type="radio" name="status" value="Disabled" {% if 'Disabled' in records.status %}checked{% endif %}  >Disabled </label>
+           <label class="radio-inline">
+               <input type="radio" name="status" value="Enabled" {% if 'Enabled' in records.status %}checked{% endif %} >Enabled </label>
+       </div>
+    </div>
+
+<div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary"> Save</button>
+    </div>
+  </div>
+</div>
+
+
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+
+                <table id="tableID2" class="display">
+                    <thead>
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>First Name</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="first_name_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'first_name_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Admission Date</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="admission_date_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'admission_date_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Last Name</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="last_name_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'last_name_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>RTE</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="rte_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'rte_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Image</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="image_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'image_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="mobile_number_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'mobile_number_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="email_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'email_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Religion</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="religion_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'religion_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Caste</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="caste_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'caste_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date of Birth</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="date_of_birth_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'date_of_birth_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Blood Group</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="blood_groups_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'blood_groups_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>If Guardian Is</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="if_guardian_is_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'if_guardian_is_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="gender_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'gender_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Current Address</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id" name="fields_val" value="current_address_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'current_address_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Permanent Address</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="permanent_adsress_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'permanent_adsress_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Category</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="category_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'category_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bank Account Number</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="bank_account_number_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'bank_account_number_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bank Name</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="bank_name_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'bank_name_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>IFSC Code</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="ifsc_code_fileds"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'ifsc_code_fileds' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+
+                        <tr>
+                            <td>Father Name</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="father_name_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'father_name_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Father Phone</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="father_phone_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'father_phone_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Father Occupation</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="father_occupation_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'father_occupation_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mother Name</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="mother_name_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'mother_name_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mother Phone</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="mother_phone_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'mother_phone_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Student House</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="student_house_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'student_house_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mother Occupation</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="mother_occupation_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'mother_occupation_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Guardian Name</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="guardian_name_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'guardian_name_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Guardian Relation</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="guardian_relation_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'guardian_relation_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Guardian Phone</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="guardian_phone_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'guardian_phone_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Guardian Occupation</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="guardian_occupation_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'guardian_occupation_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Guardian Address</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="guardain_adress_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'guardain_adress_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Guardian Email</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="guardian_email_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'guardian_email_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>National Identification Number</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="national_identification_number_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'national_identification_number_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Local Identification Number</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="local_identification_number_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'local_identification_number_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Father Photo</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="father_photo_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'father_photo_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Mother Photo</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="mother_photo_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'mother_photo_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Guardian Photo</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="guardian_photo_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'guardian_photo_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Height</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="height_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'height_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="weight_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'weight_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Previous School Details</td>
+                            <td>
+
+                                <!-- Toggle Button Style 6 -->
+                                <label class="toggler-wrapper style-6">
+                                    <input type="checkbox" id="active_id"  name="fields_val" value="previous_school_details_fields"
+                                        onclick="myFunction()" data-toggle="modal"   {% if 'previous_school_details_fields' in records.fieldshide %}checked{% endif %}
+                                        data-target=".bd-example-modal-sm">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+
+                            </td>
+                        </tr>
+
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+ </div>
+
+</form>
+
+  <script>
+    function myFunction() {
+
+    let form = document.getElementById("myForm4");
+            form.submit();
+    }
+    </script>
+<script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID2').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[ 25, 50, 100, 250], [ 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+{% endblock %}

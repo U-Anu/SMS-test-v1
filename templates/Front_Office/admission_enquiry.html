@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+    <div class="row">
+        <div class="main-header">
+           <h4>Admission Enquiry</h4>
+        </div>
+     </div>
+     <!-- modal Start -->
+     {% if 'admission_enquiry_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <div class="col" style="padding: 30px;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Admission Enquiry</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+         
+          <button type="submit" class="btn btn-primary">Submit</button>
+          
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
+     <!-- modal End -->
+
+
+     {% if 'admission_enquiry_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Source</th>
+                        <th>Enquiry Date</th>
+                        {% comment %} <th>Last Follow Up Date</th> {% endcomment %}
+                        <th>Next Follow Up Date</th>
+                        {% comment %} <th>Status</th> {% endcomment %}
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      {% for data in records %}   
+                      <tr>
+                          <td>{{data.name}}</td>
+                          <td>{{data.phone_number}}</td>
+                          <td>{{data.source}}</td>
+                          <td>{{data.date}}</td>
+                          {% comment %} <td>{{data.date}}</td> {% endcomment %}
+                          <td>{{data.next_follow_up_date}}</td>
+                          {% comment %} <td>{{data.phone_number}}</td> {% endcomment %}
+                        <td>
+                          {% if 'complain_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'admission_enquiry_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view" style="color: black;"  ><i class='fa fa-server'></i></a>
+                            {% endif %}
+                            {% if 'admission_enquiry_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'admission_enquiry_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                            {% endif %}
+                            {% if 'admission_enquiry_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'admission_enquiry_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"  style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                            {% endif %}
+                           </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% endif %}
+ </div>
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Branch</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'department_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if edit %}
+                        <h4> Edit Branch </h4>                        
+                        {% else %}
+                        <h4>Add Branch</h4>                        
+                        {% endif %}  
+                      
+                     </div><hr>
+                     
+                       <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                          {% for data in form %}
+                                <div class="col-md-12 mb-3">
+                                    <label for="{{ data.id_for_label }}">{{ data.label }}</label>
+                                    {{ data }}
+                                </div>
+                            {% endfor %}
+                     
+                      
+
+                        <button type="submit" class="btn btn-primary">Add Branch</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'department_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Branch List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                                 <th>Email</th>
+                                <th>School</th>
+                                <th>Staff</th>
+                                <th>Admin</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for branch in branches %}
+                            <tr>
+                                <td>{{branch.name}}</td>
+                                <td>{{branch.location}}</td>
+                                <td>{{branch.email}}</td>
+                                <td>{{branch.school}}</td>
+                                  <td>{{branch.staff_in_charge}}</td>
+                                   <td>{{branch.admin_in_charge}}</td>
+                                <td> 
+                                    {% if 'branch_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'branch_edit' branch.id%}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                    {% endif %}
+                                    {% if 'branch_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'branch_delete' branch.id%}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                  {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

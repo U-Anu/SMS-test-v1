@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Manage Non-Returnable Items</h4>
+        </div>
+    </div>
+    {% if 'non_returnable_item_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <a href="" style="float: right;">
+        <button type="button" class="btn btn-primary">
+            <i class='fa fa-plus-square'></i> Add Non-Returnable Item
+        </button>
+    </a>
+    {% endif %}
+
+    {% if 'non_returnable_item_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <div class="col-md-12">
+        <br>
+        <div class="card" style="padding: 10px; border-top: 5px solid black;">
+            <div class="table-responsive">
+                <table id="tableID" class="display table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Item Category</th>
+                            <th>Staff</th>
+                            <th>Inventory ID</th>
+                            <th>Min Quantity</th>
+                            <th>Max Quantity</th>
+                            <th>Duration (Days)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in records %}
+                        <tr>
+                            <td>{{ data.item }}</td>
+                            <td>{{ data.item_category }}</td>
+                            <td>{{ data.staff }}</td>
+                            <td>{{ data.inventory_id }}</td>
+                            <td>{{ data.min_quantity }}</td>
+                            <td>{{ data.max_quantity }}</td>
+                            <td>{{ data.duration_in_days }}</td>
+                            <td>
+                                {% if data.exceeded_max_quantity %}
+                                    <button type="button" class="btn btn-danger btn-sm" disabled>
+                                        Max Quantity Exceeded
+                                    </button>
+                                {% else %}
+                                    <!-- Add other actions/buttons if needed -->
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block script_block %}
+<script>
+    // Add any JavaScript or jQuery scripts if needed
+</script>
+{% endblock %}

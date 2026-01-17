@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+<div class="row">
+
+        <div class="col-md-12" style="padding: 0%;">
+            <div class="card" style="padding: 30px;">
+                <div class="card-body">
+                    <div class="row ">
+                        <h4>Offers Details</h4>
+                        <div class="col-md-6 mb-3">
+                            <label for="student_admission"> Short Title </label>
+                            {{form.short_title}}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="student_admission">Offer Title</label>
+                            {{form.Offer_title}}
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="student_admission">description</label>
+                            {{form.description}}
+
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="student_admission">Note 1</label>
+                            {{form.note1}}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Note 2</label>
+                            {{form.note2}}
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Note 3 </label>
+                            {{form.note3}}
+                        </div>
+
+                     
+
+
+                        <div class="col-md-4 mb-3"><br>
+                            <button type="submit" class="btn btn-primary" style="float: right;">Save</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+</div>
+
+
+
+{% endblock %}
+

@@ -1,0 +1,50 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">{{screen_name}}</h3>
+                    {% for msg in messages %}
+                        <center><span style="color:red;">{{msg}}</span></center>
+                    {% endfor %}
+
+                <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>account_id</th>
+                                        <th>account_number</th>
+                                        <th>transaction_date</th>
+                                        <th>amount</th>
+                                        <th>debit_credit_marker</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {% for data in my_list %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ data.account_id }}</td>
+                                            <td>{{ data.account_number }}</td>
+                                            <td>{{ data.transaction_date }}</td>
+                                            <td>{{ data.amount }}</td>
+                                            <td>{{ data.debit_credit_marker }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                </tbody>
+                        </table>
+                </div>
+                <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

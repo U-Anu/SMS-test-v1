@@ -1,0 +1,99 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Book Issued</h4>
+        </div>
+    </div>
+<div class="col-md-12">
+   
+        
+        <div class="card" style="padding: 10px;border-top: 5px solid black;" >
+            <div class="table-responsive">
+
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Book Number </th>
+                        <th>Author</th>
+                        <th>Issue Date</th>
+                        <th>Due Return Date</th>
+                        <th>Return Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                  {% for data in records%}
+                  <tr>
+                    <td>{{data.book}}</td>
+                    <td>{{data.book.book_number}}</td>
+                    <td>{{data.book.author}}</td>
+                    <td>{{data.issued_date}}</td>
+                    <td>{{data.due_return_date}}</td>
+                    <td>{{date.issued_date}}</td>
+               
+                      
+                  </tr>
+                 {% endfor %}
+                   
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+
+  </div>
+  
+  <!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+    function amt_validation() {
+      var book_id = $('#book').val();
+      var url = "{% url 'book_qty_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'book_id': book_id
+        },
+        success: function (data) {
+          $('#ava_quantity').text('Available Quantity : '+data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    }
+  </script>
+
+
+  
+<script>
+    $(document).ready(function () {
+  
+      $(document).on('click', '#dropdownMenuButton', function () {
+        var dumy = this;
+        var iss_id = $(dumy).closest('tr').find('#iss_id').val();
+        var book_id = $(dumy).closest('tr').find('#book_id').val();
+        $('#model_iss_id').val(iss_id);
+        $('#model_book_id').val(book_id);
+      });
+
+    });
+  
+  </script>
+{% endblock %}

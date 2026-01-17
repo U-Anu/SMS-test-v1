@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <br>
+        <div class="col-md-9" style="padding: 10px; border-top: 5px solid black;">
+            <div class="row card">
+
+                <!--  kenya payment -->
+                {% if general_setting.country == 'Kenya' %}
+                <div class="col-12 col-md-12 col-lg-12">
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                        <!--  kenya  -->
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#duck" role="tab" aria-controls="duck"
+                                aria-selected="true">M-Pesa</a>
+                        </li>
+                        <!-- <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#chicken" role="tab" aria-controls="chicken" aria-selected="false">Chicken</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#kiwi" role="tab" aria-controls="kiwi" aria-selected="false">Kiwi</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" data-toggle="tab" href="#emu" role="tab" aria-controls="emu" aria-selected="false">Emu</a>
+                </li> -->
+                    </ul>
+
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane active" id="duck" role="tabpanel" aria-labelledby="duck-tab">
+                            <h5>Payment Method</h5><br>
+                            <div class="row">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Passkey <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="mpesa_passkey" value="{% if last_record.mpesa_passkey %}{{last_record.mpesa_passkey}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Consumer Key <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control"  name="mpesa_consumer_key" value="{% if last_record.mpesa_consumer_key %}{{last_record.mpesa_consumer_key}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Consumer Secret <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control"  name="mpesa_consumer_secret" value="{% if last_record.mpesa_consumer_secret %}{{last_record.mpesa_consumer_secret}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success"   name="btn_type" value="kenya"  style="float: right;">Save</button>
+                                </div>
+                            </form>
+                                <div class="col-md-4 text text-center disblock">
+                                    <a href="https://developer.safaricom.co.ke/" target="_blank"><img src="{% static 'assets/images/daraja.png' %}" width="200"><p>https://developer.safaricom.co.ke/</p></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!--  India payment -->
+                
+                {% elif general_setting.country == 'India' %}
+                <div class="col-12 col-md-12 col-lg-12">
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#duck" role="tab" aria-controls="duck"
+                                aria-selected="true">Razorpay</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane active" id="duck" role="tabpanel" aria-labelledby="duck-tab">
+                            <h5>Payment Method</h5><br>
+                            <div class="row">
+
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Key id <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control"  name="razorpay_key_id" value="{% if last_record.razorpay_key_id %}{{last_record.razorpay_key_id}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Key Secret <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="razorpay_key_secret" value="{% if last_record.razorpay_key_secret %}{{last_record.razorpay_key_secret}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success" name="btn_type" value="india" style="float: right;">Save</button>
+                                </div>
+                                </form>
+                                <div class="col-md-4 text text-center disblock">
+                                    <a href="https://razorpay.com/" target="_blank"><img src="{% static 'assets/images/razorpay_image.png' %}" width="200"><p>https://razorpay.com/</p></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                {% else %}
+                <h5>Select Country in general setting  >>  <a href="{% url 'general_setting' %}" class="btn btn-primary text" style="color: white;">General setting</a></h5>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-3" style="padding: 10px; border-top: 5px solid black;">
+            <form action="" method="post">
+                {% csrf_token %}
+            <!--  kenya  -->
+                {% if general_setting.country == 'Kenya' %}
+            <div class="card">
+                <h6>Selete Payment Gateway</h6>
+                <label for="id_M-Pesa">
+                    <input type="radio" name="payment_gateway" id="id_M-Pesa" value="mpesa" {% if last_record.seleted_payment == 'mpesa' %}checked{% endif %}>  M-Pesa
+                </label><br>
+                <button type="submit" class="btn btn-success" style="float: right;" name="payment_gateway_btn" value="payment_gateway_btn">Save</button>
+                <br><br>
+            </div>
+            <!--  india  -->
+                {% elif general_setting.country == 'India' %}
+            <div class="card">
+                <h6>Selete Payment Gateway</h6>
+                <label for="id_Razorpay">
+                    <input type="radio" name="payment_gateway" id="id_Razorpay" value="razorpay" {% if last_record.seleted_payment == 'razorpay' %}checked{% endif %}>  Razorpay
+                </label><br>
+                <button type="submit" class="btn btn-success" style="float: right;" name="payment_gateway_btn" value="payment_gateway_btn">Save</button>
+                <br><br>
+            </div>
+            
+            {% endif %}
+        </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

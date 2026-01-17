@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Vehicle On Route</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'assign_vehicle_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if view %}
+                        <h4> View Assign Vehicle On Route </h4>
+                        {% elif edit %}
+                        <h4> Edit Assign Vehicle On Route </h4>
+                        {% else %}
+                        <h4>Assign Vehicle On Route</h4>
+                        {% endif %}
+
+                     </div><hr>
+                     <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                     <div class="row">
+
+                        <div class="col-md-12 mb-3">
+                            <label for="class">Route</label>
+                            <select class="form-control" name="route" id="id_route">
+                                <option value="" >---Select---</option>
+                                {% for data in Route_name %}
+                                <option value="{{ data.id }}" {% if data.id == record.route.id %}selected{% endif %}>{{data.route_title}}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label>Vehicle:</label>
+                            {% for data in vehicle_numbers %}
+                                <div class="form-check" style="padding-left: 30px;">
+                                    <input type="checkbox" class="form-check-input" id="id_vehicle_{{forloop.counter}}" name="vehicle" value="{{data.id}}" {% if data.id in list %}checked{% endif %}>
+                                    <label class="form-check-label" for="id_vehicle_{{forloop.counter}}" >{{data.vehicle_number}}</label>
+                                  </div>
+                            {% endfor %}
+                        </div>
+
+                      </div><br>
+                      {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'assign_vehicle_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Vehicle On Route List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Route</th>
+                                <th>Vehicle</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.route}}</td>
+                                <td>
+                                    {% for section in data.vehicle.all %}
+                                        {{ section.vehicle_number }}
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% if 'assign_vehicle_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'assign_vehicle_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    {% endif %}
+                                    {% if 'assign_vehicle_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'assign_vehicle_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                    {% endif %}
+                                    {% if 'assign_vehicle_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'assign_vehicle_delete' data.id %}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                    {% endif %}
+                                   </td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+
+
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

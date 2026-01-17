@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+
+       <div class="main-header">
+        <div class="col-md-4">
+          <h4>Student History</h4>
+          </div>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_information_report' %}" >Student Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'guardian_report' %}" >Guardian Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_history_report' %}" >Student History</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_login_credentials' %}">Student Login Credentials</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'class_subject_report' %}">Class Subject Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+                <a href="{% url 'admission_report' %}"class="text-primary">Admission Report</a>
+            </div>
+            {% comment %} <div class="col-md-4  mb-3">
+                <a href="{% url 'sibling_report' %}">Sibling Report</a>
+            </div> {% endcomment %}
+            <div class="col-md-4  mb-3">
+                <a href="{% url 'student_profile_report' %}">Student Profile</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'homework_evaluation_report' %}" >Homework Evaluation Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_gender_ratio_report' %}">Student Gender Ratio Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_teacher_ratio_report' %}">Student Teacher Ratio Report</a>
+            </div>
+            
+          </div>
+          <hr>
+          <div class="container-fluid">
+            <div class="row">
+              <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <br>
+                        <label for="enquiry">From Date</label>
+                        <input type="date" class="form-control" name="from_date">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <br>
+                        <label for="enquiry">To Date</label>
+                        <input type="date" class="form-control" name="to_date">
+                    </div>
+                
+                    <div class="col-md-12 mb-3"><br>
+                        <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+                    </div>
+                </div>
+               
+            </form>
+                
+        
+                    </div> 
+                    </div>
+            </div>
+        </div>
+    </div>
+   
+
+
+   {% if records %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+          <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Admission No</th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Father Name</th>
+                        <th>Date of Birth</th>
+                        <th>Admission Date</th>
+                        <th>Gender</th>
+                        <th>Mobile Number</th>
+                       
+                    </tr>
+                </thead>                
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.admission_no}}</td>
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.Class }} ({{ data.section }})</td>                       
+                        <td>{{ data.Father_name }}</td>
+                        <td>{{ data.date_of_birth }}</td>
+                        <td>{{data.admission_date}}</td>
+                        <td>{{ data.gender }}</td>
+                        <td>{{ data.mobile_number }}</td>                        
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            
+            </div>
+         
+           
+    
+    </div>
+    {% else %}
+       <center> <h5>No Records Found </h5></center>
+    {% endif %}
+    </div>
+   
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+ 
+ {% endblock  %}

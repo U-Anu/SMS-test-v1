@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Notice Board edit </h4>
+       </div>
+    </div>
+   
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <form method="post">
+            {% csrf_token %}
+        <div class="row">
+          <div class="col-md-9 mb-6">
+            <label for="student_admission"> Title </label>
+                {{form.title}}                        
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="student_admission">Notice Date</label>
+                {{form.notice_date}}
+                
+        </div>
+        <div class="col-md-9 mb-3">
+            <label for="student_admission">Message</label>
+                {{form.message}}
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="student_admission">Publish On</label>
+                {{form.publish_on}}
+        </div>
+        
+        
+            <label for="student_admission">Message To</label>
+            <div class="col-md-3 mb-3 form-check">
+              <input class="form-check-input" type="checkbox" value="Student" id="student_id" name="noties_all" >
+              <label class="form-check-label" for="student_id">
+                Student
+              </label>
+            </div>
+            <div class="col-md-3 mb-3 form-check">
+              <input class="form-check-input" type="checkbox" value="Parent" id="parent_id" name="noties_all" >
+              <label class="form-check-label" for="parent_id">
+                Parent
+              </label>
+            </div>
+            {% for data in forms %}
+            <div class="col-md-3 mb-3 form-check">  
+              <input class="form-check-input" type="checkbox" value="{{data.name}}" id="{{data.name}}_id" name="noties_all" >
+              <label class="form-check-label" for="{{data.name}}_id">
+                {{data.name}}
+              </label>
+          </div>
+          {% endfor %}
+              
+        </div>
+        <br>
+        <center>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </center>
+      </form>
+            </div>
+        </div>
+    </div>
+   
+
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

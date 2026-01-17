@@ -1,0 +1,64 @@
+<li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#rms-report" aria-expanded="false" aria-controls="rms-report">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Advance Report</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="rms-report">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'trail_balance_report' %}">Trial Balance</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'general_ledger_report' %}">General Ledger</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'profit_and_loss_statement_views' %}">Profit and Loss </br>Statement</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_payable_aging_views' %}">Accounts Payable </br>Aging Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_receivable_aging_views' %}">Accounts Receivable </br>Aging Report</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'generate_cash_flow_statement_views' %}">Cash Flow </br>Statement</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'balance_sheet_views' %}">Balance Sheet</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'petty_cash_views' %}">Petty Cash </br>Sheet</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'trial_balance_by_period_views' %}">Trial Balance </br>by Period </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'cash_book_detailed_report_all_views' %}">Cash Book</br> Detailed</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'accounts_payable_vs_receivable_summary_views' %}">Accounts </br>Payable vs Receivable</br> Summary</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'petty_cash_usage_report_views' %}">Petty Cash Usage</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'journal_summary_report_views' %}">Journal Summary</a></li>
+              </ul>
+            </div>
+          </li>
+<li class="nav-item">
+<a class="nav-link" data-toggle="collapse" href="#reports" aria-expanded="false" aria-controls="reports">
+  <i class="icon-layout menu-icon"></i>
+  <span class="menu-title">Reports</span>
+  <i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="reports">
+  <ul class="nav flex-column sub-menu">
+    <li class="nav-item"> <a class="nav-link" href="{% url 'date_wise' %}">Date</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_id_wise' %}">Transaction Id</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'account_wise' %}">Accounts</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'teller_wise' %}">Teller</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_code_wise' %}">Transaction Code</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'company_wise' %}">Company</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'date_wise' %}">Monthly</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'date_wise' %}">Yearly</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'date_wise' %}">GL Line </a></li>
+  </ul>
+</div>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-toggle="collapse" href="#advance-reports" aria-expanded="false" aria-controls="advance-reports">
+  <i class="icon-layout menu-icon"></i>
+  <span class="menu-title">Advance Reports</span>
+  <i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="advance-reports">
+  <ul class="nav flex-column sub-menu">
+    <li class="nav-item"> <a class="nav-link" href="{% url 'trail_balance' %}">Trail Balance</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'general_ledger_with_diff_sub_ledgers_report' %}">GL with different <br>sub gl</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'receivable_listing_report' %}">Receivables Listing<br> Ledger</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'account_payable_listing_report' %}"> Payable Listing<br> Ledger</a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'statement_of_receipt' %}">Statement of <br>Receipts </a></li>
+    <li class="nav-item"> <a class="nav-link" href="{% url 'statement_of_payment' %}">Statement of <br><br>payment</a></li>
+<!--                <li class="nav-item"> <a class="nav-link" href="{% url 'company_wise' %}">Statement of <br>Financial Position</a></li>-->
+<!--                <li class="nav-item"> <a class="nav-link" href="{% url 'date_wise' %}">Statement of <br>Changes in Equity</a></li>-->
+    <li class="nav-item"> <a class="nav-link" href="{% url 'statement_of_cash_flow_report' %}">Statement of <br>Cash Flow</a></li>
+  </ul>
+</div>
+</li>

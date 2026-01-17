@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Item Category</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                     </div><hr>
+                     {% if not view %}
+                    <h4>Edit  Item Category</h4>
+                    {% else %}
+                    <h4>View  Item Category</h4>
+                    {% endif %}
+                     <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                      {% if not view %}                     
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+         
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

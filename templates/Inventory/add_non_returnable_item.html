@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Non-Returnable Items</h4>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px; border-top: 5px solid black;">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>User Type</th>
+                        <th>Staff</th>
+                        <th>Item</th>
+                        <th>Inventory ID</th>
+                        <th>Min Quantity</th>
+                        <th>Max Quantity</th>
+                        <th>Duration in Days</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in non_returnable_items %}
+                        <tr>
+                            <td>{{ item.user_type }}</td>
+                            <td>{{ item.staff.first_name }} {{ item.staff.last_name }}</td>
+                            <td>{{ item.item.name }}</td>
+                            <td>{{ item.inventory_id }}</td>
+                            <td>{{ item.min_quantity }}</td>
+                            <td>{{ item.max_quantity }}</td>
+                            <td>{{ item.duration_in_days }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

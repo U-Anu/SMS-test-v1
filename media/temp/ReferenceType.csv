@@ -1,0 +1,4 @@
+type_id,type_name,description
+RT-003,Bill,Bill
+RT-002,PurchaseOrder,PurchaseOrder
+RT-001,Invoice,Invoice

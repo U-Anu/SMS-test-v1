@@ -1,0 +1,46 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">{{screen_name}}</h3>
+                <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        <th>Vendor Id</th>
+                                        <th>Gl Line</th>
+                                        <th> Reference type</th>
+                                        <th> Reference no</th>
+                                        <th>Invoice Date</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in records %}
+                                    <tr>
+                                        <td>{{data.vendor_id}}</td>
+                                        <td>{{data.glline_code}}</td>
+                                        <td>{{data.reference_type}}</td>
+                                        <td>{{data.reference_no}}</td>
+                                        <td>{{data.invoice_date}}</td>
+                                        <td>{{data.amount}}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                            <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

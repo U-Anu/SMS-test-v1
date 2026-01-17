@@ -1,0 +1,1683 @@
+
+<!DOCTYPE html>
+<html >
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>School mian</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <meta http-equiv="Cache-control" content="no-cache">
+        <meta name="theme-color" content="#424242" />
+       <link href="https://www.school.infomainia.in/uploads/school_content/admin_small_logo/1.jpg" rel="shortcut icon" type="image/x-icon">
+        
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/css/jquery.mCustomScrollbar.min.css">
+            <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/css/style-main.css">
+    <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/themes/blue/skins/skin-darkblue.css">
+    <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/themes/blue/ss-main-darkblue.css">
+           
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/css/ionicons.min.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/iCheck/flat/blue.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/morris/morris.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/datepicker/datepicker3.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/colorpicker/bootstrap-colorpicker.css">
+
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/daterangepicker/daterangepicker-bs3.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/css/custom_style.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/datepicker/css/bootstrap-datetimepicker.css">
+        <!--file dropify-->
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/dist/css/dropify.min.css">
+        <!--file nprogress-->
+        <link href="https://www.school.infomainia.in/backend/dist/css/nprogress.css" rel="stylesheet">
+
+        <!--print table-->
+        <link href="https://www.school.infomainia.in/backend/dist/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="https://www.school.infomainia.in/backend/dist/datatables/css/buttons.dataTables.min.css" rel="stylesheet">
+        <link href="https://www.school.infomainia.in/backend/dist/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <!--print table mobile support-->
+        <link href="https://www.school.infomainia.in/backend/dist/datatables/css/responsive.dataTables.min.css" rel="stylesheet">
+        <link href="https://www.school.infomainia.in/backend/dist/datatables/css/rowReorder.dataTables.min.css" rel="stylesheet">
+
+        <!--language css-->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+        <link rel="stylesheet" type="text/css" href="https://www.school.infomainia.in/backend/dist/css/bootstrap-select.min.css">
+
+
+        <script src="https://www.school.infomainia.in/backend/custom/jquery.min.js"></script>
+        <script src="https://www.school.infomainia.in/backend/dist/js/moment.min.js"></script>
+        <script src="https://www.school.infomainia.in/backend/datepicker/js/bootstrap-datetimepicker.js"></script>
+        <script src="https://www.school.infomainia.in/backend/plugins/colorpicker/bootstrap-colorpicker.js"></script>
+        <script src="https://www.school.infomainia.in/backend/datepicker/date.js"></script>
+        <script src="https://www.school.infomainia.in/backend/dist/js/jquery-ui.min.js"></script>
+        <script src="https://www.school.infomainia.in/backend/js/school-custom.js"></script>
+        <script src="https://www.school.infomainia.in/backend/js/school-admin-custom.js"></script>
+        <script src="https://www.school.infomainia.in/backend/js/sstoast.js"></script>
+         
+        <!-- fullCalendar -->
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/fullcalendar/dist/fullcalendar.min.css">
+        <link rel="stylesheet" href="https://www.school.infomainia.in/backend/fullcalendar/dist/fullcalendar.print.min.css" media="print">
+       
+
+
+        <script type="text/javascript">
+            var baseurl = "https://www.school.infomainia.in/";
+            var chk_validate="valid";
+
+        </script>
+     
+  <style type="text/css">
+        span.flag-icon.flag-icon-us{text-orientation: mixed;}
+  </style>
+    </head>
+    <body class="hold-transition skin-blue fixed sidebar-mini">
+
+
+  
+<script>
+
+    function collapseSidebar() {
+
+        if (Boolean(sessionStorage.getItem('sidebar-toggle-collapsed'))) {
+        sessionStorage.setItem('sidebar-toggle-collapsed', '');
+        } else {
+        sessionStorage.setItem('sidebar-toggle-collapsed', '1');
+        }
+
+        }
+
+    function checksidebar() {
+        if (Boolean(sessionStorage.getItem('sidebar-toggle-collapsed'))) {
+        var body = document.getElementsByTagName('body')[0];
+        body.className = body.className + ' sidebar-collapse';
+        }
+    }
+
+    checksidebar();
+
+</script> 
+       <div class="wrapper">
+
+            <header class="main-header" id="alert">
+                <a href="https://www.school.infomainia.in/admin/admin/dashboard" class="logo">
+                    <span class="logo-mini"><img src="https://www.school.infomainia.in/uploads/school_content/admin_small_logo/1.jpg" alt="School mian" /></span>
+                    <span class="logo-lg"><img src="https://www.school.infomainia.in/uploads/school_content/admin_logo/1.png" alt="School mian" /></span>
+                </a>
+                <nav class="navbar navbar-static-top" role="navigation">
+                    <a onclick="collapseSidebar()"  class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <div class="col-lg-5 col-md-3 col-sm-2 col-xs-5">
+                        <span href="#"  class="sidebar-session">
+                            School mian                        </span>
+                    </div>
+                    <div class="col-lg-7 col-md-9 col-sm-10 col-xs-7">
+                        <div class="pull-right">
+                                                          
+                                <form class="navbar-form navbar-left search-form" role="search"  action="https://www.school.infomainia.in/admin/admin/search" method="POST">
+                                    <input type='hidden' name='ci_csrf_token' value=''/>                                    <div class="input-group">
+                                        <input type="text" value="" name="search_text1" class="form-control search-form search-form3" placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc.">
+                                        <span class="input-group-btn">
+                                            <button type="submit" name="search" id="search-btn" style="" class="btn btn-flat topsidesearchbtn"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+ 
+                                </form>
+                                                        <div class="navbar-custom-menu">
+                                                                    <div class="langdiv"><select class="languageselectpicker" onchange="set_languages(this.value)"  type="text" id="languageSwitcher" >
+                                          
+                                               <option data-content='<span class="flag-icon flag-icon-us"></span> English' value="4" Selected></option>
+        <option data-content='<span class="flag-icon flag-icon-in"></span> Hindi' value="82" ></option>
+        <option data-content='<span class="flag-icon flag-icon-ke"></span> Swahili' value="67" ></option>
+    
+                                        </select></div> 
+                                                                    
+                                     
+                                <ul class="nav navbar-nav headertopmenu">
+                                             <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="Calendar" href="https://www.school.infomainia.in/admin/calendar/events" ><i class="fa fa-calendar"></i></a>
+
+                                            </li>
+                                                                                                                            <li class="dropdown" data-placement="bottom" data-toggle="tooltip" title="Task">
+                                                <a href="#"  class="dropdown-toggle todoicon" data-toggle="dropdown">
+                                                    <i class="fa fa-check-square-o"></i>
+                                                                                                    </a>
+                                                <ul class="dropdown-menu menuboxshadow">
+
+                                                    <li class="todoview plr10 ssnoti">Today you have 0 pending task.<a href="https://www.school.infomainia.in/admin/calendar/events" class="pull-right pt0">View All</a></li>
+                                                    <li>
+                                                        <ul class="todolist">
+                                                            
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                        
+                                                                                     <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="https://www.school.infomainia.in/admin/chat" data-original-title="Chat" class="todoicon"><i class="fa fa-whatsapp"></i></a></li> 
+                                        
+                                  
+                                                                    <li class="dropdown user-menu">
+                                        <a class="dropdown-toggle" style="padding: 15px 13px;" data-toggle="dropdown" href="#" aria-expanded="false">
+                                            <img src="https://www.school.infomainia.in/uploads/staff_images/default_male.jpg" class="topuser-image" alt="User Image">
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-user menuboxshadow">
+                                            <li>
+                                                <div class="sstopuser">
+                                                    <div class="ssuserleft">
+                                                        <a href="https://www.school.infomainia.in/admin/staff/profile/0"><img src="https://www.school.infomainia.in/uploads/staff_images/default_male.jpg" alt="User Image"></a>
+                                                    </div>
+
+                                                    <div class="sstopuser-test">
+                                                        <h4 style="text-transform: capitalize;">Super Admin</h4>
+                                                        <h5>Super Admin</h5>
+                                                     
+                                                    </div>
+
+                                                    <div class="divider"></div>
+                                                    <div class="sspass">
+                                                        <a href="https://www.school.infomainia.in/admin/staff/profile/0" data-toggle="tooltip" title="" data-original-title="My Profile"><i class="fa fa-user"></i>Profile</a>
+                                                        <a class="pl25" href="https://www.school.infomainia.in/admin/admin/changepass" data-toggle="tooltip" title="" data-original-title="Change Password"><i class="fa fa-key"></i>Password</a> <a class="pull-right" href="https://www.school.infomainia.in/site/logout"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                                                    </div>
+                                                </div><!--./sstopuser--></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <aside class="main-sidebar" id="alert2">
+            <form class="navbar-form navbar-left search-form2" role="search"  action="https://www.school.infomainia.in/admin/admin/search" method="POST">
+            <input type='hidden' name='ci_csrf_token' value=''/>            <div class="input-group ">
+
+                <input type="text"  name="search_text" class="form-control search-form" placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc.">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" style="padding: 3px 12px !important;border-radius: 0px 30px 30px 0px; background: #fff;" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+        <section class="sidebar" id="sibe-box">
+        <ul class="sessionul fixedmenu">
+            <li class="removehover">
+            <a data-toggle="modal" data-target="#sessionModal"><span>Current Session: 2019-20</span><i class="fa fa-pencil pull-right"></i></a>
+
+
+        </li>
+    
+    <li class="dropdown">
+
+        <a class="dropdown-toggle drop5" data-toggle="dropdown" href="#" aria-expanded="false">
+            <span>Quick Links</span> <i class="fa fa-th pull-right ftlayer"></i>
+        </a>
+
+        <ul class="dropdown-menu verticalmenu" style="min-width:194px;font-size:10pt;left:3px;">
+            
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/student/search"><i class="fa fa-user-plus"></i>Student Details</a></li>
+
+            
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/studentfee"><i class="fa fa-money"></i>Collect Fees</a></li>
+
+            
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/income"> &nbsp;<i class="fa fa-usd"></i> Add Income</a></li>
+                        
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/expense"><i class="fa fa-credit-card"></i>Add Expense</a></li>
+
+            
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/stuattendence"><i class="fa fa-calendar-check-o"></i>Student Attendance</a></li>
+
+                
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/staffattendance"><i class="fa fa-calendar-check-o"></i>Staff Attendance</a></li>
+
+            
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/staff"><i class="fa fa-calendar-check-o"></i>Staff Directory</a></li>
+
+                
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/examgroup"><i class="fa fa-map-o"></i>Exam Group</a></li>
+
+                
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/examresult"><i class="fa fa-columns"></i>Exam Result</a></li>
+
+                
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/timetable/create"><i class="fa fa-calendar-times-o"></i>Class Timetable</a></li>
+
+                       
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/enquiry"><i class="fa fa-calendar-check-o"></i>Admission Enquiry</a></li>
+                
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/complaint"><i class="fa fa-calendar-check-o"></i>Complain</a></li>
+
+                            <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/content"><i class="fa fa-download"></i>Upload Content</a></li>
+
+                
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/itemstock"><i class="fa fa-object-group"></i>Add Item Stock</a></li>
+
+                
+                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/notification"><i class="fa fa-bullhorn"></i>Notice Board</a></li>
+
+                                <li role="presentation"><a style="color:#282828; font-family: 'Roboto-Bold';padding:6px 20px;" role="menuitem" tabindex="-1" href="https://www.school.infomainia.in/admin/mailsms/compose"><i class="fa fa-envelope-o"></i>Send Email / SMS</a></li>
+                            </ul>
+    </li>
+</ul>  
+        <ul class="sidebar-menu verttop">
+            
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-ioxhost ftlayer"></i> <span>Front Office</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            
+                                <li class=""><a href="https://www.school.infomainia.in/admin/enquiry"><i class="fa fa-angle-double-right"></i> Admission Enquiry </a></li>
+
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/visitors"><i class="fa fa-angle-double-right"></i> Visitor Book</a></li>
+
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/generalcall"><i class="fa fa-angle-double-right"></i> Phone Call Log</a></li>
+
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/dispatch"><i class="fa fa-angle-double-right"></i> Postal Dispatch</a></li>
+
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/receive"><i class="fa fa-angle-double-right"></i> Postal Receive</a></li>
+
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/complaint"><i class="fa fa-angle-double-right"></i> Complain</a></li>
+
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/visitorspurpose"><i class="fa fa-angle-double-right"></i> Setup Front Office</a></li>
+
+                                                    </ul>
+                    </li>
+                    
+
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-user-plus ftlayer"></i> <span>Student Information</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            
+                                <li class=""><a href="https://www.school.infomainia.in/student/search"><i class="fa fa-angle-double-right"></i> Student Details</a></li>
+
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/student/create"><i class="fa fa-angle-double-right"></i> Student Admission</a></li>
+                            
+                                    <li class=""><a href="https://www.school.infomainia.in/admin/onlinestudent"><i class="fa fa-angle-double-right"></i> Online Admission</a></li>
+
+                                                                    <li class=""><a href="https://www.school.infomainia.in/student/disablestudentslist"><i class="fa fa-angle-double-right"></i> Disabled Students</a></li>
+                                                                    <li class=""><a href="https://www.school.infomainia.in/student/multiclass"><i class="fa fa-angle-double-right"></i> Multi Class Student</a></li>
+                                                                    <li class=""><a href="https://www.school.infomainia.in/student/bulkdelete"><i class="fa fa-angle-double-right"></i> Bulk Delete</a>
+                                </li>
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/category"><i class="fa fa-angle-double-right"></i> Student Categories</a></li>
+
+                                                                                        <li class=""><a href="https://www.school.infomainia.in/admin/schoolhouse"><i class="fa fa-angle-double-right"></i> Student House</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/disable_reason"><i class="fa fa-angle-double-right"></i> Disable Reason</a></li>
+                                
+
+
+                        </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-money ftlayer"></i> <span> Fees Collection</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/studentfee"><i class="fa fa-angle-double-right"></i> Collect Fees</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/studentfee/searchpayment"><i class="fa fa-angle-double-right"></i> Search Fees Payment</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/studentfee/feesearch"><i class="fa fa-angle-double-right"></i> Search Due Fees </a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/feemaster"><i class="fa fa-angle-double-right"></i> Fees Master</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/feegroup"><i class="fa fa-angle-double-right"></i> Fees Group</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/feetype"><i class="fa fa-angle-double-right"></i> Fees Type</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/feediscount"><i class="fa fa-angle-double-right"></i> Fees Discount</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/feesforward"><i class="fa fa-angle-double-right"></i> Fees Carry Forward</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/feereminder/setting"><i class="fa fa-angle-double-right"></i> Fees Reminder</a></li>
+                                
+                        </ul>
+                    </li>
+                    
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-usd ftlayer"></i> <span>Income</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/income"><i class="fa fa-angle-double-right"></i>Add Income</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/income/incomesearch"><i class="fa fa-angle-double-right"></i>Search Income</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/incomehead"><i class="fa fa-angle-double-right"></i>Income Head</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-credit-card ftlayer"></i> <span>Expenses</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/expense"><i class="fa fa-angle-double-right"></i> Add Expense</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/expense/expensesearch"><i class="fa fa-angle-double-right"></i> Search Expense</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/expensehead"><i class="fa fa-angle-double-right"></i> Expense Head</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-calendar-check-o ftlayer"></i> <span>Attendance</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/stuattendence"><i class="fa fa-angle-double-right"></i> Student Attendance</a></li>
+                                                                        <li class=""><a href="https://www.school.infomainia.in/admin/stuattendence/attendencereport"><i class="fa fa-angle-double-right"></i> Attendance By Date</a></li>
+                                    
+
+                                <li class=""><a href="https://www.school.infomainia.in/admin/approve_leave"><i class="fa fa-angle-double-right"></i> Approve Leave</a></li>
+                                                    </ul>
+                    </li>
+                    
+                                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-map-o ftlayer"></i> <span>Examinations</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/examgroup"><i class="fa fa-angle-double-right"></i> Exam Group</a></li>
+                                                        <li class=""><a href="https://www.school.infomainia.in/admin/exam_schedule"><i class="fa fa-angle-double-right"></i> Exam Schedule</a></li>
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/examresult"><i class="fa fa-angle-double-right"></i> Exam Result</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/admitcard"><i class="fa fa-angle-double-right"></i> Design Admit Card</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/examresult/admitcard"><i class="fa fa-angle-double-right"></i> Print Admit Card</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/marksheet"><i class="fa fa-angle-double-right"></i> Design Marksheet</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/examresult/marksheet"><i class="fa fa-angle-double-right"></i> Print Marksheet</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/grade"><i class="fa fa-angle-double-right"></i> Marks Grade</a></li> 
+
+
+                        </ul>
+                    </li>
+                
+                                <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-rss ftlayer"></i> <span>Online Examinations</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/onlineexam"><i class="fa fa-angle-double-right"></i> Online Exam</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/question"><i class="fa fa-angle-double-right"></i> Question Bank</a></li>
+                                  
+
+
+
+                        </ul>
+                    </li>
+                                         <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-list-alt ftlayer"></i> <span>Lesson Plan</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/syllabus"><i class="fa fa-angle-double-right"></i> Manage Lesson Plan</a></li>
+                                                                                        <li class=""><a href="https://www.school.infomainia.in/admin/syllabus/status"><i class="fa fa-angle-double-right"></i> Manage Syllabus Status</a></li>
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/lessonplan/lesson"><i class="fa fa-angle-double-right"></i> Lesson</a></li>
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/lessonplan/topic"><i class="fa fa-angle-double-right"></i> Topic</a></li>
+        
+                        </ul>
+                    </li>
+                                                <li class="treeview active">
+                        <a href="#">
+                            <i class="fa fa-mortar-board ftlayer"></i> <span>Academics</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+
+                                                            <li class="active"><a href="https://www.school.infomainia.in/admin/timetable/classreport"><i class="fa fa-angle-double-right"></i> Class Timetable</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/timetable/mytimetable"><i class="fa fa-angle-double-right"></i> Teachers Timetable</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/teacher/assign_class_teacher"><i class="fa fa-angle-double-right"></i> Assign Class Teacher</a></li>
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/stdtransfer"><i class="fa fa-angle-double-right"></i> Promote Students</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/subjectgroup"><i class="fa fa-angle-double-right"></i> Subject Group</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/subject"><i class="fa fa-angle-double-right"></i> Subjects</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/classes"><i class="fa fa-angle-double-right"></i> Class</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/sections"><i class="fa fa-angle-double-right"></i> Sections</a></li>
+                                
+                        </ul>
+                    </li>
+                    
+                                <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-sitemap ftlayer"></i> <span>Human Resource</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/staff"><i class="fa fa-angle-double-right"></i> Staff Directory</a></li>
+
+                            
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/staffattendance"><i class="fa fa-angle-double-right"></i> Staff Attendance</a></li>
+                                
+
+                                <li class=""><a href="https://www.school.infomainia.in/admin/payroll"><i class="fa fa-angle-double-right"></i> Payroll</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/leaverequest/leaverequest"><i class="fa fa-angle-double-right"></i> Approve Leave Request</a></li>
+
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/staff/leaverequest"><i class="fa fa-angle-double-right"></i> Apply Leave</a></li>
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/leavetypes"><i class="fa fa-angle-double-right"></i> Leave Type</a></li>
+
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/staff/rating"><i class="fa fa-angle-double-right"></i> Teachers Rating</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/department/department"><i class="fa fa-angle-double-right"></i> Department</a></li>
+
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/designation/designation"><i class="fa fa-angle-double-right"></i> Designation</a></li>
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/admin/staff/disablestafflist"><i class="fa fa-angle-double-right"></i> Disabled Staff</a></li>
+                                            </ul>
+                    </li>
+                                        <li class = "treeview ">
+                        <a href = "#">
+                            <i class="fa fa-bullhorn ftlayer"></i> <span>Communicate</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/notification"><i class="fa fa-angle-double-right"></i> Notice Board</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/mailsms/compose"><i class="fa fa-angle-double-right"></i> Send Email</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/mailsms/compose_sms"><i class="fa fa-angle-double-right"></i> Send SMS</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/mailsms/index"><i class="fa fa-angle-double-right"></i> Email / SMS Log</a></li>
+                                            </ul>
+                    </li>
+                                
+            
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-download ftlayer"></i> <span>Download Center</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                        <li class=""><a href="https://www.school.infomainia.in/admin/content"><i class="fa fa-angle-double-right"></i> Upload Content</a></li>
+                                    <li class=""><a href="https://www.school.infomainia.in/admin/content/assignment"><i class="fa fa-angle-double-right"></i> Assignments</a></li>
+                            <li class=""><a href="https://www.school.infomainia.in/admin/content/studymaterial"><i class="fa fa-angle-double-right"></i> Study Material</a></li>
+                            <li class=""><a href="https://www.school.infomainia.in/admin/content/syllabus"><i class="fa fa-angle-double-right"></i> Syllabus</a></li>
+                            <li class=""><a href="https://www.school.infomainia.in/admin/content/other"><i class="fa fa-angle-double-right"></i> Other Downloads</a></li>
+                        </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-flask ftlayer"></i> <span>Homework</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                    <li class=""><a href="https://www.school.infomainia.in/homework"><i class="fa fa-angle-double-right"></i> Add Homework</a></li>
+                                            </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-book ftlayer"></i> <span>Library</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+
+
+                                                            <li class="">
+                                    <a href="https://www.school.infomainia.in/admin/book/getall"><i class="fa fa-angle-double-right"></i>Book List</a></li>
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/member"><i class="fa fa-angle-double-right"></i>Issue Return</a></li>
+                                                                                        <li class=""><a href="https://www.school.infomainia.in/admin/member/student"><i class="fa fa-angle-double-right"></i>Add Student</a></li>
+                                                <li class=""><a href="https://www.school.infomainia.in/admin/member/teacher"><i class="fa fa-angle-double-right"></i>Add Staff Member</a></li>
+        
+
+
+                        </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-object-group ftlayer"></i> <span>Inventory</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/issueitem"><i class="fa fa-angle-double-right"></i>Issue Item</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/itemstock"><i class="fa fa-angle-double-right"></i>Add Item Stock</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/item"><i class="fa fa-angle-double-right"></i>Add Item</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/itemcategory"><i class="fa fa-angle-double-right"></i>Item Category</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/itemstore"><i class="fa fa-angle-double-right"></i>Item Store</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/itemsupplier"><i class="fa fa-angle-double-right"></i>Item Supplier</a></li>
+                                            </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-bus ftlayer"></i> <span>Transport</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/route"><i class="fa fa-angle-double-right"></i> Routes</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/vehicle"><i class="fa fa-angle-double-right"></i> Vehicles</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/vehroute"><i class="fa fa-angle-double-right"></i> Assign Vehicle</a></li>
+            
+
+                        </ul>
+                    </li>
+
+
+                    
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-building-o ftlayer"></i> <span>Hostel</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/hostelroom"><i class="fa fa-angle-double-right"></i> Hostel Rooms</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/roomtype"><i class="fa fa-angle-double-right"></i> Room Type</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/hostel"><i class="fa fa-angle-double-right"></i> Hostel</a></li>
+                                    </ul>
+                    </li>
+
+                    
+
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-newspaper-o ftlayer"></i> <span>Certificate</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/certificate/"><i class="fa fa-angle-double-right"></i>Student Certificate</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/generatecertificate/"><i class="fa fa-angle-double-right"></i>Generate Certificate</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/studentidcard/"><i class="fa fa-angle-double-right"></i>Student ID Card</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/generateidcard/"><i class="fa fa-angle-double-right"></i>Generate ID Card</a></li>
+                                            </ul>
+                    </li>
+                                        <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-empire ftlayer"></i> <span>Front CMS</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/front/events"><i class="fa fa-angle-double-right"></i> Event</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/front/gallery"><i class="fa fa-angle-double-right"></i> Gallery</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/front/notice"><i class="fa fa-angle-double-right"></i> News</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/front/media"><i class="fa fa-angle-double-right"></i> Media Manager</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/front/page"><i class="fa fa-angle-double-right"></i> Pages</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/front/menus"><i class="fa fa-angle-double-right"></i> Menus</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/front/banner"><i class="fa fa-angle-double-right"></i> Banner Images</a></li>
+                                            </ul>
+                    </li>
+                    
+
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-universal-access ftlayer"></i> <span>Alumni</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/alumni/alumnilist"><i class="fa fa-angle-double-right"></i> Manage Alumni</a></li>
+                                                <li class=""><a href="https://www.school.infomainia.in/admin/alumni/events"><i class="fa fa-angle-double-right"></i> Events</a></li>
+                    
+                        </ul>
+                    </li>
+                                                <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-line-chart ftlayer"></i> <span>Reports</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/report/studentinformation"><i class="fa fa-angle-double-right"></i> Student Information</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/report/finance"><i class="fa fa-angle-double-right"></i> Finance</a></li>
+                                
+                                <li class=""><a href="https://www.school.infomainia.in/report/attendance"><i class="fa fa-angle-double-right"></i> Attendance</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/report/examinations"><i class="fa fa-angle-double-right"></i> Examinations</a></li>
+                                                                    <li class=""><a href="https://www.school.infomainia.in/admin/onlineexam/report"><i class="fa fa-angle-double-right"></i> Online Examinations</a></li>
+                                                                        <li class=""><a href="https://www.school.infomainia.in/report/lesson_plan"><i class="fa fa-angle-double-right"></i> Lesson Plan</a></li>
+                                    
+                                    <li class=""><a href="https://www.school.infomainia.in/report/staff_report"><i class="fa fa-angle-double-right"></i> Human Resource</a></li>
+
+                                                                        <li class=""><a href="https://www.school.infomainia.in/report/library"><i class="fa fa-angle-double-right"></i> Library</a></li>
+                                                                        <li class=""><a href="https://www.school.infomainia.in/report/inventory"><i class="fa fa-angle-double-right"></i> Inventory</a></li>
+                                                                        <li class=""><a href="https://www.school.infomainia.in/admin/route/studenttransportdetails"><i class="fa fa-angle-double-right"></i> Transport</a></li>
+                                                                        <li class=""><a href="https://www.school.infomainia.in/admin/hostelroom/studenthosteldetails"><i class="fa fa-angle-double-right"></i> Hostel</a></li>
+                                                                        <li class=""><a href="https://www.school.infomainia.in/report/alumnireport"><i class="fa fa-angle-double-right"></i> Alumni</a></li>
+                                                                    <li class=""><a href="https://www.school.infomainia.in/admin/userlog"><i class="fa fa-angle-double-right"></i> User Log</a></li>
+                                                                        <li class=""><a href="https://www.school.infomainia.in/admin/audit"><i class="fa fa-angle-double-right"></i>
+            Audit Trail Report</a></li>
+            
+
+                        </ul>
+                    </li>
+                    
+                    <li class="treeview ">
+                        <a href="#">
+                            <i class="fa fa-gears ftlayer"></i> <span>System Settings</span> <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                                                            <li class=""><a href="https://www.school.infomainia.in/schsettings"><i class="fa fa-angle-double-right"></i> General Setting</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/sessions"><i class="fa fa-angle-double-right"></i> Session Setting</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/notification/setting"><i class="fa fa-angle-double-right"></i> Notification Setting</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/smsconfig"><i class="fa fa-angle-double-right"></i> SMS Setting</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/emailconfig"><i class="fa fa-angle-double-right"></i> Email Setting</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/paymentsettings"><i class="fa fa-angle-double-right"></i> Payment Methods</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/print_headerfooter"><i class="fa fa-angle-double-right"></i> Print Header Footer</a></li>
+                                                                    <li class=""><a href="https://www.school.infomainia.in/admin/frontcms"><i class="fa fa-angle-double-right"></i> Front CMS Setting</a></li>
+                                                                                                <li class=""><a href="https://www.school.infomainia.in/admin/roles"><i class="fa fa-angle-double-right"></i> Roles Permissions</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/admin/backup"><i class="fa fa-angle-double-right"></i> Backup / Restore</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/language"><i class="fa fa-angle-double-right"></i> Languages</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/users"><i class="fa fa-angle-double-right"></i> Users</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/module"><i class="fa fa-angle-double-right"></i> Modules</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/admin/customfield"><i class="fa fa-angle-double-right"></i> Custom Fields</a></li>
+                                                            <li class=""><a href="https://www.school.infomainia.in/admin/systemfield"><i class="fa fa-angle-double-right"></i> System Fields</a></li>
+                                                                <li class=""><a href="https://www.school.infomainia.in/student/profilesetting"><i class="fa fa-angle-double-right"></i> Student Profile Update</a></li>
+                                                                    <!--<li class=""><a href="https://www.school.infomainia.in/admin/updater"><i class="fa fa-angle-double-right"></i> System Update</a></li>-->
+                         
+
+                        </ul>
+                    </li>
+                </ul>
+    </section>
+</aside>            <script>
+                function defoult(id){
+      var defoult=  $('#languageSwitcher').val();
+   
+
+        $.ajax({
+            type: "POST",
+            url: base_url + "admin/language/default_language/"+id,
+            data: {},
+            //dataType: "json",
+            success: function (data) {
+                successMsg("Status Change Successfully");
+              $('#languageSwitcher').html(data);
+
+            }
+        });
+
+        window.location.reload('true');
+        //alert(id);
+    }
+
+    function set_languages(lang_id){
+       
+        $.ajax({
+            type: "POST",
+            url: base_url + "admin/language/user_language/"+lang_id,
+            data: {},
+            //dataType: "json",
+            success: function (data) { 
+                successMsg("Status Change Successfully");
+                 window.location.reload('true');
+
+            }
+        });
+
+    }
+
+            </script><style type="text/css">
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 22px !important; border-radius: 0 !important; padding-left: 0 !important;}
+    .input-group-addon .glyphicon{font-size: 12px;}    
+
+    .show{
+        display : block;
+        z-index: 100;
+        background-image : url('../../backend/images/timeloader.gif');
+        opacity : 0.6;
+        background-repeat : no-repeat;
+        background-position : center;
+    }
+    /* .tab-pane{min-height: 200px;}*/
+    .commentForm .input-group {position: relative;display: block;border-collapse: separate;}
+    .commentForm .input-group-addon{
+        position: absolute;
+        right: 26px;
+        top: 0px;
+        z-index: 3;
+    }
+    .relative{position: relative;}
+    .commentForm .input-group-addon i,
+    .commentForm .input-group-addon span{padding-left: 13px;}
+    .commentForm .relative label.text-danger{position: absolute; bottom: 5px;}
+    .addbtnright{ position: absolute;right: 0;top: -46px;}
+
+    @media(max-width:767px){
+        .timeresponsive{overflow-x: auto;     overflow-y: hidden;}
+        .timeresponsive .dropdown-menu{z-index: 1060;    bottom: 0 !important; height: 250px; padding: 20px;}
+        .tablewidthRS{width: 690px;}
+    }
+</style>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> -->
+<script src="https://www.school.infomainia.in/backend/custom/jquery.validate.min.js"></script>
+
+<div class="content-wrapper" style="min-height: 946px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-mortar-board"></i> Academics <small></small></h1>
+    </section>
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-search"></i> Select Criteria</h3>
+                        <div class="box-tools pull-right">
+                        </div>
+                    </div>
+                    <form action="https://www.school.infomainia.in/admin/timetable/create" method="post" accept-charset="utf-8">
+                        <div class="box-body">
+
+                            <input type='hidden' name='ci_csrf_token' value=''/>                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Class<small class="req"> *</small></label>
+                                        <select autofocus="" id="class_id" name="class_id" class="form-control" >
+                                            <option value="">Select</option>
+                                                                                            <option value="1" selected=selected>1</option>
+                                                                                                        <option value="2" >2</option>
+                                                                                                        <option value="3" >10</option>
+                                                                                                        <option value="4" >9</option>
+                                                                                                        <option value="5" >6</option>
+                                                                                                        <option value="6" >grade 1</option>
+                                                                                                        <option value="7" >11</option>
+                                                                                                </select>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Section<small class="req"> *</small></label>
+                                        <select  id="section_id" name="section_id" class="form-control" >
+                                            <option value="">Select</option>
+                                        </select>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Subject Group<small class="req"> *</small></label>
+                                        <select  id="subject_group_id" name="subject_group_id" class="form-control" >
+                                            <option value="">Select</option>
+                                        </select>
+                                        <span class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary pull-right btn-sm">Search</button>
+                        </div>
+                    </form>
+
+                                            <div class="box-header ptbnull"></div>
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs" id="myTabs">
+                                                                    <li ><a href="#tab_1" data-c="1" data-days="Monday" data-s="1" data-group="4" data-day="Monday" data-toggle="tab" aria-expanded="true">Monday</a></li>
+
+                                                                        <li ><a href="#tab_2" data-c="1" data-days="Tuesday" data-s="1" data-group="4" data-day="Tuesday" data-toggle="tab" aria-expanded="true">Tuesday</a></li>
+
+                                                                        <li ><a href="#tab_3" data-c="1" data-days="Wednesday" data-s="1" data-group="4" data-day="Wednesday" data-toggle="tab" aria-expanded="true">Wednesday</a></li>
+
+                                                                        <li ><a href="#tab_4" data-c="1" data-days="Thursday" data-s="1" data-group="4" data-day="Thursday" data-toggle="tab" aria-expanded="true">Thursday</a></li>
+
+                                                                        <li ><a href="#tab_5" data-c="1" data-days="Friday" data-s="1" data-group="4" data-day="Friday" data-toggle="tab" aria-expanded="true">Friday</a></li>
+
+                                                                        <li ><a href="#tab_6" data-c="1" data-days="Saturday" data-s="1" data-group="4" data-day="Saturday" data-toggle="tab" aria-expanded="true">Saturday</a></li>
+
+                                                                        <li ><a href="#tab_7" data-c="1" data-days="Sunday" data-s="1" data-group="4" data-day="Sunday" data-toggle="tab" aria-expanded="true">Sunday</a></li>
+
+                                                                </ul>
+                            <div class="tab-content">
+                                                                    <div class='tab-pane' id="tab_1">
+
+
+
+
+                                    </div>
+
+                                                                        <div class='tab-pane' id="tab_2">
+
+
+
+
+                                    </div>
+
+                                                                        <div class='tab-pane' id="tab_3">
+
+
+
+
+                                    </div>
+
+                                                                        <div class='tab-pane' id="tab_4">
+
+
+
+
+                                    </div>
+
+                                                                        <div class='tab-pane' id="tab_5">
+
+
+
+
+                                    </div>
+
+                                                                        <div class='tab-pane' id="tab_6">
+
+
+
+
+                                    </div>
+
+                                                                        <div class='tab-pane' id="tab_7">
+
+
+
+
+                                    </div>
+
+                                    
+                            </div>
+                        </div>
+                    </div>   
+                    
+
+                </section>
+            </div>
+
+
+            <script type="text/javascript">
+                $(document).on('focus', '.time', function () {
+                    var $this = $(this);
+                    $this.datetimepicker({
+                        format: 'LT'
+                    });
+                });
+                var tot_count = 0;
+                var class_id = $('#class_id').val();
+                var section_id = '1';
+                var subject_group_id = '4';
+                $(document).ready(function () {
+
+                    $('#myTabs a:first').tab('show') // Select first tab
+                    getSectionByClass(class_id, section_id);
+                    getGroupByClassandSection(class_id, section_id, subject_group_id);
+
+                    $(document).on('change', '#class_id', function (e) {
+                        $('#section_id').html("");
+                        var class_id = $(this).val();
+                        var base_url = 'https://www.school.infomainia.in/';
+                        var div_data = '<option value="">Select</option>';
+
+                        $.ajax({
+                            type: "GET",
+                            url: base_url + "sections/getByClass",
+                            data: {'class_id': class_id},
+                            dataType: "json",
+                            success: function (data) {
+                                $.each(data, function (i, obj)
+                                {
+                                    div_data += "<option value=" + obj.section_id + ">" + obj.section + "</option>";
+                                });
+
+                                $('#section_id').append(div_data);
+                            }
+                        });
+                    });
+
+                    $(document).on('change', '#section_id', function (e) {
+                        $('#subject_group_id').html("");
+                        var section_id = $(this).val();
+                        var class_id = $('#class_id').val();
+                        var base_url = 'https://www.school.infomainia.in/';
+                        var div_data = '<option value="">Select</option>';
+                        $.ajax({
+                            type: "POST",
+                            url: base_url + "admin/subjectgroup/getGroupByClassandSection",
+                            data: {'class_id': class_id, 'section_id': section_id},
+                            dataType: "json",
+                            success: function (data) {
+                                $.each(data, function (i, obj)
+                                {
+                                    div_data += "<option value=" + obj.subject_group_id + ">" + obj.name + "</option>";
+                                });
+
+                                $('#subject_group_id').append(div_data);
+                            }
+                        });
+                    });
+                });
+
+
+
+                function getSectionByClass(class_id, section_id) {
+                    if (class_id != "" && section_id != "") {
+                        $('#section_id').html("");
+                        var base_url = 'https://www.school.infomainia.in/';
+                        var div_data = '<option value="">Select</option>';
+
+                        $.ajax({
+                            type: "GET",
+                            url: base_url + "sections/getByClass",
+                            data: {'class_id': class_id},
+                            dataType: "json",
+                            success: function (data) {
+                                $.each(data, function (i, obj)
+                                {
+                                    var sel = "";
+                                    if (section_id == obj.section_id) {
+                                        sel = "selected";
+                                    }
+                                    div_data += "<option value=" + obj.section_id + " " + sel + ">" + obj.section + "</option>";
+                                });
+                                $('#section_id').append(div_data);
+                            }
+                        });
+                    }
+                }
+
+
+                function getGroupByClassandSection(class_id, section_id, subject_group_id) {
+                    if (class_id != "" && section_id != "" && subject_group_id != "") {
+                        $('#subject_group_id').html("");
+
+                        var base_url = 'https://www.school.infomainia.in/';
+                        var div_data = '<option value="">Select</option>';
+                        $.ajax({
+                            type: "POST",
+                            url: base_url + "admin/subjectgroup/getGroupByClassandSection",
+                            data: {'class_id': class_id, 'section_id': section_id},
+                            dataType: "json",
+                            success: function (data) {
+                                console.log(subject_group_id);
+                                $.each(data, function (i, obj)
+                                {
+                                    var sel = "";
+                                    if (subject_group_id == obj.subject_group_id) {
+                                        sel = "selected";
+                                    }
+                                    div_data += "<option value=" + obj.subject_group_id + " " + sel + ">" + obj.name + "</option>";
+                                });
+
+                                $('#subject_group_id').append(div_data);
+                            }
+                        });
+
+                    }
+
+                }
+
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
+
+                    var target = $(e.target).attr("href"); // activated tab
+                    var target_id = $(e.target).attr("id"); // activated tab
+                    var ajax_data = $(e.target).data(); // activated tab
+                    $(target).html("");
+                    getGroupdata(target, target_id, ajax_data);
+                })
+
+                function getGroupdata(target, target_id, ajax_data) {
+
+                    $.ajax({
+                        type: 'POST',
+                        url: base_url + "admin/timetable/getBydategroupclasssection",
+                        data: {'day': ajax_data.day, 'class_id': ajax_data.c, 'section_id': ajax_data.s, 'subject_group_id': ajax_data.group},
+                        dataType: 'json',
+                        beforeSend: function () {
+                            $(target).addClass('show');
+                        },
+                        success: function (data) {
+                            $(target).html(data.html);
+
+                            $('.staff', target).select2({
+                                dropdownAutoWidth: true,
+                                width: '100%'
+                            });
+                            $('.subject', target).select2({
+                                dropdownAutoWidth: true,
+                                width: '100%'
+                            });
+                            tot_count = data.total_count + 1;
+                        },
+                        error: function (xhr) { // if error occured
+
+                        },
+                        complete: function () {
+                            $(target).removeClass('show');
+                        }
+                    });
+                }
+
+
+                $(document).ready(function () {
+                    var counter = 0;
+
+                    $(document).on("click", ".addrow", function () {
+
+                        var newRow = $("<tr>");
+                        var cols = "";
+                        cols += '<td class="relative"><input type="hidden" name="total_row[]" value="' + tot_count + '"><input type="hidden" name="prev_id_' + tot_count + '" value="0"><select class="form-control subject" id="subject_id_' + tot_count + '" name="subject_' + tot_count + '">' + $("#subject_dropdown").text() + '</select></td>';
+                        cols += '<td class="relative"><select class="form-control staff" id="staff_id_' + tot_count + '" name="staff_' + tot_count + '">' + $("#staff_dropdown").text() + '</select></td>';
+
+                        cols += '<td><div class="input-group"><input type="text" name="time_from_' + tot_count + '" class="form-control time_from time" id="time_from_' + tot_count + '"  aria-invalid="false"><div class="input-group-addon"><i class="fa fa-clock-o"></i></div></div></td>';
+
+                        cols += '<td><div class="input-group"><input type="text" name="time_to_' + tot_count + '" class="form-control time_to time" id="time_to_' + tot_count + '"  aria-invalid="false"><div class="input-group-addon"><i class="fa fa-clock-o"></i></div></div></td>';
+
+                        cols += '<td><input type="text" class="form-control room_no" name="room_no_' + tot_count + '" id="room_no_' + tot_count + '"/></td>';
+                        cols += '<td class="text-right"><button type="button" class="ibtnDel btn btn-danger btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>';
+                        newRow.append(cols);
+
+                        $("table.order-list").append(newRow);
+
+
+                        $('.staff', newRow).select2({
+                            dropdownAutoWidth: true,
+                            width: '100%'
+                        });
+
+                        $('.subject', newRow).select2({
+                            dropdownAutoWidth: true,
+                            width: '100%'
+                        });
+                        tot_count++;
+                    });
+
+
+
+                    $(document).on("click", ".ibtnDel", function (event) {
+                        $(this).closest("tr").remove();
+                        counter -= 1
+                    });
+
+
+
+                    $(document).on('click', '.submit_subject_group', function () {
+                        var form_id = $(this).closest("form").attr('id');
+                        var target = $('.nav-tabs .active a').attr("href"); // activated tab
+                        var target_id = $('.nav-tabs .active a').attr("id"); // activated tab
+                        var ajax_data = $('.nav-tabs .active a').data(); // activated tab
+
+                    });
+
+                });
+
+
+
+
+            </script>
+
+
+            <script type="text/template" id="staff_dropdown">
+                <option value="">Select</option>
+                                    <option value="2">Shekhar  (001)</option>
+                                        <option value="3">ESWARAN  (007)</option>
+                                        <option value="4">karan  (k001)</option>
+                                        <option value="5">shekhar soni (1234)</option>
+                                        <option value="6">kalai  (564)</option>
+                                </script>
+
+            <script type="text/template" id="subject_dropdown">
+                <option value="">Select</option>
+                                    <option value="5" >English (ENG)</option>
+                                        <option value="6" >Maths (MTH)</option>
+                                        <option value="7" >Science (SCI)</option>
+                                        <option value="8" >PHYSICS (5054)</option>
+                                        <option value="9" >CHEMISTRY (5124)</option>
+                                        <option value="10" >HEALTH EDUCATION (CBC01)</option>
+                                </script><script src="https://www.school.infomainia.in/backend/dist/js/moment.min.js"></script>
+<footer class="main-footer">
+    &copy;  2023 
+    School mian</footer>
+<div class="control-sidebar-bg"></div>
+</div>
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<link href="https://www.school.infomainia.in/backend/toast-alert/toastr.css" rel="stylesheet"/>
+<script src="https://www.school.infomainia.in/backend/toast-alert/toastr.js"></script>
+<script src="https://www.school.infomainia.in/backend/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://www.school.infomainia.in/backend/plugins/select2/select2.min.css">
+<script src="https://www.school.infomainia.in/backend/plugins/select2/select2.full.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="https://www.school.infomainia.in/backend/dist/js/moment.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript">
+    $('body').tooltip({
+        selector: '[data-toggle]',
+        trigger: 'click hover',
+        placement: 'top',
+        delay: {
+            show: 50,
+            hide: 400
+        }
+    })
+    // $(document).ready(function(){ 
+    //   $('[data-toggle="tooltip"]').tooltip({
+    //      trigger : 'hover'
+    //   })
+    // });
+</script>
+<!--language js-->
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/js/bootstrap-select.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.languageselectpicker').selectpicker();
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".studentsidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('.studentsideclose, .overlay').on('click', function () {
+            $('.studentsidebar').removeClass('active');
+            $('.overlay').fadeOut();
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('.studentsidebar').addClass('active');
+            $('.overlay').fadeIn();
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>
+
+
+<script src="https://www.school.infomainia.in/backend/plugins/iCheck/icheck.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="https://www.school.infomainia.in/backend/datepicker/js/bootstrap-datetimepicker.js"></script>
+
+<script src="https://www.school.infomainia.in/backend/plugins/chartjs/Chart.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/plugins/fastclick/fastclick.min.js"></script>
+<!-- <script type="text/javascript" src="backend/dist/js/bootstrap-filestyle.min.js"></script> -->
+<script src="https://www.school.infomainia.in/backend/dist/js/app.min.js"></script>
+
+<!--nprogress-->
+<script src="https://www.school.infomainia.in/backend/dist/js/nprogress.js"></script>
+<!--file dropify-->
+<script src="https://www.school.infomainia.in/backend/dist/js/dropify.min.js"></script>
+<!-- <script src="https://www.school.infomainia.in/backend/dist/datatables/js/moment.min.js"></script> -->
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/jszip.min.js"></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/buttons.colVis.min.js" ></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/dataTables.responsive.min.js" ></script>
+<script type="text/javascript" src="https://www.school.infomainia.in/backend/dist/datatables/js/ss.custom.js" ></script>
+<!-- <script src="https://www.school.infomainia.in/backend/dist/datatables/js/datetime-moment.js"></script>
+-->
+</body>
+</html>
+<!-- jQuery 3 -->
+<!--script src="https://www.school.infomainia.in/backend/dist/js/pages/dashboard2.js"></script-->
+<script src="https://www.school.infomainia.in/backend/fullcalendar/dist/fullcalendar.min.js"></script>
+<script src="https://www.school.infomainia.in/backend/fullcalendar/dist/locale-all.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+    });
+
+
+    function complete_event(id, status) {
+
+        $.ajax({
+            url: "https://www.school.infomainia.in/admin/calendar/markcomplete/" + id,
+            type: "POST",
+            data: {id: id, active: status},
+            dataType: 'json',
+
+            success: function (res)
+            {
+
+                if (res.status == "fail") {
+
+                    var message = "";
+                    $.each(res.error, function (index, value) {
+
+                        message += value;
+                    });
+                    errorMsg(message);
+
+                } else {
+
+                    successMsg(res.message);
+
+                    window.location.reload(true);
+                }
+
+            }
+
+        });
+    }
+
+    function markc(id) {
+
+        $('#newcheck' + id).change(function () {
+
+            if (this.checked) {
+
+                complete_event(id, 'yes');
+            } else {
+
+                complete_event(id, 'no');
+            }
+
+        });
+    }
+
+</script>
+
+
+
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="row">
+    <div class="modal fade" id="sessionModal" tabindex="-1" role="dialog" aria-labelledby="sessionModalLabel">
+        <form action="https://www.school.infomainia.in/admin/admin/activeSession" id="form_modal_session" class="">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="sessionModalLabel">Session</h4>
+                    </div>
+                    <div class="modal-body sessionmodal_body pb0">
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-md-12"> 
+                            <button type="button" class="btn btn-primary submit_session" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Please wait..">Save</button>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="activelicmodal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Register your purchase code</h4>
+            </div>
+            <form action="https://www.school.infomainia.in/admin/admin/updatePurchaseCode" method="POST" id="purchase_code">
+                <div class="modal-body lic_modal-body">
+                    <div class="error_message">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="ainline"><span>Envato Market Purchase Code for Smart School ( <a target="_blank" href="https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-"> How to find it?</a> )</span></label>
+                        <input type="text" class="form-control" id="input-envato_market_purchase_code" name="envato_market_purchase_code">
+                        <div id="error" class="text text-danger"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Your Email registered with Envato</label>
+                        <input type="text" class="form-control" id="input-email" name="email">
+                        <div id="error" class="text text-danger"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">                   
+                    <button type="submit" class="btn btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Saving...">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function savedata(eventData) {
+        var base_url = 'https://www.school.infomainia.in/';
+        $.ajax({
+            url: base_url + 'admin/calendar/saveevent',
+            type: 'POST',
+            data: eventData,
+            dataType: "json",
+            success: function (msg) {
+                alert(msg);
+
+            }
+        });
+    }
+
+    $calendar = $('#calendar');
+    var base_url = 'https://www.school.infomainia.in/';
+    today = new Date();
+    y = today.getFullYear();
+    m = today.getMonth();
+    d = today.getDate();
+    var viewtitle = 'month';
+    var pagetitle = "Exam Schedule";
+
+    if (pagetitle == "Dashboard") {
+
+        viewtitle = 'agendaWeek';
+    }
+
+    $calendar.fullCalendar({
+        viewRender: function (view, element) {
+            // We make sure that we activate the perfect scrollbar when the view isn't on Month
+            //if (view.name != 'month'){
+            //  $(element).find('.fc-scroller').perfectScrollbar();
+            //}
+        },
+
+        header: {
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay',
+            left: 'prev,next,today'
+        },
+        defaultDate: today,
+        defaultView: viewtitle,
+        selectable: true,
+        selectHelper: true,
+        views: {
+            month: {// name of view
+                titleFormat: 'MMMM YYYY'
+                        // other view-specific options here
+            },
+            week: {
+                titleFormat: " MMMM D YYYY"
+            },
+            day: {
+                titleFormat: 'D MMM, YYYY'
+            }
+        },
+        timezone: "Asia/Kolkata",
+        draggable: false,
+        lang: 'en',
+        editable: false,
+        eventLimit: false, // allow "more" link when too many events
+
+
+        // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
+        events: {
+            url: base_url + 'admin/calendar/getevents'
+
+        },
+
+        eventRender: function (event, element) {
+            element.attr('title', event.title);
+            element.attr('onclick', event.onclick);
+            element.attr('data-toggle', 'tooltip');
+            if ((!event.url) && (event.event_type != 'task')) {
+                element.attr('title', event.title + '-' + event.description);
+                element.click(function () {
+                    view_event(event.id);
+                });
+            }
+        },
+        dayClick: function (date, jsEvent, view) {
+            console.log(calendar_date_time_format);
+            var d = date.format();
+            if (!$.fullCalendar.moment(d).hasTime()) {
+                d += ' 05:30';
+            }
+            //var vformat = (app_time_format == 24 ? app_date_format + ' H:i' : app_date_format + ' g:i A');
+
+
+                $("#input-field").val('');
+                $("#desc-field").text('');
+                $("#date-field").daterangepicker({
+                    separator: " TOOOO ",
+                    startDate: date,
+                    endDate: date,
+                    timePicker: true, timePickerIncrement: 5, locale: {
+                        format: calendar_date_time_format + ' hh:mm a'
+                    }
+                });
+                $('#newEventModal').modal('show');
+
+            return false;
+        }
+
+    });
+
+
+
+    function datepic() {
+        $("#date-field").daterangepicker();
+    }
+
+    function view_event(id) {
+
+        $('.selectevent').find('.cpicker-big').removeClass('cpicker-big').addClass('cpicker-small');
+        var base_url = 'https://www.school.infomainia.in/';
+        if (typeof (id) == 'undefined') {
+            return;
+        }
+        $.ajax({
+            url: base_url + 'admin/calendar/view_event/' + id,
+            type: 'POST',
+            //data: '',
+            dataType: "json",
+            success: function (msg) {
+
+
+                $("#event_title").val(msg.event_title);
+                $("#event_desc").text(msg.event_description);
+
+                $('#eventid').val(id);
+                if (msg.event_type == 'public') {
+
+                    $('input:radio[name=eventtype]')[0].checked = true;
+
+                } else if (msg.event_type == 'private') {
+                    $('input:radio[name=eventtype]')[1].checked = true;
+
+                } else if (msg.event_type == 'sameforall') {
+                    $('input:radio[name=eventtype]')[2].checked = true;
+
+                } else if (msg.event_type == 'protected') {
+                    $('input:radio[name=eventtype]')[3].checked = true;
+
+                }
+                //===========
+
+
+                $('#eventdates').daterangepicker({
+                    timePicker: true,
+                    startDate: new Date(msg.start_date),
+                    endDate: new Date(msg.end_date),
+                    locale: {
+                        format: calendar_date_time_format + ' hh:mm a'
+                    }
+                });
+                //============
+
+                $("#event_color").val(msg.event_color);
+                $("#delete_event").attr("onclick", "deleteevent(" + id + ",'Event')")
+
+                // $("#28B8DA").removeClass('cpicker-big').addClass('cpicker-small');
+                $("#" + msg.colorid).removeClass('cpicker-small').addClass('cpicker-big');
+                $('#viewEventModal').modal('show');
+            }
+        });
+
+
+    }
+
+    $(document).ready(function (e) {
+        $("#addevent_form").on('submit', (function (e) {
+
+            e.preventDefault();
+            $.ajax({
+                url: "https://www.school.infomainia.in/admin/calendar/saveevent",
+                type: "POST",
+                data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (res)
+                {
+
+                    if (res.status == "fail") {
+
+                        var message = "";
+                        $.each(res.error, function (index, value) {
+
+                            message += value;
+                        });
+                        errorMsg(message);
+
+                    } else {
+
+                        successMsg(res.message);
+
+                        window.location.reload(true);
+                    }
+                }
+            });
+        }));
+
+
+    });
+
+
+    $(document).ready(function (e) {
+        $("#updateevent_form").on('submit', (function (e) {
+
+            e.preventDefault();
+            $.ajax({
+                url: "https://www.school.infomainia.in/admin/calendar/updateevent",
+                type: "POST",
+                data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (res)
+                {
+
+                    if (res.status == "fail") {
+
+                        var message = "";
+                        $.each(res.error, function (index, value) {
+
+                            message += value;
+                        });
+                        errorMsg(message);
+
+                    } else {
+
+                        successMsg(res.message);
+
+                        window.location.reload(true);
+                    }
+                }
+            });
+        }));
+
+
+    });
+
+    function deleteevent(id, msg) {
+        if (typeof (id) == 'undefined') {
+            return;
+        }
+        if (confirm("Are you sure to delete this " + msg + " !")) {
+            $.ajax({
+                url: base_url + 'admin/calendar/delete_event/' + id,
+                type: 'POST',
+                //data: '',
+                dataType: "json",
+                success: function (res) {
+                    if (res.status == "fail") {
+
+
+
+                        errorMsg(res.message);
+
+                    } else {
+
+                        successMsg(msg + " Deleted Succssfully.");
+
+                        window.location.reload(true);
+                    }
+                }
+
+            })
+        }
+
+    }
+
+
+    $("body").on('click', '.cpicker', function () {
+        var color = $(this).data('color');
+        // Clicked on the same selected color
+        if ($(this).hasClass('cpicker-big')) {
+            return false;
+        }
+
+        $(this).parents('.cpicker-wrapper').find('.cpicker-big').removeClass('cpicker-big').addClass('cpicker-small');
+        $(this).removeClass('cpicker-small', 'fast').addClass('cpicker-big', 'fast');
+        if ($(this).hasClass('kanban-cpicker')) {
+            $(this).parents('.panel-heading-bg').css('background', color);
+            $(this).parents('.panel-heading-bg').css('border', '1px solid ' + color);
+        } else if ($(this).hasClass('calendar-cpicker')) {
+            $("body").find('input[name="eventcolor"]').val(color);
+        }
+    });
+
+
+    var calendar_date_time_format = 'MM/DD/YYYY';
+    $(document).ready(function () {
+
+        $("body").delegate(".date", "focusin", function () {
+            var date_format = 'mm/dd/yyyy';
+
+            $(this).datepicker({
+                todayHighlight: false,
+                format: date_format,
+                autoclose: true,
+                language: 'en'
+            });
+        });
+
+        var datetime_format = 'MM/DD/YYYY';
+        $("body").delegate(".datetime", "focusin", function () {
+            $(this).datetimepicker({
+                format: datetime_format,
+                locale:
+                        'en',
+
+            });
+        });
+        // loadDate();
+    });
+
+    function loadDate() {
+
+        var date_format = 'mm/dd/yyyy';
+
+        $('.date').datetimepicker({
+            format: datetime_format,
+            locale:
+                    'en',
+
+        });
+    }
+
+    showdate('this_year');
+
+    function showdate(type) {
+
+            var date_from = '06/05/2023';
+            var date_to = '06/05/2023';
+    
+        if (type == 'period') {
+
+            $.ajax({
+                url: base_url + 'Report/get_betweendate/' + type,
+                type: 'POST',
+                data: {date_from: date_from, date_to: date_to},
+                success: function (res) {
+
+                    $('#date_result').html(res);
+
+                    loadDate();
+                }
+
+
+            });
+
+        } else {
+            $('#date_result').html('');
+        }
+
+
+    }
+</script>

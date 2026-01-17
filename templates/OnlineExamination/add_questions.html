@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Question Paper</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .question-form, .option-field {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <br>
+        <center>
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Add Question Paper</h4>
+            </div>
+        </div>
+        </center>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;">
+                    <!-- Question Paper Details -->
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h5>Question Paper Details</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ paper_form.question_paper_name.id_for_label }}">Question Paper Name</label>
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            {{ paper_form.question_paper_name }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ paper_form.total_mark.id_for_label }}">Total Mark</label>
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            {{ paper_form.total_mark }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ paper_form.pass_mark.id_for_label }}">Pass Mark</label>
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            {{ paper_form.pass_mark }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="{{ paper_form.duration.id_for_label }}">Duration</label>
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            {{ paper_form.duration }}
+                        </div>
+                    </div>
+
+                    <!-- Parts and Questions -->
+                    <div class="container-fluid">
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <h5>Parts and Questions</h5>
+                            </div>
+                        </div>
+                        <hr>
+                        <div id="parts-container">
+                            <!-- Parts and Questions will be dynamically added here -->
+                        </div>
+                    </div>
+
+                    <!-- Add Part Button -->
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button type="button" onclick="addPart()" class="btn btn-primary">Add Part</button>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <div class="row mt-3">
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let partCount = 0;
+
+        function addPart() {
+            const partsContainer = document.getElementById('parts-container');
+            partCount++;
+            const partDiv = document.createElement('div');
+            partDiv.classList.add('part-form');
+            partDiv.innerHTML = `
+                <div class="card mb-3" style="padding: 10px;">
+                    <h4>Part ${partCount}</h4>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label>Part Name:</label>
+                            <input type="text" name="part-${partCount}-name" class="form-control" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label>Marks Per Question:</label>
+                            <input type="number" name="part-${partCount}-marks-per-question" class="form-control" value="1" oninput="updateMarksForPart(${partCount})" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label>Total Marks:</label>
+                            <input type="number" name="part-${partCount}-marks-total" class="form-control" readonly>
+                            <input type="hidden" name="total_part" value="${partCount}" class="form-control" >
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label>Total Question:</label>
+                            <input type="number" name="part-${partCount}-total-questions" class="form-control" readonly>
+                            <input type="hidden" name="total_questions" value="${partCount}" class="form-control" >
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <button type="button" onclick="deletePart(this)" class="btn btn-danger">Delete Part</button>
+                        </div>
+                    </div>
+                    <div id="questions-container-${partCount}">
+                        <!-- Questions for this part will be added here -->
+                    </div>
+                    <button type="button" onclick="addQuestion(${partCount})" class="btn btn-secondary">Add Question to Part ${partCount}</button>
+                </div>
+            `;
+            partsContainer.appendChild(partDiv);
+        }
+       
+
+        function addQuestion(partIndex) {
+            const questionsContainer = document.getElementById(`questions-container-${partIndex}`);
+            const formCount = questionsContainer.querySelectorAll('.question-form').length;
+            const newForm = document.createElement('div');
+            newForm.classList.add('question-form');
+            newForm.dataset.index = formCount;
+            newForm.innerHTML = `
+                <h5>Question ${formCount + 1}</h5>
+                <label>Question Text:</label>
+                <input type="text" name="part-${partIndex}-form-${formCount}-text" class='form-control' required>
+                <br>
+                <label>Question Type:</label>
+                <select name="part-${partIndex}-form-${formCount}-question_type" class='form-control' onchange="toggleFields('part-${partIndex}-choice-fields-${formCount}', 'part-${partIndex}-paragraph-fields-${formCount}', this.value)" required>
+                    <option value="">Select</option>
+                    <option value="choice">Choice</option>
+                    <option value="paragraph">Paragraph</option>
+                </select>
+                <br>
+                <label>Marks:</label>
+                <input type="number" name="part-${partIndex}-form-${formCount}-marks" class='form-control' readonly>
+                <br>
+                <div id="part-${partIndex}-choice-fields-${formCount}" class="choice-fields" style="display:none;">
+                    <div id="options-container-${partIndex}-${formCount}">
+                        <!-- Options for this question will be added here -->
+                    </div>
+                    <button type="button" onclick="addOption(${partIndex}, ${formCount})" class="btn btn-secondary">+ Add Option</button>
+                </div>
+                <div id="part-${partIndex}-paragraph-fields-${formCount}" class="paragraph-fields" style="display:none;">
+                    <!-- Paragraph field can be added here if needed -->
+                </div>
+                <br>
+                <button type="button" onclick="deleteQuestion(this)" class="btn btn-danger">Delete Question</button>
+            `;
+            questionsContainer.appendChild(newForm);
+            updateMarksForPart(partIndex);
+            toggleFieldsForExisting();
+        }
+
+        function addOption(partIndex, questionIndex) {
+            const optionsContainer = document.getElementById(`options-container-${partIndex}-${questionIndex}`);
+            const optionCount = optionsContainer.querySelectorAll('.option-field').length + 1;
+            const newOption = document.createElement('div');
+            newOption.classList.add('option-field');
+            newOption.innerHTML = `
+                <label>Option ${optionCount}:</label>
+                <input type="text" name="part-${partIndex}-form-${questionIndex}-option" class='form-control' required>
+                <label>
+                    <input type="radio" name="part-${partIndex}-form-${questionIndex}-correct_option" value="${optionCount}">
+                    Correct Answer
+                </label>
+                <br>
+            `;
+            optionsContainer.appendChild(newOption);
+        }
+
+        function deletePart(button) {
+            const partForm = button.closest('.part-form');
+            partForm.remove();
+        }
+
+        function deleteQuestion(button) {
+            const questionForm = button.closest('.question-form');
+            questionForm.remove();
+            // Recalculate total marks for remaining questions
+            const partIndex = button.closest('.part-form').querySelector('input[name^="part-"]').name.split('-')[1];
+            updateMarksForPart(partIndex);
+        }
+
+        function updateMarksForPart(partIndex) {
+            const partDiv = document.querySelector(`.part-form:nth-of-type(${partIndex})`);
+            const marksPerQuestion = parseFloat(partDiv.querySelector(`input[name="part-${partIndex}-marks-per-question"]`).value) || 0;
+            const questionForms = partDiv.querySelectorAll('.question-form');
+            const totalMarksForPart = marksPerQuestion * questionForms.length;
+
+            questionForms.forEach((form) => {
+                const marksInput = form.querySelector(`input[name^="part-${partIndex}-form-"][name$="-marks"]`);
+                marksInput.value = marksPerQuestion;
+            });
+
+            // Update total marks for the part
+            partDiv.querySelector(`input[name="part-${partIndex}-marks-total"]`).value = totalMarksForPart;
+            partDiv.querySelector(`input[name="part-${partCount}-total-questions"]`).value = questionForms.length;
+        }
+
+        function toggleFields(choiceId, paragraphId, questionType) {
+            document.getElementById(choiceId).style.display = questionType === 'choice' ? 'block' : 'none';
+            document.getElementById(paragraphId).style.display = questionType === 'paragraph' ? 'block' : 'none';
+
+            const choiceFields = document.getElementById(choiceId).querySelectorAll('input, select');
+            choiceFields.forEach(field => {
+                field.required = questionType === 'choice';
+            });
+        }
+
+        function toggleFieldsForExisting() {
+            const forms = document.querySelectorAll('.question-form');
+            forms.forEach((form) => {
+                const questionType = form.querySelector('[name$=question_type]').value;
+                const choiceFields = form.querySelector('.choice-fields');
+                const paragraphFields = form.querySelector('.paragraph-fields');
+                toggleFields(choiceFields.id, paragraphFields.id, questionType);
+            });
+        }
+
+        window.onload = function() {
+            toggleFieldsForExisting();
+        }
+
+        window.onload = function() {
+            toggleFieldsForExisting();
+            addPart(); // Automatically add the first part when the page loads
+        };
+    </script>
+{% endblock %}

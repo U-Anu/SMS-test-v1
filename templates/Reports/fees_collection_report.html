@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="main-header">
+      <div class="col-md-4">
+        <h4>Finance</h4>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="col-md-12">
+
+
+
+    <div class="col-md-12">
+      <div class="card" style="padding: 10px;">
+        <div class="container-fluid" style="padding: 10px;">
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'Finances_report' %}">Fees statement</a>
+          </div>
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'balances_fees_report' %}" >Balances Fees Report</a>
+          </div>
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'fees_collection_report' %}" class="text-primary">Fees collection Report</a>
+          </div>
+          <div class="col-md-4  mb-3">
+              <a href=""> Online Fees Collection Report</a>
+            </div>           
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'income_report' %}">Income Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'expense_report' %}"> Expense Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'Report_payroll_report' %}">Payroll Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'income_group_report' %}"> Income Group Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'expense_group_report' %}"> Expense Group Report</a>
+            </div>    
+
+
+        </div>
+        <hr>
+        <div class="container-fluid">
+          <div class="row">
+            <form method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-3 mb-3">
+                  <label for="enquiry">From Date</label>
+                  <input type="date" class="form-control" name="from_date">
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="enquiry">To Date</label>
+                  <input type="date" class="form-control" name="to_date">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="class">Collect By </label>
+                    <select class="form-control" name="role">
+                        <option value="">---Select---</option>
+                        {% for data in roles_rcords %}
+                        <option value="{{data.user.id}}">{{data.first_name}}({{data.staff_id}})</option>
+                        {% endfor %}
+
+
+                    </select>
+                </div>
+
+                <div class="col-md-12 mb-3"><br>
+                  <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+                </div>
+              </div>
+
+            </form>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if records %}
+
+    <div class="col-md-12">
+      <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+          <table id="tableID" class="display">
+            <thead>
+              <tr>
+                <th>Payment Id</th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Fees Type</th>
+                <th>Collect By</th>
+                <th>Mode</th>
+                <th>Amount</th>
+                <th>Discount</th>
+                <th>Fine</th>
+                <th>Total</th>
+
+              </tr>
+            </thead>
+
+      									
+            <tbody>
+              {% for data in records %}
+
+              <tr>
+                <td>{{data.fess.id}}</td>
+                <td>{{data.created_at}}</td>
+                <td>{{data.student.Frist_name}}</td>
+                <td>{{data.student.Class}}</td>
+                <td>{{data.fess.fees.fees_type.name}}</td>
+                <td>{{data.created_by.first_name}}</td>
+                <td>{{data.payment_mode_fee}}</td>
+                <td>{{data.paid_amount}}</td>
+                <td>{{data.amount_discount}}</td>
+                <td>{{data.amount_fine}}</td>
+                <td>{{data.paid_amount}}</td>
+              </tr>          
+              {% endfor %}
+              <tr>
+                <th colspan="6"></th>
+                <th>Grand Total</th>         
+                <th>{{ total_amount|floatformat:"2" }} </th>
+                <th>{{ total_dicount|floatformat:"2" }} </th>
+                <th>{{ total_fine|floatformat:"2" }} </th>
+                <th>{{ total_amount|floatformat:"2" }} </th>
+
+            </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <center> <h5>No Records Found </h5></center>
+    {% endif %}
+
+  </div>
+  <!-- modal Start -->
+
+  
+
+  <!-- modal End -->
+
+  {% endblock %}
+  {% block script_block %}
+ 
+  <script>
+    $(document).ready(function () {
+      $(document).on('change', '#id_class', function () {
+        var class_id = $('#id_class').val();
+        var url = "{% url 'section_js' %}";
+
+        $.ajax({
+          url: url,
+          data: {
+            'class_id': class_id
+          },
+          success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+              html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+          },
+          error: function (data) {
+            console.log(data);
+          }
+        });
+      });
+
+    });
+
+    $(document).ready(function () {
+      $(document).on('change', '#id_section', function () {
+        var section_id = $('#id_section').val();
+        var class_id = $('#id_class').val();
+        var url = "{% url 'student_report_finances_js' %}";
+        $.ajax({
+          url: url,
+          data: {
+            'class_id': class_id,
+            'section_id': section_id,
+          },
+          success: function (data) {
+            $("#id_category").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subject) {
+              html_data += `<option value="${subject.id}">${subject.first_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_category").html(html_data);
+          },
+          error: function (data) {
+            console.log(data);
+          }
+        });
+      });
+
+    });
+  </script>
+  {% endblock %}

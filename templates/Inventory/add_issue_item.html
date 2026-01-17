@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Issue Item</h4>
+        </div>
+    </div>
+   
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        {{form.user_type.label_tag}}*
+                        {{ form.user_type }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.issued_to.label_tag}}*
+                        {{ form.issued_to }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.issued_by.label_tag}}*
+                        {{ form.issued_by }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.issue_date.label_tag}}*
+                        <input type="date" name="issue_date" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.return_date.label_tag}}
+                        <input type="date" name="return_date" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.note.label_tag}}
+                        {{ form.note }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.item_category.label_tag}}*
+                        {{ form.item_category }}
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.item.label_tag}}*
+                        <select name="item" id="id_item" class="form-control">
+                            <option value="">select...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        {{form.quantity.label_tag}}*
+                        {{ form.quantity }}
+                        <small id="emailHelp" class="form-text text-muted"></small>
+                    </div>
+
+                </div>
+                <br>
+                <center>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </center>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+    $("#id_item_category").change(function () {
+        const url ='{% url "item_js" %}';
+        const cat_id = $(this).val();
+
+        $.ajax({
+            url: url,
+            data: {
+                'cat_id': cat_id
+            },
+            success: function (data) {
+                $("#id_item").html(data);
+                let html_data = '<option value="">select...</option>';
+                data.forEach(function (item_records) {
+                console.log(item_records)
+                    html_data += `<option value="${item_records.id}">${item_records.item}</option>`
+                });
+                console.log(html_data);
+                $("#id_item").html(html_data);
+
+
+            }
+        });
+
+    });
+    </script>
+    <script>
+        $("#id_item").change(function () {
+            const url ='{% url "item_available_js" %}';
+            const item_id = $(this).val();
+    
+            $.ajax({
+                url: url,
+                data: {
+                    'item_id': item_id
+                },
+                success: function (data) {
+                    $( "#emailHelp" ).append( "Available Quantity : " + data );
+    
+    
+                }
+            });
+    
+        });
+        </script>
+
+        <script>
+            $("#id_user_type").change(function () {
+                const url ='{% url "demo_js" %}';
+                const role_id = $(this).val();
+        
+                $.ajax({
+                    url: url,
+                    data: {
+                        'role_id': role_id
+                    },
+                    success: function (data) {
+                        $("#id_issued_to").html(data);
+                        let html_data = '<option value="">select...</option>';
+                        data.forEach(function (roles) {
+                        console.log(roles)
+                            html_data += `<option value="${roles.id}">${roles.first_name} (${roles.staff_id})-(${roles.department__name}) </option>`
+                        });
+                        console.log(html_data);
+                        $("#id_issued_to").html(html_data);
+        
+        
+                    }
+                });
+        
+            });
+            </script>
+{% endblock %}

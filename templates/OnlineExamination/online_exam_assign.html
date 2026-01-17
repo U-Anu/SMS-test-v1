@@ -1,0 +1,376 @@
+
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    @media only screen and (max-width: 750px) {
+        #title {
+          font-size: 24px!important;
+          margin-bottom: 0px!important;
+        }
+        #description {
+          font-size: 15px!important;
+          margin-bottom: 15px!important;
+        }
+        form {
+          width: 550px!important;
+        }
+        .width {
+          width: 500px!important;
+        }
+        input[type="checkbox"], input[type="radio"]
+        {
+          width: 12px!important;
+          margin-right: 6px!important;
+        } 
+      }
+      @media only screen and (max-width: 570px) {
+        #title {
+          font-size: 19px!important;
+          margin-bottom: 0px!important;
+        }
+        #description {
+          font-size: 12px!important;
+          margin-bottom: 15px!important;
+        }
+        form {
+          width: 430px!important;
+          padding-top: 10px!important;
+          padding-bottom: -5px!important;
+        }
+        .width {
+          width: 390px!important;
+        }
+        input[type="checkbox"], input[type="radio"]
+        {
+          width: 11px!important;
+          margin-right: 2px!important;
+          margin-left: 3px!important;
+        }
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(249, 249, 249, 0.8);
+        color: #f3f2f2;
+        font-family: Tahoma;
+      }
+      h1, p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      p {
+        margin-bottom: 10px;
+      }
+      .p_style{
+        flex-direction: initial;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        width: 700px;
+        background-color: rgba(43, 61, 81, 0.7);
+        align-items: left;
+        padding-top: 25px;
+        border-radius: 10px;
+        padding-left: 20px;
+        padding-right: 10px;
+      }
+      .width {
+        width: 650px;
+      }
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        border: none;
+      }
+      legend {
+        font-size: 18px;
+        padding-top: 10px;
+      }
+      input, select, textarea {
+        display: block;
+        margin: 5px 0 20px 0;
+        min-height: 2em;
+        background-color: #0a0a23;
+        border: 1px solid #0a0a23;
+        color: #ffffff;
+      }
+      input, select {
+         height: 2.5em;
+      }
+      label {
+        display: block;
+      }
+      .inline {
+        display: inline;
+      }
+      input[type="radio"] {
+        width: 1em;
+        min-height: auto;
+        height: 1em;
+        transform: scale(1.25);
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 5px;
+      }
+      input[type="checkbox"] {
+        width: 1em;
+        min-height: auto;
+        height: 1em;
+        transform: scale(1.50);
+        margin-bottom: 15px;
+        margin-top: 15px;
+        margin-left: 10px;
+      }
+      #name-label, #email-label, #number-label {
+        font-size: 18px;
+        font-family: sans-serif;
+      }
+      textarea {
+        padding-bottom: 2em;
+        height: 7em;
+        font-size: 16px;
+      }
+      button {
+        display: block;
+        margin-bottom: 30px;
+        height: 2em;
+        font-size: 1.1rem;
+        background-color: white;
+        border-color: white;
+        min-width: 300px;
+      }
+      hr {
+       border-color: white;
+      }
+</style>
+<style>
+  .correct-option {
+    accent-color: green;
+}
+
+.incorrect-option {
+    accent-color: red;
+}
+</style>
+
+<style>
+  .container {
+      display: flex; /* Align items in a row */
+      align-items: center; /* Center items vertically */
+      justify-content: flex-end; /* Align items to the right */
+      margin-bottom: 10px; /* Space between containers */
+  }
+  .dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px; /* Space between dot and text */
+  }
+  .red-dot {
+      background-color: red;
+  }
+  .green-dot {
+      background-color: green;
+  }
+  .label {
+      font-size: 14px; /* Ensure text size is consistent */
+      color: black; /* Set text color to black */
+  }
+</style>
+<style>
+  .small-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    width: 300px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    font-size: 100px;
+    right: 20px;
+    top: 20px;
+    background-color: #fff;
+}
+
+.card-body {
+    text-align: center;
+}
+
+#correct-count {
+    color: green;
+}
+
+#incorrect-count {
+    color: red;
+}
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Mental Health Survey Form</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>       
+        <br>
+     
+        <br>
+        <h1 style="color: black;">Madel Qestion Paper</h1>  
+        <div class="container">
+          <div class="dot red-dot"></div>
+          <span class="label">Wrong Answer</span>
+      </div>
+      <div class="container">
+          <div class="dot green-dot"></div>
+          <span class="label">Current Answer</span>
+      </div>
+        <p id="description"><em>
+        Please take your time to read and answer the following questions </em></p>
+       
+        <form method="post">
+          {% csrf_token %} 
+        
+
+     
+            <hr class="width">
+            <!--radio question-->
+            <!-- <div class="card right-card">
+              <div class="card-body">
+                 <p>Total Mark <span >{{single_value.total_mark}}</span></p>
+                 <p>Pass Mark <span >{{single_value.pass_mark}}</span></p>
+                 <input type="hidden" name="pass_mark" value="{{single_value.pass_mark}}">
+                 <p>Correct answers selected: <span id="correct-count">0</span></p>
+                 <p>Incorrect answers selected: <span id="incorrect-count">0</span></p>
+                 <p>Final Mark: <span id="final-mark">0</span></p>
+                 <input type="hidden" id="final-mark-hidden" name="final_mark" value="0">
+              </div>
+          </div> -->
+
+          <div class="card right-card" style=" padding: 10px;">
+            <div class="card-body" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <!-- Left side: Answers -->
+                <div class="left-content" style="flex: 1; padding-right: 10px;">
+                    <p class="p_style">Correct answers selected: <span id="correct-count">0</span></p>
+                    <p class="p_style">Incorrect answers selected: <span id="incorrect-count">0</span></p>
+                </div>
+                <!-- Right side: Marks -->
+                <div class="right-content" style="text-align: right; flex-shrink: 0;">
+                    <p>Total Mark: {{single_value.total_mark}}</p>
+                    <p>Pass Mark: {{single_value.pass_mark}}</p>
+                    <input type="hidden" name="pass_mark" value="{{single_value.pass_mark}}">
+                  
+                    <p style="display: inline;">Final Mark: <span id="final-mark">0</span></p>
+                  
+                    <input type="hidden" id="final-mark-hidden" name="final_mark" value="0">
+                </div>
+            </div>
+        </div>
+        
+            {% for data in questions %}
+            <div style="margin-bottom: 20px;">
+               <center> <h5 style="text-transform:capitalize;"> {{ data.part.part_name }}</h5></center>
+                <h5 style="text-align: left;">{{ forloop.counter }}. {{ data.questiones.text }}  {{ data.questiones.mark }} </h5>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <ol type="A">
+                    {% for option in data.questiones.options %}
+                    
+                      <li>                      
+                        <div class="d-flex">
+                          <input type="radio" 
+                          name="option_{{ data.questiones.id }}" 
+                          value="{{ data.options }}" 
+                          {% if data.options == option.option %} checked {% endif %}
+                          class="{% if option.is_correct %} correct-option {% else %} incorrect-option {% endif %}"
+                          data-is-correct="{{ option.is_correct }}"
+                          data-mark="{{ data.questiones.mark }}" >
+                          <label for="option_{{ option.id }}" style="color: white;margin-top: 8px;">&nbsp;&nbsp;  {{ option.text }}</label>
+                      </div>                     
+                      </li>
+                     
+                    {% endfor %}
+                  </ol>
+              </div>
+            </div>
+            {%  if data.questiones.question_type == "paragraph"  %}
+            <fieldset class="width">
+              <legend>{{ data.text }}</legend>
+              <input 
+              type="number" 
+              id="mark_input" 
+              name="paragraph_value" 
+              min="0" 
+              max="{{ data.questiones.mark }}" 
+              placeholder="Max {{ data.questiones.mark }}"
+              style="width: 80px;"  
+              required >
+              <label>
+                  <textarea class="width" id="area" placeholder="Fill the answer..." rows="3" cols="30" name="option_{{ data.questiones.id }}">{{ data.options }}</textarea>
+              </label>
+              
+            
+          </fieldset>
+          {% endif %}
+          
+            {% endfor %}      
+        
+            <button id="submit" type="submit" class="width" >Submit</button>
+            <hr class="width">
+            <!--textarea question-->
+            
+        </form>
+    </body>
+</html>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Function to update the count and final mark
+    function updateCounts() {
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let totalMark = 0;
+
+        // Get all the radio buttons
+        const radios = document.querySelectorAll('input[type="radio"]');
+
+        radios.forEach(radio => {
+            if (radio.checked) {
+                // Check if the option is correct
+                if (radio.dataset.isCorrect === "True") {
+                    correctCount++;
+                    totalMark += parseFloat(radio.dataset.mark); // Add mark for correct answers
+                } else {
+                    incorrectCount++;
+                }
+            }
+        });
+
+        // Display the counts
+        document.getElementById('correct-count').textContent = correctCount;
+        document.getElementById('incorrect-count').textContent = incorrectCount;
+        document.getElementById('final-mark').textContent = totalMark;
+
+        // Update the hidden field with the total mark value
+        document.getElementById('final-mark-hidden').value = totalMark;
+    }
+
+    // Add event listeners to all radio buttons
+    const radioButtons = document.querySelectorAll('input[type="radio"]');
+    radioButtons.forEach(radio => {
+        radio.addEventListener('change', updateCounts);
+    });
+
+    // Initial count update on page load
+    updateCounts();
+});
+</script>
+{% endblock %}
+{% block script_block %}
+
+{% endblock  %}

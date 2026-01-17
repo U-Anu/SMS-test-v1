@@ -1,0 +1,202 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+    <div class="row">
+        <div class="main-header">
+           <h4>Online Classes</h4>
+        </div>
+     </div>
+     <!-- modal Start -->
+     <div class="col" style="padding: 30px;">
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Online Classes</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+         
+          <button type="submit" class="btn btn-primary">Submit</button>
+          
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+
+
+   
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Date Time</th>
+                        <th>Start Time </th>
+                        <th>End Time </th>
+                        <th>Created By</th>
+                        <th>Created For</th>
+                        <th>Class</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                      <tr>
+                          <td>{{data.class_title}}</td>
+                          <td>{{data.description}}</td>
+                          <td>{{data.class_date_time}}</td>
+                          <td>{{data.start_time}}</td>
+                          <td>{{data.end_time}}</td>
+                          <td>{{data.created_by}}</td>
+                          <td>{{data.staff}}</td>
+                          
+                            <td>Class {{ data.Class }}
+                                ( {% for rec in data.section.all %}
+                                    {{ rec.section_name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %})
+                            </td>
+                        
+                            <td>
+                              <span class="label label-{% if data.status == 'Finished' %}success{% elif data.status == 'Awaited' %}warning{% elif data.status == 'Cancelled!' %}danger{% endif %}">{{ data.status }}</span>
+                            </td> 
+                            <td>
+                              
+                              <a href="{% url 'student_meeting_view_student' data.id %}" style="color: black;"  ><i class='fa fa-eye'></i></a>
+                              <a href="{% url 'online_class_feedback_student' data.id %}" style="color: black;"  ><i class='fa fa-plus'></i></a>
+
+                                         
+                          </td>
+                       
+                           </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Online Classes</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Save</button>
+                    </form>
+                    <form>
+                  <div class="row">
+                    <!-- {% for data in form %} -->
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    <!-- {% endfor %} -->
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+ <script>
+    $(document).ready(function () {
+  $(document).on('change', '#id_role', function () {
+    var role_id = $('#id_role').val();
+    var url = "{% url 'demo_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'role_id': role_id
+      },
+      success: function (data) {
+          $("#id_staff").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (classs) {
+              html_data += `<option value="${classs.id}">${classs.first_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_staff").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+
+});
+
+
+$(document).ready(function () {
+  $(document).on('change', '#id_staff', function () {
+    var name = $('#id_staff').val();
+    var url = "{% url 'leave_type_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'name': name,
+      },
+      success: function (data) {
+          $("#id_leave_type").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (leave) {
+              html_data += `<option value="${leave.leave_type_id}">${leave.leave_type__name}(${leave.available_leave})</option>`
+          });
+          console.log(html_data);
+          $("#id_leave_type").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+
+});
+</script>
+ {% endblock  %}

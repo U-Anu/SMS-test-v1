@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+<div class="row">
+  <div class="main-header">
+    <h4>Edit Homework</h4>
+  </div>
+</div>
+<!-- modal Start -->
+<div class="col" style="padding: 30px;">
+  <button type="button"  class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg"
+    style="float:right;">Edit</button><br>
+</div>
+<div class="modal fade bd-example-modal-lg" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Homework</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% if not view %}
+      <h4>Edit Homework</h4>
+      {% else %}
+      <h4>View Homework</h4>
+      {% endif %}
+      <div class="modal-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+              {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+            {% if not view %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+            {% endif %}
+          </center>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal End -->
+
+
+
+<div class="col-md-12">
+  <div class="card" style="padding: 10px;">
+    <div class="table-responsive">
+      <table id="tableID" class="display">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Subject Group</th>
+            <th>Subject</th>
+            <th>Homework Date</th>
+            <th>Submission Date</th>
+            <th>Evaluation Date</th>
+            <th>Created By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for data in records %}
+          <tr>
+            <td>{{data.Class}}</td>
+            <td>{{data.section}}</td>
+            <td>{{data.subject_group}}</td>
+            <td>{{data.subject}}</td>
+            <td>{{data.homework_date}}</td>
+            <td>{{data.submission_date}}</td>
+            <td></td>
+            <td>Admin</td>
+            <td>
+              <a href="{% url 'add_homework_view' data.id %}" style="color: black;"><i class='fa fa-server'></i></a>
+              <a href="{% url 'add_homework_edit' data.id  %}" style="color: black;"><i class='fa fa-edit'></i></a>
+              <a href="{% url 'add_homework_delete' data.id  %}" style="color: black;"><i class='fa fa-remove'
+                  onclick="alert('You want to Delete this Item..?')"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+  $(document).ready(function () {
+    // Open the modal when the page is loaded
+    $('.bd-example-modal-lg').modal('show');
+
+  });
+</script>
+
+
+
+<script>
+  // Get the modal element and close button
+  const modal = document.getElementById("myModal");
+  const closeButton = modal.querySelector(".close");
+
+  // Add event listener to close button
+  closeButton.addEventListener("click", function () {
+    closeModalAndRedirect();
+  });
+
+  // Add event listener to modal overlay
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      closeModalAndRedirect();
+    }
+  });
+
+  // Function to close the modal and perform the redirection
+  function closeModalAndRedirect() {
+    modal.style.display = "none"; // Hide the modal
+
+    // Perform the redirection
+    window.location.href = "/add_homework"; // R
+  }
+</script>
+{% endblock %}

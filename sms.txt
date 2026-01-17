@@ -1,0 +1,285 @@
+
+class AlumniType(models.Model):
+    name = models.CharField(max_length=50, unique=True)  
+    description = models.TextField(blank=True, null=True)  
+
+    def __str__(self):
+        return self.name 
+
+class Alumni(models.Model):
+    name = models.CharField(max_length=255)
+    graduation_year = models.PositiveIntegerField()
+    alumni_type = models.ForeignKey(AlumniType, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=254)
+    phone_number = models.CharField(max_length=15)
+    current_location = models.CharField(max_length=255)
+    profile_picture = models.ImageField(upload_to='alumni_pics/', null=True, blank=True)
+    department = models.ForeignKey(Session,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+class EventType(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)  
+
+    def __str__(self):
+        return self.name
+
+class AlumniEvents(models.Model):
+    EVENT_STATUS_CHOICES = [
+        ('ACTIVE', 'Active'),
+        ('UPCOMING', 'Upcoming'),
+        ('PAST', 'Past'),
+    ]
+
+    
+    event_title = models.CharField(max_length=255)  # Event title
+    event_date = models.DateField(null=True, blank=True)  # Event date
+    location = models.CharField(max_length=255)  # Event location
+    description = models.TextField()  # Event description
+    event_time = models.TimeField(null=True, blank=True)  # Event time
+    event_image = models.ImageField(upload_to='event_images/', null=True, blank=True)  # Event banner/image
+    event_type = models.ForeignKey(EventType, on_delete=models.CASCADE,related_name="AlumniEvents_event_type")  # Event type (e.g., Networking, Celebration)
+    event_status = models.CharField(
+        max_length=10, 
+        choices=EVENT_STATUS_CHOICES, 
+        default='UPCOMING'
+    )
+
+    def __str__(self):
+        return self.title
+
+
+
+
+
+
+--------------------------
+Forms
+---------------------
+
+class AluminitypeForm(forms.ModelForm):
+    class Meta:
+        model = AlumniType
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(AluminitypeForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+class AlumniForm(forms.ModelForm):
+    class Meta:
+        model = Alumni
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(AlumniForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+class EventTypeForm(forms.ModelForm):
+    class Meta:
+        model = EventType
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(EventTypeForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+class AlumniEventsForm(forms.ModelForm):
+    class Meta:
+        model = AlumniEvents
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(AlumniEventsForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs["class"] = "form-control"
+
+
+----------------------------------------------
+urls.py
+
+-----------------------
+
+
+    # For Alumini Type
+
+    path('alumni_type/', views.alumni_type, name='alumni_type'),
+    # path('alumni_type/create/', views.create_alumni_type, name='create_alumni_type'),
+    path('alumni_type/edit/<int:pk>/', views.edit_alumni_type, name='edit_alumni_type'),
+    path('alumni_type/delete/<int:pk>/', views.delete_alumni_type, name='delete_alumni_type'),
+
+    # For Alumni
+    path('alumni/create/', views.alumni_create, name='alumni_create'),
+    path('alumni/edit/<int:pk>/', views.edit_alumni, name='alumni_edit'),
+    path('alumni/profile/<int:pk>/', views.alumni_profile, name='alumni_profile'),
+    path('alumni/delete/<int:pk>/', views.delete_alumni, name='alumni_delete'),
+
+    # For event type
+
+    path('event-type/create/', views.create_event_type, name='create_event_type'),  # Create a new event type
+    path('event-type/edit/<int:pk>/', views.edit_event_type, name='edit_event_type'),  # Edit an event type
+    path('event-type/delete/<int:pk>/', views.delete_event_type, name='delete_event_type'),  # Delete an event type
+
+    path('event/create/', views.create_event, name='create_event'),
+    path('event/edit/<int:pk>/', views.edit_event, name='edit_event'),
+    path('event/delete/<int:pk>/', views.delete_event, name='delete_event'),
+
+-----------------------------------
+
+views.py
+
+
+-----------------------------
+
+
+@login_required
+@user_type_required("Staff")
+def alumni_type(request):
+    print("enter")
+    form = AluminitypeForm()
+    records  = AlumniType.objects.all()
+    if request.method == "POST":
+        form = AluminitypeForm(request.POST)
+        if form.is_valid():
+            form.save() 
+            return redirect('alumni_type')  
+    
+    
+    
+    context = {'form': form,'recordss ':records}
+    return render(request, 'Alumni/alumnitype.html',context)
+
+@login_required
+@user_type_required("Staff")
+def edit_alumni_type(request, pk):
+    alumni_type = get_object_or_404(AlumniType, pk=pk)  # Get the alumni type by primary key
+    if request.method == "POST":
+        form = AluminitypeForm(request.POST, instance=alumni_type)
+        if form.is_valid():
+            form.save()  
+            return redirect('alumni_type')  
+    else:
+        form = AluminitypeForm(instance=alumni_type)
+        records  = AlumniType.objects.all()
+    return render(request, 'Alumni/alumnitype.html', {'form': form,'records':records,'edit':True})
+
+@login_required
+@user_type_required("Staff")
+def delete_alumni_type(request, pk):
+    alumni_type = get_object_or_404(AlumniType, pk=pk)  # Get the alumni type by primary key
+    alumni_type.delete() 
+    return redirect('alumni_type')  # Redirect to the alumni types list
+
+@login_required
+@user_type_required("Staff")  
+def create_event_type(request):
+    form = EventTypeForm() 
+    if request.method == "POST":
+        form = EventTypeForm(request.POST)
+        if form.is_valid():
+            form.save()  
+            return redirect('create_event_type') 
+    records  = EventType.objects.all()
+    context = {'form': form,'records':records}
+    return render(request, 'Alumni/event_type.html', context)
+
+@login_required
+@user_type_required("Staff")
+def edit_event_type(request, pk):
+    event_type = get_object_or_404(EventType, pk=pk) 
+    if request.method == "POST":
+        form = EventTypeForm(request.POST, instance=event_type)
+        if form.is_valid():
+            form.save() 
+            return redirect('create_event_type') 
+    else:
+        form = EventTypeForm(instance=event_type)  
+        records  = EventType.objects.all()
+    return render(request, 'Alumni/event_type.html', {'form': form,'records':records,'edit':True})
+
+
+@login_required
+@user_type_required("Staff")
+def delete_event_type(request, pk):
+    event_type = get_object_or_404(EventType, pk=pk)  
+    event_type.delete() 
+    return redirect('create_event_type') 
+
+@login_required
+@user_type_required("Staff")
+def alumni_create(request):
+    if request.method == "POST":
+        form = AlumniForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()  # Save the new alumni entry
+            return redirect('alumni_create')  # Redirect to the alumni list page after saving
+    else:
+        form = AlumniForm()
+    return render(request, 'Alumni/alumni.html', {'form': form})
+
+@login_required
+@user_type_required("Staff")
+def edit_alumni(request, pk):
+    alumni_instance = get_object_or_404(Alumni, pk=pk)  # Get the alumni by primary key
+    if request.method == "POST":
+        form = AlumniForm(request.POST, request.FILES, instance=alumni_instance)
+        if form.is_valid():
+            form.save()  # Save the edited alumni data
+            return redirect('alumni_create')  # Redirect to the alumni list page after saving
+    else:
+        form = AlumniForm(instance=alumni_instance)
+    return render(request, 'Alumni/edit_alumni.html', {'form': form})
+
+@login_required
+@user_type_required("Staff")
+def delete_alumni(request, pk):
+    alumni_instance = get_object_or_404(Alumni, pk=pk)  # Get the alumni by primary key
+    alumni_instance.delete()  # Delete the alumni entry
+    return redirect('alumni_create')  # Redirect to the alumni list page after deletion
+
+@login_required
+@user_type_required("Staff")
+def alumni_profile(request, pk):
+    alumni_instance = get_object_or_404(Alumni, pk=pk)  # Get the alumni by primary key
+    return render(request, 'Alumni/alumni_profile.html', {'alumni': alumni_instance})
+
+@login_required
+@user_type_required("Staff")
+def create_event(request):
+    
+    form = AlumniEventsForm() 
+    if request.method == "POST":
+        form = AlumniEventsForm(request.POST, request.FILES)  
+        if form.is_valid():
+            form.save() 
+            return redirect('create_event') 
+    records = AlumniEvents.objects.all()  
+    context = {'form': form, 'records': records}
+    return render(request, 'Alumni/events.html', context)
+
+@login_required
+@user_type_required("Staff")
+def edit_event(request, pk):
+    
+    event = get_object_or_404(AlumniEvents, pk=pk) 
+    if request.method == "POST":
+        form = AlumniEventsForm(request.POST, request.FILES, instance=event) 
+        if form.is_valid():
+            form.save()  
+            return redirect('create_event') 
+    else:
+        form = AlumniEventsForm(instance=event) 
+        records = AlumniEvents.objects.all() 
+    return render(request, 'Alumni/events.html', {'form': form, 'records': records, 'edit': True})
+
+@login_required
+@user_type_required("Staff")
+def delete_event(request, pk):
+    event_instance = get_object_or_404(AlumniEvents, pk=pk)  # Get the alumni by primary key
+    event_instance.delete()  # Delete the alumni entry
+    return redirect('create_event')  # Redirect to the alumni list page after deletion

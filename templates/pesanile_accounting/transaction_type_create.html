@@ -1,0 +1,99 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        {{ message }}
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>{{ screen_name }} </h2>
+                <div>
+                    <button type="submit" form="myForm" class="btn btn-primary">Save</button>
+                    <a href="{{ list_url }}" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            <div class="card card-body">
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    {% csrf_token %}
+                    {% for form_field in form %}
+                        <div class="form-group">
+                            {{ form_field.label_tag }}
+                            {{ form_field }}
+                        </div>
+                    {% endfor %}
+                    <hr>
+                    <center><h3><span>Account Currency Mapping</span></h3></center>
+                    <hr>
+                    <div id="fieldsContainer">
+                        <!-- Multiple sets of fields will be added here -->
+                    </div>
+                    <p><span><b>Note: </b>Click on Add button to open the associated multi value option</span></p>
+                    <button type="button" id="addButton" class="btn btn-primary">Add</button>
+                    <button type="button" id="removeButton" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    let fieldCount = 0; // Counter to keep track of the number of field sets
+
+    $('#addButton').click(function() {
+        fieldCount++; // Increment the counter
+        // Create a new set of fields with a unique data attribute
+        const newFields = `
+            <div class="form-group field-set" data-id="${fieldCount}">
+                <label>Debit Currency</label>
+                <select name="debit_currency" required class="form-control">
+                    <option value="">------------</option>
+                    {% for data in obj_currency %}
+                    <option value="{{data.pk}}">{{data}}</option>
+                    {% endfor %}
+                </select>
+                <label>Debit Account</label>
+                <select name="debit_account" required class="form-control">
+                    <option value="">------------</option>
+                    {% for data in obj_account %}
+                    <option value="{{data.pk}}">{{data}}</option>
+                    {% endfor %}
+                </select>
+                <label>Credit Currency</label>
+                <select name="credit_currency" required class="form-control">
+                    <option value="">------------</option>
+                    {% for data in obj_currency %}
+                    <option value="{{data.pk}}">{{data}}</option>
+                    {% endfor %}
+                </select>
+                <label>Credit Account</label>
+                <select name="credit_account" required class="form-control">
+                    <option value="">------------</option>
+                    {% for data in obj_account %}
+                    <option value="{{data.pk}}">{{data}}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" class="removeFieldsButton btn btn-danger">Remove This Set</button>
+            </div>
+        `;
+        // Append the new fields to the container
+        $('#fieldsContainer').append(newFields);
+    });
+
+    $('#fieldsContainer').on('click', '.removeFieldsButton', function() {
+        $(this).closest('.field-set').remove(); // Remove the specific set of fields
+    });
+
+    $('#removeButton').click(function() {
+        // Find and remove the last set of fields if any are present
+        const lastFieldGroup = $('#fieldsContainer').children().last();
+        if (lastFieldGroup.length) {
+            lastFieldGroup.remove();
+        }
+    });
+});
+</script>
+
+{% endblock %}

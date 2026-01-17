@@ -1,0 +1,436 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+<style>
+    td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        background-color: rgb(51, 50, 50);
+        color: white;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+{% endblock %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Event</h4>
+        </div>
+    </div>
+    <!-- modal Start -->
+    {% if 'Alumni_events_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+    <div class="col" style="padding: 30px;">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg"
+            style="float:right;">Add Event</button><br>
+
+    </div>
+    {% endif %}
+
+
+    <!-- modal End -->
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="col-md-2"><br>
+                        <button id="prevButton" class="btn btn-primary" style="float: left;">«</button>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="year">Year:</label>
+                        <select id="year" class="form-control"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="month">Months:</label>
+                        <select id="month" class="form-control"></select>
+                    </div>
+                    <div class="col-md-2"><br>
+                        <button id="nextButton" class="btn btn-primary" style="float: right;">»</button>
+                    </div>
+
+                    <div id="calendar">
+                    </div>
+
+                    <hr>
+                    <h5 style="float: right;">
+                        <div
+                            style="display: inline-block; width: 10px; height: 10px; background-color: orange; margin-right: 5px;">
+                        </div>
+                        Event
+                    </h5><br>
+                </div>
+            </div>
+            {% if 'Alumni_events_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Event List</h4>
+
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display">
+                            <thead>
+                                <tr>
+                                    <th>Event Title</th>
+                                    <th>Class</th>
+                                    <th>Section</th>
+                                    <th>Pass Out Session</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in records %}
+                                <tr>
+                                    <td>{{data.event_title}}</td>
+                                    <td>{{data.event_for}}</td>
+                                    <td>
+                                        {% for sec in data.section.all %}
+                                        {{ sec.section_name }}
+                                        {% if not forloop.last %},
+                                        {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{data.passed_out_session}}</td>
+                                    <td>{{data.event_date_from}}</td>
+                                    <td>{{data.event_date_to}}</td>
+                                    <td>
+                                        {% if 'Alumni_events_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+                                        <a href="{% url 'alumni_events_view' data.id %}"class="bozero"><span data-toggle="tooltip" title="view" style="color: black;"><i
+                                                class='fa fa-server'></i></a>
+                                                {% endif %}
+                                                {% if 'Alumni_events_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+                                        <a href="{% url 'alumni_events_edit' data.id %}"class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i
+                                                class='fa fa-edit'></i></a>
+                                                {% endif %}
+                                                {% if 'Alumni_events_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+                                        <a href="{% url 'alumni_events_delete' data.id %}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i
+                                                class='fa fa-remove'
+                                                onclick="alert('You want to Delete this Item..?')"></i></a>
+                                                {% endif %}
+                                    </td>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+
+
+    <div class="modal-dialog modal-lg">
+
+            <div class="modal-body card">
+                <div class="card-header">
+                  <h4>  Add Event   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button></h4>
+
+                </div>
+               <hr>
+                <div id="div1" class="hidden" style="display: block;">
+                    <!-- Content for Alumini -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <label>
+                            <input type="radio" name="event_for" value="all_alumini" onclick="toggleDivVisibility('div1')" checked>
+                            All Alumni
+                        </label>
+                        <label>
+                            <input type="radio" name="event_for" value="Class" onclick="toggleDivVisibility('div2')"> Class
+                        </label>
+                        <div class="row active" >
+
+                            <div class="col-md-12 mb-3">
+                                <label>Event Title</label>
+                                {{ form.event_title }}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label>Event Date From</label>
+                                {{ form.event_date_from }}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label>Event Date To</label>
+                                {{ form.event_date_to }}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label>Note</label>
+                                {{ form.note }}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label>Event Notification Message</label>
+                                {{ form.event_notification_message }}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <br>
+                                {{ form.email }}EMAIL
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <br>{{ form.sms }}SMS
+                            </div>
+                            <center>
+
+                                <button type="submit" class="btn btn-primary">Submit</button>
+
+                            </center>
+                    </form>
+                </div>
+
+            </div>
+
+            <div id="div2" class="hidden">
+                <!-- Content for Class -->
+                <form method="post">
+                    {% csrf_token %}
+                    <label>
+                        <input type="radio" name="event_for" value="all_alumini" onclick="toggleDivVisibility('div1')" >
+                        All Alumini
+                    </label>
+                    <label>
+                        <input type="radio" name="event_for" value="Class" onclick="toggleDivVisibility('div2')" checked> Class
+                    </label>
+
+
+                    <div class="col-md-12 mb-3">
+                        <label>Passed Out Session</label>
+                        {{ form.passed_out_session }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Select Class</label>
+                        {{ form.select_class }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Section</label>
+                        {{ form.section }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Event Title</label>
+                        {{ form.event_title }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Event Date From</label>
+                        {{ form.event_date_from }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Event Date To</label>
+                        {{ form.event_date_to }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Note</label>
+                        {{ form.note }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label>Event Notification Message</label>
+                        {{ form.event_notification_message }}
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <br>
+                        {{ form.email }}EMAIL
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <br>{{ form.sms }}SMS
+                    </div>
+                    <center>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    </center>
+                </form>
+            </div>
+            <br>
+
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+
+<!-- calendar Script -->
+
+<script>
+    var currentYear = new Date().getFullYear();
+    var currentMonth = new Date().getMonth();
+    var calendarDiv = document.getElementById('calendar');
+    var prevButton = document.getElementById('prevButton');
+    var nextButton = document.getElementById('nextButton');
+    var yearDropdown = document.getElementById('year');
+    var monthDropdown = document.getElementById('month');
+
+    // Define the data for each date
+    var data = {
+            {% for record in records %}
+    '{{ record.start_date|date:"Y-m-d" }}': '{{ record.event_title }}',
+        {% endfor %}
+        };
+
+    // Populate the year dropdown
+    for (var year = 2000; year <= 2030; year++) {
+        var option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearDropdown.appendChild(option);
+    }
+
+    // Populate the month dropdown
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    months.forEach(function (month, index) {
+        var option = document.createElement('option');
+        option.value = index;
+        option.textContent = month;
+        monthDropdown.appendChild(option);
+    });
+
+    // Set the initial selected values in the dropdowns
+    yearDropdown.value = currentYear;
+    monthDropdown.value = currentMonth;
+
+    // Function to generate the calendar for a specific month and year
+    function createCalendar(year, month) {
+        calendarDiv.innerHTML = '';
+
+        var table = document.createElement('table');
+
+        // Create the table header
+        var thead = document.createElement('thead');
+        var headerRow = document.createElement('tr');
+        var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        weekdays.forEach(function (weekday) {
+            var th = document.createElement('th');
+            th.textContent = weekday;
+            headerRow.appendChild(th);
+        });
+
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create the table body
+        var tbody = document.createElement('tbody');
+
+        var firstDay = new Date(year, month, 1);
+        var lastDay = new Date(year, month + 1, 0);
+        var numDays = lastDay.getDate();
+
+        var date = 1;
+
+        for (var week = 0; week < 6; week++) {
+            var weekRow = document.createElement('tr');
+
+            for (var weekday = 0; weekday < 7; weekday++) {
+                var dateCell = document.createElement('td');
+
+                if (date <= numDays && (weekday >= firstDay.getDay() || week > 0)) {
+                    var dateString = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + date.toString().padStart(2, '0');
+                    dateCell.textContent = date;
+                    dateCell.setAttribute('data-date', dateString);
+
+                    // Add data to the cell if available
+                    if (data[dateString]) {
+                        dateCell.setAttribute('data-data', data[dateString]);
+                        dateCell.style.backgroundColor = 'orange';
+                    }
+
+                    date++;
+                }
+
+                weekRow.appendChild(dateCell);
+            }
+
+            tbody.appendChild(weekRow);
+        }
+
+        table.appendChild(tbody);
+        calendarDiv.appendChild(table);
+    }
+
+    // Event listeners for the previous and next buttons
+    prevButton.addEventListener('click', function () {
+        if (currentMonth === 0) {
+            currentMonth = 11;
+            currentYear--;
+        } else {
+            currentMonth--;
+        }
+        yearDropdown.value = currentYear;
+        monthDropdown.value = currentMonth;
+        createCalendar(currentYear, currentMonth);
+    });
+
+    nextButton.addEventListener('click', function () {
+        if (currentMonth === 11) {
+            currentMonth = 0;
+            currentYear++;
+        } else {
+            currentMonth++;
+        }
+        yearDropdown.value = currentYear;
+        monthDropdown.value = currentMonth;
+        createCalendar(currentYear, currentMonth);
+    });
+
+    // Event listener for the year and month dropdowns
+    yearDropdown.addEventListener('change', function () {
+        currentYear = parseInt(this.value);
+        createCalendar(currentYear, currentMonth);
+    });
+
+    monthDropdown.addEventListener('change', function () {
+        currentMonth = parseInt(this.value);
+        createCalendar(currentYear, currentMonth);
+    });
+
+    // Generate the calendar for the current month and year
+    createCalendar(currentYear, currentMonth);
+</script>
+
+<!-- #script for  radio button inside modal -->
+<script>
+    function toggleDivVisibility(selectedDivId) {
+        var div1 = document.getElementById('div1');
+        var div2 = document.getElementById('div2');
+
+        if (selectedDivId === 'div1') {
+            div1.style.display = "block";
+            div2.style.display = "none";
+        } else if (selectedDivId === 'div2') {
+            div1.style.display = "none";
+            div2.style.display = "block";
+        }
+    }
+</script>
+
+{% endblock %}

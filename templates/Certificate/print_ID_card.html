@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print marksheet</title>
+    
+
+   <!-- Style.css -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main.css' %}">
+      <!-- Required Fremwork -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/plugins/bootstrap/css/bootstrap.m.css' %}">
+<style>
+    .form-group {
+        margin-bottom: 0rem;
+     }
+     .col-form-label {
+        padding-top: 0rem; 
+        padding-bottom: 0rem; 
+       margin-bottom: 0;
+   }
+
+     body, p, label {
+        font-size: small!important;
+     }
+     @media print{
+        #print_btn{
+            display: none;
+        }
+     }
+
+</style>
+</head>
+<body>
+    <button type="button" id="print_btn" class="btn btn-primary" onclick="window.print()">Print</button>
+{% for student in records %}
+<div class="modal-body" style="page-break-after: always;">
+    {% if data.background_image %}
+    <div class="col-md-12 container"  style="background-image: url({{data.background_image.url}}); background-repeat: no-repeat; background-position: center; height:100%; width:100%;">
+        {% else %}
+        <div class="col-md-12 container">
+        {% endif %}
+            {% if data.logo %}
+        <div class="id-card" >
+       
+            <div class="school-name" style="background-color: {{data.header_color}};">
+                <center>
+                <img src="{{data.logo.url}}" style="height: 30px;border-radius: 5px; "
+                    alt="School Logo">&nbsp;&nbsp;{{data.school_name}}
+                </center>
+                </div>
+            {% endif %}
+            <center>
+            <div class="address">{{data.address}}</div>
+            <div class="school-name" style="background-color: {{data.header_color}};">{{data.id_card_title}}</div></center>
+            <div class="student-details">
+                <div class="col-md-4">
+                    <div class="image-container">
+                        {% if student.student_photo %}
+                        <img src="{{student.student_photo.url}}"
+                            height="100px" class="logo" alt="">
+                            {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    {% if data.student_name %}
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Student Name</label>
+                        <div class="col-sm-6">
+                            <label class="col-form-label">{{student.first_name}}{% if student.last_name %}{{student.last_name}}{% endif %}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if data.logo %}
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Admission Number</label>
+                        <div class="col-sm-6">
+                            <label class=" col-form-label">{{student.admission_no}}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.Class %}
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Class </label>
+                        <div class="col-sm-6">
+                            <label class="col-form-label">{{student.Class}}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.father_name %}
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Father's Name</label>
+                        <div class="col-sm-6">
+                            <label class=" col-form-label">{{student.Father_name}}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.mother_name %}
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Mothers's Name</label>
+                        <div class="col-sm-6">
+                            <label class=" col-form-label">{{student.mother_name}}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.address %}
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Address</label>
+                        <div class="col-sm-6">
+                            <label class=" col-form-label">{{student.guardian_address}}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.phone %}
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Phone</label>
+                        <div class="col-sm-6">
+                            <label class=" col-form-label">{{student.mobile_number}}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if data.blood_group %}
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">Blood GroupA</label>
+                        <div class="col-sm-6">
+                            <label class=" col-form-label">{{student.Blood_group}}</label>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if data.date_of_birth %}
+                    <div class="form-group">
+                        <label class="col-sm-6 col-form-label">D.O.B</label>
+                        <div class="col-sm-6">
+                            <label class=" col-form-label">{{student.date_of_birth}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if data.signature %}
+            <div class="signature">
+                <div style="float: right;">
+                    <img src="{{data.signature.url}}" height="60px" class="logo" alt="{{data.header_logo}}">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+       <!-- Required Fremwork -->
+   <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+{% extends 'base.html' %}
+{% block head_block %}
+<style>
+    .profile-user-img {
+        margin: 5px auto;
+        width: 100px;
+        padding: 3px;
+        border: 3px solid #d2d6de
+    }
+
+    .timeline {
+        position: relative;
+        margin: 0 0 30px 0;
+        padding: 0;
+        list-style: none
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #ddd;
+        left: 31px;
+        margin: 0;
+        border-radius: 2px;
+    }
+
+    .timeline>li {
+        position: relative;
+        /*margin-right:10px;*/
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+
+    .timeline>li:before,
+    .timeline>li:after {
+        content: " ";
+        display: table
+    }
+
+    .timeline>li:after {
+        clear: both
+    }
+
+    .timeline>li>.timeline-item {
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        margin-top: 0;
+        background: #fff;
+        color: #444;
+        margin-left: 60px;
+        /*margin-right:15px;*/
+        padding: 0;
+        position: relative
+    }
+
+    .timeline>li>.timeline-item>.time {
+        color: #999;
+        float: right;
+        padding: 10px;
+        font-size: 12px
+    }
+
+    .timeline>li>.timeline-item>.timeline-header {
+        margin: 0;
+        color: #555;
+        border-bottom: 1px solid #f4f4f4;
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.1
+    }
+
+    .timeline>li>.timeline-item>.timeline-header>a {
+        /* font-weight:600 */
+        font-family: 'Roboto-Bold';
+    }
+
+    .timeline>li>.timeline-item>.timeline-body,
+    .timeline>li>.timeline-item>.timeline-footer {
+        padding: 10px
+    }
+
+    .timeline>li>.fa,
+    .timeline>li>.glyphicon,
+    .timeline>li>.ion {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+        line-height: 30px;
+        position: absolute;
+        color: #666;
+        background: #d2d6de;
+        border-radius: 50%;
+        text-align: center;
+        left: 18px;
+        top: 0;
+    }
+
+    .timeline>.time-label>span {
+        /* font-family:'Roboto-Bold'; */
+        padding: 5px;
+        display: inline-block;
+        background-color: #fff;
+        border-radius: 4px;
+        font-family: 'Roboto-Bold';
+        font-size: 10px;
+    }
+
+    .timeline-inverse>li>.timeline-item {
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+    .timeline-inverse>li>.timeline-item>.timeline-header {
+        border-bottom-color: #ddd
+    }
+</style>
+{% endblock %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+
+
+    <div class="col-md-12">
+      
+        <div class="col-md-3" style="padding-left:0px; padding-right:0px;" >
+            <br><br>
+            <div class="card " style="padding: 10px;border-top: 5px solid black; {% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+
+                <div class="box box-primary">
+                    <div class="box-body box-profile" >
+                        <center>
+                            <img class="profile-user-img img-responsive img-circle"
+                                src="{% static 'assets/images/user.jpg' %}"
+                                alt="User profile picture">
+                        </center>
+                        <h3 class="profile-username text-center">{{record.first_name}} {{record.last_name}}</h3>
+
+                        <ul class="list-group list-group-unbordered" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+
+
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Staff ID</b> <a class="pull-right text-aqua">{{record.staff_id}}</a>
+                            </li>
+
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Roll</b> <a class="pull-right text-aqua">{{record.store}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Designation</b> <a class="pull-right text-aqua">{{record.designation}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Department</b> <a class="pull-right text-aqua">{{record.department}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>EPF No</b> <a class="pull-right text-aqua">{{record.epf_no}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Basic Salary</b> <a class="pull-right text-aqua">{{record.basic_salary}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Contract Type</b> <a class="pull-right text-aqua">{{record.contract_type}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Work Shift</b> <a class="pull-right text-aqua">{{record.work_shift}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Location</b> <a class="pull-right text-aqua">{{record.location}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Date Of Joining</b> <a class="pull-right text-aqua">{{record.date_of_joining}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-9" >
+            <br><br>
+      
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="card"  style="padding: 10px;border-top: 5px solid black;">
+                        <div class="card-body">
+                            <div class="table-responsive around10 pt0">
+                                
+                                <table class="table table-hover  tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td >Phone</td>
+                                            <td >{{record.phone_no}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Emergency Contact Number</td>
+                                            <td>{{record.contract_type}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>{{record.email}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gender</td>
+                                            <td> {{record.gender}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date of Birth</td>
+                                            <td> {{record.date_of_birth}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marital Status</td>
+                                            <td> {{record.marital_status}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Father Name</td>
+                                            <td> {{record.father_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mother Name</td>
+                                            <td> {{record.mother_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Qualification</td>
+                                            <td> {{record.qualification}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Work Experience</td>
+                                            <td> {{record.work_experience}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Note</td>
+                                            <td> {{record.note}}</td>
+                                        </tr>
+                                      
+                                        
+                                        <tr>
+                                            <td>nil</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tshadow mb25 bozero">
+                            <div class="card-header">
+                                <h3 class="pagetitleh2">Address</h3>
+
+                            </div>
+                            <div class="table-responsive around10 pt0">
+                                <table class="table table-hover  tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-md-4">Current Address</td>
+                                            <td class="col-md-5">{{record.current_address}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Permanent Address</td>
+                                            <td>{{record.permanent_address}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tshadow mb25 bozero">
+                            <div class="card-header">
+
+                                <h3 class="pagetitleh2">Bank Account Details </h3>
+                            </div>
+                            <div class="table-responsive around10 pt10">
+                                <table class="table table-hover tmb0">
+                                    <tr>
+                                        <td>Account Title</td>
+                                        <td >{{record.bank_title}}</td>
+                                        <td rowspan="3"><img class="" src=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank Name</td>
+                                        <td>{{record.bank_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank Branch Name</td>
+                                        <td>{{record.branch_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank Account Number</td>
+                                        <td>{{record.account_no}}</td>
+                                        <td rowspan="3"><img class="profile-user-img img-responsive img-circle" src="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>IFSC Code</td>
+                                        <td>{{record.ifsc_code}}</td>
+
+                                    </tr>
+                                   
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="tshadow mb25  bozero">
+                            <div class="card-header">
+
+                                <h3 class="pagetitleh2">Social Media Link</h3>
+                            </div>
+                            <div class="table-responsive around10 pt0">
+                                <table class="table table-hover tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Facebook URL</td>
+                                            <td >{{record.facebook}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Twitter URL</td>
+                                            <td >{{record.twitter}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Linkedin URL</td>
+                                            <td >{{record.linkedin}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Instagram URL</td>
+                                            <td >{{record.instagram}}</td>
+                                            <td></td>
+                                        </tr>
+                                       
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2nd tab -->
+                <div class="tab-pane fade" id="fees" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="card"><br>
+                        <div class="alert alert-danger">
+                            No Record Found
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="card">
+                        <div class="timeline-header n   o-border">
+                            <button type="button" data-student-session-id="4"
+                                class="btn btn-xs btn-primary pull-right myTransportFeeBtn"> <i
+                                    class="fa fa-upload"></i> Upload Documents</button>
+
+                            <!-- <h2 class="page-header"> </h2> -->
+                            <div class="table-responsive" style="clear: both;">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Title </th>
+                                            <th>
+                                                Name </th>
+                                            <th class="mailbox-date text-right">
+                                                Action </th>
+                                        </tr>
+                                    </thead>
+                                    <div class="row">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="5" class="text-danger text-center">No Record Found</td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="timeline" role="tabpanel" aria-labelledby="contact-tab">
+
+                    <div class="card" style="padding: 10px;"><br>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                            style="float: right;">
+                            + Add
+                        </button><br>
+
+                        <div class="container-fluid">
+
+                            <div class="timeline-header no-border">
+                                <div id="timeline_list">
+                                    {% for data in records %}
+                                    <ul class="timeline timeline-inverse">
+                                        <li class="time-label">
+                                            <span class="bg-blue">{{data.date}}</span>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-list-alt bg-blue"></i>
+                                            <div class="timeline-item">
+                                                <div class="timeline-body">
+                                                    {{data.title}}
+                                                    <a href="{% url 'student_list_delete' data.id %}"
+                                                        data-toggle="tooltip" title="" data-original-title="Delete"
+                                                        style="float: right;"
+                                                        onclick="alert('You want to Delete this Item..?')"><i
+                                                            class="fa fa-trash"></i></a></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <i class="fa fa-clock-o bg-gray"></i>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Timeline</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post">
+                                        <div class="modal-body">
+
+                                            {% csrf_token %}
+                                            {{form}}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Disable Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'staff_disable_enable' %}">
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <input type="hidden" name="staff_id" value="{{record.id}}">
+                    <label for="">Date</label>
+                    <input type="date" class="form-control" name="disable_date">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}
+

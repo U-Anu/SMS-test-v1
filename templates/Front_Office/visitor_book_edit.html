@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Visitor Book</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;">
+                    <div class="main-header">
+                        {% if view %}
+                        <h4>Edit Visitor</h4>
+                        {% else %}
+                        <h4>View Visitor</h4>
+                        {% endif %}
+                     </div><hr>
+                     <form method="post">
+                      {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                      <center>
+                        {% if not view %}
+                      <button type="submit" class="btn btn-primary">Save</button></center>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+      
+        </div>
+    </div>
+    </div>
+  <!-- modal Start -->
+
+  <div class="modal fade view" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

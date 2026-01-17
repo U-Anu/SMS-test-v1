@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Upload Content</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'upload_content_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if edit %}
+                        <h4> Edit Upload Content </h4>
+                        {% else %}
+                        <h4>Add Upload Content</h4>
+                        {% endif %}
+
+                    </div>
+                    <hr>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-md-12 mb-3">
+                            <label for="student_admission" >Content Title:</label>
+                            {{form.content_title}}
+
+                        </div>
+                     
+                        <div class="col-md-12 mb-3">
+                            <label for="student_admission" >Content Type:</label>
+                            {{form.content_type}}
+
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label>Available For:</label>
+                           
+                                <div    
+
+                                class="form-check" style="padding-left: 30px;">
+                               <input type="checkbox" name="progress" id="progress1" value="1" tabIndex="1" onClick="ckChange(this)">All student</br>
+                                    
+                                  </div>
+                                                         
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="class">Class</label>
+                            <select class="form-control"  name="Class" id="classSelect" value="1" tabIndex="1">
+                                <option value="" >---Select---</option>
+                                {% for data in class_records %}
+                                <option value="{{ data.id }}" {% if data.id == content.Class.id %}selected{% endif %}>{{data.Class}}</option>
+                                {% endfor %}
+            
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="section">Section:</label>
+                            <select class="form-control" name="section" id="id_section">
+                                <option value="{{content.section.id}}">{{content.section}}</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="student_admission">Upload Date:</label>
+                            {{form.upload_date}}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="student_admission">Description:</label>
+                            {{form.description}}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="student_admission" >File:</label>
+                            {{form.file}}
+                        </div>
+                        <br>
+                        {% if not view %}
+                        <input type="submit" class="btn btn-primary" value="Upload">
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'upload_content_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Content List</h4>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display">
+                            <thead>
+                                <tr>
+
+                                    <th>Content Title</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th>Class</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for content in contents %}
+                                <tr>
+                                    <td>{{content.content_title}}</td>
+                                    <td>{{content.content_type}}</td>
+                                    <td>{{content.upload_date}}</td>                                   
+                                    {% if content.Class == None %}
+                                    <td>All Student</td>   
+                                    {% else %}
+                                    <td>{{content.Class}}({{content.section}})</td>   
+                                    {% endif %}
+                                    
+                                    <td>
+                                        {% if 'upload_content_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'upload_content_edit' content.id %}" class="bozero"><span
+                                                data-toggle="tooltip" title="edit" style="color: black;"><i
+                                                    class='fa fa-edit'></i></a>
+                                        {% endif %}
+                                        {% if 'upload_content_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'upload_content_delete' content.id %}" class="bozero"><span
+                                                data-toggle="tooltip" title="delete" style="color: black;"><i
+                                                    class='fa fa-remove'></i></a>
+                                        {% endif %}
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#classSelect', function () {
+            var class_id = $('#classSelect').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+<!-- <script>
+    function ckChange(ckType){
+        var ckName = document.getElementsByName(ckType.name);
+        var checked = document.getElementById(ckType.id);
+    
+        if (checked.checked) {
+          for(var i=0; i < ckName.length; i++){
+    
+              if(!ckName[i].checked){
+                  ckName[i].disabled = true;
+              }else{
+                  ckName[i].disabled = false;
+              }
+          } 
+        }
+        else {
+          for(var i=0; i < ckName.length; i++){
+            ckName[i].disabled = false;
+          } 
+        }    
+    }
+    </script> -->
+    <script>
+        function ckChange(ckType) {
+            var classSelect = document.getElementById("classSelect");
+    
+            if (ckType.checked) {
+                classSelect.disabled = true;
+            } else {
+                classSelect.disabled = false;
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<style>
+  .more-details-link {
+    font-weight: bold;
+    color: #007bff; /* Highlight the link with a blue color */
+  }
+
+  .more-details-link:hover {
+    color: #0056b3; /* Darker shade on hover */
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+
+       <div class="main-header">
+        <div class="col-md-4">
+          <h4></h4>
+          </div>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'accouting_report' %}" >Date wise </a>
+            </div>
+            <!-- <div class="col-md-4  mb-3">
+              <a href="{% url 'accouting_details_report' %}" >Transaction Details </a>
+            </div> -->
+           
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'accouting_ledger' %}" > General Ledger </a>
+            </div>
+
+             
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'statement_cashflow' %}" > Statement Cashflow </a>
+            </div>
+            <!-- <div class="col-md-4  mb-3">
+              <a href="{% url 'account_transaction' %}" > Account Transaction  </a>
+            </div> -->
+
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'trail_balance_report' %}"  class="text-primary"> Trail Balance </a>
+            </div>
+
+
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'statement_changes_in_equity' %}" > Statement Changes Equity</a>
+            </div>
+
+
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'budget_forecast' %}" > Budget Forecast </a>
+            </div>
+
+
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'statement_financial_position' %}" > Statement Financial Position </a>
+            </div>
+
+                    
+          <!-- <div class="col-md-4  mb-3">
+            <a href="{% url 'payable_listing' %}" > Payable listing </a>
+          </div>
+
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'receivable_listing' %}" > Receivable listing </a>
+          </div>   -->
+
+            <!-- 
+
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'statement_receipt' %}" > Statement Receipt </a>
+            </div> -->
+
+            
+          </div>
+          <hr>
+          <form method="post" >
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>From date</label>  
+                    <input type="date" class="form-control" name="from_date" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label> To date</label>
+                    <input type="date" class="form-control" name="to_date" required>
+                </div>
+          
+      <div class="col-md-12 mb-3"><br>
+
+           <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+           </div>
+              </form>
+            </div>
+        </div>
+    </div>
+   
+
+
+   {% if trail_balance %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+          <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Account Number</th>
+                        <th>Debit Amount</th>
+                        <th>Credit Amount</th>
+                    
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in trail_balance %}
+                    <tr>
+                      <td>{{data.account_id}}</td>
+                        <td>{{ data.account_number }}</td>
+                        <td>{{ data.debit_amount }}</td>
+                        <td>{{ data.credit_amount }}</td>                        
+                                  
+                                     
+                         </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            
+            </div>
+         
+           
+    
+    </div>
+    {% else %}
+       <center> <h5>No Records Found </h5></center>
+    {% endif %}
+    </div>
+   
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

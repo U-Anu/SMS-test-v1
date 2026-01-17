@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Visitor Book</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+          {% if 'visitor_book_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;">
+                    <div class="main-header">                                     
+                        {% if view %}
+                        <h4> View Visitor</h4>
+                        {% elif edit %}
+                        <h4> Edit Visitor</h4>
+                        {% else %}
+                        <h4>Add School Registor</h4>                                 
+                        {% endif %}
+                     </div><hr>
+                     <form method="post">
+                      {% csrf_token %}
+                     <div class="row">
+                        <div class="col-md-5" >
+                            <label for="" style="float: right;">School Name<span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text"  class="form-control" name="school_name" value="{{ records.school_name }}">
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="col-md-4" >
+                            <label for="" style="float: right;">Address<span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="address" valus="">{{ records.address }}</textarea>
+                        </div>
+                      </div><br>
+                      <center>
+                        {% if not view %}
+                      <button type="submit" class="btn btn-primary">Save</button></center>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'visitor_book_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;">
+                    <div class="main-header">
+                        <h4>Visitor List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>School Id</th>
+                                <th>Address</th>
+                                <th>Schoo Name</th>
+                            
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in record %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{data.school_id}}</td>
+                                <td>{{data.address}}</td>
+                                <td>{{data.school_name}}</td>
+                                                      
+                                                       
+                                <td> 
+                                    {% if 'visitor_book_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'school_registration_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view" style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    {% endif %}
+                                    {% if 'visitor_book_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    
+                                   <a href="{% url 'school_registration_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="Edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                   {% endif %}
+                                   {% if 'visitor_book_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                   <a href="{% url 'school_registration_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"  onclick="alert('You want to Delete this Item..?')"><i class='fa fa-remove'></i></a>
+                                   {% endif %}
+                                    </td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  <!-- modal Start -->
+
+  <!-- <div class="modal fade view" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+     <!-- modal End -->
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

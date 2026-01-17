@@ -1,0 +1,11 @@
+mode_id,name,description,allowed_classification
+TTM-2506,Credit,Credit,
+TTM-7850,mpesa,mpesa,
+TTM-9069,Funds Transfer,Funds Transfer,
+TTM-9583,ChequeWithdrawal,ChequeWithdrawal,
+TTM-7299,CashWithdrawal,CashWithdrawal,
+TTM-6182,ChequeDeposit,ChequeDeposit,
+TTM-9242,CashDeposit,CashDeposit,
+TTM-1775,CurrencyExchange,CurrencyExchange,
+TTM-4435,payment,payment,
+TTM-5079,receipt,receipt,

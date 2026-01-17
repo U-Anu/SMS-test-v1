@@ -1,0 +1,5 @@
+transaction_code_id,name,debit_gl_line,credit_gl_line,template_description,overdraft_check
+11,Fees collection,GID-0001,GID-0024,Fees collection,1
+12,Stationery Expenses,GID-0001,GID-0012,"Writing instruments: Pens, pencils, highlighters, markers. Paper products: Printing paper, notebooks, envelopes, sticky notes.",1
+14,Food Expenses,GID-0001,GID-0012,the total amount spent on acquiring and consuming food and beverages,1
+13,Salary,GID-0001,GID-0032,the costs a business incurs to pay its employees,1

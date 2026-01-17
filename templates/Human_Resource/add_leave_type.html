@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Leave Type</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'leave_types_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">                        
+                      {% if edit %}
+                      <h4> Edit Leave Type </h4>                      
+                      {% else %}
+                      <h4>Add Leave Type</h4>                     
+                      {% endif %} 
+                       
+                     </div><hr>
+                    <form method="post">
+                        {% csrf_token %}
+                     <div class="row">
+                        <div class="col-md-12 mb-3">
+                            {{form.name.label}}
+                            {{form.name}}
+                        </div>
+                      </div><br>
+                     
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'leave_types_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Leave Type List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leave in leaves %}
+                            <tr>
+                                <td>{{leave.name}}</td>
+                                <td>
+                                    {% if 'leave_types_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'add_leave_type_edit' leave.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    {% endif %}
+                                    {% if 'leave_types_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'add_leave_type_delete' leave.id %}" class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                  {% endif %}
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

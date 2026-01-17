@@ -1,0 +1,783 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Select Criteria</h4>
+        </div>
+    </div>
+    {% if 'class_time_table_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="id_Class" required>
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}"{% if data.id == classs %} selected {% endif %}>{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="section">Section</label>
+                        <select class="form-control" name="section" id="id_section" required>
+                            <option value="">---Select--- </option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}" {% if data.id == section %}selected{% endif %}> {{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="subject_group">Subject Group</label>
+                        <select class="form-control" name="subject_group" id="id_subject_group" required>
+                            <option value="">---Select----</option>
+                            {% for data in subject_group_records %}
+                            <option value="{{ data.id }}" {% if data.id == subject_group %}selected{% endif %}>{{data.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div><br>
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="search">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+{% if classs %}
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="moanday-tab" data-toggle="tab" href="#monday" role="tab"
+                aria-controls="moanday" aria-selected="true">Monday</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tuesday-tab" data-toggle="tab" href="#tuesday" role="tab" aria-controls="tuesday"
+                aria-selected="false">Tuesday</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="wednesday-tab" data-toggle="tab" href="#wednesday" role="tab"
+                aria-controls="wednesday" aria-selected="false">Wednesday</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="thursday-tab" data-toggle="tab" href="#thursday" role="tab"
+                aria-controls="thursday" aria-selected="false">Thursday</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="friday-tab" data-toggle="tab" href="#friday" role="tab"
+                aria-controls="friday" aria-selected="false">Friday</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="saturday-tab" data-toggle="tab" href="#saturday" role="tab"
+                aria-controls="saturday" aria-selected="false">Saturday</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="sunday-tab" data-toggle="tab" href="#sunday" role="tab"
+                aria-controls="sunday" aria-selected="false">Sunday</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="monday" role="tabpanel" aria-labelledby="moanday-tab">
+            <div class=" card">
+                <div class="card-body" style="padding: 20px;">
+                    <button type="button" id="add-subject-btn" class="btn btn-primary" style="float: right;"
+                        onclick="addrow('add-subject-btn','subject-list','subject-template')">+ Add New</button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="table-responsive"><br>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Teacher</th>
+                                        <th>Time from</th>
+                                        <th>Time to</th>
+                                        <th>Room No</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subject-list">
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Monday' %}
+                                    <tr >
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.subject}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.teacher}}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" value="{{data.time_from}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.time_to}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.room_no}}"  ></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                                onclick="Delete('subject-list','remove-subject-btn','{{data.id}}')">x</button></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    <tr id="subject-template">
+                                        <td>
+                                            <select class="form-control" name="monday_subject[]">
+                                                <option value="">---Select---</option>
+                                                {% for data in subject_records %}
+                                                <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="monday_teacher[]">
+                                                <option value="">---Select---</option>
+                                                {% for data in teacher_records %}
+                                                <option value="{{ data.id }}">{{ data.first_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="time" class="form-control" name="monday_from_time"></td>
+                                        <td><input type="time" class="form-control" name="monday_to_time"></td>
+                                        <td><input type="text" class="form-control" name="monday_room_no"></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                                onclick="deleterow('subject-list','remove-subject-btn')">x</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" onclick="Save('monday_subject[]','monday_teacher[]','monday_from_time','monday_to_time','monday_room_no','Monday')" class="btn btn-primary" style="float: right;">Save</button>
+
+                        </div>
+                    </form>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+        <!-- tuesday -->
+        <div class="tab-pane fade" id="tuesday" role="tabpanel" aria-labelledby="tuesday-tab">
+            <div class=" card">
+                <div class="card-body" style="padding: 20px;">
+                    <button type="button" id="add-subject-btn1" class="btn btn-primary" style="float: right;"
+                        onclick="addrow('add-subject-btn1','subject-list1','subject-template1')">+ Add New</button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="table-responsive"><br>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Teacher</th>
+                                        <th>Time from</th>
+                                        <th>Time to</th>
+                                        <th>Room No</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subject-list1">
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Tuesday' %}
+                                    <tr >
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.subject}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.teacher}}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" value="{{data.time_from}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.time_to}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.room_no}}"  ></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                            onclick="deleterow('subject-list1','remove-subject-btn1')">x</button>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <tr id="subject-template1">
+                                        <td>
+                                            <select class="form-control" name="tuesday_subject[]">
+                                                <option value="">---Select---</option>
+                                                {% for data in subject_records %}
+                                                <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="tuesday_teacher[]">
+                                                <option value="">---Select---</option>
+                                                {% for data in teacher_records %}
+                                                <option value="{{ data.id }}">{{ data.first_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="time" class="form-control" name="tuesday_from_time"></td>
+                                        <td><input type="time" class="form-control" name="tuesday_to_time"></td>
+                                        <td><input type="text" class="form-control" name="tuesday_room_no"></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn1"
+                                                onclick="deleterow('subject-list1','remove-subject-btn1')">x</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" onclick="Save('tuesday_subject[]','tuesday_teacher[]','tuesday_from_time','tuesday_to_time','tuesday_room_no','Tuesday')" class="btn btn-primary" style="float: right;">Save</button>
+                        </div>
+                    </form>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+        <!-- wednesday -->
+        <div class="tab-pane fade" id="wednesday" role="tabpanel" aria-labelledby="wednesday-tab">
+            <div class=" card">
+                <div class="card-body" style="padding: 20px;">
+
+                    <button type="button" id="add-subject-btn2" class="btn btn-primary" style="float: right;"
+                        onclick="addrow('add-subject-btn2','subject-list2','subject-template2')">+ Add New</button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="table-responsive"><br>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Teacher</th>
+                                        <th>Time from</th>
+                                        <th>Time to</th>
+                                        <th>Room No</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subject-list2">
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Wednesday' %}
+                                    <tr >
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.subject}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.teacher}}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" value="{{data.time_from}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.time_to}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.room_no}}"  ></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                            onclick="deleterow('subject-list2','remove-subject-btn2')">x</button>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <tr id="subject-template2">
+                                        <td>
+                                            <select class="form-control" name="wednesday_subject[]">
+                                                <option value="">---Select---</option>
+                                                {% for data in subject_records %}
+                                                <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="wednesday_teacher[]">
+                                                <option value="">---Select---</option>
+                                                {% for data in teacher_records %}
+                                                <option value="{{ data.id }}">{{ data.first_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td><input type="time" class="form-control" name="wednesday_from_time"></td>
+                                        <td><input type="time" class="form-control" name="wednesday_to_time"></td>
+                                        <td><input type="text" class="form-control" name="wednesday_room_no"></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn2"
+                                                onclick="deleterow('subject-list2','remove-subject-btn2')">x</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" onclick="Save('wednesday_subject[]','wednesday_teacher[]','wednesday_from_time','wednesday_to_time','wednesday_room_no','Wednesday')" class="btn btn-primary" style="float: right;">Save</button>
+                        </div>
+                    </form>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+<!-- Thursday -->
+<div class="tab-pane fade" id="thursday" role="tabpanel" aria-labelledby="thursday-tab">
+    <div class=" card">
+        <div class="card-body" style="padding: 20px;">
+
+            <button type="button" id="add-subject-btn3" class="btn btn-primary" style="float: right;"
+                onclick="addrow('add-subject-btn3','subject-list3','subject-template3')">+ Add New</button>
+            <form method="post">
+                {% csrf_token %}
+                <div class="table-responsive"><br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Time from</th>
+                                <th>Time to</th>
+                                <th>Room No</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-list3">
+                            {% for data in TimeTable_records %}
+                                    {% if data.day == 'Thursday' %}
+                                    <tr >
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.subject}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.teacher}}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" value="{{data.time_from}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.time_to}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.room_no}}"  ></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                            onclick="deleterow('subject-list3','remove-subject-btn3')">x</button>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                            <tr id="subject-template3">
+                                <td>
+                                    <select class="form-control" name="thursday_subject[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in subject_records %}
+                                        <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" name="thursday_teacher[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in teacher_records %}
+                                        <option value="{{ data.id }}">{{ data.first_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td><input type="time" class="form-control" name="thursday_from_time"></td>
+                                <td><input type="time" class="form-control" name="thursday_to_time"></td>
+                                <td><input type="text" class="form-control" name="thursday_room_no"></td>
+                                <td><button type="button" class="btn btn-danger remove-subject-btn3"
+                                        onclick="deleterow('subject-list3','remove-subject-btn3')">x</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="Save('thursday_subject[]','thursday_teacher[]','thursday_from_time','thursday_to_time','thursday_room_no','Thursday')" class="btn btn-primary" style="float: right;">Save</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+<!-- friday -->
+<div class="tab-pane fade" id="friday" role="tabpanel" aria-labelledby="friday-tab">
+    <div class=" card">
+        <div class="card-body" style="padding: 20px;">
+
+            <button type="button" id="add-subject-btn4" class="btn btn-primary" style="float: right;"
+                onclick="addrow('add-subject-btn4','subject-list4','subject-template4')">+ Add New</button>
+            <form method="post">
+                {% csrf_token %}
+                <div class="table-responsive"><br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Time from</th>
+                                <th>Time to</th>
+                                <th>Room No</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-list4">
+                            {% for data in TimeTable_records %}
+                                    {% if data.day == 'Friday' %}
+                                    <tr >
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.subject}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.teacher}}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" value="{{data.time_from}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.time_to}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.room_no}}"  ></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                            onclick="deleterow('subject-list4','remove-subject-btn4')">x</button>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                            <tr id="subject-template4">
+                                <td>
+                                    <select class="form-control" name="friday_subject[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in subject_records %}
+                                        <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" name="friday_teacher[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in teacher_records %}
+                                        <option value="{{ data.id }}">{{ data.first_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td><input type="time" class="form-control" name="friday_from_time"></td>
+                                <td><input type="time" class="form-control" name="friday_to_time"></td>
+                                <td><input type="text" class="form-control" name="friday_room_no"></td>
+                                <td><button type="button" class="btn btn-danger remove-subject-btn4"
+                                        onclick="deleterow('subject-list4','remove-subject-btn4')">x</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="Save('friday_subject[]','friday_teacher[]','friday_from_time','friday_to_time','friday_room_no','Friday')" class="btn btn-primary" style="float: right;">Save</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+<!-- saturday -->
+<div class="tab-pane fade" id="saturday" role="tabpanel" aria-labelledby="saturday-tab">
+    <div class=" card">
+        <div class="card-body" style="padding: 20px;">
+
+            <button type="button" id="add-subject-btn5" class="btn btn-primary" style="float: right;"
+                onclick="addrow('add-subject-btn5','subject-list5','subject-template5')">+ Add New</button>
+            <form method="post">
+                {% csrf_token %}
+                <div class="table-responsive"><br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Time from</th>
+                                <th>Time to</th>
+                                <th>Room No</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-list5">
+                            {% for data in TimeTable_records %}
+                                    {% if data.day == 'Saturday' %}
+                                    <tr >
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.subject}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.teacher}}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" value="{{data.time_from}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.time_to}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.room_no}}"  ></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                            onclick="deleterow('subject-list5','remove-subject-btn5')">x</button>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                            <tr id="subject-template5">
+                                <td>
+                                    <select class="form-control" name="saturday_subject[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in subject_records %}
+                                        <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" name="saturday_teacher[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in teacher_records %}
+                                        <option value="{{ data.id }}">{{ data.first_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td><input type="time" class="form-control" name="saturday_from_time"></td>
+                                <td><input type="time" class="form-control" name="saturday_to_time"></td>
+                                <td><input type="text" class="form-control" name="saturday_room_no"></td>
+                                <td><button type="button" class="btn btn-danger remove-subject-btn5"
+                                        onclick="deleterow('subject-list5','remove-subject-btn5')">x</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="Save('saturday_subject[]','saturday_teacher[]','saturday_from_time','saturday_to_time','saturday_room_no','Saturday')" class="btn btn-primary" style="float: right;">Save</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+<!-- sunday -->
+<div class="tab-pane fade" id="sunday" role="tabpanel" aria-labelledby="sunday-tab">
+    <div class=" card">
+        <div class="card-body" style="padding: 20px;">
+
+            <button type="button" id="add-subject-btn6" class="btn btn-primary" style="float: right;"
+                onclick="addrow('add-subject-btn6','subject-list6','subject-template6')">+ Add New</button>
+            <form method="post">
+                {% csrf_token %}
+                <div class="table-responsive"><br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Teacher</th>
+                                <th>Time from</th>
+                                <th>Time to</th>
+                                <th>Room No</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-list6">
+                            {% for data in TimeTable_records %}
+                                    {% if data.day == 'Sunday' %}
+                                    <tr >
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.subject}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="">
+                                                <option value="">{{data.teacher}}</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" value="{{data.time_from}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.time_to}}" ></td>
+                                        <td><input type="text" class="form-control" value="{{data.room_no}}"  ></td>
+                                        <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                            onclick="deleterow('subject-list6','remove-subject-btn6')">x</button>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                            <tr id="subject-template6">
+                                <td>
+                                    <select class="form-control" name="sunday_subject[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in subject_records %}
+                                        <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" name="sunday_teacher[]">
+                                        <option value="">---Select---</option>
+                                        {% for data in teacher_records %}
+                                        <option value="{{ data.id }}">{{ data.first_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td><input type="time" class="form-control" name="sunday_from_time"></td>
+                                <td><input type="time" class="form-control" name="sunday_to_time"></td>
+                                <td><input type="text" class="form-control" name="sunday_room_no"></td>
+                                <td><button type="button" class="btn btn-danger remove-subject-btn6"
+                                        onclick="deleterow('subject-list6','remove-subject-btn6')">x</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="button" onclick="Save('sunday_subject[]','sunday_teacher[]','sunday_from_time','sunday_to_time','sunday_room_no','Sunday')" class="btn btn-primary" style="float: right;">Save</button>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('change', '#id_Class', function () {
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+<script>
+// add new row 
+    function addrow(button, subject, template) {
+
+        const addSubjectButton = document.getElementById(button);
+        const subjectList = document.getElementById(subject);
+        const subjectTemplate = document.getElementById(template);
+
+        const newSubjectRow = subjectTemplate.cloneNode(true);
+        newSubjectRow.removeAttribute('id');
+
+        // Reset input values to empty
+        const inputs = newSubjectRow.getElementsByTagName('input');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].value = '';
+        }
+        subjectList.appendChild(newSubjectRow);
+
+
+    };
+// deleting row
+    function deleterow(subject, removebtn) {
+        const subjectList = document.getElementById(subject);
+        len=subjectList.rows.length;
+        if( len > 1 ){
+            subjectList.addEventListener('click', function (event) {
+                if (event.target.classList.contains(removebtn)) {
+                    event.target.closest('tr').remove();
+                }
+            });
+        }else{
+            const confirmation = confirm('This row will not be deleted');
+            if (confirmation && event.target.closest('tr') !== firstRow) { // Check if the clicked row is not the first row
+                event.target.closest('tr').remove();
+            }
+
+        }
+    }
+</script>
+
+
+<!--  bulk save  -->
+<script>
+    function Save(subject,teacher,from_time,to_time,room_no,day){
+    var url = "{% url 'timetable_save_js' %}";
+    var subjects = document.querySelectorAll('select[name="' + subject +'"]');
+    var subjectsArray = Array.from(subjects).map(function(element) {
+        return element.value;
+    });
+    var monday_teacher = document.querySelectorAll('select[name="' + teacher +'"]');
+    var monday_teacherArray = Array.from(monday_teacher).map(function(element) {
+        return element.value;
+    });
+    var from_time = document.getElementsByName(from_time);
+    from_timeArray=[]
+        for (var i = 0; i < from_time.length; i++) {
+            var value = from_time[i].value;
+            from_timeArray.push(value)
+        }
+    var to_time = document.getElementsByName(to_time);
+    to_timeArray=[]
+        for (var i = 0; i < to_time.length; i++) {
+            var value = to_time[i].value;
+            to_timeArray.push(value)
+        }
+    var room_no = document.getElementsByName(room_no);
+    room_noArray=[]
+        for (var i = 0; i < room_no.length; i++) {
+            var value = room_no[i].value;
+            room_noArray.push(value)
+        }
+    var classs = '{{classs}}'
+    var section = '{{section}}'
+    var subject_group =  '{{subject_group}}'
+    $.ajax({
+        url: url,
+        data: {
+            'subject': subjectsArray,
+            'teacher': monday_teacherArray,
+            'from_time': from_timeArray,
+            'to_time': to_timeArray,
+            'room_no': room_noArray,
+            'class': classs,
+            'section':section,
+            'subject_group': subject_group,
+            'day':day
+        },
+        success: function (data) {
+            console.log(data);
+            alert('Saved Successfully....!')
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+};
+
+</script>
+
+<script>
+    function Delete(subject, removebtn,pk){
+        var url = "{% url 'timetable_delete' %}";
+        const subjectList = document.getElementById(subject);
+        subjectList.addEventListener('click', function (event) {
+            if (event.target.classList.contains(removebtn)) {
+                event.target.closest('tr').remove();
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {
+                'pk': pk,
+            },
+            success: function (data) {
+                console.log(data);
+                alert('deleted Successfully....!')
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+
+{% endblock %}

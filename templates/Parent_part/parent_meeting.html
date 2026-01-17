@@ -1,0 +1,309 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<style>
+  /* General styling */
+  body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .checkbox-container {
+            max-height: 200px; /* Adjust the maximum height based on your preference */
+            overflow-y: auto; /* Enable vertical scrolling when the content overflows */
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .checkbox-label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer; /* Add cursor style to indicate clickability */
+        }
+
+        /* Input field styling */
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            margin-right: 5px;
+            display: none;
+        }
+
+        /* Hide checkboxes and show them when labels are clicked */
+        .checkbox-label input[type="checkbox"] {
+            display: inline;
+        }
+        .stucheck{
+            height: 250px;
+            overflow: auto;
+        }
+</style>
+    <div class="row">
+        <div class="main-header">
+           <h4>Parent Meeting</h4>
+        </div>
+     </div>
+       <!-- modal Start -->
+     <div class="col" style="padding: 30px;">
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Parent Meeting</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="col-md-12 mb-3">
+                    <label for="meeting_title">Meeting Title:</label>
+                    <input type="text" id="meeting_title" name="meeting_title" class="form-control" required>
+                    
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="meeting_date_time">Date and Time:</label>
+                    <input type="datetime-local" id="meeting_date_time" class="form-control" name="meeting_date_time" required>
+                    </div>       
+                <div class="col-md-6 mb-3">
+                    <label for="meeting_duration">Meeting Duration (in minutes):</label>
+                    <input type="number" id="meeting_duration" class="form-control" name="meeting_duration" required>
+                    </div>
+                <div class="col-md-6 mb-3">
+                    <label>Staff:</label>
+            
+                    <input type="text" id="search_staff" onkeyup="filterStaff()" placeholder="Search...">
+                    
+                    <!-- Use div to group the checkboxes -->
+                    <div id="staff_checkboxes" class="stucheck"> <br>
+                    {% for staff in addstaff %}
+                    <label class="checkbox-label" onclick="toggleCheckbox(this)">
+                        <input type="checkbox" id="staff_{{ staff.id }}" name="staff" value="{{ staff.id }}">
+                        {{ staff.first_name }} ({{ staff.roles }})
+                    </label>
+                    {% endfor %}
+                    </div>
+                     </div>
+            <div class="col-md-6 mb-3">
+            <label for="student_admission">Class</label>
+                {{form1.Class}}
+            </div>
+            <div class="col-md-6 mb-3">
+            <label for="student_admission">Section</label>
+                {{form1.section}}
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Student:</label>
+                <input type="text" id="search_student" onkeyup="filterStudent()" placeholder="Search...">
+                
+                <!-- Use div to group the checkboxes -->
+                <div id="student_checkboxes" class="stucheck"><br>
+                    {% for student in addstudent %}
+                        <label class="checkbox-label student-label" data-class="{{ student.Class.id }}" data-section="{{ student.section.id }}">
+                            <input type="checkbox" id="student_{{ student.id }}" name="student" value="{{ student.id }}">
+                            {{ student.first_name }} {% if student.last_name %} {{ student.last_name }} {% endif %}
+                        </label>
+                    {% endfor %}
+                </div>
+                </div>
+            <div class="col-md-6 mb-3">
+                <label for="meeting_url">Meeting URL:</label>
+                <input type="text" id="meeting_url" class="form-control" name="meeting_url" required>
+                  </div>
+            <div class="col-md-6 mb-3">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" rows="4" cols="50"></textarea>
+               </div>
+            <div class="col-md-6 mb-3">
+                <label for="status">Status:</label>
+                <select id="status" name="status" class="form-control" required>
+                    <option value="Awaited">Awaited</option>
+                    <option value="Cancelled!">Cancelled!</option>
+                    <option value="Finished">Finished</option>
+                </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+
+                <input type="text" disabled>
+
+          
+            
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function filterStudent() {
+        var input, filter, labels, i, txtValue;
+        input = document.getElementById("search_student");
+        filter = input.value.toUpperCase();
+        labels = document.getElementsByClassName("checkbox-label");
+
+        for (i = 0; i < labels.length; i++) {
+            txtValue = labels[i].textContent || labels[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                labels[i].style.display = "block";
+            } else {
+                labels[i].style.display = "none";
+            }
+        }
+    }
+
+    function toggleCheckbox(labelElement) {
+        var checkbox = labelElement.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+    }
+</script>
+  <script>
+    function filterStaff() {
+        var input, filter, labels, i, txtValue;
+        input = document.getElementById("search_staff");
+        filter = input.value.toUpperCase();
+        labels = document.getElementsByClassName("checkbox-label");
+
+        for (i = 0; i < labels.length; i++) {
+            txtValue = labels[i].textContent || labels[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                labels[i].style.display = "block";
+            } else {
+                labels[i].style.display = "none";
+            }
+        }
+    }
+
+    function toggleCheckbox(labelElement) {
+        var checkbox = labelElement.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+    }
+</script>
+
+
+
+   
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Meeting Title</th>
+                        <th>Date Time</th>
+                        <th>Meeting Duration (In Minutes)</th>
+                        <th>Staff</th>
+                        <th>Students</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                      <tr>
+                          <td>{{data.meeting_title}}</td>
+                          <td>{{data.meeting_date_time}}</td>
+                          <td>{{data.meeting_duration}}</td>
+                            <td>
+                                {% for staff in data.staff.all %}
+                                    {{ staff.first_name }}   
+                                    {% if not forloop.last %}, {% endif %}  
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for student in data.student.all %}
+                                    {{ student.first_name }}  
+                                     {% if student.last_name %}  {{ student.last_name }} {% endif %}
+                                    {% if not forloop.last %}, {% endif %}  
+                                {% endfor %}
+                            </td>
+                          <td>{{data.description}}</td>
+                          <td>
+                            <span class="label label-{% if data.status == 'Finished' %}success{% elif data.status == 'Awaited' %}warning{% elif data.status == 'Cancelled!' %}danger{% endif %}">{{ data.status }}</span>
+                        </td>
+                                                
+                        <td>
+                            <a href="{% url 'parent_meeting_view_parent' data.id  %}" style="color: black;"><i class='fa fa-eye'></i></a>
+
+                            <a href="{% url 'parent_meeting_feeedback_parent' data.id %}" style="color: black;"  ><i class='fa fa-plus'></i></a>
+                                         
+                          </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+
+ {% endblock %}
+ {% block script_block %}
+ <script>
+    function filterStudent() {
+        var input, filter, labels, i, txtValue;
+        input = document.getElementById("search_student");
+        filter = input.value.toUpperCase();
+        labels = document.getElementsByClassName("student-label");
+
+        for (i = 0; i < labels.length; i++) {
+            txtValue = labels[i].textContent || labels[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                labels[i].style.display = "block";
+            } else {
+                labels[i].style.display = "none";
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        function filterStudentsByClassSection() {
+            var selectedClass = $('#id_Class').val();
+            var selectedSection = $('#id_section').val();
+            var labels = document.getElementsByClassName("student-label");
+
+            for (var i = 0; i < labels.length; i++) {
+                var classId = labels[i].dataset.class;
+                var sectionId = labels[i].dataset.section;
+
+                if (selectedClass === "" || selectedClass === classId) {
+                    if (selectedSection === "" || selectedSection === sectionId) {
+                        labels[i].style.display = "block";
+                    } else {
+                        labels[i].style.display = "none";
+                    }
+                } else {
+                    labels[i].style.display = "none";
+                }
+            }
+        }
+
+        // Call the filter function when the class or section selection changes
+        $('#id_Class, #id_section').on('change', function () {
+            filterStudentsByClassSection();
+        });
+
+        // Initially filter the students based on the default class and section selection
+        filterStudentsByClassSection();
+    });
+</script>
+
+ 
+ {% endblock  %}

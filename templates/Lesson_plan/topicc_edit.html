@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Topic</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                     </div><hr>
+                     {% if not view %}
+                    <h4>Edit Add Topic</h4>
+                    {% else %}
+                    <h4>View Add Topic</h4>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                     <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="class">Class</label>
+                            <select name="Class" class="form-control" required id="id_Class">
+                                <option value="" >------</option>
+                                {% for data in class_records %}
+                                <option value="{{ data.id }}" {% if records.0.Class.id == data.id %}selected{% endif %}>{{data.Class}}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="section">Section</label>
+                            <select name="section" class="form-control" required id="id_section">
+                                <option value="{{records.0.section.id}}">{{records.0.section}}</option>
+
+                               </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="section">Subject_group</label>
+                            <select name="subject_group" class="form-control" required id="id_subject_group">
+                                <option value="{{records.0.subject_group.id}}">{{records.0.subject_group}}</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="section">Subject</label>
+                            <select name="subject" class="form-control" required id="id_subject">
+                                <option value="{{records.0.subject.id}}">{{records.0.subject}}</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="section">Lesson</label>
+                            <select name="lesson" class="form-control" required id="id_lesson">
+                                <option value="{{records.0.lesson_name.id}}">{{records.0.lesson_name.lesson_name}}</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="section">Topic</label><br>
+                                <table class="table" id="tableID4">
+                                    {% if not view %}
+                                    <tr>
+                                        <button type="button" onclick="add_more()" class="plusign btn btn-primary btn-sm" style="padding: 3px; float: right;"><i
+                                            class="fa fa-plus"> </i> Topic name</button>
+                                    </tr>
+                                    {% endif %}
+                                    {% for data in records %}
+                                    <tr>
+                                        <td><input type="hidden" name="ids" value="{{data.id}}"> <input type="text" name="topic_name" class="form-control" value="{{data.topic_name}}" required id="id_topic_name" class="form-control" placeholder="Type"></td>
+                                        {% if not view %}
+                                        <td><a href="{% url 'topicc_delete' data.id %}"><button type='button'  class='btn btn-danger'>X</button></a></td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                        </div>
+
+                      </div><br>
+                     {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                     {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% if 'topic_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Topic List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Subject Group</th>
+                                <th>Subject</th>
+                                <th>Lesson</th>
+                                <th>Topic</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% regroup records by lesson_name as group_list %}
+                            {% for record in group_list %}
+                            <tr>
+                                <td>{{record.list.0.Class}}</td>
+                                <td>{{record.list.0.section}}</td>
+                                <td>{{record.list.0.subject_group}}</td>
+                                <td>{{record.list.0.subject}}</td>
+                                <td>{{record.list.0.lesson_name.lesson_name}}</td>
+                                <td>{{record.list.0.topic_name}}</td>
+                                <td>
+                                    {% if 'topiv_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'topicc_view' record.list.0.lesson_name.id %}"  class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    {% endif %}
+                                    {% if 'topic_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'topicc_edit' record.list.0.lesson_name.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    {% endif %}
+                                    {% if 'topic_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'topic_bulk_delete' record.list.0.lesson_name.id %}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                    {% endif %}
+                                   </td>
+                            </tr>
+                            {% for data in record.list|slice:"1:" %}
+                            <tr>
+                                <td colspan="5"></td>
+                                <td>{{data.topic_name}}</td>
+                                <td></td>
+
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    </div>
+
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+  });
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_section', function () {
+      var section_id = $('#id_section').val();
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'subject_grp_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+            'class_id': class_id,
+            'section_id': section_id,
+        },
+        success: function (data) {
+            $("#id_subject_group").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subjectt) {
+                html_data += `<option value="${subjectt.id}">${subjectt.name}</option>`
+            });
+            console.log(html_data);
+            $("#id_subject_group").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+  });
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_subject_group', function () {
+      var class_id = $('#id_Class').val();
+      var section_id = $('#id_section').val();
+      var subject_grps = $('#id_subject_group').val();
+      var url = "{% url 'subject_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+            'class_id': class_id,
+            'section_id': section_id,
+            'subject_grp_id': subject_grps
+        },
+        success: function (data) {
+            $("#id_subject").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subjecttt) {
+                html_data += `<option value="${subjecttt.id}">${subjecttt.subject_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_subject").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+  });
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_subject', function () {
+      var class_id = $('#id_Class').val();
+      var section_id = $('#id_section').val();
+      var subject_grps = $('#id_subject_group').val();
+      var subjectt = $('#id_subject').val();
+      var url = "{% url 'topic_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+            'class_id': class_id,
+            'section_id': section_id,
+            'subject_grp_id': subject_grps,
+            'subject':subjectt
+        },
+        success: function (data) {
+            $("#id_lesson").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subject) {
+                html_data += `<option value="${subject.id}">${subject.lesson_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_lesson").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+  });
+  </script>
+    <script>
+        function add_more() {
+
+var table = document.getElementById("tableID4");
+var table_len = (table.rows.length);
+var id = parseInt(table_len);
+var row = table.insertRow(table_len).outerHTML = "<tr id='row" + id + "'><td><input type='text' class='form-control' id='id_topic_name' name='new_topic_name' placeholder='Type'></td><td><button type='button' onclick='delete_row(" + id + ")' class='closebtn btn btn-danger btn-sm'>X</button></td></tr>";
+}
+function delete_row(id) {
+
+
+var table = document.getElementById("tableID4");
+var rowCount = table.rows.length;
+$("#row" + id).html("");
+//table.deleteRow(id);
+}
+
+  </script>
+ {% endblock  %}

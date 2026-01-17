@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+<br>
+<h4>Select Criteria</h4>
+
+<div class="card">
+    <div class="card-body" style="padding: 20px;">
+        {% if 'staff_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+        <a class="btn btn-primary" style="float:right;" href="{% url 'add_staff' %}">Add</a>
+        {% endif %}
+        {% if 'staff_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="class">List of View</label>
+                    <select class="form-control" name="role" required>
+                        <option value="">---Select---</option>
+                        {% for data in roels %}
+                        <option value="{{data.id}}">{{data.name}}</option>
+                        {% endfor %}
+
+
+                    </select>
+                </div>
+
+
+                <div class="col-md-12 mb-3"><br>
+
+                    <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+<br>
+{% if 'staff_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+{% if records %}
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Department</th>
+                        <th>Designation</th>
+                        <th>Mobile Number</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.staff_id}}</td>
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.roles.name }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.designation }}</td>
+                        <td>{{ data.phone_no }}</td>
+
+                        <td>
+                            {% if 'staff_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                            <a href="{% url 'Staff_details_show' data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"><i
+                                    class='fa fa-server'></i></a>
+                            {% endif %}
+                             {% if 'staff_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}       
+                            <a href="{% url 'add_staffs_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i
+                                    class='fa fa-edit'></i></a>
+                            {% endif %}
+                        </td>
+
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+
+
+<!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

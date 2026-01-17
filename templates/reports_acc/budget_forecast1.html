@@ -1,0 +1,41 @@
+{% extends 'base copy.html' %} 
+{% block body_block %} 
+{% load static %} 
+{% load custom_filter %}  
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                    <h3 class="card-title">
+    <h2>Budget & Forecast Report</h2>
+</h3>
+
+<div class="table-responsive">
+    <table id="tableID" class="display table table-hover">
+        <thead class="bg-col">
+            <tr>
+                <th>Account Name</th>
+                <th>Budgeted Amount</th>
+                <th>Actual Amount</th>
+                <th>Forecast Difference</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in forecast_data %}
+            <tr>
+                <td>{{ data.account_name }}</td>
+                <td>{{ data.budgeted_amount }}</td>
+                <td>{{ data.actual_amount }}</td>
+                <td>{{ data.forecast_difference }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No data available</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

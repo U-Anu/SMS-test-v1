@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="main-header">
+       <h4>Inventory Report</h4>
+    </div>
+  </div>
+ 
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'stock_report' %}">Stock Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'Add_item_report' %}">Add Item Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'issue_item_report' %}">Issue Item Report</a>
+            </div>
+            <br><br><br>
+            
+   </div>
+   </div>
+   </div>
+           
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+ 
+ {% endblock  %}

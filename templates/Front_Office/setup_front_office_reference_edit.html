@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+<style>
+  .vertical-nav {
+    width: 100%;
+    background-color: #f8f9fa;
+  }
+
+  .vertical-nav .nav-link {
+    display: block;
+    padding: 8px 16px;
+    color: #343a40;
+  }
+
+  .vertical-nav .nav-link:hover {
+    background-color: #e9ecef;
+  }
+  .active{
+    background-color: #e9ecef;
+  }
+</style>
+{% endblock  %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>SetUp FrontOffice</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="card" style="padding: 10px;">
+                 
+                 <nav class="vertical-nav">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link " href="{% url 'setup_front_office_purpose'  %}">Purpose</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="{% url 'setup_front_office_complain_type'  %}">Complain Type</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'setup_front_office_source'  %}">Source</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" href="{% url 'setup_front_office_reference'  %}">Reference</a>
+                    </li>
+                  </ul>
+                </nav>
+                </div>
+                </div>
+             
+
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;">
+                    <div class="main-header">
+                        <h4>Edit Reference</h4>
+                     </div><hr>
+                     <form method="post">
+                      {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}                    
+
+                      </div><br>
+                      <center>
+                      <button type="submit" class="btn btn-primary">Save</button></center>
+                    </form>
+
+
+
+
+                     
+                    
+                      
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card" style="padding: 10px;">
+                    <div class="main-header">
+                        <h4>Reference List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in records %}
+                            <tr>
+                                <td>{{data.reference}}</td>
+                                <td><a href="{% url 'setup_front_office_reference_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                  <a href="{% url 'setup_front_office_reference_delete' data.id %}" style="color: black;" onclick="alert('You want to Delete this Item..?')"><i class='fa fa-remove'></i></a>
+                                </td>
+                                    
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

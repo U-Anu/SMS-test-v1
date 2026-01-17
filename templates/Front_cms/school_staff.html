@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Add School Staff</h4>
+       </div>
+    </div>
+    {% if 'school_staff_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <div class="col" style="padding: 30px;">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add" style="float:right;">+ Add</button><br>
+    </div>
+    {% endif %}
+    {% if 'school_staff_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+                <table id="tableID" class="display"  >
+                    <thead>
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Staff Position</th>
+                            <th>Twitter Link</th>
+                            <th>Facebook Link</th>
+                            <th>Linkedin Link</th>                             
+                            <th>Image </th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                          {% for data in records %}   
+                          <tr>
+                              <td>{{data.staff_name}}</td>
+                              <td>{{data.staff_position}}</td>
+                              <td>{{data.twitter_link}}</td>
+                              <td>{{data.facebook_link}}</td>
+                              <td>{{data.linkedIn_link}}</td>
+                              <td><img src="{{data.staff_image.url}}"  class="img-fluid img-responsive" style="height: 120px;width: auto;"></td>
+                            <td>
+                                {% if 'school_staff_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                              <a href="{% url 'school_staff_edit' data.id%}" style="color: black;"><i class='fa fa-edit'></i></a>
+                              {% endif %}
+                              {% if 'school_staff_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                              <a href="{% url 'school_staff_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                              {% endif %}
+                               </td>
+                        </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+            
+                </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+   
+    <!-- modal -->
+    <div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}       
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add News</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid"><br>               
+                           
+                          
+                     {{form}}<br />                 
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+    
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

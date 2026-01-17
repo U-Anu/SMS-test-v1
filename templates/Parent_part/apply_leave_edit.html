@@ -1,0 +1,148 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+    <div class="row">
+        <div class="main-header">
+           <h4>Leave List</h4>
+        </div>
+     </div>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br>
+            <br><div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Apply Date</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      {% for data in records %}   
+                      <tr>
+                          <td>{{data.Class}}</td>
+                          <td>{{data.section}}</td>
+                          <td>{{data.apply_date}}</td>
+                          <td>{{data.from_date}}</td>
+                          <td>{{data.to_date}}</td>
+                          <td>{% if data.status == 'disapprove' %} Pending {% else %}{{data.status}}{% endif %}</td>
+                        <td>
+                          <a href="{% url 'apply_leave_edit' data.id %}" style="color: black;"><i class='fa fa-edit' data-toggle="tooltip" title="Edit"></i></a>
+                          <a href="{% url 'apply_leave_delete' data.id %}" style="color: black;"><i class='fa fa-trash'data-toggle="tooltip" title="Delete"  onclick="alert('You want to Delete this Item..?')"></i></a>
+                           </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+ 
+             <!-- modal End -->
+
+  
+<div class="modal fade bd-example-modal-lg" id='myModal' tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit List</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          {% csrf_token %}
+          {{ form.Class }}{{ form.section }}{{ form.student }}
+      <div class="row">
+        <div class="col-md-4 mb-3">
+            {{form.apply_date.label_tag}}
+          {{ form.apply_date }}
+        </div>
+        <div class="col-md-4 mb-3">
+          {{form.from_date.label_tag}}
+        {{ form.from_date }}
+      </div>
+      <div class="col-md-4 mb-3">
+        {{form.to_date.label_tag}}
+      {{ form.to_date }}
+    </div>
+    <div class="col-md-4 mb-3">
+      {{form.reason.label_tag}}
+    {{ form.reason }}
+  </div>
+  <div class="col-md-4 mb-3">
+    {{form.attach_document.label_tag}}
+  {{ form.attach_document }}
+</div>
+      </div>
+      <br>
+      <center>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </center>
+    </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+    $(document).ready(function () {
+        // Open the modal when the page is loaded
+        $('.bd-example-modal-lg').modal('show');
+
+       
+    });
+</script>
+
+
+<script>
+  // Get the modal element and close button
+  const modal = document.getElementById("myModal");
+  const closeButton = modal.querySelector(".close");
+
+  // Add event listener to close button
+  closeButton.addEventListener("click", function () {
+    closeModalAndRedirect();
+  });
+
+  // Add event listener to modal overlay
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      closeModalAndRedirect();
+    }
+  });
+
+  // Function to close the modal and perform the redirection
+  function closeModalAndRedirect() {
+    modal.style.display = "none"; // Hide the modal
+
+    // Perform the redirection
+    window.location.href = "/parent/apply_leave_parent"; // R
+  }
+</script>
+ {% endblock  %}
+
+
+
+
+
+
+
+
+
+

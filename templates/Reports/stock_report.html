@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="main-header">
+      <div class="col-md-4">
+        <h4>Inventory Report</h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="card" style="padding: 10px;">
+    <div class="container-fluid" style="padding: 10px;">
+      <div class="col-md-4  mb-3">
+        <a href="{% url 'stock_report' %}" class="text-primary">Stock Report</a>
+      </div>
+      <div class="col-md-4  mb-3">
+        <a href="{% url 'Add_item_report' %}">Add Item Report</a>
+      </div>
+      <div class="col-md-4  mb-3">
+        <a href="{% url 'issue_item_report' %}">Issue Item Report</a>
+      </div>
+      <br><br><br>
+
+    </div>
+  </div>
+</div>
+
+
+
+{% if records %}
+
+<div class="col-md-12">
+  <div class="card" style="padding: 10px;">
+    <div class="table-responsive">
+      <table id="tableID" class="display">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Store</th>
+            <th>Available Quantity</th>
+            <th>Total Quantity</th>
+            <th>Total Issued</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for data in records %}
+
+          <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item_category}}</td>
+            <td>{{data.supplier}}</td>
+            <td>{{data.store}}</td>
+            <td>{{data.available_quantity}}</td>
+            <td>{{data.quantity}}</td>
+            <td>{{data.available_quantity}}{{data.quantity}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+{% else %}
+<center>
+  <h5>No Records Found </h5>
+</center>
+{% endif %}
+
+
+<!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

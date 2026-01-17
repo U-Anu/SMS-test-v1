@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Edit Fees Master : 2022-23</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Edit Fees Master : 2022-23</h4>
+                     </div><hr>
+                     <form>
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                     
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Fees Master List : 2022-23</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Fees Group</th>
+                                <th>Fees Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>  
+                                    <a href="{% url 'edit_income' %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    <a href="" style="color: black;"><i class='fa fa-remove'></i></a>
+                                   </td>
+                            </tr>
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

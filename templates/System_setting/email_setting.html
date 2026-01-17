@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid"><br>
+    <div class="row card" style="padding: 10px; border-top: 5px solid black;">
+        <div class="col-md-12" >
+            <div class="tab-pane active" id="duck" role="tabpanel" aria-labelledby="duck-tab">
+                <h5>Email Setting</h5><br>
+                <div class="row">
+                    <form action="" method="post">
+                        {% csrf_token %}
+
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6" >
+                                <label for="" style="float: right;">Default From Email <span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" autocomplete="off" class="form-control" name="default_from_email" value="{% if last_record.default_from_email %}{{last_record.default_from_email}}{% endif %}">
+                            </div>
+                         
+                            <div class="col-md-6" >
+                                <label for="" style="float: right;">Email Port<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" autocomplete="off" class="form-control" name="email_port" value="{% if last_record.email_port %}{{last_record.email_port}}{% endif %}">
+                            </div>
+                            <div class="col-md-6" >
+                                <label for="" style="float: right;">Email Host<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" autocomplete="off" class="form-control" name="email_host" value="{% if last_record.email_host %}{{last_record.email_host}}{% endif %}">
+                            </div>                            
+                            <div class="col-md-6" >
+                                <label for="" style="float: right;">Gmail <span class="text-danger">*</span></label>
+                            </div>  
+                            <div class="col-md-6">
+                                <input type="text" autocomplete="off" class="form-control" name="gmail" value="{% if last_record.gmail %}{{last_record.gmail}}{% endif %}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6" >
+                                <label for="" style="float: right;">Password <span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="password" class="form-control"  name="password" value="{% if last_record.password %}{{last_record.password}}{% endif %}">
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-success"   name="btn_type" value="kenya"  style="float: right;">Save</button>
+                    </div>
+                </form>
+                  
+                </div>
+
+            </div>
+
+        
+    </div>
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

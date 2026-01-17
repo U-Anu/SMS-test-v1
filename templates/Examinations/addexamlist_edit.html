@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Exam List</h4>
+           <div style="float: right;padding-right: 10px;">
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target=".bd-example-modal-lg">+ New Exam</button>
+           <button type="button" class="btn btn-dark"> Link Exam</button>
+           </div>
+        </div>
+     </div>
+
+     <!-- New Exam Modal -->
+     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Exam</h5>
+                 <button type="button" class="close" >
+                    <span aria-hidden="true">&times;</a></span>
+                  </button>
+                </div>
+                <form method="post">
+
+                <div class="modal-body">
+                    {% csrf_token %}
+                        <div class="col-md-12">
+                            {{form}}<br>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save </button>
+                </div>
+                </form>
+            </div>
+        </div>
+      </div>
+     <!-- New Exam Modal End -->
+
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                <div class="main-header">
+                    <div class="col-md-3">
+                        <h5>Exam Group </h5>
+                        <p>Demo</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Exam Type </h5>
+                        <p>General Purpose (Pass/Fail) </p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Description </h5>
+                        <p>General Purpose (Pass/Fail) </p>
+                    </div>
+                </div>
+                <div class="table-responsive"><br>
+                    <table id="tableID" class="display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Session</th>
+                                <th>Subjects Included</th>
+                                <th>Status</th>
+                                <th>Publish Result</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                                <tr>
+                                    <th>{{ data.Exam }}</th>
+                                    <th>{{ data.session }}</th>
+                                    <th>
+                                        <input type="checkbox" {% if data.publish %}checked{% endif %}>
+                                    </th>
+                                    <th>{{ data.publish }}</th>
+                                    <th>{{ data.publish_result }}</th>
+                                    <th>{{ data.description }}</th>
+                                    <th></th>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script_block %}
+
+{% endblock %}

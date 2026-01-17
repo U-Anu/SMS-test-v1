@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Leave Type</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Edit Leave Type</h4>
+                     </div><hr>
+                     <form id="delete-form" method="post">
+                        {% csrf_token %}
+                      
+                     <div class="row">
+                        {% for data in form %}
+                  
+                     <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                      
+                        {% endfor %}
+                      </div><br>
+                     
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Leave List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display"  >
+                            <thead>
+                                <tr>
+                                    <th>Staff</th>
+                                    <th>Leave Type</th>
+                                    <th>Leave Date</th>
+                                    <th>Apply Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              {% for leave in leaves %}
+                                <tr>
+                                    <td>admin</td>
+                                    <td>{{leave.reason}}</td>
+                                    <td>{{leave.leave_date_from}} - {{leave.leave_date_to}}</td>
+                                    <td>{{leave.apply_date}}</td>
+                                    <td>Pending</td>
+                                    <td>  
+                                      <a href="{% url 'apply_leave_edit' leave.id%}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                      <a href="{% url 'apply_leave_delete' leave.id%}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                       </td>
+                                </tr>
+                                {% endfor %}
+                              
+                            </tbody>
+                    
+                        </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

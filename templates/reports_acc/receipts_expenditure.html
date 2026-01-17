@@ -1,0 +1,36 @@
+{% extends 'base copy.html' %} 
+{% block body_block %} 
+{% load static %} 
+{% load custom_filter %}  
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                    <h3 class="card-title">
+                        <h2>Statement of Receipts & Expenditures</h2>
+                        
+                    </h3>
+
+                    <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                            <thead class="bg-col">
+                                <tr>
+                <th>Category</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Receipts (Income)</td>
+                <td>{{ total_receipts }}</td>
+            </tr>
+            <tr>
+                <td>Expenditures (Expenses)</td>
+                <td>{{ total_expenditures }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

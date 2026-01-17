@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        {{ message }}
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>{{ screen_name }}</h2>
+                <div>
+                    <button type="submit" form="myForm" class="btn btn-primary">Save</button>
+                    <a href="{{ list_url }}" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            <div class="card card-body">
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    {% csrf_token %}
+                    {% for form_field in form %}
+                        <div class="form-group">
+                            {{ form_field.label_tag }}
+                            {{ form_field }}
+                        </div>
+                    {% endfor %}
+                    <center><h3><span>Payment Terms</span></h3></center>
+                    <span><b>Note: </b>It will be enabled when the payment complexity is selected as <i>'Process'</i>.</span>
+                    <hr>
+                    <div id="fieldsContainer"></div><br>
+
+                    <button type="button" id="addButton" class="btn btn-primary" style="display:none;">Add Field Set</button>
+                    <button type="button" id="removeButton" class="btn btn-danger" style="display:none;">Remove Last Field Set</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        let fieldCount = 0; // Counter to keep track of the number of field sets
+
+        $('#id_payment_complexity').change(function() {
+            const selectedOption = $(this).val();
+            if (selectedOption === 'PC-002') {
+                // Show the add and remove buttons
+                $('#addButton').show();
+                $('#removeButton').show();
+
+                // Add initial set of fields
+                $('#fieldsContainer').html(`
+                    <div class="form-group field-set" data-id="${fieldCount}">
+                        <label for="id_payment_term_period">Payment term period:</label>
+                        <input type="text" name="payment_term_period" maxlength="50" class="form-control" required id="id_payment_term_period">
+                        <label for="id_payment_term_milestone">Payment term milestone:</label>
+                        <input type="text" name="payment_term_milestone" maxlength="255" class="form-control" required id="id_payment_term_milestone">
+                        <label for="id_payment_term_amount">Payment term amount:</label>
+                        <input type="number" name="payment_term_amount" value="0" step="any" class="form-control" required id="id_payment_term_amount">
+                        <button type="button" class="removeFieldsButton btn btn-danger">Remove This Set</button>
+                    </div>
+                `);
+            } else {
+                // Hide the add and remove buttons and clear fields
+                $('#addButton').hide();
+                $('#removeButton').hide();
+                $('#fieldsContainer').empty();
+            }
+        });
+
+        $('#addButton').click(function() {
+            fieldCount++; // Increment the counter
+            // Create a new set of fields with a unique data attribute
+            const newFields = `
+                <div class="form-group field-set" data-id="${fieldCount}">
+                    <label for="id_payment_term_period">Payment term period:</label>
+                    <input type="text" name="payment_term_period" maxlength="50" class="form-control" required id="id_payment_term_period_${fieldCount}">
+                    <label for="id_payment_term_milestone">Payment term milestone:</label>
+                    <input type="text" name="payment_term_milestone" maxlength="255" class="form-control" required id="id_payment_term_milestone_${fieldCount}">
+                    <label for="id_payment_term_amount">Payment term amount:</label>
+                    <input type="number" name="payment_term_amount" value="0" step="any" class="form-control" required id="id_payment_term_amount_${fieldCount}">
+                    <button type="button" class="removeFieldsButton btn btn-danger">Remove This Set</button>
+                </div>
+            `;
+            // Append the new fields to the container
+            $('#fieldsContainer').append(newFields);
+        });
+
+        $('#fieldsContainer').on('click', '.removeFieldsButton', function() {
+            $(this).closest('.field-set').remove(); // Remove the specific set of fields
+        });
+
+        $('#removeButton').click(function() {
+            // Find and remove the last set of fields if any are present
+            const lastFieldGroup = $('#fieldsContainer').children().last();
+            if (lastFieldGroup.length) {
+                lastFieldGroup.remove();
+            }
+        });
+    });
+    </script>
+
+<script>
+   $(document).ready(function() {
+    function updateAmountDue() {
+        // Get the value from the actual amount field
+        var actualAmount = parseFloat($('#id_actual_amount').val()) || 0;
+
+        // Get the value from the amount paid field
+        var amountPaid = parseFloat($('#id_amount_paid').val()) || 0;
+
+        // Validation: Ensure amount paid does not exceed the actual amount
+        if (amountPaid > actualAmount) {
+            alert("Amount paid cannot be greater than the actual amount.");
+            $('#id_amount_paid').val(actualAmount); // Set amount paid to the maximum allowable amount
+            amountPaid = actualAmount; // Update the variable accordingly
+        }
+
+        // Calculate the amount due by subtracting the amount paid from the actual amount
+        var amountDue = actualAmount - amountPaid;
+
+        // Set the calculated amount due in the amount due field
+        $('#id_amount_due').val(amountDue);
+    }
+
+    // Bind the event listeners to update the amount due in real-time
+    $('#id_actual_amount, #id_amount_paid').on('input', updateAmountDue);
+});
+$(document).ready(function() {
+    // Set today's date as the minimum date for the due date field
+    var today = new Date().toISOString().split('T')[0];
+    $('#id_due_date').attr('value', today);
+    $('#id_due_date').attr('min', today);
+    $('#id_effective_from').attr('value', today);
+    $('#id_effective_from').attr('min', today);
+});
+
+</script>
+
+
+{% endblock %}

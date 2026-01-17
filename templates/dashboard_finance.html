@@ -1,0 +1,175 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+
+{% load static %}
+<div class="content-wrapper">
+    <div class="row">
+      <div class="col-md-12 grid-margin">
+        <div class="row">
+          <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+            <h3 class="font-weight-bold">WELCOME TO </h3>
+            <h6 class="font-weight-normal mb-0"><span class="text-primary">BHARATHBRANDS</span> ACCOUNTING SYSTEM ...!!!</h6>
+<!--            <span class="text-primary">3 unread alerts!</span>-->
+        </div>
+      </div>
+    </div>
+      <br>
+             <div class="container-fluid">
+               <div class="dashboard-body">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'transaction_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Transactions</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Transactions</h6>
+                            <p class="card-text">{{no_of_user}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+
+{% comment %} 
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'currency_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Currency</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Currency</h6>
+                            <p class="card-text">{{no_of_currency}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div> {% endcomment %}
+
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'glline_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Gl Line</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Line</h6>
+                            <p class="card-text">{{no_of_glline}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'transaction_type_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Transaction Type</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Transaction Type</h6>
+                            <p class="card-text">{{no_of_transaction_type}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'account_type_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Account Type</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Account Type</h6>
+                            <p class="card-text">{{no_of_account_type}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'account_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Accounts</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Accounts</h6>
+                            <p class="card-text">{{no_of_accounts}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+{% comment %} 
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'custom_field_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Custom Field</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Custom Field</h6>
+                            <p class="card-text">{{no_of_custom_field}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div> {% endcomment %}
+
+            {% comment %} <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'custom_field_type_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Custom Field Type</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Custom Field Type</h6>
+                            <p class="card-text">{{no_of_custom_type}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+               </div> {% endcomment %}
+
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'account_entry_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Accounts Entries</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Accounts Entries</h6>
+                            <p class="card-text">{{no_of_account_entries}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'account_payable_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Payable</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Payable</h6>
+                            <p class="card-text">{{no_of_payable}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+              <div class="col-lg-3 col-md-4 col-md-6 col-12">
+                    <a href="{% url 'account_receivable_list' %}">
+                      <div class="card own-card">
+                        <div class="card-body">
+                                <h5 class="card-title">Receivable</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">No. Of Receivable</h6>
+                            <p class="card-text">{{no_of_receivable}}</p>
+
+                        </div>
+                    </div>
+                    </a>
+                </div>
+
+
+
+
+
+            </div>
+          </div>
+             </div>
+  </div>
+  </div>
+
+  {% endblock %}

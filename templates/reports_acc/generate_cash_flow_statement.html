@@ -1,0 +1,46 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">Cash flow statement</h3>
+                <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Amount (USD)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for key, value in cash_flow_statement.items %}
+                                    <tr>
+                                        <td><strong>{{key}}</strong></td>
+                                        {% if forloop.last %}
+                                        <td><strong>{{value}}</strong></td>
+                                        {% endif %}
+                                        {% for k,v in value.items %}
+                                        <tr>
+                                    <td>{{k}}</td>
+                                        <td>{{v}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                            <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

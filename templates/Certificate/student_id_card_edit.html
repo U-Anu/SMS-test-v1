@@ -1,0 +1,455 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+{% for data in records %}
+
+<style>
+      .form-group {
+       margin-bottom: 0rem;
+    }
+
+    @charset "UTF-8";
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+    }
+    
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+    
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+    
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+    
+    
+
+
+
+.toggler-wrapper.style-4 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+	left: calc(100% - 19px - 3px);
+}
+
+.toggler-wrapper.style-4 .toggler-knob {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	left: 0;
+	top: 0;
+	background-color: #fff;
+	-webkit-box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+	box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+}
+
+
+  
+   .id-card {
+       
+       border: 2px solid #000000;
+       border-radius: 5px;
+       padding: 10px;
+       display: flex;
+       flex-direction: column;
+       font-family: Arial, sans-serif;
+       background-color: #fff;
+
+   }
+   
+   .id-card .school-name {
+       font-size: 18px;
+       font-weight: bold;
+       text-align: center;
+       margin-bottom: 5px;
+       padding: 10px;
+       background-color: {{data.header_color}};
+   }
+   
+   .id-card .address {
+       font-size: 12px;
+       text-align: center;
+       margin-bottom: 10px;
+   }
+   
+</style>
+{% endfor %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Student ID Card</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                     
+                     {% if not view %}
+                     <h4>Edit Student ID Card</h4>
+                     {% else %}
+                     <h4>View Student ID Card</h4>
+                     {% endif %}
+                    </div><hr>
+                     <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                           <div class="row">
+                                
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_background_image">Background image:</label>
+                                    <br>
+                                        {% if record.background_image %}
+                                <a href="{{record.background_image.url}}" class="text-primary">{{record.background_image}}</a>
+                                {% endif %}
+                                    <input type="file" name="background_image" class="form-control"  id="id_background_image">
+                                </div>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_logo">Logo:</label>
+                                    <br>
+                                        {% if record.logo %}
+                                <a href="{{record.logo.url}}" class="text-primary">{{record.logo}}</a>
+                                {% endif %}
+                                    <input type="file" name="logo" class="form-control"  id="id_logo">
+                                </div>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_signature">Signature:</label>
+                                    <br>
+                                        {% if record.signature %}
+                                <a href="{{record.signature.url}}" class="text-primary">{{record.signature}}</a>
+                                {% endif %}
+                                    <input type="file" name="signature" class="form-control" id="id_signature">
+                                </div>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_school_name">School name:</label>
+                                    <input type="text" name="school_name" maxlength="255" class="form-control" value="{{record.school_name}}" required id="id_school_name">
+                                </div>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_address">Address:</label>
+                                    <textarea name="address" cols="40" rows="10" maxlength="255" required class="form-control" id="id_address">{{record.address}}</textarea>
+                                </div>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_id_card_title">Id card title:</label>
+                                    <input type="text" name="id_card_title" maxlength="255" class="form-control" value="{{record.id_card_title}}" required id="id_id_card_title">
+                                </div>
+                                
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_header_color">Header color:</label>
+                                    <input type="text" name="header_color" maxlength="255" class="form-control" value="{{record.header_color}}" required id="id_header_color">
+                                </div>
+                                <div class="col-md-12 mb-3"><br></div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_admission_no">Admission no:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="admission_no" id="id_admission_no" {% if record.admission_no %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_student_name">Student name:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="student_name" id="id_student_name" {% if record.student_name %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_Class">Class:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="Class" id="id_Class" {% if record.Class %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_father_name">Father name:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="father_name" id="id_father_name" {% if record.father_name %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_mother_name">Mother name:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="mother_name" id="id_mother_name" {% if record.mother_name %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_student_address">Student address:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="student_address" id="id_student_address" {% if record.student_address %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_phone">Phone:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="phone" id="id_phone" {% if record.phone %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_date_of_birth">Date of birth:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="date_of_birth" id="id_date_of_birth" {% if record.date_of_birth %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="id_blood_group">Blood group:</label>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="blood_group" id="id_blood_group" {% if record.blood_group %}checked{% endif %}>
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div> 
+                                
+                            </div><br>
+                        <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Student ID Card List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Id Card Title</th>
+                                <th>Background Image</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>      
+                                    <a href="#" style="color: black;" data-toggle="modal" data-target="#studentIdCard{{ data.id }}">{{ data.id_card_title }}</a>
+                                </td>
+                               
+                                <td>{{data.background_image}}</td>
+                                <td>  
+                                    <a href="{% url 'student_id_card_view' data.id %}" style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    <a href="{% url 'student_id_card_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    <a href="{% url 'student_id_card_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+    {% for data in records %}
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="studentIdCard{{ data.id }}" tabindex="-1" role="dialog" aria-labelledby="studentIdCardLabel{{ data.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="studentIdCardLabel{{ data.id }}">Student Id Card </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="col-md-12 container">
+                            
+                            <div class="id-card">
+                                {% if data.logo %}
+                                <div class="school-name"><img src="{{data.logo.url}}" style="height: 30px;border-radius: 5px;" alt="School Logo">&nbsp;&nbsp;{{data.school_name}}</div>
+                                {% endif %}
+                                <div class="address">{{data.address}}</div>
+                                <div class="school-name">{{data.id_card_title}}</div>
+                        
+                                <div class="student-details">
+                                    <div class="col-md-4">
+                                        <div class="image-container">
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyQSYXchE88zls6dBO3yiHFsGsgpBMYUPvcHzCb2KXkQ&s" height="100px" class="logo" alt="{{data.header_logo}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {% if data.student_name %}
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >Student Name</label>
+                                        <div class="col-sm-6">
+                                            <label class="col-form-label">{{data.student_name}}</label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if data.logo %}
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >Admission Number</label>
+                                        <div class="col-sm-6">
+                                            <label class=" col-form-label">{{data.admission_no}}</label>
+                                        </div>
+                                    </div>                             
+                                    {% endif %}
+                                    {% if data.Class %}
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >Class </label>
+                                        <div class="col-sm-6">
+                                            <label class="col-form-label">{{data.Class}}</label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% if data.father_name %}
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >Father's Name</label>
+                                        <div class="col-sm-6">
+                                            <label class=" col-form-label">{{data.father_name}}</label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% if data.mother_name %}
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >Mothers's Name</label>
+                                        <div class="col-sm-6">
+                                            <label class=" col-form-label">{{data.mother_name}}</label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% if data.address %}
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >AddressD</label>
+                                        <div class="col-sm-6">
+                                            <label class=" col-form-label">{{data.address}}</label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% if data.phone %}
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >Phone</label>
+                                        <div class="col-sm-6">
+                                            <label class=" col-form-label">{{data.phone}}</label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% if data.blood_group %}
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >Blood GroupA</label>
+                                        <div class="col-sm-6">
+                                            <label class=" col-form-label">{{data.blood_group}}</label>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if data.date_of_birth %}
+                                    <div class="form-group">
+                                        <label  class="col-sm-6 col-form-label" >D.O.B</label>
+                                        <div class="col-sm-6">
+                                            <label class=" col-form-label">{{data.date_of_birth}}</label>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="signature">
+                                <div  style="float: right;">
+                                    <img src="{{data.signature}}" height="60px" class="logo" alt="{{data.header_logo}}">
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        
+    
+    {% endfor %}
+
+ {% endblock %}
+
+ {% block script_block %}
+
+ {% endblock  %}

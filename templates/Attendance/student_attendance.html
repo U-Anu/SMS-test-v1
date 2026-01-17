@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    tr.disabled {
+        background-color: grey;
+    }
+    .alert1-warning {
+        background-color: #ffe7c1 !important;
+        border: 1px solid #f3c7a7 !important;
+        color: #e67e22 !important;
+        padding: 20px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Select Criteria</h4>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="id_Class" required>
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}">{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="section">Section</label>
+                        <select class="form-control" name="section" id="id_section" required>
+                            <option value="">---Select---</option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}">{{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="DATe">Attendance Date</label>
+                        <input type="date" required class="form-control" id="DATe" name="attendance_date"
+                            value="{{attendance_date}}">
+                    </div>
+
+                </div><br>
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="search">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+
+    {% if records %}
+    <div class="row">
+        <div class="main-header">
+            <h4>Student List</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="table-responsive">
+                        {% if attendance_records.0.attendance_status == 'Holiday' %}
+                        <div class="alert1-warning" >Attendance Already Submitted As Holiday. You Can Edit Record</div>
+                        {% endif %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td colspan="8">
+                                            <label for="holiday" class="btn btn-primary" >
+                                                <input type="checkbox" name="holiday" id="holiday"  {% if attendance_records.0.attendance_status == 'Holiday' %} checked{% endif %}></i>&nbsp;Mark As
+                                                Holiday
+                                            </label>
+                                        </td>
+                                        <td><button type="submit" class="btn btn-primary" name="all_save"
+                                                value="all_save">Save</button></td>
+                                    </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Admission No</th>
+                                        <th>Roll Number</th>
+                                        <th>Name</th>
+                                        <th colspan="4">Attendance</th>
+                                        <th>Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if attendance_records %}
+                                    {% for data in attendance_records %}
+                                    <tr id="disabledRow">
+
+                                        <td><input type="hidden" name="student_id"
+                                                value="{{data.student.id}}">{{forloop.counter}}</td>
+                                        <td><input type="hidden" name="attendance_date1" value="{{attendance_date}}">{{ data.student.admission_no }}</td>
+                                        <td>{{ data.student.roll_number }}</td>
+                                        <td>{{ data.student.first_name }} {{ data.student.last_name }}</td>
+                                        <td><input type="radio" name="attendance{{data.student.id}}" value="present"
+                                                id="present{{data.id}}" {% if data.attendance_status == 'present' %} checked {% endif %} {% if attendance_records.0.attendance_status == 'Holiday' %} disabled {% endif %}> <label for="present{{data.id}}">present</label>
+                                        </td>
+                                        <td><input type="radio" name="attendance{{data.student.id}}" value="Late"
+                                                id="Late{{data.id}}" {% if data.attendance_status == 'Late' %} checked {% endif %} {% if attendance_records.0.attendance_status == 'Holiday' %} disabled {% endif %}> <label for="Late{{data.id}}">Late</label></td>
+                                        <td><input type="radio" name="attendance{{data.student.id}}" value="Absent"
+                                                id="Absent{{data.id}}" {% if data.attendance_status == 'Absent' %} checked
+                                                {% endif %} {% if attendance_records.0.attendance_status == 'Holiday' %} disabled {% endif %}> <label for="Absent{{data.id}}">Absent</label></td>
+                                        <td><input type="radio" name="attendance{{data.student.id}}" value="Half Day"
+                                                id="Half Day{{data.id}}" {% if data.attendance_status == 'Half Day' %}
+                                                checked {% endif %} {% if attendance_records.0.attendance_status == 'Holiday' %} disabled {% endif %}> <label for="Half Day{{data.id}}">Half Day</label>
+                                        </td>
+                                        <td><input type="text" name="note{{data.student.id}}" class="form-control"
+                                                value='{% if data.note %}{{data.note}}{% endif %}' {% if attendance_records.0.attendance_status == 'Holiday' %} disabled {% endif %}></td>
+
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    {% for data in records %}
+                                    <tr id="disabledRow">
+
+                                        <td><input type="hidden" name="student_id"
+                                                value="{{data.id}}">{{forloop.counter}}</td>
+                                        <td><input type="hidden" name="attendance_date1" value="{{attendance_date}}">{{ data.admission_no }}</td>
+                                        <td>{{ data.roll_number }}</td>
+                                        <td>{{ data.first_name }} {{ data.last_name }}</td>
+                                        <td><input type="radio" name="attendance{{data.id}}" value="present"
+                                                id="present{{data.id}}" checked> <label
+                                                for="present{{data.id}}">present</label></td>
+                                        <td><input type="radio" name="attendance{{data.id}}" value="Late"
+                                                id="Late{{data.id}}"> <label for="Late{{data.id}}">Late</label></td>
+                                        <td><input type="radio" name="attendance{{data.id}}" value="Absent"
+                                                id="Absent{{data.id}}"> <label for="Absent{{data.id}}">Absent</label>
+                                        </td>
+                                        <td><input type="radio" name="attendance{{data.id}}" value="Half Day"
+                                                id="Half Day{{data.id}}"> <label for="Half Day{{data.id}}">Half
+                                                Day</label></td>
+                                        <td><input type="text" name="note{{data.id}}" class="form-control"></td>
+
+                                    </tr>
+
+
+                                    {% endfor %}
+                                    {% endif %}
+
+                                </tbody>
+
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+<script>
+    $(document).ready(function () {
+        $('#holiday').on('change', function() {
+          var isChecked = $(this).is(':checked');
+          $('table tbody tr').each(function() {
+            var inputs = $(this).find('input');
+            inputs.each(function() {
+              var fieldType = $(this).attr('type');
+              if (fieldType !== 'hidden') {
+                $(this).prop('disabled', isChecked);
+              }
+            });
+
+            if (!isChecked) {
+              $(this).find('input[type="radio"]:first').prop('checked', true);
+            }
+          });
+        });
+      });
+</script>
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#id_Class', function () {
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+{% endblock %}

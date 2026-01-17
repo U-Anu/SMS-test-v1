@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="class">Class</label>
+                    <select class="form-control" name="class" id="id_Class" required>
+                        <option value="" >---Select---</option>
+                        {% for data in class_records %}
+                        <option value="{{ data.id }}">{{data.Class}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Section</label>
+                    <select class="form-control" name="section" id="id_section" required>
+                        <option value="">---Select---</option>
+                        {% for data in section_records %}
+                        <option value="{{ data.id }}">{{data.section_name}}</option>
+                        {% endfor %}
+                    </select>                
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="DATe">Attendance Date</label>
+                    <input type="date" required class="form-control" id="DATe" name="attendance_date" value="{{attendance_date}}">
+                </div>
+
+            </div><br>
+            <button type="submit" class="btn btn-primary" style="float: right;" name="search" value="search">Search</button><br><br>
+        </form>
+        </div>
+    </div>
+    {% if attendance_records %}
+    <div class="row">
+        <div class="main-header">
+           <h4>Attendance List</h4>
+        </div>
+     </div>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <table  class="table" >
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Admission No</th>
+                        <th>Roll Number</th>
+                        <th>Name</th>
+                        <th colspan="4">Attendance</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in attendance_records %}
+                    <tr>
+                        
+                        <td><input type="hidden" name="student_id" value="{{data.student.id}}">{{forloop.counter}}</td>
+                        <td><input type="hidden" name="attendance_date1" value="{{attendance_date}}">{{ data.student.admission_no }}</td>
+                        <td>{{ data.student.roll_number }}</td>
+                        <td>{{ data.student.first_name }} {{ data.student.last_name }}</td>
+                        <td>
+                            {% if data.attendance_status == 'present' %}
+                            <button class="btn btn-success btn-sm"style="padding: 4px; border-radius:5px;">{{data.attendance_status}} </button>
+                            {% elif data.attendance_status == 'Late' %}
+                            <button class="btn btn-warning btn-sm" style="padding: 4px; border-radius:5px;">{{data.attendance_status}}</button>
+                            {% elif data.attendance_status == 'Absent' %}
+                            <button class="btn btn-danger btn-sm"style="padding: 4px; border-radius:5px;">{{data.attendance_status}}</button>
+                                
+                            {% elif data.attendance_status == 'Half Day' %}
+                            <button class="btn btn-info btn-sm"style="padding: 4px; border-radius:5px;">{{data.attendance_status}}</button>
+                      
+                            {% elif data.attendance_status == 'Holiday' %}
+                            <button class="btn btn-light btn-sm"style="padding: 4px; border-radius:5px;">{{data.attendance_status}}</button>
+                            {% endif %}
+                            </td>
+                        <td>{% if data.note %}{{data.note}}{% endif %}</td>
+                        
+                    </tr>
+                    
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+         </div>
+     </div>  
+     {% else %}
+     <center> <h5>No Records Found </h5></center>
+     {% endif %}  
+ </div>
+
+   
+ {% endblock %}
+ {% block script_block %}
+
+
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+ {% endblock  %}

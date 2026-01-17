@@ -1,0 +1,199 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+{% load custom_filters %}
+<style>
+  .gold {
+    color: gold;
+  }
+  .star {
+    font-size: 24px;
+  }
+</style>
+<style>
+  .ratingg {
+      unicode-bidi: bidi-override;
+      direction: rtl;
+      text-align: center;
+  }
+  .ratingg > span {
+      color: #FFD700;
+  }
+
+</style>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Teachers Reviews</h4>
+        </div>
+    </div>
+<div class="col-md-12">
+   
+        
+        <div class="card" style="padding: 10px;border-top: 5px solid black;" >
+            <div class="table-responsive">
+
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Teacher Name</th>
+                        <th>Subject </th>
+                        <th>Time</th>
+                        <th>Room Number</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Rating</th>
+                        <th>Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for data in records %}
+                    <tr>
+                        <td>{{data.first_name}}</td>  
+                        <td>{{data.department}}</td>
+                        <td>{{data.first_name}}</td>
+                        <td>{{data.first_name}}</td>
+                        <td>{{data.email}}</td>
+                        <td>{{data.phone_no}}</td>
+                        {% if data.id in rating_staff %}
+                        {% for rat in rating %}
+                        {% if data.id == rat.staff.id %}
+                        <td>
+                          <div class="ratingg" data-stars="{{rat.rating}}"></div>
+                        </td>
+                        <td></td>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <td></td>
+                        <td></td>
+                        {% endif %}
+
+                  
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+
+  </div>
+  
+
+
+
+{% endblock %}
+{% block script_block %}
+
+
+
+
+
+<!-- Star Rating-->
+
+
+
+<script>
+  const stars = document.querySelectorAll('.star');
+  const displayRating = document.getElementById('display-rating');
+
+  let selectedRating = 0;
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const rating = parseInt(star.getAttribute('data-rating'));
+      selectedRating = rating;
+
+      // Update star ratings
+      stars.forEach(star => {
+        const starRating = parseInt(star.getAttribute('data-rating'));
+        if (starRating <= rating) {
+          star.innerHTML = '★';
+          star.classList.add('gold');
+        } else {
+          star.innerHTML = '☆';
+          star.classList.remove('gold');
+        }
+      });
+
+      // Update display rating
+      const ratingStars = '★'.repeat(selectedRating) + '☆'.repeat(5 - selectedRating + 1);
+     
+      $('#ratting').val(selectedRating);
+    });
+  });
+</script>
+
+
+
+<script>
+    function amt_validation() {
+      var book_id = $('#book').val();
+      var url = "{% url 'book_qty_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'book_id': book_id
+        },
+        success: function (data) {
+          $('#ava_quantity').text('Available Quantity : '+data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    }
+  </script>
+
+
+  
+<script>
+    $(document).ready(function () {
+  
+      $(document).on('click', '#dropdownMenuButton', function () {
+        var dumy = this;
+        var iss_id = $(dumy).closest('tr').find('#iss_id').val();
+        var book_id = $(dumy).closest('tr').find('#book_id').val();
+        $('#model_iss_id').val(iss_id);
+        $('#model_book_id').val(book_id);
+
+      });
+
+    });
+  
+  </script>
+  <script>
+    function model(id){
+      $('#teacher_id').val(id);
+    }
+  </script>
+<!--  star view  -->
+  <script>
+    window.onload = function() {
+        var ratingContainers = document.querySelectorAll('.ratingg');
+        ratingContainers.forEach(function(container) {
+            var starCount = parseInt(container.dataset.stars, 10);
+            displayRatingg(starCount, container);
+        });
+    };
+  
+    function displayRatingg(starCount, container) {
+        container.innerHTML = "";
+  
+        for (var i = 0; i < starCount; i++) {
+            var star = document.createElement("span");
+            star.innerHTML = "★";
+            container.appendChild(star);
+        }
+    }
+  </script>
+{% endblock %}

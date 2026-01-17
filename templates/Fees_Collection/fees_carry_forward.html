@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="enquiry">Class</label>
+                    <select class="form-control" name="class" id="id_Class">
+                        <option value="">--Select</option>
+                        {% for data in class_records %}
+                        <option value="{{data.id}}">{{data.Class}}</option>
+                        {% endfor %}
+                       
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="enquiry">Section</label>
+                    <select class="form-control" name="section" id="id_section">
+                        <option value="">--Select</option>
+                    </select><br>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label for="enquiry">Previous Session</label>
+                    <select class="form-control" name="session" >
+                        <option value="">--Select</option>
+                        {% for data in Session_records %}
+                        <option value="{{data.id}}">{{data.session}}</option>
+                        {% endfor %}
+                       
+                    </select>
+                </div>
+                 <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+
+            </div>
+        </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="main-header">
+           <h4>Previous Session Balance Fees</h4>
+        </div>
+     </div>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <form action="{% url 'fees_carry_forward_save' %}" method="post">
+                {% csrf_token %}
+            <div class="table-resposive">
+                <table class="display" id="tableID">
+                    <thead>
+                        <tr>                        
+                            <th><input type="checkbox" id="select-all-checkbox"> <label for="select-all-checkbox">All</label></th>
+                            <th>Student Name</th>
+                            <th>Admission Number</th>
+                            <th>Admission Date</th>
+                            <th>Roll Number</th>
+                            <th>Father Name</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in pre_fees_rcords %}
+                        <tr>
+                            <td><input type="checkbox" name="admission_no" class="data-checkbox" id="check_{{forloop.counter}}" value="{{data.obj.student.admission_no}}"></td>
+                            <td>{{data.obj.student.first_name}}</td>
+                            <td>{{data.obj.student.admission_no}}</td>
+                            <td>{{data.obj.student.admission_date}}</td>
+                            <td>{{data.obj.student.roll_number}}</td>
+                            <td><input type="hidden" name="session" value="{{session}}"> {{data.obj.student.Father_name}}</td>
+                            <td><input type="hidden" name="amount_{{data.obj.student.admission_no}}" value="{{data.total_amount}}"> {{data.total_amount}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table><br>
+                <button type="submit" style="float: right;" class="btn btn-primary"> Save</button>
+            </div>
+        </form><br><br>
+         </div>
+     </div>
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+ <script>
+    $(document).ready(function () {
+        $(document).on('change', '#id_Class', function () {
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+
+<!-- JavaScript code to handle checkbox behavior -->
+<script>
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const dataCheckboxes = document.getElementsByClassName('data-checkbox');
+
+    selectAllCheckbox.addEventListener('change', function() {
+      for (let i = 0; i < dataCheckboxes.length; i++) {
+        dataCheckboxes[i].checked = selectAllCheckbox.checked;
+      }
+    });
+
+    for (let i = 0; i < dataCheckboxes.length; i++) {
+      dataCheckboxes[i].addEventListener('change', function() {
+        if (!this.checked) {
+          selectAllCheckbox.checked = false;
+        } else {
+          // Check if all other checkboxes are selected
+          let allSelected = true;
+          for (let j = 0; j < dataCheckboxes.length; j++) {
+            if (!dataCheckboxes[j].checked) {
+              allSelected = false;
+              break;
+            }
+          }
+          selectAllCheckbox.checked = allSelected;
+        }
+      });
+    }
+  </script>
+ {% endblock  %}

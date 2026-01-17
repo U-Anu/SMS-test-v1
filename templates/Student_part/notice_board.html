@@ -1,0 +1,86 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Notice Board</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;" >
+            <div class="row">
+                <div class="col-md-12">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <td>Title</td>
+                        <td>Action</td>
+                      </tr>
+                    </thead>
+                    <tbody> 
+                    {% for notice in record %}
+                    {% if 'Student' in notice.message_to %}
+                    <tr>
+                      <td>{{notice.title}}</td>                         
+                        <td>  
+                          <a href="{% url 'notice_board_view_student' %}" class="btn btn-primary btn-xs schedule_modal" data-toggle="tooltip" title=""   >
+                              <i class="fa fa-eye"></i> View                                                </a>
+                           </td>
+                         </td>
+                    </tr> 
+                    {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+                </div>
+            </div>
+          
+            </div>
+        </div>
+    </div>
+   
+   
+<div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Compose New Message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            {% csrf_token %}
+        <div class="row">
+          {% for data in form %}
+          <div class="col-md-12 mb-3">
+              {{data.label_tag}}
+            {{ data }}
+          </div>
+          {% endfor %}
+        </div>
+        <br>
+        <center>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </center>
+      </form>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+
+   
+     
+          
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

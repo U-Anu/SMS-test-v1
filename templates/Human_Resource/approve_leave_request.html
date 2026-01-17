@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Approve Leave Request</h4>
+        </div>
+     </div>
+     {% if 'approve_leave_request_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add " style="float: right;">Add Leave Request</button>
+    {% endif %}
+    <br>
+     {% if 'approve_leave_request_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <br>
+    <div class="col-md-12">
+            
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Staff</th>
+                                <th>Leave Date</th>
+                                <th>Apply Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in records %}
+                            <tr>
+                                <td>{{data.role}}</td>
+                                <td>{{data.leave_type}}({{data.number_of_days}}) {% if data.LOP_number_of_days > 0 %}- LOP({{data.LOP_number_of_days}}){% endif %}</td>
+                                <td>{{data.apply_date}}</td>
+                                <td>
+                                  {% if data.status == 'Pending' %}
+                                  <small class="label label-warning">{{data.status}}</small>
+                                  {% elif data.status == 'Approve' %}
+                                  <small class="label label-success">{{data.status}}</small>
+                                  {% elif data.status == 'Disaprove' %}
+                                  <small class="label label-danger">{{data.status}}</small>
+                                  {% endif  %}
+                                </td>
+                                <td>  
+                                  {% if 'approve_leave_request_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  
+                                    <a href="{% url 'approve_leave_request_edit' data.id %}"  class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                   {% endif %}
+                                    {% if 'approve_leave_request_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'approve_leave_request_delete' data.id %}"  class="bozero"><span data-toggle="tooltip" title="Delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                    {% endif %} 
+                                  </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    </div>
+  <!-- modal Start -->
+
+  <div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post" id="myForm"  enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="">Roles </label><span class="text-danger">*</span>
+                  <select name="role" id="id_role" class="form-control" required>
+                    <option value="">select</option>
+                    {% for data in roles_records %}
+                    <option value="{{data.id}}">{{data.name}}</option>
+                    {% endfor %}
+                  </select>
+                  <span id="role_error" class="text-danger text-sm" style="display: none;">Select Role</span>
+               </div>
+               <div class="col-md-6 mb-3">
+                <label for="">Staff Name </label><span class="text-danger">*</span>
+                <select name="staff" id="id_name" class="form-control" required>
+                  <option value="">select</option>
+                 
+                </select>
+                <span id="name_error" class="text-danger text-sm" style="display: none;">Select Name</span>
+             </div>
+                <div class="col-md-6 mb-3">
+                   <label for="">Apply Date</label>
+                   <input type="date" name="apply_date" id="apply_date_id" class="form-control" required>
+                   <span id="apply_date_error" class="text-danger text-sm" style="display: none;">Select date</span>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="">Available Leave </label>
+                  <select name="available_leave" id="id_leave_type" class="form-control" onchange="ValidationCheck()"required>
+                    <option value="">select</option>
+                  </select>
+               </div>
+               <div class="col-md-12 mb-3">
+                  <label for="">Leave Dates </label><span class="text-danger">*</span>
+                  <input type="text" name="dates" id="datePicker" class="form-control" onclick="ValidationCheck()" />
+                  <span id="date_error" class="text-danger" style="display: none;">Select leave dates</span>
+               </div>
+             
+                <div class="col-md-6 mb-3">
+                  <label for="">Reason</label>
+                  <textarea name="reason" id="" cols="30" rows="3" class="form-control"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="">Note</label>
+                <textarea name="notes" id="" cols="30" rows="3" class="form-control"></textarea>
+            </div>
+    
+                <div class="col-md-12 mb-3">
+                  <label for="">Attach Document</label>
+                  <input type="file" name="document" id="" class="form-control" >
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="">Status</label><br>
+                <label for="pending_id"><input type="radio" class="from-radio" id="pending_id" name="status" value="Pending" checked>Pending</label>
+                <label for="Approve_id"><input type="radio" class="from-radio" id="Approve_id" name="status" value="Approve">Approve</label>
+                <label for="Disapprove_id"><input type="radio" class="from-radio" id="Disapprove_id" name="status" value="Disapprove">Disapprove</label>
+            </div>
+              <div class="col-md-6 mb-3" id="lop_div" style="display: none;">
+                <label for="">LOP(days)</label>
+                <input type="number" name="lop" id="lop_id" class="form-control" value="0" readonly>
+                <p class="text-warning">This laeve should be consider as LOP</p>
+              </div>
+              </div>
+          <br>
+          <button type="button" class="btn btn-primary" onclick="ValidationForSubmitForm()" style="float: right;">Submit</button>
+          <br><br>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+      $(document).ready(function () {
+    $(document).on('change', '#id_role', function () {
+      var role_id = $('#id_role').val();
+      var url = "{% url 'demo_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'role_id': role_id
+        },
+        success: function (data) {
+            $("#id_name").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (classs) {
+                html_data += `<option value="${classs.id}">${classs.first_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_name").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+
+
+$(document).ready(function () {
+    $(document).on('change', '#id_name', function () {
+      var name = $('#id_name').val();
+      var url = "{% url 'leave_type_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'name': name,
+        },
+        success: function (data) {
+            $("#id_leave_type").html(data);
+            let html_data = '<option value="">select</option>';
+            data.forEach(function (leave) {
+                html_data += `<option value="${leave.staff_leave__leave_type_id}">${leave.staff_leave__leave_type__name}(${leave.available_leave})</option>`
+            });
+            console.log(html_data);
+            $("#id_leave_type").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+$(document).ready(function() {
+  var selectedDatesArray = [];
+  // Initialize the custom multi-select calendar
+  var datePicker = flatpickr('#datePicker', {
+    mode: 'multiple',
+    dateFormat: 'd-m-Y',
+  });
+
+  // Handle when a date is selected
+
+
+});
+</script>
+
+
+
+<script>
+  function ValidationForSubmitForm() {
+    const datesStr = $('#datePicker').val(); // getting Dates as string
+    const no_of_leave_days = datesStr.split(', '); // dates converting str to list
+    var leave_type=$('#id_leave_type :selected').text() // selected leave type
+    var lop=$('#lop_id').val(); // lop value
+    const leave_count = parseInt(leave_type.split("(")[1]); // from leave type iam spliting avaiable leaves
+    var roles=$('#id_role').val();
+    var names=$('#id_name').val();
+    var apply_date=$('#apply_date_id').val();
+    if(roles == '' ){
+      document.getElementById('role_error').style.display = 'block';
+    }else if (names == '' ){
+      document.getElementById('name_error').style.display = 'block';
+
+    }else if (apply_date == '' ){
+      document.getElementById('apply_date_error').style.display = 'block';
+
+    }else{
+      if (no_of_leave_days != '' ){ // leave dates is selected
+        if (leave_type == 'select' ){ // not leave type 
+          if (no_of_leave_days.length == parseInt(lop)){
+            document.getElementById("myForm").submit();
+            }else{
+              document.getElementById('lop_div').style.display = 'block';
+              $('#lop_id').val(no_of_leave_days.length);
+              document.getElementById('date_error').style.display = 'none';
+            }
+        }else { // leave type is 
+          if (no_of_leave_days.length <= leave_count + parseInt(lop)){
+            document.getElementById("myForm").submit();
+          }else if (no_of_leave_days.length > leave_count) {
+            document.getElementById('lop_div').style.display = 'block';
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(no_of_leave_days.length-leave_count);
+          } else {
+            document.getElementById('lop_div').style.display = 'none';
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(0);
+      
+          }
+        }
+    }else{
+      document.getElementById('date_error').style.display = 'block';
+    }
+  
+    }
+  }
+
+</script>
+<script>
+  $(document).ready(function() {
+    $('#datePicker').change(function() {
+      document.getElementById('date_error').style.display = 'none';
+  });
+  $('#id_role').change(function() {
+   
+    document.getElementById('role_error').style.display = 'none';
+});
+$('#id_name').change(function() {
+ 
+  document.getElementById('name_error').style.display = 'none';
+});
+$('#apply_date_id').change(function() {
+ 
+  document.getElementById('apply_date_error').style.display = 'none';
+});
+  });
+</script>
+
+<script>
+  function ValidationCheck() {
+    const datesStr = $('#datePicker').val();
+    const no_of_leave_days = datesStr.split(', ');
+    var leave_type=$('#id_leave_type :selected').text()
+    var lop=$('#lop_id').val()
+    const leave_count = parseInt(leave_type.split("(")[1]);
+    if (no_of_leave_days.length <= leave_count + parseInt(lop) && no_of_leave_days != '' ){
+      document.getElementById('lop_div').style.display = 'none';
+      $('#lop_id').val(0);
+    }else{
+      if (no_of_leave_days != '' ){
+        if (leave_type == 'select' ){
+          document.getElementById('lop_div').style.display = 'block';
+          document.getElementById('date_error').style.display = 'none';
+          $('#lop_id').val(no_of_leave_days.length);
+  
+        }else {
+          if (no_of_leave_days.length > leave_count) {
+            document.getElementById('lop_div').style.display = 'block';
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(no_of_leave_days.length-leave_count);
+          } else {
+            document.getElementById('lop_div').style.display = 'none'
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(0);
+      
+          }
+        }
+    }else{
+      document.getElementById('date_error').style.display = 'block';
+    }
+  
+    }
+}
+
+
+</script>
+
+
+ {% endblock  %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  
+    <div class="row">
+        <div class="main-header">
+          {% if view %}
+          <h4> View Question Bank </h4>
+          {% elif edit %}
+          <h4> Edit Question Bank </h4>
+          {% else %}
+          <h4>Question Bank</h4>                      
+          {% endif %}
+          
+        </div>
+     </div>
+    
+     {% if 'online_admission_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     {% if not edit %}
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add" style="float: right;">+ Add Question</button><br>
+     {% endif %}
+     {% endif %}
+     {% if edit %}
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add" style="float: right;">Edit Question</button><br>
+
+     {% endif %}
+
+     {% if 'online_admission_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Question</th>
+                        <th>Answer</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for data in records %}
+                    <tr>
+                        <td>{{data.subject}}</td>
+                        <td>{{data.question}}</td>
+                        <td>{{data.answer}}</td>
+                        <td>  
+                          {% if 'online_admission_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'question_bank_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view" style="color: black;"  ><i class='fa fa-server'></i></a>
+                            {% endif %}
+                            {% if 'online_admission_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'question_bank_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                            {% endif %}
+                            {% if 'online_admission_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'question_bank_delete' data.id %}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                            {% endif %}
+                           </td>
+                        
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% endif %}
+ </div>
+   
+ <!-- Modal Start -->
+ 
+ <div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Online Exam</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+ <!-- Modal Ends -->
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

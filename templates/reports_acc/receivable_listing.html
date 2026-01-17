@@ -1,0 +1,58 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">{{screen_name}}</h3>
+                    {% for msg in messages %}
+                        <center><span style="color:red;">{{msg}}</span></center>
+                    {% endfor %}
+
+                <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>reference_type</th>
+                                        <th>reference_number</th>
+                                        <th>customer_name</th>
+                                        <th>customer_id</th>
+                                        <th>actual_amount</th>
+                                        <th>amount_received</th>
+                                        <th>amount_due</th>
+                                        <th>status</th>
+                                        <th>created_at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {% for data in obj %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ data.reference_type }}</td>
+                                            <td>{{ data.reference_number }}</td>
+                                            <td>{{ data.customer_name }}</td>
+                                            <td>{{ data.customer_id }}</td>
+                                            <td>{{ data.actual_amount }}</td>
+                                            <td>{{ data.amount_received }}</td>
+                                            <td>{{ data.amount_due }}</td>
+                                            <td>{{ data.payment_status }}</td>
+                                            <td>{{ data.created_at }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                </tbody>
+                        </table>
+                </div>
+                <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

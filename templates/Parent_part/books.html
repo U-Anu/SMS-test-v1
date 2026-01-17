@@ -1,0 +1,58 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Books </h4>
+        </div>
+    </div>
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Publisher</th>
+                        <th>Author</th>
+                        <th>Subject</th>
+                        <th>Rank Number</th>
+                        <th>Qty</th>
+                        <th>Book Price</th>
+                        <th>Post Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for data in records %}
+                    <tr>
+                        <td>{{data.book_title}}</td>
+                        <td>{{data.publisher}}</td>
+                        <td>{{data.author}}</td>
+                        <td>{{data.subject}}</td>
+                        <td>{{data.rank_number}}</td>
+                        <td>{{data.qty}}</td>
+                        <td>{{data.book_price}}</td>
+                        <td>{{data.post_date}}</td>
+                       
+                    </tr>
+                    {% endfor %}
+             
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

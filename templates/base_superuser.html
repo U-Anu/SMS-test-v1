@@ -1,0 +1,281 @@
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Bootstrap JS (Include jQuery & Popper.js for Bootstrap 4) -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+<!-- Sidebar -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">
+              <i class="icon-grid menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#company-setup" aria-expanded="false" aria-controls="company-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Company Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="company-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'company_list' %}">Company</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'branch_list' %}">Branch</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'bank_detail_list' %}">Bank</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'business_group_list' %}">Business Group</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'department_list' %}">Department</a></li>
+
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#currency-setup" aria-expanded="false" aria-controls="currency-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Currency Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="currency-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'exchange_rate_list' %}">Exchange Rate</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'currency_list' %}">Currency</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#charge-setup" aria-expanded="false" aria-controls="charge-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Charge Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="charge-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'charge_code_classification_list' %}">Charges Code<br> Classification</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'charge_code_list' %}">Charges Code</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'interest_code_list' %}">Interest Code</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#asset-type-setup" aria-expanded="false" aria-controls="asset-type-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Asset Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="asset-type-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'asset_type_category_list' %}">Asset Type<br> Category</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'asset_type_list' %}">Asset Type</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#gl-line-setup" aria-expanded="false" aria-controls="gl-line-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">GL Line Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="gl-line-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'glline_list' %}">GL Line</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#transaction-setup" aria-expanded="false" aria-controls="transaction-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Transaction Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="transaction-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_code_list' %}">Transaction Code</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_type_classification_list' %}">TXN Type <br>Classification</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_type_mode_list' %}">Txn Type Mode</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_type_list' %}">Transaction Type</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_list' %}">Transaction</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_details_list' %}">Transaction Details</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#account-setup" aria-expanded="false" aria-controls="account-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Account Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="account-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_category_list' %}">Account Category</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_restriction_list' %}">Account Restriction</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_type_category_list' %}">Account Type<br> Category</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_type_list' %}">Account Type</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_list' %}">Account</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#custom-setup" aria-expanded="false" aria-controls="custom-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Custom Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="custom-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'custom_field_list' %}">Custom Field</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'custom_field_type_list' %}">Custom Field Type</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'custom_transaction_field_mapping_list' %}">Custom <br>Transaction <br>Field Mapping</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'custom_transaction_detail_list' %}">Custom <br>Transaction Details</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#teller-profile-setup" aria-expanded="false" aria-controls="teller-profile-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Teller Set Up</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="teller-profile-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'teller_profile_list' %}">Teller Profile</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#service-setup" aria-expanded="false" aria-controls="service-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Payment</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="service-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'service_payment_create' %}">Service Payment</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#account-entries" aria-expanded="false" aria-controls="account-entries">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Account Entries</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="account-entries">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_entry_list' %}">Account Entries</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#rp-setup" aria-expanded="false" aria-controls="rp-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Receivable & Payable</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="rp-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'reference_type_list' %}">Reference Type</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'payment_complexity_list' %}">Payment Complexity</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_receivable_list' %}">Receivable</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'account_payable_list' %}">Payable</a></li>
+              </ul>
+            </div>
+          </li>
+
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" data-toggle="collapse" href="#ufam-ufac" aria-expanded="false" aria-controls="ufam-ufac">-->
+<!--              <i class="icon-layout menu-icon"></i>-->
+<!--              <span class="menu-title">UFAM & UFAC</span>-->
+<!--              <i class="menu-arrow"></i>-->
+<!--            </a>-->
+<!--            <div class="collapse" id="ufam-ufac">-->
+<!--              <ul class="nav flex-column sub-menu">-->
+<!--                <li class="nav-item"> <a class="nav-link" href="{% url 'user_financial_accounting_mapping_list' %}">UFAM</a></li>-->
+<!--                <li class="nav-item"> <a class="nav-link" href="{% url 'user_financial_accounting_category_list' %}">UFAC</a></li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </li>-->
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#repa-setup" aria-expanded="false" aria-controls="repa-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Receipt & Payment</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="repa-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'receipt_list' %}">Receipt</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'payment_list' %}">Payment</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#direct-repa-setup" aria-expanded="false" aria-controls="direct-repa-setup">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Direct <br>Receipt & Payment</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="direct-repa-setup">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'direct_receipt_list' %}">Direct Receipt</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'direct_payment_list' %}">Direct Payment</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#reports" aria-expanded="false" aria-controls="reports">
+              <i class="icon-layout menu-icon"></i>
+              <span class="menu-title">Reports</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="reports">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{% url 'date_wise' %}">Date</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'transaction_id_wise' %}">Transaction Id</a></li>
+              </ul>
+            </div>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#rms-report" aria-expanded="false" aria-controls="rms-report">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Advance Report</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="rms-report">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'trail_balance_report1' %}">Trial Balance</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'general_ledger_report1' %}">General Ledger</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'profit_and_loss_statement_views_new' %}">Profit and Loss </br>Statement</a></li>
+                  {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url 'balance_sheet_views_new' %}">Balance Sheet</a> </li> {% endcomment %}
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account_payable_aging_views1' %}">Accounts Payable </br>Aging Report</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'account_receivable_aging_views1' %}">Accounts Receivable </br>Aging Report</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'generate_cash_flow_statement_views1' %}">Cash Flow </br>Statement</a></li>
+                  {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url 'balance_sheet_views_new' %}">Balance Sheet</a></li> {% endcomment %}
+                  {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url 'petty_cash_views1' %}">Petty Cash </br>Sheet</a></li> {% endcomment %}
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'trial_balance_by_period_views1' %}">Trial Balance </br>by Period </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'cash_book_detailed_report_all_views1' %}">Cash Book</br> Detailed</a></li>
+                  {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url 'accounts_payable_vs_receivable_summary_views1' %}">Accounts </br>Payable vs Receivable</br> Summary</a></li> {% endcomment %}
+                  {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url 'petty_cash_usage_report_views1' %}">Petty Cash Usage</a></li> {% endcomment %}
+                  {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url 'journal_summary_report_views1' %}">Journal Summary</a></li> {% endcomment %}
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'budget_forecast_views1' %}">budget forecast</a></li>
+                  {% comment %} <li class="nav-item"> <a class="nav-link" href="{% url 'receipts_expenditure' %}">Statement of Receipts & Expenditures</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'financial_position' %}">Statement of Financial Position</a></li>
+                  <li class="nav-item"> <a class="nav-link"href="{% url 'changes_in_equity' %}">Statement of Changes in Equity</a></li> {% endcomment %}
+              </ul>
+              
+              </div>
+            </li>
+         
+
+        </ul>
+        
+      </nav>
+      <!-- End Sidebar -->
+       

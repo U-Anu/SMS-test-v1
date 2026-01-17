@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<br>
+<div class="row">
+    <div class="main-header">
+       <h4>Invoice Granate</h4>
+    </div>
+  </div>
+
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+    <form method="post" class="card">
+    {% csrf_token %}
+    <div class="row">
+        
+      <div class="col-md-4 mb-3">
+        <label for="class">Vendor</label>
+        <select class="form-control" name="vendor_id" >
+            <option value="" >---Select---</option>
+            {% for data in vendor_list %}
+            <option value="{{data.id}}">{{data.name}}</option>
+            {% endfor %}
+
+        </select>
+    </div>
+        <div class="col-md-4 mb-3">
+            <label for="class">Category</label>
+            <select class="form-control" name="category_id">
+                <option value="" >---Select---</option>
+                {% for data in expense_category %}
+                <option value="{{data.id}}">{{data.name}}</option>
+                {% endfor %}
+    
+            </select>
+        </div>
+        <div class="col-md-12 mb-3"><br>
+
+            <button type="submit" class="btn btn-primary" name="search" value="search" style="float: right;">Search</button>
+        </div>
+    </div>
+</form>
+</div>
+<br>
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+      <form action="{% url 'previous_invoice' %}" method="post">
+        {% csrf_token %}
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all-checkbox"> <label for="select-all-checkbox">All</label></th>
+                        <th>Category Name</th>
+                        <th>Item Name</th>
+                        <th>Invoice Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Payment Date</th>
+                        <th>Amount</th>
+                     
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    {% if data.status == "Pending" %}
+                    <tr>
+                        <td><input type="checkbox" name="expense_list" class="data-checkbox" id="check_{{forloop.counter}}" value="{{data.id}}"></td>
+                        <td>{{data.category.name}}</td>
+                        <td>{{ data.item_name }}</td>
+                        <td>{{ data.invoice_date }}</td>  
+                        <td>{{ data.due_date }}</td>
+                        <td>{{ data.status }}</td>
+                        <td>{{ data.payment_date }}</td>
+                        <td>{{ data.amount }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block script_block %}
+<script>
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const dataCheckboxes = document.getElementsByClassName('data-checkbox');
+
+    selectAllCheckbox.addEventListener('change', function() {
+      for (let i = 0; i < dataCheckboxes.length; i++) {
+        dataCheckboxes[i].checked = selectAllCheckbox.checked;
+        // Alert message when 'Select All' is changed
+      }
+    });
+
+    for (let i = 0; i < dataCheckboxes.length; i++) {
+      dataCheckboxes[i].addEventListener('change', function() {
+        if (!this.checked) {
+          selectAllCheckbox.checked = false;
+        } else {
+          // Check if all other checkboxes are selected
+          let allSelected = true;
+          for (let j = 0; j < dataCheckboxes.length; j++) {
+            if (!dataCheckboxes[j].checked) {
+              allSelected = false;
+              break;
+            }
+          }
+          selectAllCheckbox.checked = allSelected;
+        }
+        // Alert message when individual checkbox is changed
+      });
+    }
+</script>
+{% endblock %}

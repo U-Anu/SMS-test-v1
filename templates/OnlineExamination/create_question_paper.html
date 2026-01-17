@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Add Subject</h4>
+        </div>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Question Paper Name</label>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        {{form.question_paper_name}}
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Total Mark</label>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        {{form.total_mark}}
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Pass Mark</label>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        {{form.pass_mark}}
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Duration</label>
+                    </div>
+                    <div class="col-md-8 mb-3">
+                        {{form.duration}}
+                    </div>
+                </div><br>
+                <div class="row">
+                    <div class="col-md-12" style="text-align: center;">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

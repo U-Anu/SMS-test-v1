@@ -1,0 +1,472 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<br>
+<br>
+<div class="container-fluid">
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="col-md-12">
+      
+            <div class="card" style="padding: 10px;">
+                <div class="row">
+                    <div class="col-md-12 mb-5">
+                        <h4>Edit Student Detials</h4>
+                        </div>
+                        <br>
+                        <br>
+                    <div class="col-md-3 mb-3">
+                       
+                        {{form.admission_no}}             
+                    </div>
+                    <div class="col-md-3 mb-3">
+                       
+                        {{form.roll_number}}
+
+                    </div>
+                    <div class="col-md-3 mb-3">
+                       
+                        {{form.Class}}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                       
+                        {{form.section}}
+                    </div>
+
+                    {% if 'first_name_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">First Name</label>
+                        {{form.first_name}}
+                    </div>
+                    {% endif %} 
+                    {% if 'last_name_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Last Name</label>
+                        {{form.last_name}}
+                    </div>
+                    {% endif %}
+                    {% if 'date_of_birth_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Date of Birth</label>
+                        {{form.date_of_birth}}
+                    </div>
+                    {% endif %}
+                    {% if 'gender_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Gender</label>
+                        {{form.gender}}
+                    </div>
+                    {% endif %}
+                    {% if 'religion_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Religion</label>
+                        {{form.religion}}
+                    </div>
+                    {% endif %}
+
+                    {% if 'caste_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Caste</label>
+                        {{form.Caste}}
+                    </div>
+                    {% endif %}
+                    {% if 'mobile_number_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Mobile Number</label>
+                        {{form.mobile_number}}
+                    </div>
+                    {% endif %}
+                    {% if 'email_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Email ID</label>
+                        {{form.email}}
+                    </div>
+                    {% endif  %}
+
+                    {% if 'admission_date_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Admission Date</label>
+                        {{form.admission_date}}
+                    </div>
+                    {% endif %}
+                    {% if 'image_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Student Photo</label>
+                        {{form.student_photo}}
+                    </div>
+                    {% endif %}
+                    {% if 'blood_groups_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Blood group</label>
+                        {{form.Blood_group}}
+                    </div>
+                    {% endif %}
+                    {% if 'student_house_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Student House</label>
+                        {{form.student_house}}
+                    </div>
+                    {% endif %}
+
+                    {% if 'height_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Height</label>
+                        {{form.height}}
+                    </div>
+                    {% endif %}
+
+                    {% if 'weight_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Weight</label>
+                        {{form.weight}}
+                    </div>
+                    {% endif %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">As on Date</label>
+                        {{form.as_on_date}}
+                    </div>
+                    
+                    {% if 'category_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Category</label>
+                        {{form.category}}
+                    </div>
+                    {% endif %}  
+            
+                    <div class="col-md-12 mb-5">
+                    <h4>Parent Guardian Detail</h4>
+                    </div>
+                 
+     
+                        {% if 'father_name_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Father Name </label>
+                            {{form.Father_name}}
+
+                        </div>
+                        {% endif %}
+                        {% if 'father_phone_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Father phone</label>
+                            {{form.Father_phone}}
+
+                        </div>
+                        {% endif %}
+                        {% if 'father_occupation_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Father occupation</label>
+                            {{form.Father_occupation}}
+                        </div>
+                        {% endif %}
+
+                        {% if 'father_photo_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Father photo</label>
+                            {{form.Father_photo}}
+                        </div>
+                        {% endif %}
+
+                        {% if 'mother_name_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Mother name</label>
+                            {{form.mother_name}}
+                        </div>
+                        {% endif %}
+                        {% if 'mother_photo_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Mother photo</label>
+                            {{form.mother_photo}}
+                        </div>
+                        {% endif %}
+                        {% if 'mother_occupation_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Motheroccupation</label>
+                            {{form.mother_occupation}}
+                        </div>
+                        {% endif %}
+                      
+                       
+                        {% if 'if_guardian_is_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-12 mb-3">
+                            <label for="student_admission">If Guardian Is </label>
+                            {{form.if_guardian_is}}
+                        </div>
+                        {% endif %}
+                        {% if 'guardian_name_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Guardian Name</label>
+                            {{form.guardian_name}}
+                        </div>
+                        {% endif %}
+                        {% if 'guardian_relation_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Guardian Relation</label>
+                            {{form.guardian_relation}}
+                        </div>
+                        {% endif %}
+                        {% if 'guardian_email_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Guardian Email</label>
+                            {{form.guardian_email}}
+                        </div>
+                        {% endif %}
+
+                        {% if 'guardian_phone_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Guardian Phone</label>
+                            {{form.guardian_phone}}
+                        </div>
+                        {% endif %}
+                        {% if 'guardian_occupation_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Guardian Occupation</label>
+                            {{form.guardian_occupation}}
+                        </div>
+                        {% endif %}
+
+                        {% if 'guardian_photo_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Guardian Photo</label>
+                            {{form.guardian_photo}}
+                        </div>
+                        {% endif %}
+                        
+                        {% if 'guardain_adress_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                        <div class="col-md-6 mb-3">
+                            <label for="student_admission">Guardian Address</label>
+                            {{form.guardian_address}}
+                        </div>
+                        {% endif %}
+
+
+                <!-- Accortion Start -->
+            
+
+              
+                      
+                        
+
+                <div class="col-md-12 mb-5">
+                    <h4>Address Details</h4>
+                    </div>
+                                                   
+                                    <div class="col-md-12">
+                                        <div class="card" style="padding: 10px;">
+                                            <div class="row">
+                                                <div class="col-md-3 mb-3">
+                                    
+                                                    {{form.if_guardian_address_is_current_address}}
+
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                   
+                                                    {{form.if_permanent_address_is_current_address}}
+
+                                                </div>
+                                                {% if 'current_address_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">Current Address</label>
+                                                    {{form.current_address}}
+                                                </div>
+                                                {% endif %}
+                                                {% if 'permanent_adsress_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">Permanent Address</label>
+                                                    {{form.permanent_address}}
+                                                </div>
+                                                {% endif %} 
+
+                                                <div class="col-md-3 mb-3">
+                                               
+                                                    {{form.route_list}}
+                                                </div>
+                                               <div class="col-md-3 mb-3">
+                                                
+                                                    {{form.vehicle_number}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                  
+                                                    {{form.hostel}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                  
+                                                    {{form.room_number}}
+                                                </div>
+                                                {% if 'bank_account_number_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">Bank Account Number</label>
+                                                    {{form.bank_account_number}}
+                                                </div>
+                                                {% endif %}
+                                                {% if 'bank_name_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">Bank Name </label>
+                                                    {{form.bank_name}}
+                                                </div>
+                                                {% endif %}
+                                                {% if 'ifsc_code_fileds' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">Ifsc Code</label>
+                                                    {{form.ifsc_code}}
+                                                </div>
+                                                {% endif %}
+                                                {% if 'national_identification_number_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">National Identification
+                                                        Number</label>
+                                                    {{form.national_identification_number}}
+                                                </div>
+                                                {% endif %}
+                                                {% if 'local_identification_number_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">Local Identification Number</label>
+                                                    {{form.local_identification_number}}
+                                                </div>
+                                                {% endif %}
+                                                {% if 'rte_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">RTE</label>
+                                                    {{form.rte}}
+                                                </div>
+                                                {% endif %}
+
+                                                {% if 'previous_school_details_fields' in student_fields_hide or request.user.is_superuser or request.user.is_school_admin %}
+                                                <div class="col-md-3 mb-3">
+                                                    <label for="student_admission">Previous School Detail</label>
+                                                    {{form.previous_school_detail}}
+                                                </div>
+                                                {% endif %}
+                                                <div class="col-md-3 mb-3" >
+                                                    {{form.note}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    {{form.title_1}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    {{form.documents_1}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    {{form.title_2}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    {{form.documents_2}}
+                                                </div>
+                                         
+                                                <div class="col-md-3 mb-3">
+                                                    {{form.documents_3}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    {{form.title_4}}
+                                                </div>
+                                                <div class="col-md-3 mb-3">
+                                                    {{form.documents_4}}
+                                                </div>
+                                                <div style="display: none;">
+                                                {{form.session}}
+                                                {{form.user_student}}
+                                                {{form.user_parent}}
+                                                {{form.created_by}}
+                                                {{form.created_at}}
+                                                {{form.status}}
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                        
+
+                       
+                            <div class="col-md-4 mb-3"><br>
+                                <button type="submit" class="btn btn-primary" style="float: right;">Save</button>
+                            </div>
+                        </div>
+                
+          
+  
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+    // JavaScript event listener to handle selection
+    document.getElementById("dropdown").addEventListener("change", function () {
+        var selectedValue = this.value;
+        var selectedOption = this.options[this.selectedIndex];
+        var heading = selectedOption.parentNode.label;
+        console.log("Selected values: " + heading + selectedValue);
+        // Do something with the selected value and heading here
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#id_Class', function () {
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+<script>
+    $('#id_if_guardian_is').change(function() {
+        var guardian=$('#id_if_guardian_is').val();
+        if (guardian == 'Father'){
+            var father_name=$('#id_Father_name').val();
+            var father_phone=$('#id_Father_phone').val();
+            var father_occupation=$('#id_Father_occupation').val();
+            $('#id_guardian_name').val(father_name);
+            $('#id_guardian_relation').val(guardian);
+            $('#id_guardian_phone').val(father_phone);
+            $('#id_guardian_occupation').val(father_occupation);
+        }else if(guardian == 'Mother'){
+            var mother_name=$('#id_mother_name').val();
+            var mother_phone=$('#id_mother_phone').val();
+            var Mother_occupation=$('#id_mother_occupation').val();
+            $('#id_guardian_name').val(mother_name);
+            $('#id_guardian_relation').val(guardian);
+            $('#id_guardian_phone').val(mother_phone);
+            $('#id_guardian_occupation').val(Mother_occupation);
+        }else{
+            $('#id_guardian_name').val('');
+            $('#id_guardian_relation').val('');
+            $('#id_guardian_phone').val('');
+            $('#id_guardian_occupation').val('');
+        }
+        
+        
+    });
+</script>
+{% endblock %}

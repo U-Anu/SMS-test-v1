@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Error - Page Not Found</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    p {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .icon {
+      font-size: 120px;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    .animated-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    @keyframes animateBg {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .animated-bg {
+      background: linear-gradient(135deg, #ff512f 0%, #dd2476 100%);
+      background-size: 200% 200%;
+      animation: animateBg 6s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Oops!</h1>
+    <p>We couldn't find the page you're looking for.</p>
+    <span class="icon">🚧</span>
+    <p>Sorry, the page you're trying to access doesn't exist.</p>
+    <a href="/">Go back to the homepage</a>
+  </div>
+  <div class="animated-bg"></div>
+</body>
+</html>

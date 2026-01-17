@@ -1,0 +1,5 @@
+transaction_type_id,name,debit_transaction_code,credit_transaction_code,charge_code,category_of_account,txn_type_classification,debit_currency,debit_account,credit_currency,credit_account,description,company_name
+25,Fees collection,,,,AC-001,,['KSH-4897'],['14'],['KSH-4897'],['83'],Fee Collection,
+26,Salary Payment,,,,AC-001,,['KSH-4897'],['118'],['KSH-4897'],['1'],Salary Payment,
+27,Food Expenses,,,,AC-011,,['KSH-4897'],['146'],['KSH-4897'],['44'],Food Expenses,
+28,Stationery Expenses,,,,AC-011,,['KSH-4897'],['221'],['KSH-4897'],['44'],Stationery Expenses,

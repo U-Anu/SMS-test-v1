@@ -1,0 +1,39 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        {{ message }}
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>{{ screen_name }}</h2>
+                <div>
+                    <button type="submit" form="myForm" class="btn btn-primary">Save</button>
+                    <a href="{{ list_url }}" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            <div class="card card-body">
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    {% csrf_token %}
+                    {% for form_field in form %}
+                        <div class="form-group">
+                            {{ form_field.label_tag }}
+                            {{ form_field }}
+                        </div>
+                    {% endfor %}
+                    {% if record_details %}
+                        {% for key, value in record_details.items %}
+                            <div class="form-group">
+                                <label>{{ key }}</label>
+                                <input name="{{ key }}" value="{{ value }}" class="form-control readonly-field" readonly>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

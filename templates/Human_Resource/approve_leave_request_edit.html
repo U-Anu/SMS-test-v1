@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Approve Leave Request</h4>
+        </div>
+     </div>
+     {% if 'approve_leave_request_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add " style="float: right;">Add Leave Request</button>
+    {% endif %}
+    <br>
+     {% if 'approve_leave_request_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <br>
+    <div class="col-md-12">
+            
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Staff</th>
+                                <th>Leave Type</th>
+                                <th>Leave Date</th>
+                                <th>Apply Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in records %}
+                            <tr>
+                                <td>{{data.role}}</td>
+                                <td>{{data.leave_type}}</td>
+                                <td>{{data.leave_date_from}} - {{data.leave_date_to}}</td>
+                                <td>{{data.apply_date}}</td>
+                                <td>
+                                  {% if data.status == 'Pending' %}
+                                  <small class="label label-warning">{{data.status}}</small>
+                                  {% elif data.status == 'Approve' %}
+                                  <small class="label label-success">{{data.status}}</small>
+                                  {% elif data.status == 'Disaprove' %}
+                                  <small class="label label-danger">{{data.status}}</small>
+                                  {% endif  %}
+                                </td>
+                                <td>  
+                                  {% if 'approve_leave_request_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  
+                                    <a href="{% url 'approve_leave_request_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                   {% endif %}
+                                    {% if 'approve_leave_request_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'approve_leave_request_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                    {% endif %} 
+                                  </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    </div>
+  <!-- modal Start -->
+
+  <div class="modal fade add" id='myModal' tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post" id="myform">
+              {% csrf_token %}
+          <table class="table">
+            <tr>
+              <th>Name</th>
+              <td>{{record.name.first_name}}</td>
+              <th>Staff ID</th>
+              <td>{{record.name.staff_id}}</td>
+            </tr>
+            <tr>
+              <th>Submitted By</th>
+              <td>{{record.created_by}}</td>
+              <th>Apply Date</th>
+              <td>{{record.apply_date}}</td>
+            </tr>
+            
+            <tr>
+              {% if record.number_of_days > 0 %}
+              <th>Leave</th>
+              <td style="max-width: 100px;">{{record.leave_dates}} ({{record.number_of_days}}days)</td>
+              {% endif %}
+              {% if record.LOP_number_of_days > 0 %}
+              <th>LOP Leave</th>
+              <td style="max-width: 100px;">{{record.LOP_leave_dates}}  ({{record.LOP_number_of_days}}days)</td>
+              {% endif %}
+            </tr>
+            
+            <tr>
+              <th>Status</th>
+              <td>
+                <label for="Pending_id">Pending
+                <input type="radio" name="status" id="Pending_id" value="Pending" {% if record.status == 'Pending' %}checked{% endif %}></label>
+                <label for="Approve_id">Approve
+                <input type="radio" name="status" id="Approve_id" value="Approve" {% if record.status == 'Approve' %}checked{% endif %}></label>
+                <label for="id_Disaprove">Disaprove
+                <input type="radio" name="status" id="id_Disaprove" value="Disaprove" {% if record.status == 'Disaprove' %}checked{% endif %}></label>
+              </td>
+              <th>Reason</th>
+              <td>{{record.reason}}</td>
+            </tr>
+            <tr>
+              <th colspan="4">Note</th>
+            </tr>
+            
+            <tr>
+              <th colspan="4"><textarea name="" id="" cols="90" rows="3" class="form-control">{{record.note}}</textarea></th>
+            </tr>
+
+          </table>
+          <div id="error-message" style="display: none; color: red;"><center>you didn't have many days leave.</center></div>
+          <br>
+          <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+          <br><br>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+      $(document).ready(function () {
+    $(document).on('change', '#id_role', function () {
+      var role_id = $('#id_role').val();
+      var url = "{% url 'demo_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'role_id': role_id
+        },
+        success: function (data) {
+            $("#id_name").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (classs) {
+                html_data += `<option value="${classs.id}">${classs.first_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_name").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+
+
+$(document).ready(function () {
+    $(document).on('change', '#id_name', function () {
+      var name = $('#id_name').val();
+      var url = "{% url 'leave_type_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'name': name,
+        },
+        success: function (data) {
+            $("#id_leave_type").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (leave) {
+                html_data += `<option value="${leave.leave_type_id}">${leave.leave_type__name}(${leave.available_leave})</option>`
+            });
+            console.log(html_data);
+            $("#id_leave_type").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+
+
+<script>
+  const to_date = document.getElementById("id_leave_date_to");
+to_date.addEventListener("click", function () {
+  checkTimeDifference();
+});
+  function checkTimeDifference() {
+    const startDate = new Date(document.getElementById('id_leave_date_from').value);
+    const endDate = new Date(document.getElementById('id_leave_date_to').value);
+
+    const dropdown = document.getElementById('id_leave_type');
+    const selectedOption = dropdown.options[dropdown.selectedIndex];
+
+    const leave_type = selectedOption.text;
+    const leave_count = parseInt(leave_type.split("(")[1]);
+    
+    console.log(leave_count); // Output: 10
+    const timeDifference = endDate - startDate;
+      // Convert milliseconds to days
+    const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+
+    const leave_apply_days = Math.abs(daysDifference); // Use Math.abs() to get the absolute value
+
+  
+    if (parseInt(leave_apply_days) <= leave_count) {
+      document.getElementById('myform').submit(); // Submit the form
+    } else {
+      document.getElementById('error-message').style.display = 'block'; // Show the error message
+    }
+  }
+</script>
+
+
+<script>
+  $(document).ready(function () {
+      // Open the modal when the page is loaded
+      $('#myModal').modal('show');
+
+  });
+</script>
+
+
+
+<script>
+// Get the modal element and close button
+const modal = document.getElementById("myModal");
+const closeButton = modal.querySelector(".close");
+
+// Add event listener to close button
+closeButton.addEventListener("click", function () {
+  closeModalAndRedirect();
+});
+
+// Add event listener to modal overlay
+modal.addEventListener("click", function (event) {
+  if (event.target === modal) {
+    closeModalAndRedirect();
+  }
+});
+
+// Function to close the modal and perform the redirection
+function closeModalAndRedirect() {
+  modal.style.display = "none"; // Hide the modal
+
+  // Perform the redirection
+  window.location.href = "/approve_leave_request"; // R
+}
+</script>
+
+ {% endblock  %}

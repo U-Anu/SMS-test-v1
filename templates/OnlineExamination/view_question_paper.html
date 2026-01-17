@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Paper: {{ question_paper.name }}</title>
+</head>
+<body>
+    <h1>{{ question_paper.name }}</h1>
+    <p>Total Marks: {{ question_paper.total_marks }}</p>
+    <p>Pass Marks: {{ question_paper.pass_marks }}</p>
+    <p>Duration: {{ question_paper.duration }}</p>
+
+    <h2>Questions</h2>
+    <ul>
+        {% for question in question_paper.questions.all %}
+            <li>{{ question.text }} ({{ question.marks }} marks)</li>
+            {% if question.question_type == 'choice' %}
+                <ul>
+                    {% for choice in question.choices.all %}
+                        <li>{{ choice.text }} {% if choice.is_correct %}(Correct Answer){% endif %}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_questions' question_paper.id %}">Add More Questions</a>
+</body>
+</html>
+{% endblock %}

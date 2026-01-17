@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{screen_name}} || BHARATHBRANDS ||Generic Accounting</title>
+
+  <!-- Plugins: CSS -->
+  <link rel="stylesheet" href="{% static 'assets/vendors/feather/feather.css'  %}">
+  <link rel="stylesheet" href="{% static 'assets/vendors/ti-icons/css/themify-icons.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/vendors/css1/vendor.bundle.base.css' %}">
+
+  <!-- Plugin CSS for this page -->
+  <link rel="stylesheet" href="{% static 'assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/js1/select.dataTables.min.css' %}">
+
+  <!-- Inject: CSS -->
+  <link rel="stylesheet" href="{% static 'assets/css1/vertical-layout-light/style.css' %}">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'assets/images1/favicon.png' %}"/>
+
+  <!-- Font Awesome and DataTables CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+
+<link href="{% static 'django_select2/css/select2.min.css' %}" rel="stylesheet">
+<script src="{% static 'django_select2/js/select2.min.js' %}"></script>
+
+
+
+
+  <!-- Custom CSS -->
+  <style>
+    /* General styling for the tab navigation */
+    .nav-tabs .nav-link {
+        border: 1px solid #ddd; /* Default border color for inactive tabs */
+        border-radius: 0.25rem; /* Rounded corners */
+        background-color: #f8f9fa; /* Default background color for inactive tabs */
+        color: #495057; /* Default text color for inactive tabs */
+    }
+
+    /* Styling for the active tab */
+    .nav-tabs .nav-link.active {
+        background-color: #4747A1; /* Background color for the active tab */
+        color: #fff; /* Text color for the active tab */
+        border-color: #4747A1; /* Border color for the active tab */
+    }
+
+    /* Optional: Styling for hover effect */
+    .nav-tabs .nav-link:hover {
+        background-color: #e2e6ea; /* Background color on hover */
+        color: #495057; /* Text color on hover */
+    }
+
+    /* Optional: Styling for the tab content */
+    .tab-content {
+        padding: 1rem; /* Padding inside the tab content area */
+    }
+  </style>
+
+<!--  Custom CSS-->
+  <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
+</head>
+
+<body>
+  <div class="container-scroller">
+    <!-- Navbar -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="{% url 'dashboard' %}">
+<!--                <img src="{% static 'assets/BB-images/pesanile.jpeg' %}" alt="logo"></a>-->
+                <img src="{% static 'assets/BB-images/bb-logo.png' %}" alt="logo"></a>
+        <a class="navbar-brand brand-logo-mini" href="{% url 'dashboard' %}">
+<!--                <img src="{% static 'assets/BB-images/pesanile.jpeg' %}" alt="logo"></a>-->
+                <img src="{% static 'assets/BB-images/bb-logo.png' %}" alt="logo"></a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="icon-menu"></span>
+        </button>
+        <ul class="navbar-nav mr-lg-2">
+          <li class="nav-item nav-search d-none d-lg-block">
+            <div class="input-group">
+              <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+                <span class="input-group-text" id="search">
+                  <i class="icon-search"></i>
+                </span>
+              </div>
+              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
+            </div>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="{% static 'assets/BB-images/avtar.png' %}" alt="profile"/>
+              {{request.user.first_name}}
+            </a>
+            {% comment %} <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item" href="{% url 'logout' %}">
+                <i class="ti-power-off text-primary"></i>
+                Logout {% endcomment %}
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="icon-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container-fluid page-body-wrapper">
+      <!-- Sidebar -->
+      {% if request.user.is_superuser or request.user.is_school_admin %}
+      {% include 'base_superuser.html' %}
+      {% elif request.user.is_customer %}
+      {% include 'base_customer.html' %}
+      {% else %}
+      {% include 'base_customer.html' %}
+      {% endif %}
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+         {% block body_block %}
+        {% endblock %}
+        <div class="content-wrapper">
+          <div class="row">
+            <!-- Content goes here -->
+          </div>
+        </div>
+        <!-- Footer -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">© 2023 BHARATHBRANDS LIMITED. All rights reserved.</span>
+          </div>
+        </footer>
+        <!-- End Footer -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Plugins: JS -->
+  <script src="{% static 'assets/vendors/js1/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'assets/vendors/chart.js/Chart.min.js' %}"></script>
+  <script src="{% static 'assets/vendors/datatables.net/jquery.dataTables.js' %}"></script>
+  <script src="{% static 'assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js' %}"></script>
+
+  <!-- Plugin JS for this page -->
+  <script src="{% static 'assets/js/dataTables.select.min.js' %}"></script>
+
+  <!-- Inject: JS -->
+  <script src="{% static 'assets/js1/off-canvas.js' %}"></script>
+  <script src="{% static 'assets/js1/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'assets/js1/template.js' %}"></script>
+  <script src="{% static 'assets/js1/settings.js' %}"></script>
+  <script src="{% static 'assets/js1/todolist.js' %}"></script>
+
+  <!-- Custom JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRmYl5Q2KS7T8mZmKBKEEk5q7j5Ro8UCMEfLkLlFY" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.flash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  {{ form.media.js }}
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    table.dataTable thead th,
+    table.dataTable thead td {
+        padding: 2px 12px;
+        border-bottom: 1px solid #111;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Select Criteria</h4>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;">
+                <div class="container-fluid" style="padding: 10px;">
+                    <div class="col-md-4  mb-3">
+                        <a href="{% url 'attendence_report' %}"> Attendance Report</a>
+                    </div>
+                    <div class="col-md-4  mb-3">
+                        <a href="{% url 'student_attendance_type_report' %}"> Student Attendance Type Report</a>
+                    </div>
+                    <div class="col-md-4  mb-3">
+                        <a href="{% url 'staff_attendance_report' %}" class="text-primary"> Staff Attendance Report</a>
+                    </div>
+                    <br><br><br>
+                    <div class="col-md-4  mb-3">
+                        <a href="{% url 'daily_attendance_report' %}">Daily Attendance Report</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="section">Role</label>
+                            <select class="form-control" name="roles" id="roles">
+                                <option value="">---Select---</option>
+                                {% for data in roles_records %}
+                                <option value="{{ data.id }}">{{data.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="class">Month</label>
+                            <select class="form-control" name="months">
+                                <option value="">---Select---</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="class">Year</label>
+                            <select class="form-control" name="years">
+                                <option value="">---Select---</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                        value="">Search</button><br><br>
+                </form>
+            </div>
+        </div>
+        {% if body %}
+        <div class="col-md-12 card">
+            <div class="table-responsive">
+                <div class="row" style="font-size: small;">
+                    <div class="col-md-4 col-sm-4">
+                        <h5 class="box-title"></i> Staff Attendance Report</h5>
+                    </div>
+                    <div class="col-md-8 col-sm-8">
+                        <div class="lateday" style="float: right;">
+                            &nbsp;&nbsp;
+                            <b>
+                                Present: <b class="text text-success">P</b> </b>
+                            &nbsp;&nbsp;
+                            <b>
+                            </b>
+                            &nbsp;&nbsp;
+                            <b>
+                                Late: <b class="text text-warning">L</b> </b>
+                            &nbsp;&nbsp;
+                            <b>
+                                Absent: <b class="text text-danger">A</b> </b>
+                            &nbsp;&nbsp;
+                            <b>
+                                Holiday: H </b>
+                            &nbsp;&nbsp;
+                            <b>
+                                Half Day: <b class="text text-warning">F</b> </b>
+                        </div>
+
+                    </div>
+                </div>
+                <table class="dispaly" id="tableID" style="font-size: small;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Student / Date </th>
+
+
+                            <th colspan=""><br /><span data-toggle="tooltip" title="Total Present">P
+                                </span></th>
+
+                            <th colspan=""><br /><span data-toggle="tooltip" title="Total Late">L
+                                </span></th>
+
+                            <th colspan=""><br /><span data-toggle="tooltip" title="Total Absent">A
+                                </span></th>
+
+                            <th colspan=""><br /><span data-toggle="tooltip" title="Total Holiday">H
+                                </span></th>
+
+                            <th colspan=""><br /><span data-toggle="tooltip" title="Total Half Day">F
+                                </span></th>
+                            <th> </th>
+                            {% for data in header %}
+                            {% if 'Sun' in data %}
+                            <th class="td cls text text-center bg-danger">{{data}}</th>
+                            {% else %}
+                            <th class="td cls text text-center">{{data}}</th>
+                            {% endif %}
+                            {% endfor %}
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in body %}
+                        <tr>
+                            <td>{{data.student}}</td>
+                            <td>{{data.present}}</td>
+                            <td>{{data.late}}</td>
+                            <td>{{data.absent}}</td>
+                            <td>{{data.half_day}}</td>
+                            <td>0</td>
+                            <td> </td>
+                            {% for attn in data.attendace %}
+                            <td>
+                                {% if attn == 'P' %}
+                                    <b class="text text-success">P</b>
+                                {% elif attn == 'L' %}
+                                    <b class="text text-warning">L</b>
+                                {% elif attn == 'A' %}
+                                    <b class="text text-danger">A</b>
+                                {% elif attn == 'H' %}
+                                    <b class="text">H</b>
+                                {% elif attn == 'F' %}
+                                    <b class="text text-warning">F</b>
+                                {% endif %}    
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+         
+            <br><br><br>
+        </div>
+        {% else %}
+        <center> <h5>No Records Found </h5></center>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

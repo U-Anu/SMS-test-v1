@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Edit Create Expense</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'expense_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px; border-top: 5px solid black;">
+                    <div class="main-header">   
+                        {% if view %}
+                            <h4>View Create Expense</h4>
+                        {% elif edit %}
+                            <h4>Edit Create Expense</h4>
+                        {% else %}
+                            <h4>Add Create Expense</h4>          
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <!-- Radio Buttons -->
+                          
+                            <div class="col-md-12 mb-3">
+                                <label for="option1">
+                                    <input type="radio" id="option1" name="option" value="regular_payment" {% if record.regular_payment == True %}checked  {% endif %} >
+                                    Regular payment
+                                </label><br>
+                                <label for="option2">
+                                    <input type="radio" id="option2" name="option" value="one_time_payment" {% if record.one_time_payment == True  %}checked{% endif %}>
+                                    One Time Payment
+                                </label>
+                            </div>
+                            <br><br>
+                    
+                            {% for data in form %}
+                            
+                                <div class="col-md-12 mb-3">
+                                    {{ data.label_tag }}
+                                    {{ data }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <br>
+                        
+                        {% if not view %}
+                            <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <form method="post" >
+                    {% csrf_token %}
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Create Expense List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+
+                                <th>Category</th>
+                                <th>Item Name</th>                                
+                                <th>Due Date</th>
+                                <th>Amount</th>
+                                <th>Quantity</th>
+                                <th>Status</th>                              
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+
+                                <td>{{data.category.name}}</td>
+                                <td>{{data.item_name}}</td>
+                                <td>{{data.due_date}}</td>
+                                <td>{{data.amount}}</td>
+                                <td>{{data.quantity}}</td>
+                                <td>{{data.status}}</td>
+                                <td>  
+                                   
+                                  {% if 'create_expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'create_expense_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                  {% endif %}
+                                  {% if 'create_expense_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'create_expense_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                  {% endif %}
+                                  {% if 'create_expense_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'create_expense_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                  {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    <br>
+                    </div>
+                 </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+<script>
+    // Function to show or hide the due_date field based on the selected radio button
+    function toggleDueDate() {
+        var option1 = document.getElementById('option1');  // Regular Payment
+        var option2 = document.getElementById('option2');  // One Time Payment
+        var dueDateField = document.getElementById('id_due_date');  // The due_date input field
+
+        // Check if One Time Payment is selected
+        if (option2.checked) {
+            dueDateField.parentElement.style.display = 'none';  // Hide the due_date field
+        } else {
+            dueDateField.parentElement.style.display = '';  // Show the due_date field
+        }
+    }
+
+    // Add event listeners to the radio buttons to trigger the toggle function
+    document.getElementById('option1').addEventListener('change', toggleDueDate);
+    document.getElementById('option2').addEventListener('change', toggleDueDate);
+
+    // Initial check on page load
+    toggleDueDate();
+</script>
+ {% endblock  %}

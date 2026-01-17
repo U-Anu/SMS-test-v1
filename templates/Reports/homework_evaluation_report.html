@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+
+       <div class="main-header">
+        <div class="col-md-4">
+          <h4>Student Information Report</h4>
+          </div>
+       </div>
+    </div>
+
+    <div class="col-md-12">
+      
+        
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_information_report' %}">Student Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'guardian_report' %}" >Guardian Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_history_report' %}">Student History</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_login_credentials' %}">Student Login Credentials</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'class_subject_report' %}">Class Subject Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'admission_report' %}">Admission Report</a>
+            </div>
+            {% comment %} <div class="col-md-4  mb-3">
+              <a href="{% url 'sibling_report' %}">Sibling Report</a>
+            </div> {% endcomment %}
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_profile_report' %}">Student Profile</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'homework_evaluation_report' %}" class="text-primary" >Homework Evaluation Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_gender_ratio_report' %}">Student Gender Ratio Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_teacher_ratio_report' %}">Student Teacher Ratio Report</a>
+            </div>
+            
+          </div>
+          <hr>
+          <div class="container-fluid">
+            <div class="row">
+                <form method="post">
+                    {% csrf_token %} 
+                 <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="class">Class</label>
+                        <select name="Class" class="form-control" required id="id_Class">
+                            <option value="" >------</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}">{{data.Class}}</option>
+                            {% endfor %}
+    
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="section">Section</label>
+                        <select name="section" class="form-control" required id="id_section">
+                            <option value="">------</option>
+                            
+                           </select>           
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="section">Subject_group</label>
+                        <select name="subject_group" class="form-control" required id="id_subject_group">
+                            <option value="">------</option>
+                            
+                        </select>                
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="section">Subject</label>
+                        <select name="subject" class="form-control" required id="id_subject">
+                            <option value="">------</option>
+                            
+                        </select>               
+                    </div>
+
+             
+                  
+                  </div><br> 
+                  <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                </form>
+            </div>  
+          </div>
+      
+         
+        </div>
+            </div>
+        </div>
+   
+   
+
+
+   {% if records %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+          <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Homework Date</th>
+                        <th>Submission Date</th>
+                        <th>Complete/Incomplete</th>
+                        <th>Complete%</th>              
+                    </tr>
+                </thead> 	
+                <tbody>
+                    {% for data in list %}
+                    <tr>
+                        <td>{{data.obj.subject}}</td>
+                        <td>{{ data.obj.homework_date }}</td>
+                        <td>{{ data.obj.submission_date }}</td>       
+                        <td>{{ data.complete }}/{{data.incomplete}}</td>       
+                        <td>{{ data.percentage }}</td>                      
+                    </tr>
+                    {% endfor %}  
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% else %}
+     <center> <h5>No Records Found </h5></center>
+     {% endif %}
+
+ </div>
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  
+  });
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_section', function () {
+      var section_id = $('#id_section').val();  
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'subject_grp_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+            'class_id': class_id,
+            'section_id': section_id,
+        },
+        success: function (data) {
+            $("#id_subject_group").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subjectt) {
+                html_data += `<option value="${subjectt.id}">${subjectt.name}</option>`
+            });
+            console.log(html_data);
+            $("#id_subject_group").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  
+  });
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_subject_group', function () {
+      var class_id = $('#id_Class').val();
+      var section_id = $('#id_section').val();  
+      var subject_grps = $('#id_subject_group').val();
+      var url = "{% url 'subject_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+            'class_id': class_id,
+            'section_id': section_id,
+            'subject_grp_id': subject_grps
+        },
+        success: function (data) {
+            $("#id_subject").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subjecttt) {
+                html_data += `<option value="${subjecttt.id}">${subjecttt.subject_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_subject").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  
+  });
+  </script>
+ {% endblock  %}
+
+
+ 

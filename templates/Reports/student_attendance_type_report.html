@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'attendence_report' %}"> Attendance Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_attendance_type_report' %}"  class="text-primary"> Student Attendance Type Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'staff_attendance_report' %}"> Staff Attendance Report</a>
+            </div>
+            <br><br><br>
+               <div class="col-md-4  mb-3">
+              <a href="{% url 'daily_attendance_report' %}">Daily Attendance Report</a>
+            </div>
+   </div>
+   </div>
+   </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">                   
+             
+                    <div class="col-md-2 mb-3">
+                        <label for="enquiry">Date from</label>
+                        <input type="date" class="form-control" name="from_date" required>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="enquiry">Date to</label>
+                        <input type="date" class="form-control" name="to_date">
+                    </div>
+                                    
+                    <div class="col-md-3 mb-3">
+                        <label for="class">Attendance Type</label>
+                        <select class="form-control" name="present" required>
+                            <option value="" >---Select---</option>
+                            <option value="present">Present(P)</option>
+                            <option value="Absent">Absent(A)</option>
+                            <option value="Late">Late(L)</option>
+                            <option value="Holiday">Holiday(H)</option>
+                            <option value="Half">Half day(F)</option>
+                
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="id_Class" required>
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}">{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <label for="section">Section</label>
+                        <select class="form-control" name="section" id="id_section">
+                            <option value="">---Select--- </option>
+                       
+                        </select>
+                    </div>
+                </div>  
+                <br>              
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+    </div>
+
+     {% if record %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>                    
+                    <tr>
+                        <th>Admission No</th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Father Name</th>                       
+                        <th>Date of Birth</th>
+                        <th>Admission Date</th>
+                        <th>Gender</th>
+                        <th>Mobile Number</th>    
+                      
+                    </tr>
+                </thead>							                
+                <tbody>
+                    {% for data in record %}
+                    <tr>
+                        <td>{{data.student.admission_no}}</td>
+                        <td>{{data.student.first_name}}</td>
+                        <td>{{data.student.Class}}({{data.student.section}})</td>
+                        <td>{% if data.student.Father_name %}{{data.student.Father_name}}{% endif %}</td>
+                        <td>{{data.student.date_of_birth}}</td>
+                        <td>{{data.student.admission_date}}</td>
+                        <td>{{data.student.gender}}</td>
+                        <td>{{data.student.mobile_number}}</td>
+                      
+
+                                       
+            
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+         
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% else %}
+     <center> <h5>No Records Found </h5></center>
+     {% endif %}
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+ <script>
+   
+    $(document).ready(function () {
+      $(document).on('change', '#id_Class', function () {
+          var class_id = $('#id_Class').val();
+          var url = "{% url 'section_js' %}";
+
+          $.ajax({
+              url: url,
+              data: {
+                  'class_id': class_id
+              },
+              success: function (data) {
+                  $("#id_section").html(data);
+                  let html_data = '<option value="">--------</option>';
+                  data.forEach(function (section) {
+                      html_data += `<option value="${section.id}">${section.section_name}</option>`
+                  });
+                  console.log(html_data);
+                  $("#id_section").html(html_data);
+              },
+              error: function (data) {
+                  console.log(data);
+              }
+          });
+      });
+
+  });
+</script>
+ {% endblock  %}

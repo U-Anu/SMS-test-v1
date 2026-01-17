@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Disable Reason</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+          {% if 'disable_student_add' in access.roles.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Add Disable Reason</h4>
+                     </div><hr>
+                     {% if not view %}
+                     <h4>Edit Disable Reason</h4>
+                     {% else %}
+                     <h4>View Disable Reason</h4>
+                     {% endif %}
+                     <form method="post">
+                      {% csrf_token %} 
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                      {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'disable_student_view' in access.roles.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Disable Reason List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.name}}</td>
+                                <td>  
+                                    <a href="{% url 'disabled_reason_view' data.id %}" style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    <a href="{% url 'disabled_reason_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    <a href="{% url 'disabled_reason_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  <!-- modal Start -->
+
+  <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form>
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+          <button type="button" class="btn btn-primary">Submit</button>
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

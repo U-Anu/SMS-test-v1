@@ -1,0 +1,48 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">{{screen_name}}</h3>
+                <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Date</th>
+                                        <th>Gl Line Code</th>
+                                        <th>Account Number</th>
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in records %}
+                                    <tr>
+                                        <td>{{forloop.counter}}.</td>
+                                        <td>{{data.date}}</td>
+                                        <td>{{data.glline_code}}</td>
+                                        <td>{{data.account_number}}</td>
+                                        <td>{{data.debit}}</td>
+                                        <td>{{data.credit}}</td>
+                                        <td>{{data.balance}}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                </table>
+                            </div>
+                            <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

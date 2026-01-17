@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<style>
+  .more-details-link {
+    font-weight: bold;
+    color: #007bff;
+    /* Highlight the link with a blue color */
+  }
+
+  .more-details-link:hover {
+    color: #0056b3;
+    /* Darker shade on hover */
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="main-header">
+      <div class="col-md-4">
+        <h4>Student History</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+      <div class="container-fluid" style="padding: 10px;">
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'accouting_report' %}" >Date wise </a>
+        </div>
+        {% comment %} <div class="col-md-4  mb-3">
+          <a href="{% url 'accouting_details_report' %}"  >Transaction Details </a>
+        </div> {% endcomment %}
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'accouting_ledger' %}" > General Ledger </a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'statement_cashflow' %}" > Statement Cashflow </a>
+        </div>
+
+        <!-- <div class="col-md-4  mb-3">
+            <a href="{% url 'account_transaction' %}" >  Account Transaction </a>
+          </div> -->
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'trail_balance_report' %}"  > Trial Balance </a>
+          </div>
+
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'statement_changes_in_equity' %}" > Statement Changes Equity</a>
+          </div>
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'budget_forecast' %}"  > Budget Forecast </a>
+          </div>
+
+
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'statement_financial_position' %}" class="text-primary"> Statement Financial Position </a>
+          </div>
+        <!-- 
+
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'statement_receipt' %}"> Statement Receipt </a>
+        </div> -->
+
+      </div>
+    </div>
+    <hr>
+
+  </div>
+
+
+
+
+
+  
+  <div class="col-md-12">
+    <div class="card">
+      <div class="table-responsive">
+
+        <!-- Assets Table -->
+        <div class="table-section">
+          <h5>Assets</h5>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Asset Account Number</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for asset in assets %}
+                <tr>
+                  <td>{{ asset.account_number }}</td>
+                  <td class="text-right">{{ asset.amount }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><strong>Total Assets:</strong></td>
+                <td class="text-right"><strong>{{ total_assets }}</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <!-- Liabilities Table -->
+        <div class="table-section">
+          <h5>Liabilities</h5>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Liability Account Number</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for liability in liabilities %}
+                <tr>
+                  <td>{{ liability.account_number }}</td>
+                  <td class="text-right">{{ liability.amount }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><strong>Total Liabilities:</strong></td>
+                <td class="text-right"><strong>{{ total_liabilities }}</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <!-- Equity Table -->
+        <div class="table-section">
+          <h5>Equity</h5>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Equity Account Number</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for eq in equity %}
+                <tr>
+                  <td>{{ eq.account_number }}</td>
+                  <td class="text-right">{{ eq.amount }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td><strong>Total Equity:</strong></td>
+                <td class="text-right"><strong>{{ total_equity }}</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+      </div>
+    </div>
+</div>
+
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

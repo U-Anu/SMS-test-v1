@@ -1,0 +1,283 @@
+{% extends 'student_base.html' %}
+{% block head_block %}
+
+<style>
+    td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        
+    }
+    th {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        background-color: rgb(51, 50, 50);
+        color: white;
+
+    }
+    .hidden {
+            display: none;
+        }
+        table{
+            width: 100%;
+        }
+</style>
+{% endblock %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">    
+   <br>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                <div class="col-md-2 mb-3"><br>
+                    <button id="prevButton" class="btn btn-primary" style="float: left;">«</button>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="year">Year:</label>
+                <select id="year" class="form-control"></select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="month">Month:</label>
+                <select id="month" class="form-control"></select>
+                </div>
+                <div class="col-md-2 mb-3"><br>
+                    <button id="nextButton" class="btn btn-primary" style="float: right;">»</button>
+                </div>
+                       
+                            <div id="calendar" >
+                            </div>
+                                 
+                        <hr> 
+                       
+                        <h6 style="float: right;">
+                            <div style="display: inline-block; width: 10px; height: 10px; background-color: gray; margin-right: 5px;"></div>
+                            <span>Holiday</span>&nbsp; &nbsp;  
+                          </h6>
+                          <h6 style="float: right;">
+                            <div style="display: inline-block; width: 10px; height: 10px; background-color: orange; margin-right: 5px;"></div>
+                            <span>HalfDay</span>&nbsp;&nbsp;
+                          </h6>
+                          <h6 style="float: right;">
+                            <div style="display: inline-block; width: 10px; height: 10px; background-color: YELLOW; margin-right: 5px;"></div>
+                            Late&nbsp;&nbsp;
+                          </h6>
+                          <h6 style="float: right;">
+                            <div style="display: inline-block; width: 10px; height: 10px; background-color: RED; margin-right: 5px;"></div>
+                            Absent&nbsp;&nbsp;
+                          </h6>
+                          <h6 style="float: right;">
+                            <div style="display: inline-block; width: 10px; height: 10px; background-color: GREEN; margin-right: 5px;"></div>
+                            Present&nbsp;&nbsp;
+                          </h6> 
+                          <br><br>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+    </div>
+ {% endblock %}
+ {% block script_block %}
+
+<!-- calendar Script -->
+
+<script>
+    var currentYear = new Date().getFullYear();
+    var currentMonth = new Date().getMonth();
+    var calendarDiv = document.getElementById('calendar');
+    var prevButton = document.getElementById('prevButton');
+    var nextButton = document.getElementById('nextButton');
+    var yearDropdown = document.getElementById('year');
+    var monthDropdown = document.getElementById('month');
+  
+    var data = {
+      {% for data in record %}
+      '{{ data.attendance_date|date:"Y-m-d" }}': '{{ data.attendance_status }}',
+      {% endfor %}
+    };
+  
+    for (var year = 2000; year <= 2030; year++) {
+      var option = document.createElement('option');
+      option.value = year;
+      option.textContent = year;
+      yearDropdown.appendChild(option);
+    }
+  
+    var months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+  
+    months.forEach(function (month, index) {
+      var option = document.createElement('option');
+      option.value = index;
+      option.textContent = month;
+      monthDropdown.appendChild(option);
+    });
+  
+    yearDropdown.value = currentYear;
+    monthDropdown.value = currentMonth;
+  
+    function createCalendar(year, month) {
+      calendarDiv.innerHTML = '';
+  
+      var table = document.createElement('table');
+      var thead = document.createElement('thead');
+      var headerRow = document.createElement('tr');
+      var weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  
+      weekdays.forEach(function (weekday) {
+        var th = document.createElement('th');
+        th.textContent = weekday;
+        headerRow.appendChild(th);
+      });
+  
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+  
+      var tbody = document.createElement('tbody');
+      var firstDay = new Date(year, month, 1);
+      var lastDay = new Date(year, month + 1, 0);
+      var numDays = lastDay.getDate();
+  
+      var date = 1;
+  
+      for (var week = 0; week < 6; week++) {
+        var weekRow = document.createElement('tr');
+  
+        for (var weekday = 0; weekday < 7; weekday++) {
+          var dateCell = document.createElement('td');
+  
+          if (date <= numDays && (weekday >= firstDay.getDay() || week > 0)) {
+            var dateString = year + '-' + (month + 1).toString().padStart(2, '0') + '-' + date.toString().padStart(2, '0');
+            dateCell.textContent = date;
+            dateCell.setAttribute('data-date', dateString);
+  
+            if (data[dateString]) {
+              dateCell.setAttribute('data-data', data[dateString]);
+              var attendanceStatus = data[dateString];
+  
+              if (attendanceStatus === 'Present') {
+                dateCell.style.backgroundColor = 'green';
+              } else if (attendanceStatus === 'Absent') {
+                dateCell.style.backgroundColor = 'red';
+              } else if (attendanceStatus === 'Holiday') {
+                dateCell.style.backgroundColor = 'grey';
+              }else if (attendanceStatus === 'Late') {
+                dateCell.style.backgroundColor = 'yellow';
+              }else if (attendanceStatus === 'HalfDay') {
+                dateCell.style.backgroundColor = 'Orange';
+              }
+               else {
+                dateCell.style.backgroundColor = 'white';
+              }
+            }
+  
+            date++;
+          }
+  
+          weekRow.appendChild(dateCell);
+        }
+  
+        tbody.appendChild(weekRow);
+      }
+  
+      table.appendChild(tbody);
+      calendarDiv.appendChild(table);
+    }
+  
+    prevButton.addEventListener('click', function () {
+      if (currentMonth === 0) {
+       currentMonth = 11;
+        currentYear--;
+      } else {
+        currentMonth--;
+      }
+      yearDropdown.value = currentYear;
+      monthDropdown.value = currentMonth;
+      createCalendar(currentYear, currentMonth);
+    });
+  
+    nextButton.addEventListener('click', function () {
+      if (currentMonth === 11) {
+        currentMonth = 0;
+        currentYear++;
+      } else {
+        currentMonth++;
+      }
+      yearDropdown.value = currentYear;
+      monthDropdown.value = currentMonth;
+      createCalendar(currentYear, currentMonth);
+    });
+  
+    yearDropdown.addEventListener('change', function () {
+      currentYear = parseInt(this.value);
+      createCalendar(currentYear, currentMonth);
+    });
+  
+    monthDropdown.addEventListener('change', function () {
+      currentMonth = parseInt(this.value);
+      createCalendar(currentYear, currentMonth);
+    });
+  
+    createCalendar(currentYear, currentMonth);
+  </script>
+
+<!-- #script for  radio button inside modal -->
+<script>
+    function toggleDivVisibility(selectedDivId) {
+        var div1 = document.getElementById('div1');
+        var div2 = document.getElementById('div2');
+        
+        if (selectedDivId === 'div1') {
+            div1.style.display = "block";
+            div2.style.display = "none";
+        } else if (selectedDivId === 'div2') {
+            div1.style.display = "none";
+            div2.style.display = "block";
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_select_class', function () {
+      var class_id = $('#id_select_class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+  </script>
+
+ {% endblock  %}

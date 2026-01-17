@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    @charset "UTF-8";
+.toggler-wrapper {
+	display: block;
+	width: 45px;
+	height: 25px;
+	cursor: pointer;
+	position: relative;
+}
+
+.toggler-wrapper input[type="checkbox"] {
+	display: none;
+}
+
+.toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+	background-color: #44cc66;
+}
+
+.toggler-wrapper .toggler-slider {
+	background-color: #ccc;
+	position: absolute;
+	border-radius: 100px;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	-webkit-transition: all 300ms ease;
+	transition: all 300ms ease;
+}
+
+.toggler-wrapper .toggler-knob {
+	position: absolute;
+	-webkit-transition: all 300ms ease;
+	transition: all 300ms ease;
+}
+
+/*Style 6*/
+
+.toggler-wrapper.style-6 {
+	width: 54px;
+	-webkit-box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+	box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0))), #ddd;
+	background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0)), #ddd;
+	border-radius: 100px;
+}
+
+.toggler-wrapper.style-6 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+	left: calc(100% - 19px - 3px + 5px);
+}
+
+.toggler-wrapper.style-6 .toggler-slider {
+	-webkit-box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+	box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0.1))), #d0d0d0;
+	background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0.1)), #d0d0d0;
+	top: 5px;
+	left: 5px;
+	width: calc(100% - 10px);
+	height: calc(100% - 10px);
+}
+
+.toggler-wrapper.style-6 .toggler-knob {
+	width: calc(25px - 6px);
+	height: calc(25px - 6px);
+	border-radius: 50%;
+	left: calc(3px - 5px);
+	top: calc(3px - 5px);
+	-webkit-box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+	box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #f5f5f5), to(#eeeeee));
+	background: linear-gradient(#f5f5f5 10%, #eeeeee);
+}
+
+</style>
+<br>
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;border-top: 5px solid black;">
+        <div class="main-header">
+            <h4>Select Criteria</h4>
+        </div>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="class">Class</label>
+                    <select name="Class" class="form-control" required id="id_Class">
+                        <option value="">------</option>
+                        {% for data in class_records %}
+                        <option value="{{ data.id }}">{{data.Class}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="section">Section</label>
+                    <select name="section" class="form-control" required id="id_section">
+                        <option value="">------</option>
+
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="section">Subject_group</label>
+                    <select name="subject_group" class="form-control" required id="id_subject_group">
+                        <option value="">------</option>
+
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="section">Subject</label>
+                    <select name="subject" class="form-control" required id="id_subject">
+                        <option value="">------</option>
+
+                    </select>
+                </div>
+            </div><br>
+            <button type="submit" class="btn btn-primary" name="search" value="search" style="float: right;">Save</button><br><br>
+        </form>
+    </div>
+</div>
+<br>
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>NO.</th>
+                        <th>Lesson - Topic</th>
+                        <th>Topic Completion Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                   
+
+                    {% regroup record by lesson_name as record_group %}
+                    {% for group in record_group %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>      
+                        <td colspan="4">
+                            {{group.grouper.lesson_name}}
+                        </td>           
+                      
+                    </tr>
+                    {% for data in group.list %}
+                    <tr>    
+                        <td></td>                  
+                        <td>{{data.topic_name}}</td>
+                        <td>{% if data.date_save %} {{data.date_save}} {% endif %}</td>                       
+                        <td>{% if data.status %}<button class="btn btn-primary btn-sm" style="padding: 3px;">{{data.status}} </button>{% else %}<button class="btn btn-sm"  style="padding: 3px;">Incomplete</button>{% endif %}</td>
+                        
+
+                         <td>
+                            {% if 'manage_syllabus_status_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+                             <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="add_btn" onclick="pass_id('{{data.id}}')" data-toggle="modal" data-target=".bd-example-modal-sm" {% if data.status %} checked {% endif %}>
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                                </label>
+                                {% endif %}                 
+
+                         </td>   
+                    </tr>
+                    {% endfor %} 
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Topic Completion Date</h5>
+          <button type="button" class="close" data-dimdiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            <div class="col-md-12 mb-3">
+                <label for="enquiry">Date from</label>
+                <input type="date" class="form-control" name="from_date" required>
+                <input type="hidden" id="pop_id" name="date_id">
+            </div>
+          </div>
+          <br>
+          <center>         
+          <button type="submit" name="save" value="save" class="btn btn-primary">Save</button>          
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#id_Class', function () {
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+
+    $(document).ready(function () {
+        $(document).on('change', '#id_section', function () {
+            var section_id = $('#id_section').val();
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'subject_grp_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id,
+                    'section_id': section_id,
+                },
+                success: function (data) {
+                    $("#id_subject_group").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (subjectt) {
+                        html_data += `<option value="${subjectt.id}">${subjectt.name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_subject_group").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+
+    $(document).ready(function () {
+        $(document).on('change', '#id_subject_group', function () {
+            var class_id = $('#id_Class').val();
+            var section_id = $('#id_section').val();
+            var subject_grps = $('#id_subject_group').val();
+            var url = "{% url 'subject_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id,
+                    'section_id': section_id,
+                    'subject_grp_id': subject_grps
+                },
+                success: function (data) {
+                    $("#id_subject").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (subjecttt) {
+                        html_data += `<option value="${subjecttt.id}">${subjecttt.subject_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_subject").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+<script>
+    function pass_id(id){
+        $('#pop_id').val(id)
+    }
+</script>
+
+{% endblock %}

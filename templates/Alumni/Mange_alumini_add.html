@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="student_admission">Current Phone</label>
+                            {{form.Current_phone}}
+                            
+                    </div>                  
+                        <div class="col-md-4 mb-3">
+                            <label for="student_admission">Current Email</label>
+                                {{form.current_email}}
+                        </div>                  
+                        <div class="col-md-4 mb-3">
+                            <label for="student_admission">Father occupation</label>
+                                {{form.Occupation}}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Current Address</label>
+                                {{form.address}}
+                        </div>  
+                        <div class="col-md-3 mb-3">
+                            <label for="student_admission">Student Photo</label>
+                                {{form.photo}}
+                        </div>
+                </div>  
+                <br>              
+                <button type="submit" class="btn btn-primary" style="float: right;"
+                    value="">Save</button><br><br>
+            </form>
+        </div>
+    </div>
+</div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

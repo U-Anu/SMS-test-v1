@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">                   
+             
+                    <div class="col-md-3 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="id_Class">
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}">{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="section">Section</label>
+                        <select class="form-control" name="section" id="id_section">
+                            <option value="">---Select--- </option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}">{{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="section">Route Title</label>
+                        <select class="form-control" name="route" id="id_section">
+                            <option value="">---Select--- </option>
+                            {% for data in route %}
+                            <option value="{{ data.id }}">{{data.route_title}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="section">Vehicle Number</label>
+                        <select class="form-control" name="vechicle" id="id_section">
+                            <option value="">---Select--- </option>
+                            {% for data in vehicle %}
+                            <option value="{{ data.id }}">{{data.vehicle_number}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>  
+                </div>  
+                <br>              
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="main-header">
+           <h4>Students List</h4>
+        </div>
+     </div>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>                    
+                    <tr>
+                        <th>Class - Section </th>
+                        <th>Admission No</th>
+                        <th>Student Name</th>
+                        <th>Mobile Number</th>
+                        <th>Father Name</th>                       
+                        <th>Father Phone</th>
+                        <th>Mother Name</th>
+                        <th>Mother Phone</th>
+                        <th>Route Title</th>
+                        <th>Vehicle Number</th>
+                        <th>Driver Name</th>
+                        <th>Driver Contact</th>
+                        <th>Fare ($)</th>
+                      
+                    </tr>
+                </thead>
+									                
+                <tbody>
+                    {% for data in record %}
+                    <tr>
+                        <td>{{data.Class}}({{data.section}})</td>
+                        <td>{{data.admission_no}}</td>
+                        <td>{{data.first_name}}</td>
+                        <td>{{data.mobile_number}}</td>
+                        <td>{{data.Father_name}}</td>
+                        <td>{{data.Father_phone}}</td> 
+                        <td>{{data.mother_name}}</td>
+                        <td>{{data.mother_phone}}</td>
+                        <td>{{data.route_list.route_title}}</td>
+                        <td>{{data.vehicle_number.vehicle_number}}</td>   
+                        <td>{{data.vehicle_number.driver_name}}</td>   
+                        <td>{{data.vehicle_number.driver_contact}}</td>
+                        <td>{{data.route_list.fare}}</td>
+
+                                       
+            
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+         
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

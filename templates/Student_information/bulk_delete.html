@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="class">Class</label>
+                    <select class="form-control" name="class" id="id_Class" required>
+                        <option value="" >---Select---</option>
+                        {% for data in class_records %}
+                        <option value="{{ data.id }}">{{data.Class}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Section</label>
+                    <select class="form-control" name="section" id="id_section" required>
+                        <option value="">---Select---</option>
+                        {% for data in section_records %}
+                        <option value="{{ data.id }}">{{data.section_name}}</option>
+                        {% endfor %}
+                    </select>                
+                </div>
+               
+                <div class="col-md-4 mb-3" style="padding-top: 30px;">
+                <button type="submit" value="search" name="search" class="btn btn-primary">Search</button>
+                 </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+    
+    {% if records %}
+    
+    <div class="row">
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+            <table class="table"  >
+                <thead>
+                    <tr >
+                        <td colspan="7"><input type="checkbox" id="select-all-checkbox"> <label for="select-all-checkbox">All</label></td>
+                        <td><button type="submit" form="delete_form" class="btn btn-primary" name="delete"  onclick="if(!confirm('Are you sure ?')){return false;}" value="delete">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <th>Admission No</th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Father Name</th>
+                        <th>Gender</th>
+                        <th>Category</th>
+                        <th>Mobile Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <form action="" method="post" id="delete_form">
+                        {% csrf_token %}
+                    {% for data in records %}
+                    <tr>
+                        <td><input type="checkbox" class="data-checkbox" name="check" value="{{data.id}}"></td>
+                        <td>{{ data.admission_no }}</td>
+                        <td>
+                          {% if 'student_information_delete' in access.roles.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'student_list_view' data.id %}">{{ data.first_name }} {{ data.last_name }}</a>
+                          {% endif %}   
+                        </td>
+                        <td>{{ data.Class }}({{ data.section }})</td>
+                        <td>{{ data.Father_name }}</td>
+                        <td>{{ data.gender }}</td>
+                        <td>{{ data.category }}</td>
+                        <td>{{ data.mobile_number }}</td>
+                       
+                    </tr>
+
+                    {% endfor %}
+                </form>
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+ {% endif %}
+   
+
+ {% endblock %}
+ {% block script_block %}
+
+
+
+<script>
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const dataCheckboxes = document.getElementsByClassName('data-checkbox');
+  
+    selectAllCheckbox.addEventListener('change', function() {
+      for (let i = 0; i < dataCheckboxes.length; i++) {
+        dataCheckboxes[i].checked = selectAllCheckbox.checked;
+      }
+    });
+  
+    for (let i = 0; i < dataCheckboxes.length; i++) {
+      dataCheckboxes[i].addEventListener('change', function() {
+        if (!this.checked) {
+          selectAllCheckbox.checked = false;
+        } else {
+          // Check if all other checkboxes are selected
+          let allSelected = true;
+          for (let j = 0; j < dataCheckboxes.length; j++) {
+            if (!dataCheckboxes[j].checked) {
+              allSelected = false;
+              break;
+            }
+          }
+          selectAllCheckbox.checked = allSelected;
+        }
+      });
+    }
+  </script>
+
+  
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+ {% endblock  %}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Leave Type</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Add Leave Type</h4>
+                     </div><hr>
+                    <form method="post">
+                        {% csrf_token %}
+                     <div class="row">
+                        <div class="col-md-12 mb-3">
+                            {{form.name}}
+                        </div>
+                      </div><br>
+                     
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Leave Type List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for leave in leaves %}
+                            <tr>
+                                <td>{{leave.name}}</td>
+                                <td>  
+                                    <a href="{% url 'add_leave_type_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    <a href="{% url 'add_leave_type_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

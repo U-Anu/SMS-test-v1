@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="row">
+
+    <div class="main-header">
+     <div class="col-md-4">
+       <h4>Student Information Report</h4>
+       </div>
+    </div>
+ </div>
+
+
+     
+
+ <div class="col-md-12">
+     <div class="card" style="padding: 10px;">
+       <div class="container-fluid" style="padding: 10px;">
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'student_information_report' %}" >Student Report</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'guardian_report' %}" >Guardian Report</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'student_history_report' %}">Student History</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'student_login_credentials' %}">Student Login Credentials</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'class_subject_report' %}">Class Subject Report</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'admission_report' %}">Admission Report</a>
+        </div>
+        {% comment %} <div class="col-md-4  mb-3">
+          <a href="{% url 'sibling_report' %}">Sibling Report</a>
+        </div> {% endcomment %}
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'student_profile_report' %}">Student Profile</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'homework_evaluation_report' %}" >Homework Evaluation Report</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'student_gender_ratio_report' %}">Student Gender Ratio Report</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'student_teacher_ratio_report' %}"class="text-primary">Student Teacher Ratio Report</a>
+        </div>
+         
+       </div>
+       <hr>
+       <div class="main-header">
+        <div class="col-md-4">
+          <h4>Student Teacher Ratio Report</h4>
+          </div>
+       </div>
+       <div class="table-responsive">
+
+        <table id="tableID" class="display"  >
+            <thead>
+                <tr>
+                    <th>Class (Section)</th>
+                    <th>Total Students</th>
+                    <th>Total Assigned Teachers</th>
+                    <th>Student-Teacher Ratio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class_section, count in class_section_counts.items %}
+                <tr>
+                    <td>{{ class_section.0 }} ({{ class_section.1 }})</td>
+                    <td>{{ count.total_students }}</td>
+                    <td>{{ count.total_assigned_teachers }}</td>
+                    <td>{{ count.student_teacher_ratio }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td>Grand Total</td>
+                    <td>{{ grand_total.total_students }}</td>
+                    <td>{{ grand_total.total_assigned_teachers }}</td>
+                    <td>{{ grand_total.student_teacher_ratio }}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+ </div>
+
+</div>
+ {% endblock %}
+ {% block script_block %}
+ 
+ {% endblock  %}

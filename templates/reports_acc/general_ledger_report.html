@@ -1,0 +1,57 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">General Ledger Report</h3>
+                    {{data}}
+                <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        <th>Date</th>
+                <th>GL Line Number</th>
+                <th>Account Number</th>
+                <th>Description</th>
+                <th>Debit (USD)</th>
+                <th>Credit (USD)</th>
+                <th>Running Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+            {% for entry in report_data %}
+            <tr>
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.gl_line_number }}</td>
+                <td>{{ entry.account_number }}</td>
+                <td>{{ entry.description }}</td>
+                <td>{{ entry.debit|floatformat:2 }}</td>
+                <td>{{ entry.credit|floatformat:2 }}</td>
+                <td>{{ entry.running_balance|floatformat:2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"><strong>Totals</strong></td>
+                <td><strong>{{ total_debit|floatformat:2 }}</strong></td>
+                <td><strong>{{ total_credit|floatformat:2 }}</strong></td>
+                <td></td>
+            </tr>
+        </tfoot>
+                        </table>
+                </div>
+                <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

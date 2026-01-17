@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block body_block %} {% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="main-header">
+      <h4>Assign Subjects</h4>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card" style="padding: 10px; border-top: 5px solid black">
+          <div class="main-header">
+            <h4>Assign Subjects</h4>
+          </div>
+          <hr />
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              {% for data in form %}
+              <div class="col-md-12 mb-3">{{data.label_tag}} {{ data }}</div>
+              {% endfor %}
+            </div>
+            <br />
+
+            <button type="submit" class="btn btn-primary" style="float: right">
+              Save</button
+            ><br /><br />
+          </form>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card" style="padding: 10px; border-top: 5px solid black">
+          <div class="main-header">
+            <h4>Subject List</h4>
+          </div>
+          <hr />
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Class/Grade</th>
+                  <th>Subjects</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for record in records %}
+                <tr>
+                  <td>{{ record.Class }}</td>
+                  <td>{{ record.subject.all|join:", " }}</td>
+                  <td>
+                    <td>
+                      {% if 'assign_subject_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                      <a href="{% url 'assign_subject_edit' record.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                      {% endif %}
+                      {% if 'assign_subject_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                      <a href="{% url 'assign_subject_delete' record.id %}" class="bozero"><span data-toggle="tooltip" title="Delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                      {% endif %}
+                    </td>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} 
+{% block script_block %}
+
+ {% endblock %}

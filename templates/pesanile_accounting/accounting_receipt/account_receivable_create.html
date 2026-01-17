@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block body_block %}
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>{{ screen_name }}</h2>
+                <div>
+                    <button type="submit" form="myForm" class="btn btn-primary">Save</button>
+                    <a href="{{ list_url }}" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            <div class="card card-body">
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    {% csrf_token %}
+                    {% for form_field in form %}
+                        <div class="form-group">
+                            {{ form_field.label_tag }}
+                            {% if form_field.name == 'amount_due' %}
+                            <div class="form-group mt-3">
+                                <input type="number" id="amount_due" name="amount_due" class="form-control" readonly>
+                            </div>
+                            {% else %}  
+                        
+                                {{ form_field }}
+                            {% endif %}
+                            <span class="text-danger">{{ form_field.errors }}</span>
+                        </div>
+                    {% endfor %}
+
+                    <!-- Dynamic Rows for Reference Fields -->
+                    <div id="dynamic-row-container">
+                        <div class="form-row dynamic-row">
+                            <div class="form-group col-md-2">
+                                <label for="member_code">Member</label>
+                                <select name="member_code[]" class="form-control member-code" required>
+                                    <option value="">-- Select a member --</option>
+                                    {% for member in members %}
+                                        <option value="{{ member.code }}">{{ member.code }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="account_no">Account No.</label>
+                                <select name="account_no[]" class="form-control account-no" required>
+                                    <option value="">-- Select an account --</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="account_name">Account Type</label>
+                                <select name="account_name[]" class="form-control account-name" required>
+                                    <option value="">-- Select an account type --</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="total_balance">Amount</label>
+                                <input type="number" name="total_balance[]" class="form-control amount-field" required>
+                            </div>
+                            <div class="form-group col-md-1 d-flex align-items-end">
+                                <button type="button" class="btn btn-success add-row">+</button>
+                                <button type="button" class="btn btn-danger remove-row">-</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+
+        </div>
+    </div>
+                <button type="submit" class="btn btn-primary mt-3">Save</button>
+        </form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+    // Function to calculate the total amount
+    function calculateTotalAmount() {
+        let total = 0;
+        $('input[name="total_balance[]"]').each(function() {
+            let amount = parseFloat($(this).val());
+            if (!isNaN(amount)) {
+                total += amount;
+            }
+        });
+        $('#amount_due').val(total.toFixed(2));
+    }
+
+    // Function to add a new dynamic row
+    $(document).on('click', '.add-row', function() {
+        let newRow = $('.dynamic-row').first().clone();
+        newRow.find("input[type='number']").val("");
+        newRow.find("select").val("");
+        $('#dynamic-row-container').append(newRow);
+        calculateTotalAmount();
+    });
+
+    // Function to remove a row
+    $(document).on('click', '.remove-row', function() {
+        if ($('.dynamic-row').length > 1) {
+            $(this).closest('.dynamic-row').remove();
+            calculateTotalAmount();
+        }
+    });
+
+    // Update total when an amount field is changed
+    $(document).on('input', 'input[name="total_balance[]"]', function() {
+        calculateTotalAmount();
+    });
+
+
+        // AJAX call to fetch account details based on selected member
+        $(document).on('change', '.member-code', function() {
+            const memberCode = $(this).val();
+            const row = $(this).closest('.dynamic-row');
+            if (memberCode) {
+                $.getJSON('{% url "fetch_member_data" %}', { code: memberCode }, function(data) {
+                    let accountDropdown = row.find('.account-no');
+                    accountDropdown.empty();
+                    accountDropdown.append('<option value="">-- Select an account --</option>');
+                    data.account_numbers.forEach(function(accountNumber) {
+                        accountDropdown.append('<option value="' + accountNumber + '">' + accountNumber + '</option>');
+                    });
+
+                    let accountTypeDropdown = row.find('.account-name');
+                    accountTypeDropdown.empty();
+                    accountTypeDropdown.append('<option value="">-- Select an account type --</option>');
+                    data.account_types.forEach(function(accountType) {
+                        accountTypeDropdown.append('<option value="' + accountType + '">' + accountType + '</option>');
+                    });
+                }).fail(function() {
+                    alert('Error retrieving member data.');
+                });
+            }
+        });
+    });
+    
+$(document).ready(function() {
+// Set today's date as the minimum date for the due date field
+var today = new Date().toISOString().split('T')[0];
+$('#id_due_date').attr('value', today);
+$('#id_due_date').attr('min', today);
+$('#id_effective_from').attr('value', today);
+$('#id_effective_from').attr('min', today);
+});
+</script>
+{% endblock %}

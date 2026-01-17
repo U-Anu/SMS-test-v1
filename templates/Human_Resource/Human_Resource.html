@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+<br>
+<div class="row">
+    <div class="main-header">
+       <h4>Human Resource</h4>
+    </div>
+  </div>
+
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+                <a href="{% url 'Human_Resource' %}" class="text-primary">Staff Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+                <a href="{% url 'payroll_report' %}">Payroll Report</a>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <form method="post" class="card">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>From date</label>  (Joining date)
+            <input type="date" class="form-control" name="from_date">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label> To date</label>
+            <input type="date" class="form-control" name="to_date">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="class">Status</label>
+            <select class="form-control" name="status">
+                <option value="">---Select---</option>
+                <option value="Enable">Active</option>
+                <option value="Disable">Disabled</option>
+
+            </select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="class">Role</label>
+            <select class="form-control" name="roles">
+                <option value="" >---Select---</option>
+                {% for data in roles_records %}
+                <option value="{{data.id}}">{{data.name}}</option>
+                {% endfor %}
+    
+            </select>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="class">Designation</label>
+            <select class="form-control" name="designation">
+                <option value="" >---Select---</option>
+                {% for data in designation_records %}
+                <option value="{{ data.id }}">{{data.name}}</option>
+                {% endfor %}
+    
+            </select>
+        </div>
+ 
+
+
+
+        <div class="col-md-12 mb-3"><br>
+
+            <button type="submit" class="btn btn-primary" name="search" value="search" style="float: right;">Submit</button>
+        </div>
+    </div>
+</form>
+</div>
+<br>
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Role</th>
+                        <th>Designation</th>
+                        <th>Department</th>
+                        <th>Name</th>
+                        <th>Father Name</th>
+                        <th>Mother Name</th>
+                        <th>Gender</th>
+                        <th>Date of Birth</th>
+                        <th>Date Of Joining</th>
+                        <th>Phone</th>
+                        <th>Emergency Contact Number</th>
+                        <th>Marital Status</th>
+                        <th>Current Address</th>
+                        <th>Permanent Address</th>
+                        <th>Qualification</th>
+                        <th>Work Experience</th>
+                        <th>Note</th>
+                        <th>EPF No</th>
+                        <th>Basic Salary</th>
+                        <th>Contract Type</th>
+                        <th>Work Shift</th>
+                        <th>Location </th>
+                        <th>Leaves</th>
+                        <th>Account Title</th>
+                        <th>Bank Account Number </th>
+                        <th>Bank Name</th>
+                        <th>IFSC Code</th>
+                        <th>Bank Branch Name</th>
+                        <th>Social Media Link</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.staff_id}}</td>
+                        <td>{{ data.store }}</td>
+                        <td>{{ data.designation }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.first_name }}</td>
+                        <td>{{ data.father_name }}</td>
+                        <td>{{ data.mother_name }}</td>
+                        <td>{{ data.gender }}</td>
+                        <td>{{ data.date_of_birth }}</td>
+                        <td>{{ data.date_of_joining }}</td>
+                        <td>{{ data.phone_no }}</td>
+                        <td>{{ data.emergency_contact }}</td>
+                        <td>{{ data.marital_status }}</td>
+                        <td>{{ data.current_address }}</td>
+                        <td>{{ data.permanent_address }}</td>
+                        <td>{{ data.qualification }}</td>
+                        <td>{{ data.work_experience }}</td>
+                        <td>{{ data.note }}</td>
+                        <td>{{ data.epf_no }}</td>
+                        <td>{{ data.basic_salary }}</td>
+                        <td>{{ data.contract_type }}</td>
+                        <td>{{ data.work_shift }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.location }}</td>
+                        <td>{{ data.bank_title }}</td>
+                        <td>{{ data.account_no }}</td>
+                        <td>{{ data.bank_name }}</td>
+                        <td>{{ data.ifsc_code }}</td>
+                        <td>{{ data.branch_name }}</td>
+                        <td>{{ data.linkedin }}</td>
+
+                    </tr>
+                    {% endfor %}
+
+
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+<!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

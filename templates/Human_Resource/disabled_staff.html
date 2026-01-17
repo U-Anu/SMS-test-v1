@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+    {% if 'disable_staff_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="class">Roles</label>
+                    <select class="form-control" name="roles" required>
+                        <option value="" >---Select---</option>
+                        {% for data in roles %}
+                        <option value="{{ data.id }}">{{data.name}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+               
+                <div class="col-md-4 mb-3" style="padding-top: 30px;">
+                <button type="submit" class="btn btn-primary">Search</button>
+                 </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+    {% endif %}    
+    {% if records %}
+    <div class="row">
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Admission No</th>
+                        <th>Name</th>
+                        <th>Roles</th>
+                        <th>Department</th>
+                        <th>Designation</th>
+                        <th>Mobile Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{ data.staff_id }}</td>
+                        <td><a href="{% url 'Staff_details_show' data.id %}">{{ data.first_name }} {% if data.last_name %}{{ data.last_name }}{% endif %}</a></td>
+                        <td>{{ data.roles }}</td>
+                        <td>{{ data.department }}</td>
+                        <td>{{ data.designation }}</td>
+                        <td>{{ data.phone_no }}</td>
+                        <td>  <a href="{% url 'Staff_details_show' data.id %}" style="color: black;"><i class='fa fa-reorder'></i></a>
+                           </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+ {% else %}
+ <center> <h5>No Records Found </h5></center>
+ {% endif %}
+
+
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+
+ {% endblock  %}

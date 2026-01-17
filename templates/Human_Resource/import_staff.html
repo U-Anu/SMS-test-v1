@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<div class="container-fluid">
+  <div class="row">
+     <div class="main-header">
+        <h4>Select Criteria</h4>
+     </div>
+     <div class="col-md-9 mb-3 "></div>
+     <button class="btn btn-primary"><a href="static/excel/update_staff.xlsx" download="my_file.xlsx">Download File</a><i
+      class='fa fa-download'></i></a></button>
+      </div>
+
+  </div>
+  <br>  
+<div class="col-md-12 card">
+  <h4>Update Excel  File Instruction.</h4>
+
+  <ol>
+    <li> Follow the instruction</li>
+    <li>Your CSV data should be in the format below. The first line of your CSV file should be the column headers as in the table example. Also make sure that your file is UTF-8 to avoid unnecessary encoding problems.</li>
+    <li>If the column you are trying to import is date make sure that is formatted in format Y-m-d (2018-06-06).</li>
+  </ol> 
+  <br>
+  
+  <br>
+  <br>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="staff_add_file">
+    <button type="submit" class="btn btn-primary">Import Data</button><br>
+   
+  </form>
+</div>
+
+
+  
+
+{% endblock %}
+
+

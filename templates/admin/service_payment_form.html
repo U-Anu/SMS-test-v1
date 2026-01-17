@@ -1,0 +1,15 @@
+<!-- templates/admin/index.html -->
+{% extends "admin/base_site.html" %}
+{% block content %}
+    {{ block.super }}
+    <p>
+        <a href="{% url 'service_payment' %}">Go to My Custom Form</a><br>
+        <a href="{% url 'service_payment' %}">Go to My Custom Form</a><br>
+        <a href="{% url 'service_payment' %}">Go to My Custom Form</a><br>
+    </p>
+    <form method="post">
+        {{form}}
+        <input type="submit" value="submit" name="submit" class="btn btn-primary">
+    </form>
+
+{% endblock %}

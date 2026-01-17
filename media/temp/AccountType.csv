@@ -1,0 +1,12 @@
+account_type_id,account_type_category,name,description
+AC-1004,,Other Asset,Other Asset
+AC-1003,,Fixed Asset,Fixed Asset
+AC-1002,,Other Current Asset,Other Current Asset
+AC-1001,,Accounts Receivable,Accounts Receivable
+AC-1000,,Bank,Bank
+AC-1005,,Accounts Payable,Accounts Payable
+AC-1006,,Other Current Liability,Other Current Liability
+AC-1007,,Equity,Equity
+AC-1008,,Income,Income
+AC-1009,,Cost of Goods Sold,Cost of Goods Sold
+AC-1010,,Expense,Expense

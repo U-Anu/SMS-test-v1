@@ -1,0 +1,11 @@
+TTC_ID,name,description
+TTC-7265,Funds Transfer,Funds Transfer
+TTC-4634,ChequeWithdrawal,ChequeWithdrawal
+TTC-1787,Cheque Deposit,Cheque Deposit
+TTC-8062,ChequeDeposit,ChequeDeposit
+TTC-7392,InternalTransfer,InternalTransfer
+TTC-6465,CurrencyExchange,CurrencyExchange
+TTC-5421,CashDeposit,Cash Deposit
+TTC-004,CashWithdrawal,Cash Withdrawal
+TTC-003,Receipt,Receipt
+TTC-002,Payment,Payment

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Add Subject</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="main-header">
+                <div class="col-md-3">
+                    <h5>Exam </h5>
+                    <p>{{exam_record.Exam}}</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Exam Group </h5>
+                    <p>{{exam_record.exam_group}}</p>
+                </div>
+            </div>
+       
+            <div style="display: flex; gap: 190px;">
+                <a href="{% url 'subjects' %}">
+                    <button type="button" class="btn btn-primary">+ Subjects</button>
+                </a>
+                <button type="button" id="add-subject-btn" class="btn btn-primary">+ Add Exam Subject</button>
+            </div>
+            <div style="display: flex; gap: 190px;">
+            <form method="post">
+                {% csrf_token %}
+                <div class="table-responsive"><br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Duration</th>
+                                <th>Credit Hours</th>
+                                <th>Room No</th>
+                                <th>Marks (Max..)</th>
+                                <th>Marks (Min..)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-list">
+                            {% for data in exam_subjects_records %}
+                            <tr >
+                                <td>
+                                    <input type="text" class="form-control" value="{{data.subject}}" readonly>
+                                </td>
+                                <td><input type="text" class="form-control" value="{{data.date}}" readonly></td>
+                                <td><input type="text" class="form-control"  value="{{data.time}}" readonly></td>
+                                <td><input type="text" class="form-control"  value="{{data.duration}}" readonly></td>
+                                <td><input type="text" class="form-control"  value="{{data.credit_hours}}" readonly></td>
+                                <td><input type="text" class="form-control"  value="{{data.room_number}}" readonly></td>
+                                <td><input type="number" class="form-control"  value="{{data.marks_max}}" readonly> </td>
+                                <td><input type="number" class="form-control"  value="{{data.marks_min}}" readonly></td>
+                                <td>
+                                       <a href="{% url 'delete_exam_subjects' data.id %}"><button type="button" class="btn btn-danger remove-subject-btn">x</button></a> 
+                               
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr id="subject-template">
+                                <td>
+                                    <select class="form-control" name="subject" required>
+                                        <option value="">---Select---</option>
+                                        {% for data in subject_records %}
+                                        <option value="{{ data.id }}">{{ data.subject_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td><input type="date" class="form-control" name="date" required></td>
+                                <td><input type="time" class="form-control" name="time" required></td>
+                                <td><input type="text" class="form-control" name="duration" required></td>
+                                <td><input type="text" class="form-control" name="credit_hours" required></td>
+                                <td><input type="text" class="form-control" name="room_number" required></td>
+                                <td><input type="number" class="form-control" name="marks_max" required></td>
+                                <td><input type="number" class="form-control" name="marks_min" required></td>
+                                <td>
+                                    {% if forloop.first %}
+                                        <span class="error-message">First row cannot be deleted.</span>
+                                    {% else %}
+                                        <button type="button" class="btn btn-danger remove-subject-btn">x</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary" style="float: right;">Save</button>
+                </div>
+            </form>
+        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const addSubjectButton = document.getElementById('add-subject-btn');
+                const subjectList = document.getElementById('subject-list');
+                const subjectTemplate = document.getElementById('subject-template');
+                const firstRow = subjectList.querySelector('tr'); // Get the first row
+        
+                addSubjectButton.addEventListener('click', function() {
+                    const newSubjectRow = subjectTemplate.cloneNode(true);
+                    newSubjectRow.removeAttribute('id');
+        
+                    // Reset input values to empty
+                    const inputs = newSubjectRow.getElementsByTagName('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        inputs[i].value = '';
+                    }
+        
+                    subjectList.appendChild(newSubjectRow);
+                });
+        
+                subjectList.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('remove-subject-btn')) {
+                        const subjectRows = subjectList.getElementsByTagName('tr');
+                        if (subjectRows.length > 1) {
+                            event.target.closest('tr').remove();
+                        } else {
+                            const confirmation = confirm('This row will not be deleted');
+                            if (confirmation && event.target.closest('tr') !== firstRow) { // Check if the clicked row is not the first row
+                                event.target.closest('tr').remove();
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+{% endblock %}

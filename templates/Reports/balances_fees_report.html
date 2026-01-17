@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+  
+      <div class="main-header">
+        <div class="col-md-4">
+          <h4>Finance</h4>
+        </div>
+      </div>
+    </div>
+    <br>
+  
+    <div class="col-md-12">
+  
+  
+  
+      <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'Finances_report' %}" >Fees statement</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'balances_fees_report' %}"class="text-primary" >Balances Fees Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'fees_collection_report' %}">Fees collection Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+                <a href=""> Online Fees Collection Report</a>
+              </div>           
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'income_report' %}">Income Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'expense_report' %}"> Expense Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'Report_payroll_report' %}">Payroll Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'income_group_report' %}"> Income Group Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'expense_group_report' %}"> Expense Group Report</a>
+              </div> 
+  
+  
+          </div>
+          <hr>
+          <div class="container-fluid">
+            <div class="row">
+                <form method="post">
+                    {% csrf_token %}
+                <div class="row">
+                 
+                    <div class="col-md-4 mb-3">
+                        <label for="payment_id" >Class </label>
+                        <select class="form-control" id="id_Class" name="class">
+                            <option value="">---Select---</option>
+                            {% for data in Classs %}
+                            <option value="{{data.id}}">{{data.Class}}</option>
+                            {% endfor %}
+                        </select>                
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="payment_id">Section </label>
+                        <select class="form-control" id="id_section" name="section">
+                            <option value="">---Select---</option>
+                        </select> <br>                  
+                    </div>
+                    <div class="col-md-12 mb-3"><br>
+                        <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+                      </div>
+    
+                </div>
+            </form>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+  
+   
+          
+            </div>
+    
+    {% if records %}
+    <div class="row">
+        <div class="main-header">
+           <h4>Students List</h4>
+        </div>
+     </div>
+
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Class </th>
+                        <th>Section</th>
+                        <th>Student Name</th>
+                        <th>Admission No</th>
+                        <th>Roll Number</th>
+                        <th>Father Name</th>
+                        <th>Total Fees ($)</th>
+                        <th>Paid Fees ($)</th>
+                        <th>Discount ($)</th>
+                        <th>Fine ($)</th>                       
+                        <th>Balance ($)</th>
+                       
+                    </tr>
+                </thead>
+                
+									
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.student.Class}}</td>
+                        <td>{{data.student.section}}</td>
+                        <td>{{data.student.first_name}}</td>
+                        <td>{{data.student.admission_no}}</td>
+                        <td>{{data.student.roll_number}}</td>
+                        <td>{{data.student.Father_name}}</td>                       
+                        <td>{{data.fees.amount}}</td>
+                        <td>{{data.paid_amount}}</td>
+                        <td>{{data.fees.amount}}</td>                       
+                        <td>{{data.fine_amount}}</td>
+                        <td>{{data.balance_amount}}</td>                           
+                        </a>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div> 
+     {% else %}
+     <center> <h5>No Records Found </h5></center>
+     {% endif %}
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+ 
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+
+ {% endblock  %}    

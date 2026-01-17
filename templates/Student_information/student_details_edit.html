@@ -1,0 +1,697 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+{% load custom_filters %}
+<style>
+    textarea {
+        height: 50px;
+    }
+
+
+</style>
+<div class="container-fluid">
+    <div class="row">
+        {% if 'student_information_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+        <div class="main-header">
+            <h4>Student Admission Edit</h4>
+            {% comment %} <a href="{% url 'import_student' %}" class="btn btn-primary btn-sm" style="float: right;"><i
+                    class="fa fa-upload"></i> Import Student</a> {% endcomment %}
+        </div>
+        {% endif %}
+
+    </div>
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="col-md-12">
+            <div class="card" style="padding: 20px;">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission"> Admission No </label>
+                        {{form.admission_no}}
+                    </div>
+                    {% comment %} <div class="col-md-3 mb-3 hidden" {% if 'roll_number' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Roll Number</label>
+                        {{form.roll_number}}
+
+                    </div> {% endcomment %}
+                      <div class="col-md-3 mb-3">
+                        <label for="student_admission"> Branch</label>
+                        {{form.school}}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Class</label>
+                        {{form.Class}}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Section</label>
+                        {{form.section}}
+                    </div>
+                    
+
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">First Name</label>
+                        {{form.first_name}}
+                    </div>
+                    <div class="col-md-3 mb-3 hidden" {% if 'last_name' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Last Name</label>
+                        {{form.last_name}}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Date of Birth</label>
+                        {{form.date_of_birth}}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="student_admission">Gender</label>
+                        {{form.gender}}
+                    </div>
+                    <!-- <div class="col-md-3 mb-3">
+                    <label for="student_admission">Category</label>
+                        {{form.category}}
+                </div> -->
+                    {% comment %} <div class="col-md-3 mb-3" {% if 'religion' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Religion</label>
+                        {{form.religion}}
+                    </div> {% endcomment %}
+                    <!-- <div class="col-md-3 mb-3">
+                    <label for="student_admission">Category</label>
+                        {{form.category}}
+                </div> -->
+                    {% comment %} <div class="col-md-3 mb-3" {% if 'caste' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Caste</label>
+                        {{form.Caste}}
+                    </div> {% endcomment %}
+                    <div class="col-md-3 mb-3" {% if 'mobile_number' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Mobile Number</label>
+                        {{form.mobile_number}}
+                    </div>
+                    <div class="col-md-3 mb-3" {% if 'email' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Email ID</label>
+                        {{form.email}}
+                    </div>
+                    <div class="col-md-3 mb-3" {% if 'admission_date' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Admission Date</label>
+                        {{form.admission_date}}
+                    </div>
+                    <div class="col-md-3 mb-3" {% if 'student_photo' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Student Photo</label>
+                        {{form.student_photo}}
+                    </div>
+                    <div class="col-md-3 mb-3" {% if 'blood_group' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Blood group</label>
+                        {{form.Blood_group}}
+                    </div>
+                    {% comment %} <div class="col-md-3 mb-3" {% if 'student_house' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Student House</label>
+                        {{form.student_house}}
+                    </div> {% endcomment %}
+                    <div class="col-md-3 mb-3" {% if 'height' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Height</label>
+                        {{form.height}}
+                    </div>
+                    <div class="col-md-3 mb-3" {% if 'weight' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Weight</label>
+                        {{form.weight}}
+                    </div>
+                    <div class="col-md-3 mb-3" {% if 'as_on_date' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">As on Date</label>
+                        {{form.as_on_date}}
+                    </div>
+                    <div class="col-md-3 mb-3" {% if 'category' not in system_fields %} style="display:none;" {% endif %}>
+                        <label for="student_admission">Category</label>
+                        {{form.category}}
+                    </div>  
+                    </div>  <br/>
+                               
+
+                    <div class="tab-pane fade show active" id="monday" role="tabpanel" aria-labelledby="moanday-tab">
+                       
+                           
+                        <button type="button" id="add-subject-btn" class="btn btn-primary" style="float: left;"
+                                    onclick="addrow('add-subject-btn','subject-list','subject-template')">+ Add Guardian </button>
+                      
+                      
+                                    <div class="table-responsive"><br>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type Relation</th>
+                                                    <th>Name</th>
+                                                    <th>Phone</th>
+                                                    <th>Occupation</th>
+                                                    <th>Email</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="subject-list">
+                                 
+                                                {% for data in guardian %}
+                                                <tr>
+                                                    <input type="hidden" name="guardian_id" value="{{data.id}}">
+                                                    <td>
+                                                        <select class="form-control" name="guardianmaster_id{{data.id}}" required>
+                                                            <option value="">---Select---</option>
+                                                            {% for parent in guardian_master %}
+                                                            <option value="{{ parent.id }}" {% if parent.id == data.guardianmaster.id %} selected {% endif %}>{{ parent.guardian_name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                   
+                                                    <td><input type="text" class="form-control" name="name{{data.id}}" value="{{data.name}}"  required > </td>
+                                                    <td><input type="Number" class="form-control" name="phone{{data.id}}" value="{{data.phone}}" required></td>
+                                                    <td><input type="text" class="form-control" name="occupation{{data.id}}" value="{{data.occupation}}"required></td>
+                                                    <td><input type="Email" class="form-control" name="guardian_email{{data.id}}" value="{{data.guardian_email}}" required></td>
+                                                  
+                                                   <td> <button type="button" class="btn btn-danger remove-subject-btn"
+                                                            onclick="deleterow('subject-list','remove-subject-btn')">x</button></td>
+
+                                                    {% endfor %}
+
+                                                </tr>
+                                        
+                                                <tr id="subject-template">
+                                                    <td>
+                                                        <select class="form-control" name="guardianmaster_edit_id" >
+                                                            <option value="">---Select---</option>
+                                                            {% for data in guardian_master %}
+                                                            <option value="{{ data.id }}">{{ data.guardian_name }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+                                                    <td><input type="text" class="form-control" name="name_edit" ></td>
+                                                    <td><input type="Number" class="form-control" name="phone_edit" ></td>
+                                                    <td><input type="text" class="form-control" name="occupation_edit" ></td>
+                                                    <td><input type="Email" class="form-control" name="guardian_email_edit" ></td>
+                                                    <td><button type="button" class="btn btn-danger remove-subject-btn"
+                                                            onclick="deleterow('subject-list','remove-subject-btn')">x</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>                
+                                    </div>
+
+
+                                    
+                                <br><br>
+                           
+                
+                    <div>
+
+
+
+                       
+                        <br/>
+                    {% if custom_fields %}
+                    {% for data in custom_fields %}
+                    <div class="col-md-{{data.grid}} mb-{{data.grid}}">
+                        {% if data.field_type == 'checkbox' %}
+                        <br>
+                        <label for="{{data.field_name}}_id">{{data.field_name}}</label>
+                        <input type="{{data.field_type}}" name="{{data.field_name}}" id="{{data.field_name}}_id" {% if data.required == True %}required{% endif %}>
+                        {% elif data.field_type == 'textarea' %}
+                        <label for="{{data.field_name}}_id">{{data.field_name}}</label>
+                        <textarea name="{{data.field_name}}" id="{{data.field_name}}_id" class="form-control" {% if data.required == True %}required{% endif %} cols="30" rows="4"></textarea>
+                        {% elif data.field_type == 'select' %}
+                        <label for="{{data.field_name}}_id">{{data.field_name}}</label>
+                        <select name="{{data.field_name}}" id="{{data.field_name}}_id" class="form-control" {% if data.required == True %}required{% endif %}>
+                            {% with data.field_value|split:"," as skills %}
+                            <option value="">------</option>
+                            {% for skill in skills %}
+                            <option value="{{skill}}">{{skill}}</option>
+                            {% endfor %}
+                            {% endwith %}
+                        </select>
+                        {% elif data.field_type == 'multiselect' %}
+                        <label for="{{data.field_name}}_id">{{data.field_name}}</label>
+                        <select name="{{data.field_name}}" id="{{data.field_name}}_id" class="form-control" {% if data.required == True %}required{% endif %} multiple>
+                            {% with data.field_value|split:"," as skills %}
+                            {% for skill in skills %}
+                            <option value="{{skill}}">{{skill}}</option>
+                            {% endfor %}
+                            {% endwith %}
+
+                        </select>
+
+                        {% else %}
+                        <label for="{{data.field_name}}_id">{{data.field_name}}</label>
+                        <input type="{{data.field_type}}" name="{{data.field_name}}" id="{{data.field_name}}_id"
+                            class="form-control" {% if data.required == True %}required{% endif %}>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+
+
+                </div>
+            </div>
+        </div>
+            <div class="row">
+                {% comment %} <div class="main-header">
+                    <h4>Parent Guardian Detail</h4>
+                </div> {% endcomment %}
+            </div>
+         
+            <div class="col-md-12">       
+
+             
+
+
+                <!-- Accortion Start -->
+                <div class="col-lg-12">
+                    <div id="accordion">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <h4  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Add More Deatils <button style="float: right;" class="btn ">+</button></h4>
+                                   
+                                </h5>
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    {% comment %} <br>
+                                    <br>
+                                    <h5 style="background-color: whitesmoke; padding:10px;">Student Address Details</h5>
+                                    <br>
+                                    <br> {% endcomment %}
+                                    {% comment %} <div class="row">
+                                        <div class="col-md-6 mb-6" {% if 'if_permanent_address_is_current_address' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="if_permanent_address_is_current_address"> If Guardian Address is
+                                                Current
+                                                Address {{form.if_permanent_address_is_current_address}}</label>
+
+
+                                        </div>
+                                        <div class="col-md-6 mb-6" {% if 'if_guardian_address_is_current_address' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="guardian_address_is_current_address">If Permanent Address is
+                                                Current Address {{form.guardian_address_is_current_address}} </label>
+
+
+                                        </div>
+                                        <div class="col-md-6 mb-6">
+                                            <label for="student_admission">Current Address</label>
+                                            {{form.current_address}}
+                                        </div>
+                                        <div class="col-md-6 mb-6">
+                                            <label for="student_admission">Permanent Address</label>
+                                            {{form.permanent_address}}
+                                        </div>
+                                    </div> {% endcomment %}
+
+                                    <br>
+                                    <br>
+                                    <h5 style="background-color: whitesmoke; padding:10px;">Student Health</h5>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-6">
+                                            <label for="">Does your child have any medical or physical conditions that may affect his/her attendance at school:</label>
+                                            &nbsp;&nbsp;
+                                            <input type="radio" id="yesRadio" name="student_health" {% if online_class.student_health == 'Yes' %} checked  {% endif %} value="Yes" >
+                                            <label for="yesRadio" id='yesRadio'>Yes</label>
+                                            &nbsp;&nbsp;
+                                            
+                                            <input type="radio" id="noRadio" name="student_health"  {% if online_class.student_health == 'No' %} checked  {% endif %} value="No">
+                                            <label for="noRadio" id='noRadio'>No</label>
+                                        </div>
+                                        <br>
+                                        <br>                                  
+
+                                        {% comment %} <div class="col-md-6 mb-6" {% if 'if_guardian_address_is_current_address' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="guardian_address_is_current_address">If Permanent Address is
+                                                Current Address {{form.guardian_address_is_current_address}} </label>
+
+
+                                        </div> {% endcomment %}
+                                        
+                                        <br>
+                                     
+                                        <div class="col-md-6 mb-6">
+                                            <label for="student_admission">if Yes,please give a brief description</label>
+                                           {{form.student_health_description}}
+                                        </div>
+                                     
+                                       
+                                    </div>
+                                   
+                                    <br>
+                                    <br>
+                                    <h5 style="background-color: whitesmoke; padding:10px;">Previous School Information</h5>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                     
+                                      
+                                     
+                                        <div class="col-md-5 mb-6">
+                                            <label for="student_admission">Name of last school attended</label>
+                                           {{form.name_of_last_school}}
+                                        </div>
+
+                                        <div class="col-md-5 mb-6">
+                                            <label for="student_admission">Reason for leaving last school</label>
+                                           {{form.leaving_last_school_reason}}
+                                        </div>
+
+                                        <div class="col-md-2 mb-6">
+                                            <label for="student_admission">Grade Completed</label>
+                                           {{form.grade_completed}}
+                                    </div>
+                                    
+                                       
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <div class="col-md-12 mb-6">
+                                            <label for="">Was the student suspended or expelled from the last school?</label>&nbsp;
+                                            <input type="radio" id="yesNoCheckbox" name="suspended_or_not" {% if online_class.suspended_or_not == 'Yes' %} checked  {% endif %} value='Yes' >
+                                            <span id="yesNoCheckbox">Yes</span>
+                                            <input type="radio" id="yesNoCheckbox" name="suspended_or_not" {% if online_class.suspended_or_not == 'No' %} checked  {% endif %} value='No' >
+                                          
+                                            <span id="yesNoCheckbox">No</span>
+                                            </div>
+                                           
+                                             <br>
+                                            <div class="col-md-12 mb-6">
+                                                <label for="yesNoCheckbox">If,yes was the suspension resolved?</label>&nbsp;
+                                                <input type="radio" id="yesNoCheckbox" name="is_suspension_resolved" {% if online_class.is_suspension_resolved == 'Yes' %} checked  {% endif %} value="Yes">
+                                                <span id="checkboxValue">Yes</span>
+                                                <input type="radio" id="yesNoCheckbox" name="is_suspension_resolved" {% if online_class.is_suspension_resolved == 'No' %} checked  {% endif %} value="No" >
+                                              
+                                                <span id="checkboxValue">No</span>
+                                                </div>
+
+                                            <div class="col-md-12 mb-6">
+                                                <label for="student_admission">If the suspension hen been resolved,provide further information</label>
+                                                {{form.suspension_reason}}
+                                            </div>
+                                     
+                                            <div class="col-md-2 mb-6">
+                                                <label for="student_admission">County</label>
+                                                {{form.county}}
+                                            </div>
+
+                                            <div class="col-md-2 mb-6">
+                                                <label for="student_admission">Sub County</label>
+                                                {{form.sub_county}}
+                                            </div>
+
+                                            <div class="col-md-2 mb-6">
+                                                <label for="student_admission">Ward</label>
+                                                {{form.ward}}
+                                            </div>
+
+                                            
+                                       
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <h5 style="background-color: whitesmoke; padding:10px;">Miscellaneous Details</h5>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3" {% if 'bank_deatils' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">Bank Account Number</label>
+                                            {{form.bank_account_number}}
+                                        </div>
+                                        <div class="col-md-3 mb-3" {% if 'bank_deatils' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">Bank Name </label>
+                                            {{form.bank_name}}
+                                        </div>
+                                        <div class="col-md-3 mb-3" {% if 'bank_deatils' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">Ifsc Code</label>
+                                            {{form.ifsc_code}}
+                                        </div>
+                                        <div class="col-md-3 mb-3" {% if 'national_identification_number' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">National Identification
+                                                Number</label>
+                                            {{form.national_identification_number}}
+                                        </div>
+                                        <div class="col-md-3 mb-3" {% if 'LIN' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">Local Identification Number</label>
+                                            {{form.local_identification_number}}
+                                        </div>
+                                        <div class="col-md-3 mb-3"  {% if 'RTE' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">RTE</label>
+                                            {{form.rte}}
+                                        </div>
+                                        <div class="col-md-3 mb-3" {% if 'previous_school_details' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">Previous School Detail</label>
+                                            {{form.previous_school_detail}}
+                                        </div>
+                                        <div class="col-md-3 mb-3" {% if 'note' not in system_fields %} style="display:none;" {% endif %}>
+                                            <label for="student_admission">NOTE</label>
+                                            {{form.note}}
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <h5 style="background-color: whitesmoke; padding:10px;">Upload Documents</h5>
+                                    <br>
+                                    <br>
+                                    <div class="row"  {% if 'upload_documents' not in system_fields %} style="display:none;" {% endif %}>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Title</label>
+                                            {{form.title_1}}
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Documents</label>
+                                            {{form.documents_1}}
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Title</label>
+                                            {{form.title_2}}
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Documents</label>
+                                            {{form.documents_2}}
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Title</label>
+                                            {{form.title_3}}
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Documents</label>
+                                            {{form.documents_3}}
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Title</label>
+                                            {{form.title_4}}
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="student_admission">Documents</label>
+                                            {{form.documents_4}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="float: right;">Save</button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+    // JavaScript event listener to handle selection
+    document.getElementById("dropdown").addEventListener("change", function () {
+        var selectedValue = this.value;
+        var selectedOption = this.options[this.selectedIndex];
+        var heading = selectedOption.parentNode.label;
+        console.log("Selected values: " + heading + selectedValue);
+        // Do something with the selected value and heading here
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#id_Class', function () {
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+    });
+</script>
+
+{% comment %} <script>
+    $('#id_if_guardian_is').change(function () {
+        var guardian = $('#id_if_guardian_is').val();
+        if (guardian == 'Father') {
+            var father_name = $('#id_Father_name').val();
+            var father_phone = $('#id_Father_phone').val();
+            var father_occupation = $('#id_Father_occupation').val();
+            $('#id_guardian_name').val(father_name);
+            $('#id_guardian_relation').val(guardian);
+            $('#id_guardian_phone').val(father_phone);
+            $('#id_guardian_occupation').val(father_occupation);
+        } else if (guardian == 'Mother') {
+            var mother_name = $('#id_mother_name').val();
+            var mother_phone = $('#id_mother_phone').val();
+            var Mother_occupation = $('#id_mother_occupation').val();
+            $('#id_guardian_name').val(mother_name);
+            $('#id_guardian_relation').val(guardian);
+            $('#id_guardian_phone').val(mother_phone);
+            $('#id_guardian_occupation').val(Mother_occupation);
+        } else {
+            $('#id_guardian_name').val('');
+            $('#id_guardian_relation').val('');
+            $('#id_guardian_phone').val('');
+            $('#id_guardian_occupation').val('');
+        }
+
+
+    });
+</script> {% endcomment %}
+
+
+<script>
+// add new row 
+    function addrow(button, subject, template) {
+
+        const addSubjectButton = document.getElementById(button);
+        const subjectList = document.getElementById(subject);
+        const subjectTemplate = document.getElementById(template);
+
+        const newSubjectRow = subjectTemplate.cloneNode(true);
+        newSubjectRow.removeAttribute('id');
+
+        // Reset input values to empty
+        const inputs = newSubjectRow.getElementsByTagName('input');
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].value = '';
+        }
+        subjectList.appendChild(newSubjectRow);
+
+
+    };
+// deleting row
+    function deleterow(subject, removebtn) {
+        const subjectList = document.getElementById(subject);
+        len=subjectList.rows.length;
+        if( len > 1 ){
+            subjectList.addEventListener('click', function (event) {
+                if (event.target.classList.contains(removebtn)) {
+                    event.target.closest('tr').remove();
+                }
+            });
+        }else{
+            const confirmation = confirm('This row will not be deleted');
+            if (confirmation && event.target.closest('tr') !== firstRow) { // Check if the clicked row is not the first row
+                event.target.closest('tr').remove();
+            }
+
+        }
+    }
+</script>
+
+
+
+
+{% comment %} 
+<script>
+    function Save(subject,teacher,from_time,to_time,room_no,day){
+    var url = "{% url 'guardian_save_js' %}";
+    var subjects = document.querySelectorAll('select[name="' + subject +'"]');
+    var subjectsArray = Array.from(subjects).map(function(element) {
+        return element.value;
+    });
+    var monday_teacher = document.querySelectorAll('select[name="' + teacher +'"]');
+    var monday_teacherArray = Array.from(monday_teacher).map(function(element) {
+        return element.value;
+    });
+    var from_time = document.getElementsByName(from_time);
+    from_timeArray=[]
+        for (var i = 0; i < from_time.length; i++) {
+            var value = from_time[i].value;
+            from_timeArray.push(value)
+        }
+    var to_time = document.getElementsByName(to_time);
+    to_timeArray=[]
+        for (var i = 0; i < to_time.length; i++) {
+            var value = to_time[i].value;
+            to_timeArray.push(value)
+        }
+    var room_no = document.getElementsByName(room_no);
+    room_noArray=[]
+        for (var i = 0; i < room_no.length; i++) {
+            var value = room_no[i].value;
+            room_noArray.push(value)
+        }
+    $.ajax({
+        url: url,
+        data: {
+            'student_id': subjectsArray,
+            'guardianmaster_id': monday_teacherArray,
+            'name': from_timeArray,
+            'phone': to_timeArray,
+            'occupation': room_noArray,
+        },
+        success: function (data) {
+            console.log(data);
+            alert('Saved Successfully....!')
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+};
+
+</script>
+
+<script>
+    function Delete(subject, removebtn,pk){
+        var url = "{% url 'guardian_delete_js' %}";
+        const subjectList = document.getElementById(subject);
+        subjectList.addEventListener('click', function (event) {
+            if (event.target.classList.contains(removebtn)) {
+                event.target.closest('tr').remove();
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {
+                'pk': pk,
+            },
+            success: function (data) {
+                console.log(data);
+                alert('deleted Successfully....!')
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script> {% endcomment %}
+
+{% endblock %}

@@ -1,0 +1,781 @@
+{% extends 'base.html' %}
+{% block head_block %}
+{% load custom_filters %}
+<style>
+    .profile-user-img {
+        margin: 5px auto;
+        width: 100px;
+        padding: 3px;
+        border: 3px solid #d2d6de
+    }
+
+    .timeline {
+        position: relative;
+        margin: 0 0 30px 0;
+        padding: 0;
+        list-style: none
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #ddd;
+        left: 31px;
+        margin: 0;
+        border-radius: 2px;
+    }
+
+    .timeline>li {
+        position: relative;
+        /*margin-right:10px;*/
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+
+    .timeline>li:before,
+    .timeline>li:after {
+        content: " ";
+        display: table
+    }
+
+    .timeline>li:after {
+        clear: both
+    }
+
+    .timeline>li>.timeline-item {
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        margin-top: 0;
+        background: #fff;
+        color: #444;
+        margin-left: 60px;
+        /*margin-right:15px;*/
+        padding: 0;
+        position: relative
+    }
+
+    .timeline>li>.timeline-item>.time {
+        color: #999;
+        float: right;
+        padding: 10px;
+        font-size: 12px
+    }
+
+    .timeline>li>.timeline-item>.timeline-header {
+        margin: 0;
+        color: #555;
+        border-bottom: 1px solid #f4f4f4;
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.1
+    }
+
+    .timeline>li>.timeline-item>.timeline-header>a {
+        /* font-weight:600 */
+        font-family: 'Roboto-Bold';
+    }
+
+    .timeline>li>.timeline-item>.timeline-body,
+    .timeline>li>.timeline-item>.timeline-footer {
+        padding: 10px
+    }
+
+    .timeline>li>.fa,
+    .timeline>li>.glyphicon,
+    .timeline>li>.ion {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+        line-height: 30px;
+        position: absolute;
+        color: #666;
+        background: #d2d6de;
+        border-radius: 50%;
+        text-align: center;
+        left: 18px;
+        top: 0;
+    }
+
+    .timeline>.time-label>span {
+        /* font-family:'Roboto-Bold'; */
+        padding: 5px;
+        display: inline-block;
+        background-color: #fff;
+        border-radius: 4px;
+        font-family: 'Roboto-Bold';
+        font-size: 10px;
+    }
+
+    .timeline-inverse>li>.timeline-item {
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+    .timeline-inverse>li>.timeline-item>.timeline-header {
+        border-bottom-color: #ddd
+    }
+</style>
+{% endblock %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+
+
+    <div class="col-md-12">
+
+        <div class="col-md-3" style="padding-left:0px; padding-right:0px;" >
+            <br><br>
+            <div class="card " style="padding: 10px;border-top: 5px solid black; {% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+
+                <div class="box box-primary">
+                    <div class="box-body box-profile" >
+                        <center>
+                            <img class="profile-user-img img-responsive img-circle"
+                                src="https://www.school.infomainia.in/uploads/student_images/default_male.jpg"
+                                alt="User profile picture">
+                        </center>
+                        <h3 class="profile-username text-center">{{record.first_name}} {{record.last_name}}</h3>
+
+                        <ul class="list-group list-group-unbordered" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+
+
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Staff ID</b> <a class="pull-right text-aqua">{{record.staff_id}}</a>
+                            </li>
+
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Reg No</b> <a class="pull-right text-aqua">{{record.registration_number}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Designation</b> <a class="pull-right text-aqua">{{record.designation}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Department</b> <a class="pull-right text-aqua">{{record.department}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>NSSF No</b> <a class="pull-right text-aqua">{{record.nssf_no}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>SHIF No</b> <a class="pull-right text-aqua">{{record.shif_no}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Basic Salary</b> <a class="pull-right text-aqua">{{record.basic_salary}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Contract Type</b> <a class="pull-right text-aqua">{{record.contract_type}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Work Shift</b> <a class="pull-right text-aqua">{{record.work_shift}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Location</b> <a class="pull-right text-aqua">{{record.location}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  record.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Date of Joining</b> <a class="pull-right text-aqua">{{record.date_of_joining}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-9">
+            <br><br>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link " id="home-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="home"
+                        aria-selected="true">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#payroll" role="tab"
+                        aria-controls="profile" aria-selected="false">payroll</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#leave" role="tab"
+                        aria-controls="contact" aria-selected="false">leaves</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#document" role="tab"
+                        aria-controls="contact" aria-selected="false">Document</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#timeline" role="tab"
+                        aria-controls="contact" aria-selected="false">Timeline</a>
+                </li>
+                <li class="nav-item"  style="float:right;">
+                    {% if record.status == 'Enable' %}
+                        <button type="button"  data-toggle="modal" data-target="#exampleModal1"   class="nav-link text-danger" style="border: none;"><i class="fa fa-thumbs-o-down" data-toggle="tooltip" data-placement="bottom" title="Disable"></i></button>
+                {% elif record.status == 'Disable' %}
+                    <button type="submit" form="enable_form"  data-toggle="tooltip" data-placement="bottom" title="Enable" class="nav-link text-success" style="border: none;"><i class="fa fa-thumbs-o-up"></i></button>
+                    {% endif %}
+                </li>
+                <!--<li class="nav-item"  style="float:right;">-->
+                <!--    <a href="#" class="nav-link text-success" data-toggle="tooltip"-->
+                <!--        data-placement="bottom" title="Login Details"><i class="fa fa-key"></i>-->
+                <!--    </a>-->
+                <!--</li>-->
+
+                <li class="nav-item" style="float:right;">
+                    <a href="https://www.school.infomainia.in/student/edit/3" class="nav-link"
+                        data-toggle="tooltip" data-placement="bottom" title="Edit"><i
+                            class="fa fa-pencil"></i>
+                    </a>
+                </li>
+            </ul>
+         <form action="{% url 'staff_disable_enable' %}" method="post" id="enable_form">
+            {% csrf_token %}
+            <input type="hidden" name="staff_id" value="{{record.id}}">
+         </form>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="card " >
+                        <div class="card-body">
+                            <div class="table-responsive around10 pt0">
+
+                                <table class="table table-hover  tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td >Phone</td>
+                                            <td >{{record.phone_no}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Emergency Contact Number</td>
+                                            <td>{{record.emergency_contact}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td>{{record.email}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gender</td>
+                                            <td> {{record.gender}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date of Birth</td>
+                                            <td> {{record.date_of_birth}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marital Status</td>
+                                            <td> {{record.marital_status}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Father Name</td>
+                                            <td> {{record.father_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mother Name</td>
+                                            <td> {{record.mother_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Qualification</td>
+                                            <td> {{record.qualification}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Work Experience</td>
+                                            <td> {{record.work_experience}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Note</td>
+                                            <td> {{record.note}}</td>
+                                        </tr>
+
+
+                                        {% for data in custom_fields %}
+                                        <tr>
+                                            <td>{{data.custome_fields}}</td>
+                                            <td>{{data.value}}</td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tshadow mb25 bozero">
+                            <div class="card-header">
+                                <h3 class="pagetitleh2">Address</h3>
+
+                            </div>
+                            <div class="table-responsive around10 pt0">
+                                <table class="table table-hover  tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td >Current Address</td>
+                                            <td>{{record.current_address}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Permanent Address</td>
+                                            <td>{{record.permanent_address}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tshadow mb25 bozero">
+                            <div class="card-header">
+
+                                <h3 class="pagetitleh2">Bank Account Details </h3>
+                            </div>
+                            <div class="table-responsive around10 pt10">
+                                <table class="table table-hover tmb0">
+                                    <tr>
+                                        <td>Account Title</td>
+                                        <td >{{record.bank_title}}</td>
+                                        <td rowspan="3"><img class="" src=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank Name</td>
+                                        <td>{{record.bank_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank Branch Name</td>
+                                        <td>{{record.branch_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bank Account Number</td>
+                                        <td>{{record.account_no}}</td>
+                                        <td rowspan="3"><img class="profile-user-img img-responsive img-circle" src="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>IFSC Code</td>
+                                        <td>{{record.ifsc_code}}</td>
+
+                                    </tr>
+
+                          
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tshadow mb25  bozero">
+                            <div class="card-header">
+
+                                <h3 class="pagetitleh2">Staff Document</h3>
+                            </div>
+                            <div class="table-responsive around10 pt0">
+                                <table class="table table-hover tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Title 1</td>
+                                            <td>{{record.title_1}}</td>
+                                            <td>
+                                                <a href="{{ record.documents_1.url }}" style="color: black;" download><i
+                                                        class='fa fa-download'></i></a>
+                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td >Title 2</td>
+                                            <td>{{record.title_2}}</td>
+                                            <td>
+                                                <a href="{{ record.documents_2.url }}" style="color: black;" download><i
+                                                        class='fa fa-download'></i></a>
+                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td >Title 3</td>
+                                            
+                                            <td>{{record.title_3}}</td>
+                                            <td>
+                                                <a href="{{ record.documents_1.url }}" style="color: black;" download><i
+                                                        class='fa fa-download'></i></a>
+                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td >Title 4</td>
+                                          
+                                            <td>{{record.title_3}}</td>
+                                                        <td>
+                                                <a href="{{ record.documents_1.url }}" style="color: black;" download><i
+                                                        class='fa fa-download'></i></a>
+                
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="tshadow mb25  bozero">
+                            <div class="card-header">
+
+                                <h3 class="pagetitleh2">Social Media Link</h3>
+                            </div>
+                            <div class="table-responsive around10 pt0">
+                                <table class="table table-hover tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Facebook URL</td>
+                                            <td><a href="{{record.facebook}}" target="_blank">{{record.facebook}}</a></td>
+                                           
+                                        </tr>
+                                        <tr>
+                                            <td >Twitter URL</td>
+                                            <td><a href="{{record.twitter}}" target="_blank">{{record.twitter}}</a></td>
+                                          
+                                        </tr>
+                                        <tr>
+                                            <td >Linkedin URL</td>
+                                            
+                                            <td><a href="{{record.linkedin}}" target="_blank">{{record.linkedin}}</a></td>
+                     
+                                        </tr>
+                                        <tr>
+                                            <td >Instagram URL</td>
+                                          
+                                            <td><a href="{{record.instagram}}" target="_blank">{{record.instagram}}</a></td>
+                                          
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2nd tab -->
+                <div class="tab-pane fade" id="payroll" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="card"><br>
+                        <div class="row dashboard-header">
+                            <div class="col-lg-3 col-md-6">
+                              <a href="#" style="text-decoration: none;" >
+                                 <div class="card dashboard-product link-with-zoom">
+                                  <h4 style="z-index: 2;">Total Net Salary Paid</h4>
+                                  <p>{{total_net_salary}}</p>
+                                  <div class="side-box">
+                                     <i class="fa fa-money  text-warning-color" ></i>
+                                  </div>
+                               </div></a>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <a href="#" style="text-decoration: none;" >
+                                   <div class="card dashboard-product link-with-zoom">
+                                    <h4 style="z-index: 2;">Total Gross Salary</h4>
+                                    <p>{{total_gross_salary}}</p>
+                                    <div class="side-box">
+                                       <i class="fa fa-money  text-warning-color" ></i>
+                                    </div>
+                                 </div></a>
+                              </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <a href="#" style="text-decoration: none;" >
+                                   <div class="card dashboard-product link-with-zoom">
+                                    <h4 style="z-index: 2;">Total Earning</h4>
+                                    <p>{{total_earning}}</p>
+                                    <div class="side-box">
+                                       <i class="fa fa-money  text-warning-color" ></i>
+                                    </div>
+                                 </div></a>
+                              </div>
+
+                            <div class="col-lg-3 col-md-6">
+                                <a href="#" style="text-decoration: none;" >
+                                   <div class="card dashboard-product link-with-zoom">
+                                    <h4 style="z-index: 2;">Total Deduction</h4>
+                                    <p>{{total_deduction}}</p>
+                                    <div class="side-box">
+                                       <i class="fa fa-money  text-warning-color" ></i>
+                                    </div>
+                                 </div></a>
+                              </div>
+                        </div>
+                        {% if payroll_records %}
+                        <div class="table-responsive" style="clear: both;">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>PaySlip</th>
+                                        <th>
+                                            Month-Year </th>
+                                            <th>Date</th>
+                                            <th>Mode</th>
+                                            <th>Status</th>
+                                            <th>Net Salary</th>
+                                        <th class="mailbox-date text-right"> Action </th>
+                                    </tr>
+                                </thead>
+                                <div class="row">
+                                    <tbody>
+                                        {% for data in payroll_records %}
+                                        <tr>
+                                           <td>{{data.id}}</td>
+                                           <td>{{data.Months}} - {{data.year}}</td>
+                                           <td>{{data.payment_date}}</td>
+                                           <td>{{data.Payment_mode}}</td>
+                                           <td>{{data.status}}</td>
+                                           <td>{{data.net_salary}}</td>
+                                           <td>{% if data.status == "Paid" %}<button type="button" class="btn btn-primary btn-sm">PaySlip</button>{% endif %}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger">
+                            No Record Found
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                 <!-- 3rd tab  leave -->
+                 <div class="tab-pane fade" id="leave" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="card"><br>
+                        <div class="row dashboard-header">
+                            {% for data in available_leaves %}
+                            <div class="col-lg-3 col-md-6">
+                              <a href="#" style="text-decoration: none;" >
+                                 <div class="card dashboard-product link-with-zoom">
+                                  <h4 style="z-index: 2;">{{data.staff_leave.leave_type}}({{data.total_leave}})</h4>
+                                  <small>Available : {{data.available_leave}}</small><br>
+                                  <small>Used : {{ data.total_leave|subtract:data.available_leave }}</small>
+                                  <div class="side-box">
+                                     <i class="fa fa-plane  text-warning-color" ></i>
+                                  </div>
+                               </div></a>
+                            </div>
+                            {% endfor %}
+                            </div>
+                        {% if payroll_records %}
+                        <div class="table-responsive" style="clear: both;">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Leave Type</th>
+                                        <th>Leave Date</th>
+                                        <th>Days</th>
+                                        <th>Apply Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <div class="row">
+                                    <tbody>
+                                        {% for data in staff_leaves %}
+                                        <tr>
+                                           <td>{{data.leave_type}}</td>
+                                           <td>{{data.leave_dates}}</td>
+                                           <td>{{data.number_of_days}}</td>
+                                           <td>{{data.apply_date}}</td>
+                                           <td>{{data.status}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                            </table>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-danger">
+                            No Record Found
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="card">
+                        <div class="timeline-header n   o-border">
+                            <button type="button" data-toggle="modal" data-target="#documentModel"
+                                class="btn btn-xs btn-primary pull-right myTransportFeeBtn"> <i
+                                    class="fa fa-upload"></i> Upload Documents</button>
+                                    <!-- model -->
+                                    <div class="modal fade" id="documentModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <form id="document_form" method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                {{document_form}}
+
+                                            </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" name="doc_btn" value="doc_btn" form="document_form" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                            <!-- <h2 class="page-header"> </h2> -->
+                            <div class="table-responsive" style="clear: both;">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Title </th>
+                                            <th> Name </th>
+                                            <th class="mailbox-date text-right">
+                                                Action </th>
+                                        </tr>
+                                    </thead>
+                                    <div class="row">
+                                        <tbody>
+                                            {% if document_records %}
+                                            {% for data in document_records %}
+                                           <tr>
+                                            <td>{{data.title}}</td>
+                                            <td>{{data.document}}</td>
+                                            <td><a href="{{data.document.url}}" download="download" data-toggle="tooltip" title="Download"><i class="fa fa-download"></i></a>
+                                                <a href="{% url 'delete_staff_document' data.id %}" data-toggle="tooltip" title="Download"><i class="fa fa-trash"></i></a></td>
+                                           </tr>
+                                            {% endfor %}
+                                            {% else %}
+                                            <tr>
+                                                <td colspan="5" class="text-danger text-center">No Record Found</td>
+                                            </tr>
+                                            {% endif %}
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="timeline" role="tabpanel" aria-labelledby="contact-tab">
+
+                    <div class="card" style="padding: 10px;"><br>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                            style="float: right;">
+                            + Add
+                        </button><br>
+
+                        <div class="container-fluid">
+
+                            <div class="timeline-header no-border">
+                                <div id="timeline_list">
+                                    {% for data in timeline_records %}
+                                    <ul class="timeline timeline-inverse">
+                                        <li class="time-label">
+                                            <span class="bg-blue">{{data.date}}</span>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-list-alt bg-blue"></i>
+                                            <div class="timeline-item">
+                                                <div class="timeline-body">
+                                                    {{data.title}}
+                                                    <a href="{% url 'delete_staff_timeline' data.id %}"
+                                                        data-toggle="tooltip" title="" data-original-title="Delete"
+                                                        style="float: right;"
+                                                        onclick="alert('You want to Delete this Item..?')"><i
+                                                            class="fa fa-trash"></i></a></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <i class="fa fa-clock-o bg-gray"></i>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="timeline_form" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {{timeline_form}}
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" value="timeline_btn" name="timeline_btn" form="timeline_form" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Disable Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'staff_disable_enable' %}">
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <input type="hidden" name="staff_id" value="{{record.id}}">
+                    <label for="">Date</label>
+                    <input type="date" class="form-control" name="disable_date">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+  <script>
+    // Get all the <td> elements in your HTML document
+const tdElements = document.querySelectorAll('td');
+
+// Loop through each <td> element
+tdElements.forEach(td => {
+  // Check if the <td> has no text content
+  if (td.textContent.trim() === 'None') {
+    // Set its content to be empty
+    td.textContent = '';
+  }
+});
+  </script>
+{% endblock %}
+

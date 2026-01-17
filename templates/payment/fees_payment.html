@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main.css' %}">
+
+    <!-- Responsive.css-->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/responsive.css' %}">
+
+
+    <style>
+        .razorpay-payment-button {
+            display: none;
+        }
+        .btn {
+            text-transform: capitalize;
+          }
+        .intl-tel-input {
+        display: table-cell;
+        }
+        .intl-tel-input .selected-flag {
+        z-index: 4;
+        }
+        .intl-tel-input .country-list {
+        z-index: 5;
+        }
+        .input-group .intl-tel-input .form-control {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 0;
+        }
+
+        
+    </style>
+    <style>
+
+        #alert {
+          position: fixed;
+          top: 10%;
+          right: 20px;
+          margin-left: 20px;
+          max-width: 300px;
+          z-index: 1;
+        }
+      
+        #alert {
+          padding: 25px 15px;
+          color: white;
+        }
+      
+      
+        </style>
+</head>
+
+<body>
+    <div class="container" style="margin-left:30%; margin-top:10%;">
+        {% for message in messages %}
+        <div class="container-fluid p-0 " id="alert">
+          <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="True">&times;</span>
+            </button>
+            <b>{{ message }}</b>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-8  text-center">
+
+                <img src="{{general_setting.edit_admin_logo.url}}">
+
+            </div>
+            <div class="col-md-6">
+                <div class="invtext">Fees Payment Details </div>
+                <br>
+                <div class="card" style="padding: 30px;">
+                    <table class="table card " style="padding-left:20%;">
+                        <tbody>
+                            <tr>
+                                <th>Description</th>
+                                <th class="text-right">Amount</th>
+                            </tr>
+                            <tr>
+                                <td>{{fees_records.fees.fees_type.name}}<br /><span></span></td>
+                                <td class="text-right">{{fees_records.balance_amount}}</td>
+                            </tr>
+
+                            <tr class="bordertoplightgray">
+                                <td> Total:</td>
+                                <td class="text-right"> {{fees_records.balance_amount}}</td>
+                            </tr>
+
+                            <hr>
+                            <tr class="bordertoplightgray">
+                                <td><button type="button" onclick="window.history.go(-1); return false;" name="search"
+                                        value="" class="btn btn-info"><i class="fa fa fa-chevron-left"></i> Back
+                                    </button> </td>
+                                <td class="text-right">
+                                    {% if general_setting.country == 'India' %}
+                                    <button type="submit" form="myform" value="Pay with Razorpay"
+                                        class="razorpay-button btn btn-primary">Pay</button>
+
+                                    {% elif general_setting.country == 'Kenya' %}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#exampleModalCenter">Pay with M-Pesa</button>
+
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if general_setting.country == 'India' %}
+    <form action="/parent/fees_parent" method="POST" id="myform">
+        {% csrf_token %}
+        <script 
+            src="https://checkout.razorpay.com/v1/checkout.js" 
+            data-key="{{payment_key.razorpay_key_id}}"
+            data-amount="{{ payment.amount }}" 
+            data-currency="{{ payment.currency }}" 
+            data-order_id="{{ payment.id }}"
+            data-name="Fess" 
+            data-description=""
+            data-image="{{general_setting.edit_admin_logo.url}}" 
+            data-prefill.name="{{ payment.name }}"
+            data-prefill.email="you@example.com" 
+            data-theme.color="green">
+        </script>
+    </form>
+
+
+    {% endif %}
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">M-Pesa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post" id="pop-form">
+                        {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label for="" >M-pesa Phone Number</label>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input type="text" readonly  style="width: 50px; background-color:whitesmoke; border:none;" value="+254"> 
+                                {% comment %} <input type="tel" class="form-control" name="phone_number" value="{% if sudent_records.guardian_phone %}{{sudent_records.guardian_phone}}{% endif %}"> {% endcomment %}
+                                <input type="Number" class="form-control" name="phone_number" >
+
+                              </div>
+                              <input type="hidden" name="transaction_type" value="{% for data in transaction_list %}{% if data.name == 'Payroll' %}{{data.transaction_type_id}}{% endif %}{% endfor %}">
+  
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="pop-form" class="btn btn-primary">Send Payment Request</button>
+                    {% comment %} <button type="submit" form="pop-form" class="btn btn-primary">Send Payment </button> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove();
+        });
+      }, 3000);
+      </script>
+
+      
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+ 
+     
+
+</body>
+
+</html>

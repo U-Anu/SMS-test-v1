@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+<h4 class="modal-title">Details <span id="print1"></span></h4>
+<br>
+<a href="#" class="logo"><img class="img-fluid able-logo" src="{% static 'assets/images/logoo.png' %}"
+    alt="Theme-logo"></a>
+<br>
+<div class="col-md-6 card " style="padding-left: 100px;">
+    <tr>
+        <th>Address:</th>
+        <td>25 king street,CA </td>
+        </tr>
+        <br>
+    <tr>
+        <th>Phone NO:</th>
+        <td>89654562173</td>
+    </tr>
+    <br>
+    <tr>
+        <th>Email:</th>
+        <td>yourschool@gamilcom</td>
+    </tr>
+    <br>
+    <tr>
+        <th>Website:</th>
+        <td>www.yourwebsite.in</td>
+    </tr>
+  
+</div>
+
+<form method="post" >
+    {% csrf_token %}
+    
+    <div class="col-md-12 card">
+        <div class="row">
+            <table class="table mb0 font13">
+                <tbody>
+                    <tr>
+                        <th>Staff</th>
+                        <td>{{records.Frist_name}} </td>
+                        <th>Payment Amount</th>
+                        <td>{{records.net_salary}}</td>
+                    </tr>
+                    <tr>
+                        <th>Month Year</th>
+                        <td>{{records.Months}}-{{records.year}}</td>
+                        <th>Month Year</th>
+                        <td>{{records.Months}}-{{records.year}}</td>
+                    </tr> 
+                    
+                  
+                       
+                    
+                </tbody>
+            </table>
+         
+
+        </div>
+    </div>
+</form>
+ 
+
+      {% endblock %}
+      {% block script_block %}
+
+      {% endblock  %}     

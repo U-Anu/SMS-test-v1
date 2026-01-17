@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print marksheet</title>
+    
+
+   <!-- Style.css -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main.css' %}">
+      <!-- Required Fremwork -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/plugins/bootstrap/css/bootstrap.m.css' %}">
+<style>
+    .form-group {
+        margin-bottom: 0rem;
+     }
+     body, p, label {
+        font-size: small!important;
+     }
+     @media print{
+        #print_btn{
+            display: none;
+        }
+     }
+
+</style>
+</head>
+<body>
+    <button type="button" id="print_btn" class="btn btn-primary" onclick="window.print()">Print</button>
+{% for student in records %}
+    <div class="card" style="padding: 20px; page-break-after: always;" >
+        <div class="row" style="background-color: #ADD8E6;padding: 10px;">
+            <div class="col-md-2">
+                {% if data.left_logo %}
+                    <img src="{{data.left_logo.url}}" alt=""  style="float: left; max-height: 80px; width: auto;" id="logo">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <center>
+                    {% if school_name %}
+                    <h5 ><b>{{ data.school_name }}</b></h5>
+                    {% endif %}
+                    {% if data.title %}
+                    <h5 ><b>{{ data.title }}</b></h5>
+                    {% endif %}
+                </center> 
+            </div>
+            <div class="col-md-2">
+                {% if data.right_logo %}
+                    <img src="{{data.right_logo.url}}" alt="" id="logo" style="float: left; max-height: 80px; width: auto;">
+                {% endif %}
+            </div>
+        </div>
+        <div class="container-fluid">
+            <h6 style="text-align: center;"><b>{{data.exam_name}}</b></h6>
+            <div class="row" style="padding: 20px;">
+                <div class="col-md-5">
+                    {% if data.roll_no %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Roll No:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.roll_number }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.name %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Candidate Name:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.first_name }} {% if student.student_obj.last_name %}{{student.student_obj.last_name}}{% endif %}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.date_of_birth %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Date of Birth:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.date_of_birth }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.gender %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Gender:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.gender }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+              
+                    {% if data.section %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Section:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.section }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-5">
+                    {% if data.admisiion_number %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Admission Number:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.admission_no }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.school_name %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">School Name:</label>
+                            <div class="col-sm-6">
+                                <label>{{ data.school_name }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.exam_center %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Exam Center:</label>
+                            <div class="col-sm-6">
+                                <label>{{ data.exam_center }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.father_name %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Father's Name:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.Father_name }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.mother_name %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Mother's Name:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.mother_name }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if data.address %}
+                        <div class="form-group row">
+                            <label class="col-sm-6">Address:</label>
+                            <div class="col-sm-6">
+                                <label>{{ student.student_obj.guardian_address }}</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if data.photo %}
+                <div class="col-md-2">
+                    {% if student.student_obj.student_photo %}
+                    <img src="{{ student.student_obj.student_photo.url }}" alt="student_image" width="100%" height="90px" style="float: left;border: double rgb(96, 89, 89);">
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <table class="modal-table table">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">THEORY EXAM DATE & TIME</th>
+                    <th style="text-align: center;">PAPER CODE</th>
+                    <th style="text-align: center;">SUBJECT</th>
+                    <th style="text-align: center;">OPTED BY STUDENT</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sub in exam_sub %}
+                <tr>
+                    <td style="text-align: center;">{{sub.date}} - {{sub.time}}.</td>
+                    <td style="text-align: center;">{{sub.subject.subject_code}}</td>
+                    <td style="text-align: center;">{{sub.subject}}</td>
+                    <td style="text-align: center;">{{sub.subject.subject_type}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+        <!-- Add other admit card details here -->
+        {% if data.footer_text %}
+        <div class="col-md-12">
+            <p>{{data.footer_text}}</p>
+        </div>
+        {% endif %}
+        <div class="container-fluid">
+            <br>
+            <div class="row justify-content-center align-items-center" style="background-color: rgb(241, 236, 236);padding: 10px;">
+                <div class="">
+                    {% if data.sign %}
+                        <img src="{{data.sign.url}}" alt="" width="10%" height="50px"  style="display: block; margin: 10px auto;">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Add other admit card details here -->
+    </div>
+
+{% endfor %}
+    
+</body>
+</html>

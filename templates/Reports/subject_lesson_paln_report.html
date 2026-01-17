@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="main-header">
+      <div class="col-md-12">
+        <h4>Lesson Plan Report</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+      <div class="container-fluid" style="padding: 10px;">
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'syllabus_status_report' %}">Syllabus Status Report</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'subject_lesson_paln_report' %}" class="text-primary">Subjects Lesson Plan Report</a>
+        </div>
+      </div>
+      <hr>
+      <div class="container-fluid">
+        <div class="row">
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                  <label for="class">Class</label><span class="text-danger">*</span>
+                  
+                  <select class="form-control" name="class" id="id_class" required>
+                      <option value="" >---Select---</option>
+                      {% for data in class_records %}
+                      <option value="{{ data.id }}">{{data.Class}}</option>
+                      {% endfor %}
+  
+                  </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="section">Section</label><span class="text-danger">*</span>
+                <select class="form-control" name="section" id="id_section" required>
+                  <option value="">---Select---</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="section">Subject_group</label><span class="text-danger">*</span>
+                <select name="subject_group" class="form-control" required id="id_subject_group">
+                    <option value="">------</option>
+
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="section">Subject</label><span class="text-danger">*</span>
+              <select name="subject" class="form-control" required id="id_subject">
+                  <option value="">------</option>
+
+              </select>
+          </div>
+            </div>
+            <div class="col-md-12 mb-3"><br>
+              <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+            </div>
+          </form>
+        </div>  
+      </div>
+    </div>
+  </div>
+</div>
+{% if Lesson_plan %}
+<div class="col-md-12">
+  <div class="card" style="padding: 10px;">
+    <div class="table-responsive">
+    
+      <table  class="display" id="tableID">
+
+        <thead>
+            <tr>
+                <td colspan="8"><h4>Subject Lesson Plan Report For: {{percentage}}</h4></td>
+            </tr>
+            <tr>
+                <th>Teacher</th>
+                <th>Lesson Name</th>
+                <th>Topic Name</th>
+                <th>Sub Topic</th>
+                <th>Date</th>
+                <th>Time From</th>
+                <th>Time To</th>
+                <th>Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+                   
+            {% for data in Lesson_plan %}
+           <tr>
+                <td>{{data.time_table.teacher.first_name}}</td>
+                <td>{{data.lesson.lesson_name}}</td>
+                <td>{{data.topic.topic_name}}</td>
+                <td>{{data.sub_topic}}</td>
+                <td>{{data.date}}</td>
+                <td>{{data.time_table.time_from}}</td>
+                <td>{{data.time_table.time_to}}</td>
+                <td><i class="fa fa-reorder" data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.id}}')"></i></td>
+           </tr>
+            {% endfor %}
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+</div>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade bd1-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Lesson Plan</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+                <tr>
+                    <th  style="width:200px;">Class</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_class"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Subject</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Subject"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Date</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Date"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Lesson</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Lesson"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Topic</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Topic"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Sub Topic</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Sub_Topic"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">General Objectives</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_General_Objectives"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Teaching Method</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Teaching_Method"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Previous Knowledge</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Previous_Knowledge"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:300px;">Comprehensive Questions</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Comprehensive_Questions"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Presentation</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Presentation"></span></td>
+                </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% else %}
+<center> <h5>No Records Found </h5></center>
+{% endif %}
+{% endblock %}
+{% block script_block %}
+
+<script>
+  $(document).ready(function () {
+    $(document).on('change', '#id_class', function () {
+      var class_id = $('#id_class').val();
+      var url = "{% url 'section_js' %}";
+
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+          $("#id_section").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (section) {
+            html_data += `<option value="${section.id}">${section.section_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+  });  
+
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_section', function () {
+        var section_id = $('#id_section').val();
+        var class_id = $('#id_class').val();
+        var url = "{% url 'subject_grp_js' %}";
+        $.ajax({
+            url: url,
+            data: {
+                'class_id': class_id,
+                'section_id': section_id,
+            },
+            success: function (data) {
+                $("#id_subject_group").html(data);
+                let html_data = '<option value="">--------</option>';
+                data.forEach(function (subjectt) {
+                    html_data += `<option value="${subjectt.id}">${subjectt.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_subject_group").html(html_data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+});
+
+//subject ajax
+$(document).ready(function () {
+    $(document).on('change', '#id_subject_group', function () {
+        var section_id = $('#id_section').val();
+        var class_id = $('#id_class').val();
+        var subject_grp_id = $('#id_subject_group').val();
+        var url = "{% url 'subject_js' %}";
+        $.ajax({
+            url: url,
+            data: {
+                'class_id': class_id,
+                'section_id': section_id,
+                'subject_grp_id':subject_grp_id,
+            },
+            success: function (data) {
+                $("#id_subject").html(data);
+                let html_data = '<option value="">--------</option>';
+                data.forEach(function (subjectt) {
+                    html_data += `<option value="${subjectt.id}">${subjectt.subject_name}</option>`
+                });
+                console.log(html_data);
+                $("#id_subject").html(html_data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+});
+
+
+// view 
+function view_plan(id){
+    var url = "{% url 'edit_manage_lesson_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'pk': id
+      },
+      success: function (data) {
+        $('#view_class').text(data.class +'('+data.section+')');
+        $('#view_Subject').text(data.subject);
+        $('#view_Date').text(data.date);
+        $('#view_Lesson').text(data.lesson_name);
+        $('#view_Topic').text(data.topic_name);
+        $('#view_Sub_Topic').text(data.sub_topic);
+        $('#view_Teaching_Method').text(data.teaching_method);
+        $('#view_General_Objectives').text(data.general_objectives);
+        $('#view_Comprehensive_Questions').text(data.comprehensive_questions);
+        $('#view_Previous_Knowledge').text(data.pervious_knowledge);
+        $('#view_Presentation').text(data.presentation);
+     
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+}
+
+</script>
+{% endblock %}

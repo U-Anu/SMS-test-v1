@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Data Backup</h4>
+        </div>
+        <div class="col-md-11">
+            <div style="float: right;">
+                <a id="backup-btn" href="{% url 'export_all_data_zip' %}" class="btn btn-primary float-right">Backup
+                    Now</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+                <table id="tableID" class="display">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>User Uame</th>
+                            <th>Downloaded at</th>
+                            <th>File path</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <th>{{forloop.counter}}</th>
+                            <td>{{ record.user.username }}</td>
+                            <td>{{ record.downloaded_at }}</td>
+                            <td>
+                                <a href="{{ BACKUP_URL }}{{ record.file_path|cut:'Backup/' }}"
+                                    class="btn btn-success btn-sm" target="_blank">
+                                    <i class="fas fa-download"></i> Download
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    document.getElementById('backup-btn').addEventListener('click', function () {
+        setTimeout(function () {
+            location.reload();
+        }, 1000); // Adjust the timeout duration if needed
+    });
+</script>
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}
