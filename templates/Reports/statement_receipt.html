@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<style>
+  .more-details-link {
+    font-weight: bold;
+    color: #007bff; /* Highlight the link with a blue color */
+  }
+
+  .more-details-link:hover {
+    color: #0056b3; /* Darker shade on hover */
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+
+       <div class="main-header">
+        <div class="col-md-4">
+          <h4>Student History</h4>
+          </div>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <div class="container-fluid" style="padding: 10px;">
+                <div class="col-md-4  mb-3">
+                  <a href="{% url 'accouting_report' %}" >Date wise </a>
+                </div>
+                <div class="col-md-4  mb-3">
+                  <a href="{% url 'accouting_details_report' %}"  >Transaction Details </a>
+                </div>
+                <div class="col-md-4  mb-3">
+                  <a href="{% url 'accouting_ledger' %}" > Details Ledger </a>
+                </div>
+                <div class="col-md-4  mb-3">
+                  <a href="{% url 'statement_cashflow' %}" > Statement Cashflow </a>
+                </div>
+                
+
+          
+
+                  <div class="col-md-4  mb-3">
+                    <a href="{% url 'statement_receipt' %}" class="text-primary"> Statement Receipt  </a>
+                  </div>  
+
+
+                              
+              </div>
+          <hr>
+         
+            </div>
+        </div>
+    </div>
+   
+
+
+   {% if statement_receipt %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+          <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Account Number</th>
+                        <th>Transaction Date</th>
+                        <th>Amount</th>
+                        <th>Account Category</th>
+                        <th>Type</th>
+                        
+                        
+                   
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in statement_receipt %}
+                    <tr>
+                      <td>{{data.account_id}}</td>
+                        <td>{{ data.account_number }}</td>
+                        <td>{{ data.last_updated_at }}</td>
+                        <td>{{ data.amount }}</td>                        
+                        <td>{{ data.account_category }}</td>
+                        <td>{{ data.type }}</td>
+                                                                  
+                                       
+                         </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            
+            </div>
+         
+           
+    
+    </div>
+    {% else %}
+       <center> <h5>No Records Found </h5></center>
+    {% endif %}
+    </div>
+   
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div> 
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

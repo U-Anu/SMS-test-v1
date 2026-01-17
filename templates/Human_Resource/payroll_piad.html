@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Payment Process</h4>
+        </div>
+    </div>
+
+
+    <div class="col-md-12">
+        <div class="card">
+            <form method="post">
+                {% csrf_token %}
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Staff</th>
+                            <td>{{records.Frist_name}} </td>
+                            <th>Payment Amount</th>
+                            <td>{{records.net_salary}}</td>
+                        </tr>
+                        <tr>
+                            <th>Month Year</th>
+                            <td>{{records.Months}}-{{records.year}}</td>
+                            <div class="col-md-6 mb-3">
+                                <h4>Payment Date</h4>
+                                <input type="date" class="form-control" name="from_date" required>
+                            </div>
+                        </tr>
+                        <tr>
+                            <th>Note</th>
+                            <td>{{records.Note}}</td>
+                        </tr>
+
+                        <div class="col-md-6 mb-3">
+                            <h4>Payment Mode</h4>
+                            <select class="form-control" name="staffs" required>
+                                <option value="">--Select</option>
+                                <option value="chash">chash</option>
+                                <option value="cheque">cheque</option>
+                                <option value="Transfer to Bank Account">Transfer to Bank Account</option>
+
+                            </select>
+                        </div>
+
+                    </tbody>
+                </table>
+                <div class="col-md-12 mb-3"><br>
+
+                    <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

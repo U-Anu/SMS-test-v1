@@ -1,0 +1,266 @@
+{% extends 'student_base.html' %}
+
+
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    @media only screen and (max-width: 750px) {
+        #title {
+          font-size: 24px!important;
+          margin-bottom: 0px!important;
+        }
+        #description {
+          font-size: 15px!important;
+          margin-bottom: 15px!important;
+        }
+        form {
+          width: 550px!important;
+        }
+        .width {
+          width: 500px!important;
+        }
+        input[type="checkbox"], input[type="radio"]
+        {
+          width: 12px!important;
+          margin-right: 6px!important;
+        } 
+      }
+      @media only screen and (max-width: 570px) {
+        #title {
+          font-size: 19px!important;
+          margin-bottom: 0px!important;
+        }
+        #description {
+          font-size: 12px!important;
+          margin-bottom: 15px!important;
+        }
+        form {
+          width: 430px!important;
+          padding-top: 10px!important;
+          padding-bottom: -5px!important;
+        }
+        .width {
+          width: 390px!important;
+        }
+        input[type="checkbox"], input[type="radio"]
+        {
+          width: 11px!important;
+          margin-right: 2px!important;
+          margin-left: 3px!important;
+        }
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(249, 249, 249, 0.8);
+        color: #f3f2f2;
+        font-family: Tahoma;
+      }
+      h1, p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      p {
+        margin-bottom: 30px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        width: 700px;
+        background-color: rgba(43, 61, 81, 0.7);
+        align-items: left;
+        padding-top: 25px;
+        border-radius: 10px;
+        padding-left: 20px;
+      }
+      .width {
+        width: 650px;
+      }
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        border: none;
+      }
+      legend {
+        font-size: 18px;
+        padding-top: 10px;
+      }
+      input, select, textarea {
+        display: block;
+        margin: 5px 0 20px 0;
+        min-height: 2em;
+        background-color: #0a0a23;
+        border: 1px solid #0a0a23;
+        color: #ffffff;
+      }
+      input, select {
+         height: 2.5em;
+      }
+      label {
+        display: block;
+      }
+      .inline {
+        display: inline;
+      }
+      input[type="radio"] {
+        width: 1em;
+        min-height: auto;
+        height: 1em;
+        transform: scale(1.25);
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 5px;
+      }
+      input[type="checkbox"] {
+        width: 1em;
+        min-height: auto;
+        height: 1em;
+        transform: scale(1.50);
+        margin-bottom: 15px;
+        margin-top: 15px;
+        margin-left: 10px;
+      }
+      #name-label, #email-label, #number-label {
+        font-size: 18px;
+        font-family: sans-serif;
+      }
+      textarea {
+        padding-bottom: 2em;
+        height: 7em;
+        font-size: 16px;
+      }
+      button {
+        display: block;
+        margin-bottom: 30px;
+        height: 2em;
+        font-size: 1.1rem;
+        background-color: white;
+        border-color: white;
+        min-width: 300px;
+      }
+      hr {
+       border-color: white;
+      }
+</style>
+
+<style>
+  #counter {
+      color: red; /* Red text color for the counter */
+      font-size: 24px;
+  }
+</style>
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Mental Health Survey Form</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>       
+        <br>
+     
+        <br>
+       <center> <h6  style="color: red;" id="timer"></h6> </center>
+       
+      <h6>{{Enrollment_record.start_time}}{{question_paper_record.duration}}</h6>
+        <h1 style="color: black;"> Madel Qestion Paper</h1>     
+          
+          
+      </em><p> Please take your time to read and answer the following questions </em></p>
+        <form method="post">
+          {% csrf_token %} 
+            <hr class="width">
+            <!--radio question-->
+            {% for data in questions %}
+            <div style="margin-bottom: 20px;">
+               <center> <h5 style="text-transform:capitalize;"> </h5></center>  
+                        
+               
+                <h5 style="text-align: left;" name="questions">{{ forloop.counter }}. {{ data.text }}</h5>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <ol type="A">
+                    {% for option in data.options %}
+                   
+                      <li>
+                        
+                        <div class="d-flex ">
+                          <input type="radio" name="answers_{{data.id}}" value="{{ option.option }}" >
+                          
+                          
+                        <label for="option_{{ option.id }}"  name="text_option_{{data.id}}" style="color: white;margin-top: 8px;">&nbsp;&nbsp;  {{ option.text }}</label>
+                        </div>
+                      </li>
+                     
+                    {% endfor %}
+                  </ol>
+              </div>
+            </div>
+            {%  if data.question_type == "paragraph"  %}
+            <fieldset class="width">
+             
+              <label>
+                  <textarea class="width" id="area" placeholder="Fill the answer..." row="3" cols="30" name="answers_{{data.id}}" ></textarea>
+              </label>
+          </fieldset>
+          {% endif %}
+          
+            {% endfor %}      
+        
+            <button id="submit" type="submit" class="width" >Submit</button>
+            <hr class="width">
+            <!--textarea question-->
+            
+        </form>
+    </body>
+</html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      // Get the duration value from the template
+      var countdownTime = {{ question_paper_record.duration|safe }}; // Duration in milliseconds
+
+      // Display an alert with the countdownTime value
+      alert("Countdown Time: " + countdownTime + " milliseconds");
+
+      // Calculate the end time
+      var endTime = new Date().getTime() + countdownTime;
+
+      // Update the countdown every second
+      var countdownInterval = setInterval(function () {
+          // Get the current time
+          var now = new Date().getTime();
+
+          // Calculate the remaining time
+          var timeLeft = endTime - now;
+
+          // Time calculations for hours, minutes, and seconds
+          var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+          // Ensure that hours, minutes, and seconds are displayed as two digits
+          hours = hours.toString().padStart(2, '0');
+          minutes = minutes.toString().padStart(2, '0');
+          seconds = seconds.toString().padStart(2, '0');
+
+          // Display the result in the HTML element in hh:mm:ss format
+          document.getElementById("timer").innerHTML = hours + ":" + minutes + ":" + seconds;
+
+          // If the countdown is finished, display a message
+          if (timeLeft < 0) {
+              clearInterval(countdownInterval);
+              document.getElementById("timer").innerHTML = "Time's Up!";
+          }
+      }, 1000);
+  });
+</script>
+{% endblock %}
+{% block script_block %}
+
+{% endblock  %}

@@ -1,0 +1,75 @@
+{% extends 'base copy.html' %}
+{% load static %}
+{% load custom_filter %}
+
+{% block body_block %}
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {% if add_new != 'no' %}
+                {% if is_company %}
+                <a href="{% url 'company_update' %}">
+                    <button type="button" class="btn btn-primary float-right">+ New</button>
+                </a>
+                {% endif %}
+                <a href="{{ create_url }}">
+                    <button type="button" class="btn btn-primary float-right">+ New</button>
+                </a>
+                {% else %}
+                <button type="button" class="btn btn-primary float-right" disabled>+ New</button>
+                {% endif %}
+
+                <h4 class="card-title">{{ screen_name }}</h4>
+                <div class="table-responsive">
+                    <table id="tableID" class="display table table-hover">
+                        <thead class="bg-col">
+                            <tr>
+                                <th>No.</th>
+                                {% if is_action_required %}
+                                <th>Action</th>
+                                {% endif %}
+                                {% for field in obj_fields %}
+                                    {% if obj|first|get_field_value:field.name %}  <!-- Check if the first record has the field -->
+                                        <th>{{ field.verbose_name|upper }}</th>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in obj %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                {% if is_action_required%}
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuIconButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuIconButton2">
+                                            <a class="dropdown-item" href="/vud/{{update_url}}/{{record.pk}}/">
+                                                <button class="btn iconbg-yellow" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fas fa-edit"></i>Edit</button>
+                                            </a>
+                                            <a class="dropdown-item" href="/vud/{{delete_url}}/{{record.pk}}/">
+                                                <button class="btn iconbg-rose" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="fas fa-trash-alt"></i>Delete</button>
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                {% endif %}
+                                {% for field in obj_fields %}
+                                    {% if record|get_field_value:field.name %}
+                                        <td>{{ record|get_field_value:field.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

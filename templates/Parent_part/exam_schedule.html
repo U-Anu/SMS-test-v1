@@ -1,0 +1,55 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Exam Schedule</h4>
+         </div><hr>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+     
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>NO.</th>                                                          
+                                <th>Exam</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>                                                              
+                                <td>{{data.exam.Exam}}</td>
+                                <td>  
+                                    <a href="{% url 'exams_view' data.exam.id %}" class="btn btn-primary btn-xs schedule_modal" data-toggle="tooltip" title=""   >
+                                        <i class="fa fa-eye"></i> View                                                </a>
+                                     </td>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

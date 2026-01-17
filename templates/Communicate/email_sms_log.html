@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Email / SMS Log</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+
+            <div class="table-responsive">
+                <table id="tableID" class="display">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Email</th>
+                            <th>Sms</th>
+                            <th>Group</th>
+                            <th>Individual</th>
+                            <th>Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in records %}
+                        <tr>
+                            <td>{{data.Title}}</td>
+                            <td>{{data.created_at}}</td>
+                            <td>{% if data.send_by == 'Email' %}<i class="fa fa-check-square-o"></i>{% endif %}</td>
+                            <td>{% if data.send_by == 'SMS' %}<i class="fa fa-check-square-o"></i>{% endif %}</td>
+                            <td>{% if data.sent_to == 'Group' %}<i class="fa fa-check-square-o"></i>{% endif %}</td>
+                            <td>{% if data.sent_to == 'Individual' %}<i class="fa fa-check-square-o"></i>{% endif %}</td>
+                            <td>{% if data.sent_to == 'Class' %}<i class="fa fa-check-square-o"></i>{% endif %}</td>
+                          
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

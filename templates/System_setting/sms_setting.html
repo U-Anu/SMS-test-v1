@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid" style="padding-left: 30px;"><br>
+    <div class="row">
+        <h5>SMS Setting</h5>
+        <div class="col-md-9" style="padding: 10px; border-top: 5px solid black;">
+            <div class="row card">
+                <div class="col-12 col-md-12 col-lg-12">
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#duck" role="tab" aria-controls="duck"
+                                aria-selected="true">Twilio SMS Gateway</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane active" id="duck" role="tabpanel" aria-labelledby="duck-tab">
+                           
+                            <div class="row"><br>
+
+                                <form  method="post" >
+                                    {% csrf_token %}
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Twilio Account SID <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control"  name="twilio_account_SID" value="{% if last_record.twilio_account_SID %}{{last_record.twilio_account_SID}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Authentication Token <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="twilio_auth_token" value="{% if last_record.twilio_auth_token %}{{last_record.twilio_auth_token}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-4" >
+                                            <label for="" style="float: right;">Registered Phone Number <span class="text-danger">*</span></label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="twilio_regeister_phone_no" value="{% if last_record.twilio_regeister_phone_no %}{{last_record.twilio_regeister_phone_no}}{% endif %}">
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-success" name="btn_type" value="twilio" style="float: right;">Save</button>
+                                </div>
+                                </form>
+                                <div class="col-md-3 text text-center disblock">
+                                    <a href="https://www.twilio.com/en-us" target="_blank"><img src="{% static 'assets/images/twilio.png' %}" width="200"><p>https://www.twilio.com/en-us</p></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+      
+            </div>
+        </div>
+        <div class="col-md-3" style="padding: 10px; border-top: 5px solid black;">
+            <form action="" method="post">
+                {% csrf_token %}
+            <div class="card">
+                <h6>Selete SMS Gateway</h6>
+                <label for="id_Twilio">
+                    <input type="radio" name="sms_gateway" id="id_Twilio" value="Twilio" {% if last_record.status == 'Twilio' %}checked{% endif %}>  Twilio
+                </label><br>
+                <button type="submit" class="btn btn-success" style="float: right;" name="sms_gateway_btn" value="sms_gateway_btn">Save</button>
+                <br><br>
+            </div>
+            
+        </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

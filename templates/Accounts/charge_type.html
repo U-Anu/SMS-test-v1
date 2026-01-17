@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Charge Type</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'income_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">                        
+                      {% if view %}
+                      <h4> View Charge Type</h4>
+                      {% elif edit %}
+                      <h4> Edit Charge Type</h4>
+                      {% else %}
+                      <h4>Add Charge Type</h4>                       
+                      {% endif %}  
+                        
+                     </div><hr>
+                     
+                     <form method="post">
+                        {% csrf_token %} 
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                      {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'income_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Charge Type List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>charge_type_ID</th>
+                                <th>short_description</th>
+                                <th>Date</th>
+                                {% comment %} <th>Income Head</th>
+                                <th>Amount</th> {% endcomment %}
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.charge_type_ID}}</td>
+                                <td>{{data.description}}</td>
+                                <td>{{data.create_at}}</td>
+                                {% comment %} <td>{{data.Income_head}}</td>
+                                <td>{{data.amount}}</td> {% endcomment %}
+                                <td>  
+                                    {% comment %} {% if 'charge_type_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'charge_type_view' data.id %}"  class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    {% endif %} {% endcomment %}
+                                    {% if 'charge_type_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'charge_type_edit' data.charge_type_ID %}"  class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                    {% endif %}
+                                    {% if 'charge_type_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'charge_type_delete' data.charge_type_ID %}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                    {% endif %}
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

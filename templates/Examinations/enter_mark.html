@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    #save_btn{
+        float: right;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="class">Class</label>
+                    <select class="form-control" name="class" required id="id_Class">
+                        <option value="" >---Select---</option>
+                        {% for data in class_records %}
+                        <option value="{{ data.id }}">{{data.Class}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Section</label>
+                    <select class="form-control" name="sectionn" required id="id_section">
+                        <option value="">---Select---</option>
+                    </select>                
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="session">Session</label>
+                    <select class="form-control" name="session">
+                        <option value="">---Select---</option>
+                        {% for data in session_records %}
+                        <option value="{{data.id}}">{{data.session}}</option>
+                        {% endfor %}
+                    </select>  
+                    <!-- #need to add a sesssion field on StudentAdmission Table               -->
+                </div>
+               
+                <div class="col-md-4 mb-3" style="padding-top: 30px;">
+                <button type="submit" class="btn btn-primary" name="search" value="search">Search</button>
+                 </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+
+    {% if records %}
+    <div class="row">
+     <div class="col-md-12">
+       
+
+         <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+                <form action='/mark_save/{{pk}}' method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{records.count}}" name="count">
+            <table  class="table"  >
+                <thead>
+                    <tr>
+                        <th>Admission No</th>
+                        <th>Roll Number</th>
+                        <th>Student Name</th>
+                        <th>Father Name</th>
+                        <th>Category</th>
+                        <th>Gender</th>
+                        <th>Attendance</th>
+                        <th>Marks</th>
+                        <th>Note</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                {% if exist_records %}
+                    {% for data in exist_records %}
+                    <tr>
+                        <td><input type="hidden" class="form-control" name="mark_id" value="{{ data.id }}">{{ data.student.admission_no }}</td>
+                        <td>{{data.student.roll_number}}</td>
+                        <td>{{ data.student.first_name }} {{ data.last_name }}</td>
+                        <td>{{ data.student.Father_name }}</td>
+                        <td>{{ data.student.category }}</td>
+                        <td>{{ data.student.gender }}</td>
+                        <td><input type="checkbox" class="form-control" name="attendance{{forloop.counter}}" onclick="mark('mark_id{{forloop.counter}}')" {% if data.attendance %} checked {% endif %}></td>
+                        <td><input type="number" class="form-control" name="marks" id='mark_id{{forloop.counter}}' value="{{data.marks}}" required></td>
+                        <td><input type="text" class="form-control" name="notes" value="{{data.note}}"></td>
+                      
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    {% for data in records %}
+                    <tr>
+                        <td><input type="hidden" class="form-control" name="student_id" value="{{ data.student.id }}">{{ data.student.admission_no }}</td>
+                        <td><input type="hidden" class="form-control" name="assign_list" value="{{ data.id }}">{{data.student.roll_number}}</td>
+                        <td>{{ data.student.first_name }} {{ data.student.last_name }}</td>
+                        <td>{{ data.student.Father_name }}</td>
+                        <td>{{ data.student.category }}</td>
+                        <td>{{ data.student.gender }}</td>
+                        <td><input type="checkbox" class="form-control" name="attendance{{forloop.counter}}" onclick="mark('mark_id{{forloop.counter}}')"></td>
+                        <td><input type="number" class="form-control" name="marks" id='mark_id{{forloop.counter}}' required></td>
+                        <td><input type="text" class="form-control" name="notes"></td>
+                      
+                    </tr>
+                    {% endfor %}
+                  {% endif %}
+                </tbody>
+        
+            </table>
+            <br>
+            <button type="submit" class="btn btn-success" name="save_btn" id="save_btn">Save</button>
+        </form>
+            </div>
+         </div>
+     </div>
+ </div>
+ {% endif %}
+     
+
+ {% endblock %}
+ {% block script_block %}
+ 
+ <script >
+    function mark(checkbox) {
+        $('#'+checkbox).val(0);
+      }
+   </script>
+
+   
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+ {% endblock  %}

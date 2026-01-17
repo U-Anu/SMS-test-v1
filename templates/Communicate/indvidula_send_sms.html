@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    .nav {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .nav li {
+        list-style-type: none;
+        margin-right: 10px;
+    }
+
+    .nav li:last-child {
+        margin-right: 0;
+    }
+
+    .nav li.active {
+        font-weight: bold;
+    }
+
+    .nav li a {
+        text-decoration: none;
+        color: #333;
+    }
+
+    .nav li.active a {
+        color: #000;
+    }
+
+    #sendemail {
+        line-height: 35px;
+        padding: 0 10px;
+        font-size: 20px;
+        color: #444;
+    }
+
+    .recipient-dropdown {
+        width: 200px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 5px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .recipient-dropdown li {
+        padding: 5px 10px;
+    }
+
+    .recipient-dropdown li:hover {
+        background-color: #f5f5f5;
+    }
+
+    .recipient-dropdown li a {
+        text-decoration: none;
+        color: #333;
+    }
+
+    .recipient-dropdown li.active {
+        font-weight: bold;
+    }
+
+    .recipient-dropdown li.active a {
+        color: #000;
+    }
+</style>
+
+<div class="container">
+    <br><h4>Send SMS</h4>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link "   href="{% url 'send_sms' %}">Group</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'indvidula_send_mail' %}">Individual</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link"   href="{% url 'send_sms' %}">Class</a>
+        </li>
+    </ul><!-- Tab panes -->
+    <div class="tab-content card">
+        <div class="tab-pane active" id="tabs-2" role="tabpanel">
+            <form action="#" method="post" id="individual_form">
+                {% csrf_token %}
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <small class="req"> *</small>
+
+                                <input class="form-control" name="individual_title">
+                            </div>
+                            <input type="hidden" name="individual_send_by" value="email">
+                         
+                            <div class="form-group">
+                                <label>Message</label><small class="req"> *</small>
+                                <textarea id="individual_msg_text" name="individual_message"  cols="30" rows="15"
+                                    class="form-control compose-textarea ckeditor"></textarea>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                     
+
+
+                            <div class="form-group">
+                                <label for="inpuFname">Message To</label><small class="req"> *</small>
+                                <div class="input-group">
+                                    <div class="input-group-btn bs-dropdown-to-select-group">
+                                        <button type="button"
+                                            class="btn btn-default btn-searchsm dropdown-toggle as-is bs-dropdown-to-select"
+                                            data-toggle="dropdown">
+                                            <span data-bind="bs-drp-sel-label" id="select_id">Select</span>
+                                            <input type="hidden" name="selected_value" data-bind="bs-drp-sel-value"
+                                                value="">
+                                            <span class=""></span>
+
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+
+                                            <li data-value="Students" id="Students" onclick="pass_value('Students')">Students</li>
+                                            <li data-value="Guardians" id="Guardians" onclick="pass_value('Guardians')">Guardians</li>
+                                            {% for data in roles_records %}
+                                            <li data-value="{{data.id}}" id="{{data.name}}"  onclick="pass_value('{{data.name}}')">{{data.name}}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <input list="brow" id="selected" class="form-control">
+                                    <datalist id="brow">
+                                    </datalist> 
+                                  
+                                    <div id="suggesstion-box"></div>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-searchsm add-btn" id="submit" type="button">Add</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="dual-list list-right">
+                                <div class="well minheight260">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                <input type="text" name="SearchDualList" class="form-control"
+                                                    placeholder="Search..." />
+                                                <div class="input-group-btn"><span
+                                                        class="btn btn-default input-group-addon bright"><i
+                                                            class="fa fa-search"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wellscroll">
+                                        <ul class="list-group send_list">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary" ><i class="fa fa-envelope-o"></i> Send</button>
+                    </div>
+
+                </div>
+                <!-- /.box-footer -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+   function pass_value(val){
+    $('#select_id').text(val)//text passing
+    var selected_val= $('#'+val).data('value')
+    var url = "{% url 'send_mail_search_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'selected_val': selected_val
+      },
+      success: function (data) {
+          $("#brow").html(data);
+          let html_data = '';
+          data.forEach(function (obj) {
+            if (obj.first_name){
+                html_data += `<option value="${obj.first_name}" data-value="${obj.id}">`
+            }else{
+                html_data += `<option value="${obj.guardian_name}" data-value="${obj.id}">`
+                }
+          });
+          console.log(html_data);
+          $("#brow").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+
+   }
+
+
+</script>
+<script>
+    $(document).ready(function() {
+
+        $('#submit').click(function()
+        {
+            var value = $('#selected').val();
+            var search_val= $('#brow [value="' + value + '"]').data('value')
+            var selected_for = $('#select_id').text();
+            if (selected_for == 'Students'){
+                var type='Student';
+            }else if (selected_for == 'Guardians'){
+                var type='Guardian';
+            }else{
+                var type='Staff';
+            }
+
+            var url = "{% url 'mail_search_save_js' %}";
+            $.ajax({
+              url: url,
+              data: {
+                'id' : search_val,
+                'type' : type,
+              },
+              success: function (data) {
+                  $(".send_list").html(data);
+                  let html_data = '';
+                  data.forEach(function (obj) {
+                    if (obj.type == 'Student'){
+                        html_data += `<li class="list-group-item" >
+                            <i class="fa fa-user"></i> ${obj.Student__first_name}
+                            <i class="fa fa-trash pull-right text-danger" onclick="delete_record('${obj.id}')"></i>
+                        </li>`
+                    }else if (obj.type == 'Guardians'){
+                        html_data += `<li class="list-group-item" >
+                            <i class="fa fa-user"></i> ${obj.Student__guardian_name}
+                            <i class="fa fa-trash pull-right text-danger" onclick="delete_record('${obj.id}')"></i>
+                        </li>`
+                    }else{
+                        html_data += `<li class="list-group-item" >
+                            <i class="fa fa-user"></i> ${obj.Staff__first_name}
+                            <i class="fa fa-trash pull-right text-danger" onclick="delete_record('${obj.id}')"></i>
+                        </li>`
+                    }
+                  });
+                  console.log(html_data);
+                  $('#selected').val('');
+                  $(".send_list").html(html_data);
+              },
+              error: function (data) {
+                console.log(data);
+              }
+            });
+        });
+    });
+</script>
+<script>
+    function delete_record(id){
+        var url = "{% url 'mail_search_delete_js' %}";
+        $.ajax({
+          url: url,
+          data: {
+            'id' : id,
+          },
+          success: function (data) {
+              $(".send_list").html(data);
+              let html_data = '';
+              data.forEach(function (obj) {
+                if (obj.type == 'Student'){
+                    html_data += `<li class="list-group-item" >
+                        <i class="fa fa-user"></i> ${obj.Student__first_name}
+                        <i class="fa fa-trash pull-right text-danger" onclick="delete_record('${obj.id}')"></i>
+                    </li>`
+                }else if (obj.type == 'Guardians'){
+                    html_data += `<li class="list-group-item" >
+                        <i class="fa fa-user"></i> ${obj.Student__guardian_name}
+                        <i class="fa fa-trash pull-right text-danger" onclick="delete_record('${obj.id}')"></i>
+                    </li>`
+                }else{
+                    html_data += `<li class="list-group-item" >
+                        <i class="fa fa-user"></i> ${obj.Staff__first_name}
+                        <i class="fa fa-trash pull-right text-danger" onclick="delete_record('${obj.id}')"></i>
+                    </li>`
+                }
+              });
+              console.log(html_data);
+              $(".send_list").html(html_data);
+          },
+          error: function (data) {
+            console.log(data);
+          }
+        });
+    }
+</script>
+
+<script>
+    document.getElementById('class_id').addEventListener('change', function () {
+        const classId = this.value;
+        const sectionSelect = document.querySelector('.section-select');
+
+        fetch(`/get_sections/?class_id=${classId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the section select element with the received data
+                sectionSelect.innerHTML = ''; // Clear existing sections
+
+                if (data.length > 0) {
+                    data.forEach(section => {
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = section.id;
+                        checkbox.id = `section${section.id}`;
+                        checkbox.name = 'sectionss';
+
+                        const label = document.createElement('label');
+                        label.htmlFor = `section${section.id}`;
+                        label.textContent = section.section_name;
+
+                        const div = document.createElement('div');
+                        div.classList.add('form-check');
+                        div.classList.add('section-select');
+
+                        div.appendChild(checkbox);
+                        div.appendChild(label);
+
+                        sectionSelect.appendChild(div);
+                    });
+                } else {
+                    const div = document.createElement('div');
+                    div.textContent = 'No sections available';
+
+                    sectionSelect.appendChild(div);
+                }
+            })
+            .catch(error => console.log(error));
+    });
+
+    function selectOption(value, displayText) {
+        document.getElementById('recipient_option').value = value;
+        document.getElementById('selected_item').innerHTML = displayText;
+    }
+
+</script>
+
+<script>
+    function myFunction() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput");
+        if (input.value != "") {
+            document.getElementById("myUL").style.display = "block";
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }else{
+            document.getElementById("myUL").style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}

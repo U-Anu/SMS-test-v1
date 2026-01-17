@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Members</h4>
+        </div>
+    </div>
+<div class="col-md-12">
+    <div class="col-md-4">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;" >
+                 <img class="" src="https://www.school.infomainia.in/uploads/student_images/default_male.jpg" alt="User profile picture" style="height: 50px;width: 50px;">
+        <h3 class="profile-username text-center">{{member.student.first_name}}{% if member.student.last_name != None %} {{member.student.last_name}} {% endif %}{{member.staff.first_name}}{% if member.staff.last_name != None %} {{member.staff.last_name}} {% endif %}</h3>
+                 <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>Member Id</b> <a class="pull-right text-aqua">{{member.id}}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Library Card No</b> <a class="pull-right text-aqua">{{member.library_card_no}}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Admission No</b> <a class="pull-right text-aqua">{{member.student.admission_no}}</a>
+                    </li>
+        
+                    <li class="list-group-item">
+                        <b>Gender</b> <a class="pull-right text-aqua">{{member.student.gender}}{{member.staff.gender}}</a>
+                    </li>
+        
+                    <li class="list-group-item">
+                        <b>Member Type</b> <a class="pull-right text-aqua">{{member.member_type}}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Mobile Number</b> <a class="pull-right text-aqua">{{member.student.mobile_number}}{{member.staff.phone_no}}</a>
+                    </li>
+        
+                </ul>
+
+        </div>
+</div>
+    <div class="col-md-8">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;" >
+            <h5>Issue Book</h5>
+            <form method="post">
+                {% csrf_token %} 
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Books</label>
+                    <select name="book" id="book" class="form-control" required onchange="amt_validation()">
+                        <option value="">select...</option>
+                        {% for data in book %}
+                        <option value="{{data.id}}" >{{data.book_title}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="text-danger" class="ava_quantity" id="ava_quantity"></span>
+                    
+                </div>
+                <div class="form-group">
+                    <label>Return Date</label>
+                    <input id="dateto" name="return_date"  type="date" class="form-control date" required>
+                    <span class="text-danger"></span>
+                </div>
+                <center>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </center>
+            </form>
+            
+    </div>
+        <div class="card" style="padding: 10px;border-top: 5px solid black;" >
+            <div class="table-responsive">
+                <h5> Book Issued</h5>
+
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Book Number </th>
+                        <th>Issue Date</th>
+                        <th>Due Return Date</th>
+                        <th>Return Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in issue_records %}
+                    <tr>
+                        <td><input type="hidden" value="{{data.id}}" id="iss_id">{{data.book.book_title}}</td>  
+                        <td><input type="hidden" value="{{data.book.id}}" id="book_id">{{data.book.book_number}}</td>
+                        <td>{{data.issued_date}}</td>
+                        <td>{% if data.due_return_date != None %} {{data.due_return_date}} {% else %} &nbsp; {% endif %}</td>
+                        <td>{{data.return_date}}</td>
+                        <td>
+                            {% if data.status == 'Issued' %}
+                            <a data-toggle="modal" data-target=".edit" class="bozero"><span data-toggle="tooltip" title="Return"style="color: black;"
+                            id="dropdownMenuButton"><i class='fa fa-arrow-circle-o-left'></i></a>
+                           {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Return</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+  
+        <div class="modal-body">
+          <form method="post" action="{% url 'book_return' member.id %}"><br>
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-3 control-label">Return Date</label>
+              <div class="col-sm-9">
+                <input id="date" name="return_date" type="date" class="form-control date_fee" required/>
+                <input name="issue_id" id="model_iss_id" type="hidden" />
+                <input name="book_id" id="model_book_id" type="hidden" />
+              </div>
+            </div><br>
+            <br>
+            <br>
+            <center>
+              <button type="sumbit" class="btn btn-primary">Submit</button>
+            </center>
+          </form>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+    function amt_validation() {
+      var book_id = $('#book').val();
+      var url = "{% url 'book_qty_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'book_id': book_id
+        },
+        success: function (data) {
+          $('#ava_quantity').text('Available Quantity : '+data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    }
+  </script>
+
+
+  
+<script>
+    $(document).ready(function () {
+  
+      $(document).on('click', '#dropdownMenuButton', function () {
+        var dumy = this;
+        var iss_id = $(dumy).closest('tr').find('#iss_id').val();
+        var book_id = $(dumy).closest('tr').find('#book_id').val();
+        $('#model_iss_id').val(iss_id);
+        $('#model_book_id').val(book_id);
+      });
+
+    });
+  
+  </script>
+{% endblock %}

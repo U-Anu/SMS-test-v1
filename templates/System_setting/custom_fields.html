@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    #id_required{
+        margin-left: 50px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Custom Field</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if view %}
+                        <h4> View Custom Field </h4>
+                        {% elif edit %}
+                        <h4> Edit Custom Field </h4>
+                        {% else %}
+                        <h4>Add Custom Field</h4>
+                        {% endif %}
+
+                    </div>
+                    <hr>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_field_belongs_to">Field belongs to</label> <span class="text-danger">*</span>
+                                {{form.field_belongs_to}}
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_field_type">Field type</label><span class="text-danger">*</span>
+                                {{form.field_type}}
+                               
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_field_name">Field name</label><span class="text-danger">*</span>
+                                {{form.field_name}}
+                                
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_grid">Grid  (Bootstrap Column eg. 6) - Max is 12</label><span class="text-danger">*</span>
+                                
+                                <div class="input-group">
+                                    <span class="input-group-addon">col-md-</span>
+                                    <input type="number" name="grid" max="12" class="form-control" required id="id_grid" value="{% if obj.grid %}{{obj.grid}}{% else %}12{% endif %}">
+                                </div>
+                                
+                                
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_field_value">Field values (Separate By Comma)</label>
+                              
+                                <textarea name="field_value" cols="40" rows="10" class="form-control"
+                                    id="id_field_value">{{obj.field_value}}</textarea>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_required">Validation</label><br>
+                                <div class="form-check">
+                                    
+                                    <label class="form-check-label" for="id_required">
+                                        
+                                        Required{{form.required}} 
+                                    </label>
+                                  </div>
+                            </div>
+
+                        </div><br>
+
+                        <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Custom Field List</h4>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <div id="accordion">
+                            <div class="card" style="padding: 3px;">
+                              <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Student</a>
+                          
+                                </h5>
+                              </div>
+                          
+                              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                  <table class="table">
+                                    {% for data in records %}
+                                    {% if data.field_belongs_to == 'Student' %}
+                                    <tr>
+                                        <td>{{data.field_name}}</td>
+                                        <td></td>
+                                        <td style="float: right;">
+                                            <a href="{% url 'custom_fields_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                            <a href="{% url 'custom_fields_delete' data.id %}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a></td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="card" style="padding: 3px;">
+                              <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <a href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Staff</a>
+                                  
+                                </h5>
+                              </div>
+                              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    <table class="table">
+                                        {% for data in records %}
+                                        {% if data.field_belongs_to == 'Staff' %}
+                                        <tr>
+                                            <td>{{data.field_name}}</td>
+                                            <td></td>
+                                            <td style="float: right;">
+                                                <a href="{% url 'custom_fields_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                                <a href="{% url 'custom_fields_delete' data.id %}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a></td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                      </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

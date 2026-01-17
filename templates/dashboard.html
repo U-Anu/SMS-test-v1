@@ -1,0 +1,433 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head_block %}
+<!--<link rel="stylesheet" href="{% static 'assets/event_calender/css/mobiscroll.javascript.min.css' %}">-->
+<!--    <script src="{% static 'assets/event_calender/js/mobiscroll.javascript.min.js' %}"></script>-->
+<style>
+    interaction: {
+   mode: 'nearest',
+}
+</style>
+<style type="text/css">
+    .md-recurring-event-editor-popup .md-recurrence-input .mbsc-textfield {
+        width: 140px;
+        height: 32px;
+    }
+
+    .md-recurring-event-editor-popup .md-recurrence-input-nr .mbsc-textfield {
+        width: 90px;
+    }
+
+    .md-recurring-event-editor-popup .md-recurrence-input .mbsc-select-icon {
+        top: 50%;
+        height: 1.5em;
+        margin-top: -0.75em;
+    }
+
+    .md-recurrence-options {
+        padding: 0 1em;
+        margin: 1em 0;
+    }
+
+    .md-recurrence-ends {
+        padding: 0 1em;
+        margin: 1.25em 0 -1.25em 0;
+    }
+
+    .md-recurrence-desc {
+        font-size: 12px;
+        font-weight: normal;
+        color: #555;
+        margin: 1em 0;
+    }
+
+    .md-hide-elm {
+        display: none;
+    }
+</style>
+<style>
+    legend: {
+
+        display: true,
+        position: 'bottom',
+        labels: {
+            color: 'darkred',
+        }
+    }
+</style>
+<style>
+    /* Apply relative positioning to the hyperlink */
+    .link-with-zoom {
+        position: relative;
+        color: #000;
+        /* Set the text color (change it to your desired color) */
+        /* Set the initial state of the link (normal size) */
+        transition: transform 0.4s ease;
+        /* Apply the transition effect to the transform property */
+    }
+
+    /* Add the hover style to apply the zoom effect */
+    .link-with-zoom:hover {
+        transform: scale(1.1);
+        /* Scale the link to 110% on hover (you can adjust the value to control the zoom amount) */
+    }
+</style>
+
+{% endblock %}
+
+{% block body_block %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Dashboard</h4>
+        </div>
+    </div>
+    <!-- 4-blocks row start -->
+    <div class="row dashboard-header">
+        <div class="col-lg-3 col-md-6">
+
+                <div class="card dashboard-product link-with-zoom">
+                    <a href="{% url 'complain' %}" style="text-decoration: none;">
+                    <h6>Complains</h6>
+                    <h2 class="dashboard-total-products">{{total_complaints}}</h2>
+                    <span class="label label-warning">Pending</span>To attend to
+                </a>
+                    <div class="side-box">
+                        <i class="ti-signal text-warning-color"></i>
+                    </div>
+                </div>
+
+        </div>
+        <div class="col-lg-3 col-md-6">
+
+                <div class="card dashboard-product link-with-zoom">
+                    <a href="{% url 'alumni_events' %}" style="text-decoration: none;">
+                    <h6> Events</h6>
+                    <h2 class="dashboard-total-products">{{upcoming_events_count}}</h2>
+                    <span class="label label-primary">View Event</span>Upcoming
+                   </a>
+                    <div class="side-box ">
+                        <i class="ti-gift text-primary-color"></i>
+                    </div>
+                </div>
+
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-product link-with-zoom">
+                <a href="{% url 'collect_fees' %}" >
+                <h6>Fee Collection</h6>
+                <h2 class="dashboard-total-products"><span>{{total_paid_amount}}</span></h2>
+                <h6 class="label label-danger">Collected</h6>pending
+            </a>
+            <div class="side-box">
+                <i class="fas fa-money-bill text-danger-color"></i> KSh
+            </div>
+            </div>
+
+        </div>
+        <div class="col-lg-3 col-md-6">
+
+            <div class="card dashboard-product link-with-zoom">
+                <a href="{% url 'expense_head' %}" >
+                <h6>Expenses</h6>
+                <h2 class="dashboard-total-products"><span>{{students_expenaces}}</span></h2>
+                <h6 class="label label-danger">Spended</h6>expenses
+            </a>
+            <div class="side-box">
+                <i class="fas fa-money-bill text-danger-color"></i> KSh
+            </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 4-blocks row end -->
+    <div class="row">
+         <div class="col-lg-3 col-md-6">
+            <div class="card dashboard-product link-with-zoom">
+                <a href="{% url 'student_details' %}" >
+                <h6>STUDENT</h6>
+                <h2 class="dashboard-total-products"><span>{{current_students}}</span></h2>
+                <h6 class="label label-danger">TOTAL</h6>student
+                </a>
+                <div class="side-box">
+                    <i class="ti-user text-danger-color"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="card dashboard-product link-with-zoom">
+                <a href="{% url 'collect_fees' %}" >
+                <h6> MONTHLY FEES COLLECTION</h6>
+                <h2 class="dashboard-total-products"><span>{{students_fees}}</span></h2>
+                <h6 class="label label-info">TOTAL</h6>FEES COLLECTION
+                </a>
+                <div class="side-box">
+                    <i class="ti-wallet text-danger-color"></i>
+                </div>
+            </div>
+        </div>
+       
+        <div class="col-md-4 col-lg-4">
+            <div class="card dashboard-product link-with-zoom">
+                <h5>Fees Overview</h5>
+                <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <strong>UNPAID </strong>
+                    </div>
+                    <div class="col-sm-4" style="float: right;">
+                         <strong>{{fees_unpaid}}</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <strong>PARTIAL </strong>
+                    </div>
+                    <div class="col-sm-4" style="float: right;">
+                         <strong>{{fees_pertial}}</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <strong>PAID </strong>
+                    </div>
+                    <div class="col-sm-4" style="float: right;">
+                         <strong>{{fees_paid}}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-12 float-right">
+
+            <div class="card dashboard-product link-with-zoom">
+                <a href="{% url 'collect_fees' %}" >
+                <h6>Outstanding Total</h6>
+                <h2 class="dashboard-total-products"><span>{{ pending_total_value }}</span></h2>
+                <h6 class="label label-danger"></h6>pending
+            </a>
+            <div class="side-box">
+                <i class="fas fa-money-bill text-danger-color"></i> KSh
+            </div>
+            </div>
+    
+        </div>
+        <div class="col-md-4 col-lg-4">
+            <div class="card dashboard-product link-with-zoom">
+
+                <h5>Library Overview</h5>
+                <br>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <strong>TOTAL BOOK  </strong>
+                    </div>
+                    <div class="col-sm-4" style="float: right;">
+                     <strong>{{library_book}}</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <strong>RETURNED </strong>
+                    </div>
+                    <div class="col-sm-4" style="float: right;">
+                         <strong>{{library_return}}</strong></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <strong>ISSUED BOOK </strong>
+                    </div>
+                    <div class="col-sm-4" style="float: right;">
+                        <strong>{{library_complete}}</strong></div>
+                </div>
+             </div>
+        </div>
+    </div>
+
+</div>
+   <!-- <div class="col-md-6">
+        <div class="card link-with-zoom">
+           <h5>Student Admission</h5>
+           <canvas id="chartId" aria-label="chart" height="350" width="580"></canvas>
+
+        </div>
+    </div> -->
+    <div class="col-md-6 mb-3">
+        <div class="card link-with-zoom">
+            <h5>Student Admission</h5>
+            <div style="overflow: scroll;">
+                <canvas id="chartId" aria-label="chart" height="350" width="580" ></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card link-with-zoom">
+            <h5>Student Admission YEAR</h5>
+            <div style="overflow: scroll;">
+            <canvas id="toolTip" aria-label="chart" height="350" width="550"></canvas>
+        </div>
+        </div>
+    </div>
+    <!-- 1-3-block row start -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card link-with-zoom">
+                <div class="user-block-2">
+                    <!-- <img class="img-fluid" src="assets/images/widget/user-1.png" alt="user-header"> -->
+                    <h5>{{general_setting.school_name}}</h5>
+
+                </div>
+                <div class="card-block">
+                    <div class="user-block-2-activities">
+                        <div class="user-block-2-active">
+                            <i class="icofont icofont-clock-time"></i> Total Staff
+                            <label class="label label-primary">{{total_teacher}}</label>
+                        </div>
+                    </div>
+                    <div class="user-block-2-activities">
+                        <div class="user-block-2-active">
+                            <i class="icofont icofont-users"></i> Students
+                            <label class="label label-primary">{{ current_students }}</label>
+                        </div>
+                    </div>
+
+                    <div class="user-block-2-activities">
+                        <div class="user-block-2-active">
+                            <i class="icofont icofont-ui-user"></i> Staff Present Today
+                            <label class="label label-primary">{{staff_present_today}}/{{total_teacher}}</label>
+                        </div>
+
+                    </div>
+                    <div class="user-block-2-activities">
+                        <div class="user-block-2-active">
+                            <i class="icofont icofont-picture"></i>Students Present Today
+                            <label class="label label-primary">{{student_present_today}}/{{total_students}}</label>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'student_details' %}"> <button type="button"
+                                class="btn btn-warning  waves-effect waves-light text-uppercase m-r-30">
+                                Students
+                            </button>
+                            <a href="{% url 'staff_directory' %}"> <button type="button"
+                                    class="btn btn-primary  waves-effect waves-light text-uppercase">
+                                    Staff
+                                </button></a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-5">
+            {% for role, count in role_counts %}
+            <div class=" col-lg-12 grid-item">
+                <div class="card link-with-zoom">
+                    <div class="card-block horizontal-card-img d-flex">
+                        <img class="media-object img-circle" src="{% static 'assets/images/avatar-1.png' %}"
+                            alt="Generic placeholder image">
+                        <div class="d-inlineblock  p-l-20">
+                            <h5>{{ role.name }}</h5>
+                            <h6>Count: {{ count }}</h6>
+                        </div>
+                        <h6 class="txt-warning rotate-txt">{{ role.name }}</h6>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+    <!-- 1-3-block row end -->
+
+    <!-- 2-1 block start -->
+    <div class="row">
+
+
+        <!-- /////////////////////////////////////////////////// -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+        <script>
+           var chrt = document.getElementById("chartId").getContext("2d");
+           var chartId = new Chart(chrt, {
+              type: 'bar',
+              data: {
+                 labels: ["Jun", "Fab", "Mar", "Apr", "MAY", "June", "July", "Aug", "Sep", "oct", "Nov", "Dec"],
+                 datasets: [{
+                 label: "Student Admission",
+                 data: [{{month_jun}}, {{month_Fab}}, {{month_Mar}},{{month_Apr}}, {{month_MAY}}, {{month_June}},{{month_July}},{{month_Aug}},{{month_Sep}},{{month_oct}},{{month_Nov}},{{month_Dec}},],
+                 backgroundColor: ['yellow', 'aqua', 'pink', 'lightgreen', 'lightblue', 'gold','aqua', 'pink', 'lightgreen',],
+                 borderColor: ['red', 'blue', 'fuchsia', 'green', 'navy', 'black','blue', 'fuchsia', 'green',],
+                 borderWidth: 2,
+                 }],
+              },
+              options: {
+                 responsive: false,
+                 layout: {
+                    padding: {
+                       left: 30,
+                       right: 30,
+                    }
+                 },
+                 plugins: {
+                    legend: {
+                       labels: {
+                          font: {
+                             size: 11,
+                             family: 'Helvetica',
+                             style: 'bold',
+                          }
+                       }
+                    }
+                 }
+              },
+           });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+        <script>
+            var five_years = {{ five_years|safe }};  // Ensure five_years is a valid JS array
+        
+            var chartTooltip = document.getElementById("toolTip").getContext("2d");
+            var toolTip = new Chart(chartTooltip, {
+                type: "line",
+                data: {
+                    labels: five_years,  // Use the corrected variable
+                    datasets: [{
+                        label: "Student Admission Year",
+                        data: [{{ year_5 }}, {{ year_4 }}, {{ year_3 }}, {{ year_2 }}, {{ year_1 }}],
+                        backgroundColor: ['coral', 'aqua', 'pink', 'lightgreen', 'lightblue', 'crimson'],
+                        borderColor: ["black"],
+                        borderWidth: 1,
+                        pointRadius: 5,
+                    }],
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            align: 'center',
+                            labels: {
+                                color: 'darkred',
+                                font: {
+                                    weight: 'bold'
+                                },
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+        <!-- //////////////////////////////////////////////////// -->
+
+        {% endblock %}

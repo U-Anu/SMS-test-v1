@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    {% load static %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="main-header">
+                <h4>Department Details</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Form to add new school details -->
+                <div class="card" style="padding: 10px; border-top: 5px solid black;">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                          {% for data in form %}
+                                <div class="col-md-12 mb-3">
+                                    <label for="{{ data.id_for_label }}">{{ data.label }}</label>
+                                    {{ data }}
+                                </div>
+                            {% endfor %}
+                     
+
+                        <button type="submit" class="btn btn-primary">Add Department</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <!-- Table to display existing school details -->
+                <div class="card" style="padding: 10px; border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Department List</h4>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display">
+                            <thead>
+                                <tr>
+                             
+                                    <th>Department Name</th>
+                                    <th>Head Teacher</th>
+                                    <th>Admin in Charge</th>
+                                    <th>HR in Charge</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Loop through schools to display -->
+                                {% for department in departments %}
+                                    <tr>
+                                      
+                                        <td>{{ department.name }}</td>
+                                        <td>{{ school.head_teacher.first_name }} {{ school.head_teacher.last_name }}</td>
+                                        <td>{{ school.admin_in_charge.first_name }} {{ school.admin_in_charge.last_name }}</td>
+                                        <td>{{ school.hr_in_charge.first_name }} {{ school.hr_in_charge.last_name }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script_block %}
+    <!-- Add your scripts here if needed -->
+{% endblock %}

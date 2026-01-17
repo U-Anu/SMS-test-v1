@@ -1,0 +1,22 @@
+def student_meeting_view(request,pk):
+    
+        current_date = datetime.now()
+        print('current_month',current_date)
+        records=Studentmeetingnote.objects.all()
+        form=StudentmeetingnoteForm ()
+        record=OnlineClass.objects.get(id=pk)
+        meeting_url= request.POST.get('meeting_url')
+        print('meeting_url',meeting_url)
+        print('request.student.id',request.student.id)
+
+        if request.method=='POST':
+            OnlineClassAttendance.objects.get_or_create(
+                student_id=request.student.id,
+                online_id=meeting_url,
+                attendance_status='present',
+                attendance_date=current_date,            
+            )
+        context={
+            'form':form,'records':records,'staff_meeting':'active','record':record,
+                }
+        return render(request,'Student_part/student_meeting_view.html',context)

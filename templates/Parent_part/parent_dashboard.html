@@ -1,0 +1,572 @@
+{% extends 'parent_base.html' %}
+{% block head_block %}
+<style>
+    .profile-user-img {
+        margin: 5px auto;
+        width: 100px;
+        padding: 3px;
+        border: 3px solid #d2d6de
+    }
+
+    .timeline {
+        position: relative;
+        margin: 0 0 30px 0;
+        padding: 0;
+        list-style: none
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #ddd;
+        left: 31px;
+        margin: 0;
+        border-radius: 2px;
+    }
+
+    .timeline>li {
+        position: relative;
+        /*margin-right:10px;*/
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+
+    .timeline>li:before,
+    .timeline>li:after {
+        content: " ";
+        display: table
+    }
+
+    .timeline>li:after {
+        clear: both
+    }
+
+    .timeline>li>.timeline-item {
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        margin-top: 0;
+        background: #fff;
+        color: #444;
+        margin-left: 60px;
+        /*margin-right:15px;*/
+        padding: 0;
+        position: relative
+    }
+
+    .timeline>li>.timeline-item>.time {
+        color: #999;
+        float: right;
+        padding: 10px;
+        font-size: 12px
+    }
+
+    .timeline>li>.timeline-item>.timeline-header {
+        margin: 0;
+        color: #555;
+        border-bottom: 1px solid #f4f4f4;
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.1
+    }
+
+    .timeline>li>.timeline-item>.timeline-header>a {
+        /* font-weight:600 */
+        font-family: 'Roboto-Bold';
+    }
+
+    .timeline>li>.timeline-item>.timeline-body,
+    .timeline>li>.timeline-item>.timeline-footer {
+        padding: 10px
+    }
+
+    .timeline>li>.fa,
+    .timeline>li>.glyphicon,
+    .timeline>li>.ion {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+        line-height: 30px;
+        position: absolute;
+        color: #666;
+        background: #d2d6de;
+        border-radius: 50%;
+        text-align: center;
+        left: 18px;
+        top: 0;
+    }
+
+    .timeline>.time-label>span {
+        /* font-family:'Roboto-Bold'; */
+        padding: 5px;
+        display: inline-block;
+        background-color: #fff;
+        border-radius: 4px;
+        font-family: 'Roboto-Bold';
+        font-size: 10px;
+    }
+
+    .timeline-inverse>li>.timeline-item {
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+    .timeline-inverse>li>.timeline-item>.timeline-header {
+        border-bottom-color: #ddd
+    }
+</style>
+{% endblock %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+
+
+    <div class="col-md-12">
+      
+        <div class="col-md-3" style="padding-left:0px; padding-right:0px;" >
+            <br><br>
+            <div class="card " style="padding: 10px;border-top: 5px solid black; {% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+
+                <div class="box box-primary">
+                    <div class="box-body box-profile" >
+                        <center>
+                            <img class="profile-user-img img-responsive img-circle"
+                                src="https://www.school.infomainia.in/uploads/student_images/default_male.jpg"
+                                alt="User profile picture">
+                        </center>
+                        <h3 class="profile-username text-center">{{student.first_name}} {{student.last_name}}</h3>
+
+                        <ul class="list-group list-group-unbordered" style="{% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+
+
+                            <li class="list-group-item listnoback" style="{% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Admission No</b> <a class="pull-right text-aqua">{{student.admission_no}}</a>
+                            </li>
+
+                            <li class="list-group-item listnoback" style="{% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Roll Number</b> <a class="pull-right text-aqua">{{student.roll_number}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Class</b> <a class="pull-right text-aqua">{{student.Class}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Section</b> <a class="pull-right text-aqua">{{student.section}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>RTE</b> <a class="pull-right text-aqua">{{student.rte}}</a>
+                            </li>
+                            <li class="list-group-item listnoback" style="{% if  student.status == 'Disable' %}  background-color:#e3d3b4; {% endif %}">
+                                <b>Gender</b> <a class="pull-right text-aqua">{{student.gender}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-9">
+            <br><br>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link " id="home-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="home"
+                        aria-selected="true">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#fees" role="tab"
+                        aria-controls="profile" aria-selected="false">Fees</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#exam" role="tab"
+                        aria-controls="profile" aria-selected="false">Exam</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#document" role="tab"
+                        aria-controls="contact" aria-selected="false">Document</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#timeline" role="tab"
+                        aria-controls="contact" aria-selected="false">Timeline</a>
+                </li>
+               
+            </ul>
+         <form action="{% url 'disable_enable' %}" method="post" id="enable_form">
+            {% csrf_token %}
+            <input type="hidden" name="student_id" value="{{student.id}}">
+         </form>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="card " >
+                        <div class="card-body">
+                            <div class="table-responsive around10 pt0">
+                                
+                                <table class="table table-hover  tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td >Admission Date</td>
+                                            <td >
+                                                {{student.admission_date}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date of Birth</td>
+                                            <td>{{student.date_of_birth}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Category</td>
+                                            <td>{{student.category}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mobile Number</td>
+                                            <td> {{student.mobile_number}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Caste</td>
+                                            <td> {{student.Caste}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Religion</td>
+                                            <td> {{student.religion}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td> {{student.email}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>nil</td>
+                                            <td>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tshadow mb25 bozero">
+                            <div class="card-header">
+                                <h3 class="pagetitleh2">Address</h3>
+
+                            </div>
+                            <div class="table-responsive around10 pt0">
+                                <table class="table table-hover  tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-md-4">Current Address</td>
+                                            <td class="col-md-5">{{student.current_address}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Permanent Address</td>
+                                            <td>{{student.permanent_address}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tshadow mb25 bozero">
+                            <div class="card-header">
+
+                                <h3 class="pagetitleh2">Parent / Guardian Details </h3>
+                            </div>
+                            <div class="table-responsive around10 pt10">
+                                <table class="table table-hover tmb0">
+                                    <tr>
+                                        <td>Father Name</td>
+                                        <td >{{student.Father_name}}</td>
+                                        <td rowspan="3"><img class="" src=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Father Phone</td>
+                                        <td>{{student.Father_phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Father Occupation</td>
+                                        <td>{{student.Father_occupation}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mother Name</td>
+                                        <td>{{student.mother_name}}</td>
+                                        <td rowspan="3"><img class="profile-user-img img-responsive img-circle" src="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mother Phone</td>
+                                        <td>{{student.mother_phone}}</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Mother Occupation</td>
+                                        <td>{{student.mother_occupation}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Guardian Name</td>
+                                        <td>{{student.permanent_address}}</td>
+                                        <td rowspan="3"><img class="profile-user-img img-responsive img-circle" src="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Guardian Email</td>
+                                        <td>{{student.permanent_address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Guardian Relation</td>
+                                        <td>{{student.permanent_address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Guardian Phone</td>
+                                        <td>{{student.permanent_address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Guardian Occupation</td>
+                                        <td>{{student.permanent_address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Guardian Address</td>
+                                        <td>{{student.permanent_address}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="tshadow mb25  bozero">
+                            <div class="card-header">
+
+                                <h3 class="pagetitleh2">Miscellaneous Details</h3>
+                            </div>
+                            <div class="table-responsive around10 pt0">
+                                <table class="table table-hover tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <td >Blood Group</td>
+                                            <td >{{student.Blood_group}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Student House</td>
+                                            <td >{{student.student_house}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Height</td>
+                                            <td >{{student.height}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Weight</td>
+                                            <td >{{student.weight}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >As on Date</td>
+                                            <td >{{student.as_on_date}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Previous School Details</td>
+                                            <td >{{student.previous_school_detail}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td >National Identification Number</td>
+                                            <td >{{student.national_identification_number}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Local Identification Number</td>
+                                            <td>{{student.local_identification_number}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bank Account Number</td>
+                                            <td>{{student.bank_account_number}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bank Name</td>
+                                            <td>{{student.bank_name}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>IFSC Code</td>
+                                            <td>{{student.ifsc_code}}</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2nd tab -->
+                <div class="tab-pane fade" id="fees" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="card"><br>
+                        <div class="alert alert-danger">
+                            No Record Found
+                        </div>
+                    </div>
+                </div>
+                 <!-- 3rd tab -->
+                 <div class="tab-pane fade" id="exam" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="card"><br>
+                        <div class="alert alert-danger">
+                            No Record Found
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="contact-tab">
+                    <div class="card">
+                        <div class="timeline-header no-border">
+                            <button type="button" data-student-session-id="4"
+                                class="btn btn-xs btn-primary pull-right myTransportFeeBtn"> <i
+                                    class="fa fa-upload"></i> Upload Documents</button>
+
+                            <!-- <h2 class="page-header"> </h2> -->
+                            <div class="table-responsive" style="clear: both;">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Title </th>
+                                            <th>
+                                                Name </th>
+                                            <th class="mailbox-date text-right">
+                                                Action </th>
+                                        </tr>
+                                    </thead>
+                                    <div class="row">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="5" class="text-danger text-center">No Record Found</td>
+                                            </tr>
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="timeline" role="tabpanel" aria-labelledby="contact-tab">
+
+                    <div class="card" style="padding: 10px;"><br>
+                        <br>
+
+                        <div class="container-fluid">
+
+                            <div class="timeline-header no-border">
+                                <div id="timeline_list">
+                                    {% for data in records %}
+                                    <ul class="timeline timeline-inverse">
+                                        <li class="time-label">
+                                            <span class="bg-blue">{{data.date}}</span>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-list-alt bg-blue"></i>
+                                            <div class="timeline-item">
+                                                <div class="timeline-body">
+                                                    {{data.title}}
+                                                   </span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <i class="fa fa-clock-o bg-gray"></i>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Timeline</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post">
+                                        <div class="modal-body">
+
+                                            {% csrf_token %}
+                                            {{form}}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Disable Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'disable_enable' %}">
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <input type="hidden" name="student_id" value="{{student.id}}">
+                    <label for="">Reason</label>
+                    <select name="reason" id="reason" class="form-control">
+                        <option value="">select...</option>
+                        {% for data in reason %}
+                        <option value="{{data.id}}">{{data.name}}</option>
+                        {% endfor  %}
+                    </select>
+                    <label for="">Date</label>
+                    <input type="date" class="form-control" name="disable_date">
+                    <label for="">Note</label>
+                    <textarea name="disable_note" id="" cols="30" rows="3" class="form-control"></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

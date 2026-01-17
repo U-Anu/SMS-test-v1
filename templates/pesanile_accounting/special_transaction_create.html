@@ -1,0 +1,112 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+
+<style>
+    /* Your styles here */
+</style>
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>{{ screen_name }}</h2>
+                <div>
+                    <button type="submit" form="myForm" class="btn btn-primary">Save</button>
+                    <a href="{{ list_url }}" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            <div class="card card-body">
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    <div>
+                        <p style="color:red;">{{ message }}</p>
+                    </div><hr>
+                    {% csrf_token %}
+                    {% for form_field in form %}
+                        <div class="form-group">
+                            {{ form_field.label_tag }}
+                            {{ form_field }}
+                            <!-- Display errors associated with the form field -->
+                            {% if form_field.errors %}
+                                <div class="text-danger">
+                                    {% for error in form_field.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% if record_details %}
+                        {% for key, value in record_details.items %}
+                            <div class="form-group">
+                                <label>{{ key }}</label>
+                                <input name="{{ key }}" value="{{ value }}" class="form-control readonly-field" readonly>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function checkTransactionType() {
+        var transactionType = document.getElementById("id_transaction_type").value;
+
+        fetch(`/check-transaction-type/?transaction_type_id=` + transactionType)
+            .then(response => response.json())
+            .then(data => {
+                var isSpecial = data.is_special;
+
+                if (isSpecial == 'PreDefineAccount' ) {
+                    // Redirect to another screen if the transaction type is special
+                    window.location.href = `/special-transaction-create/${transactionType}/`;
+                }
+                else if (isSpecial == 'PaymentAndReceipt' ) {
+                    // Redirect to another screen if the transaction type is special
+                    window.location.href = `/rec-and-pay-transaction/${transactionType}/`;
+                }
+                 else {
+                    // Redirect to another screen if the transaction type is not special
+                    window.location.href = `/transaction-create/`;
+                }
+            });
+    }
+
+    function populateAccount(currencyFieldId, accountFieldId, transactionTypeFieldId, currencySource) {
+        var currencyId = document.getElementById(currencyFieldId).value;
+        var transactionTypeId = document.getElementById(transactionTypeFieldId).value;
+        var accountField = document.getElementById(accountFieldId);
+
+        if (currencyId && transactionTypeId) {
+            fetch(`/get-accounts-by-currency-and-transaction/${currencyId}/${transactionTypeId}/?currency_source=` + currencySource)
+                .then(response => response.json())
+                .then(data => {
+                    accountField.innerHTML = ''; // Clear current options
+
+                    if (data.accounts.length > 0) {
+                        data.accounts.forEach(function(account) {
+                            var option = document.createElement('option');
+                            option.value = account.id;
+                            option.text = account.name;
+                            accountField.appendChild(option);
+                        });
+                    } else {
+                        accountField.innerHTML = '<option value="">No accounts available</option>'; // Show a message if no accounts are found
+                    }
+                });
+        }
+    }
+
+    // Event listeners for when currencies change
+    document.getElementById('id_from_currency_id').addEventListener('change', function() {
+        populateAccount('id_from_currency_id', 'id_from_account_id', 'id_transaction_type', 'from');
+    });
+
+    document.getElementById('id_to_currency_id').addEventListener('change', function() {
+        populateAccount('id_to_currency_id', 'id_to_account_id', 'id_transaction_type', 'to');
+    });
+</script>
+
+{% endblock %}

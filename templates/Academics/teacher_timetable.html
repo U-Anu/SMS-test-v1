@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    .col-md-12{
+        background-color: whitesmoke; 
+        font-size: small;
+    }
+    tr{
+        padding: 20px;
+    }
+    
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Teacher Time Table</h4>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Teacher</label>
+                        <select class="form-control" name="teacher" id="id_Class" required>
+                            <option value="">---Select---</option>
+                            {% for data in teacher_records %}
+                            <option value="{{ data.id }}"{% if data.id == teacher %} selected {% endif %}>{{data.first_name}}{% if data.last_name %} {{data.last_name}}{% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <button type="submit" class="btn btn-primary" style="margin-top:30%;" name="search"
+                    value="search">Search</button><br><br>
+                    </div>
+
+                </div><br>
+                
+            </form>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table" style="text-align: center;">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                            <th>Saturday</th>
+                            <th>Sunday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td >
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Monday' %}
+                                    <div class="row" >
+                                    <div class="col-md-12">
+                                        Class : {{data.Class}}<br>
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                    {% endfor %}
+                                
+                            </td>
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Tuesday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Class : {{data.Class}}<br>
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Wednesday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Class : {{data.Class}}<br>
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Thursday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Class : {{data.Class}}<br>
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Friday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Class : {{data.Class}}<br>
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Saturday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Class : {{data.Class}}<br>
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Sunday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Class : {{data.Class}}<br>
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Buyer Registor</h4>
+        </div>  
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+          {% if 'visitor_book_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-5">
+                <div class="card" style="padding: 10px;">
+                    <div class="main-header">                                     
+                        
+                        <h4> Customer Registor</h4>
+                        
+                     </div><hr>
+                     <form method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
+                   <div class="row">
+                      {% for data in form %}
+                      <div class="col-md-12 mb-3">
+                        {{ data.label_tag }}
+                        {{ data }}
+                        {% if data.errors %}
+                            <div class="text-danger">
+                                {% for error in data.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                      {% endfor %}
+                      <div class="col-md-12 mb-3">
+                        <label for="payment_id" >Roles </label>
+                        <select class="form-control" id="id_Class" name="roles_id" required>
+                            <option value="">---Select---</option>
+                            {% for data in roles_list %}
+                            <option value="{{data.id}}">{{data.name}}</option>
+                            {% endfor %}
+                        </select>                
+                    </div>
+
+                  
+                    </div>
+                    <br>                     
+                    <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                  </form>
+                </div>
+            </div>
+            {% endif %}
+            <div class="col-md-7">
+              <div class="card" style="padding: 10px;">
+                  <div class="main-header">
+                      <h4>Customer  List</h4>
+                   </div><hr>
+                  <div class="table-responsive">
+                  <table id="tableID" class="display"  >
+                      <thead>
+                          <tr>
+                              
+                              <th>Customer Username</th>
+                              <th>Customer Passwod</th>
+                             
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for data in login_redentials %}
+                          <tr>
+                            
+                              <td>{{data.buyer_username}}</td>
+                              <td>{{data.buyer_passwod}}</td>
+                             
+                          </tr>
+                          {% endfor %}
+        
+                      </tbody>
+        
+                  </table>
+                  </div>
+               </div>
+          </div>
+        </div>
+       
+    </div>
+    
+    </div>
+
+   
+
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

@@ -1,0 +1,449 @@
+{% extends 'student_base.html' %}
+
+
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    @media only screen and (max-width: 750px) {
+        #title {
+          font-size: 24px!important;
+          margin-bottom: 0px!important;
+        }
+        #description {
+          font-size: 15px!important;
+          margin-bottom: 15px!important;
+        }
+        form {
+          width: 550px!important;
+        }
+        .width {
+          width: 500px!important;
+        }
+        input[type="checkbox"], input[type="radio"]
+        {
+          width: 12px!important;
+          margin-right: 6px!important;
+        } 
+      }
+      @media only screen and (max-width: 570px) {
+        #title {
+          font-size: 19px!important;
+          margin-bottom: 0px!important;
+        }
+        #description {
+          font-size: 12px!important;
+          margin-bottom: 15px!important;
+        }
+        form {
+          width: 430px!important;
+          padding-top: 10px!important;
+          padding-bottom: -5px!important;
+        }
+        .width {
+          width: 390px!important;
+        }
+        input[type="checkbox"], input[type="radio"]
+        {
+          width: 11px!important;
+          margin-right: 2px!important;
+          margin-left: 3px!important;
+        }
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(249, 249, 249, 0.8);
+        color: #f3f2f2;
+        font-family: Tahoma;
+      }
+      h1, p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      p {
+        margin-bottom: 30px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        width: 700px;
+        background-color: rgba(43, 61, 81, 0.7);
+        align-items: left;
+        padding-top: 25px;
+        border-radius: 10px;
+        padding-left: 20px;
+      }
+      .width {
+        width: 650px;
+      }
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        border: none;
+      }
+      legend {
+        font-size: 18px;
+        padding-top: 10px;
+      }
+      input, select, textarea {
+        display: block;
+        margin: 5px 0 20px 0;
+        min-height: 2em;
+        background-color: #0a0a23;
+        border: 1px solid #0a0a23;
+        color: #ffffff;
+      }
+      input, select {
+         height: 2.5em;
+      }
+      label {
+        display: block;
+      }
+      .inline {
+        display: inline;
+      }
+      input[type="radio"] {
+        width: 1em;
+        min-height: auto;
+        height: 1em;
+        transform: scale(1.25);
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 5px;
+      }
+      input[type="checkbox"] {
+        width: 1em;
+        min-height: auto;
+        height: 1em;
+        transform: scale(1.50);
+        margin-bottom: 15px;
+        margin-top: 15px;
+        margin-left: 10px;
+      }
+      #name-label, #email-label, #number-label {
+        font-size: 18px;
+        font-family: sans-serif;
+      }
+      textarea {
+        padding-bottom: 2em;
+        height: 7em;
+        font-size: 16px;
+      }
+      
+      hr {
+       border-color: white;
+      }
+</style>
+
+<style>
+  #counter {
+      color: red; /* Red text color for the counter */
+      font-size: 24px;
+  }
+</style>
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Mental Health Survey Form</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>       
+        <br>
+     
+       
+              <!-- Displaying Start Time and Duration -->
+<h6>Start Time: {{ Enrollment_record.start_time|date:"Y-m-d H:i:s" }} | Duration: {{ question_paper_record.duration }}</h6>
+
+<!-- Timer display -->
+<center><h6 style="color: red;" id="timer"> </h6></center>
+
+        <h1 style="color: black;"> Madel Qewwstion Paper</h1>     
+          
+          
+      </em><p> Please take your time to read and answer the following questions </em></p>
+        <form method="post">
+          {% csrf_token %} 
+            <hr class="width">
+            <!--radio question-->
+            {% for data in questions %}
+            <div style="margin-bottom: 20px;">
+               <center> <h5 style="text-transform:capitalize;"> </h5></center>  
+                        
+               
+                <h5 style="text-align: left;" name="questions">{{ forloop.counter }}. {{ data.text }}</h5>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  <ol type="A">
+                    {% for option in data.options %}
+                   
+                      <li>
+                        
+                        <div class="d-flex ">
+                          <input type="radio" name="answers_{{data.id}}" value="{{ option.option }}" >
+                          
+                          
+                        <label for="option_{{ option.id }}"  name="text_option_{{data.id}}" style="color: white;margin-top: 8px;">&nbsp;&nbsp;  {{ option.text }}</label>
+                        </div>
+                      </li>
+                     
+                    {% endfor %}
+                  </ol>
+              </div>
+            </div>
+            {%  if data.question_type == "paragraph"  %}
+            <fieldset class="width">
+             
+              <label>
+                  <textarea class="width" id="area" placeholder="Fill the answer..." row="3" cols="30" name="answers_{{data.id}}" ></textarea>
+              </label>
+          </fieldset>
+          {% endif %}
+          
+            {% endfor %}      
+        <center>
+            <button type="submit" style="
+            width: 200px;
+            height: 50px;
+            background: linear-gradient(to right, white 50%, rgb(255, 255, 255) 50%);
+    
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+          ">
+            Submit
+          </button>
+        </center>
+            <hr class="width">
+            <!--textarea question-->
+            
+        </form>
+
+<!-- Timer display -->
+<!-- <center><h6 style="color: red;" id="timer"></h6></center> -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      // Get the duration value from the template as a string "HH:MM:SS"
+      var countdownDuration = "{{ question_paper_record.duration }}"; // e.g., "03:00:00"
+  
+      // Get the start time from the template (ensure it's in 'Y-m-d H:i:s' format)
+      var startTimeStr = "{{ Enrollment_record.start_time|date:'Y-m-d H:i:s' }}"; // Ensure correct format
+  
+      // Check if we have stored data in sessionStorage
+      var examStarted = sessionStorage.getItem('examStarted');
+      if (!examStarted) {
+          // If not started, set the examStarted flag and start time
+          sessionStorage.setItem('examStarted', true);
+          sessionStorage.setItem('examStartTime', new Date().toISOString());
+      }
+  
+      // Function to parse start time and handle different formats
+      function parseStartTime(startTimeStr) {
+          // Try to parse directly
+          var startTime = new Date(startTimeStr);
+  
+          // If the direct parse fails, manually construct the date
+          if (isNaN(startTime.getTime())) {
+              var parts = startTimeStr.split(/[- :]/);
+              if (parts.length === 6) {
+                  startTime = new Date(
+                      parseInt(parts[0]),              // Year
+                      parseInt(parts[1], 10) - 1,      // Month (0-based)
+                      parseInt(parts[2]),              // Day
+                      parseInt(parts[3]),              // Hours
+                      parseInt(parts[4]),              // Minutes
+                      parseInt(parts[5])               // Seconds
+                  );
+              } else {
+                  startTime = new Date(); // Fallback to current date/time
+              }
+          }
+          return startTime;
+      }
+  
+      var startTime = parseStartTime(startTimeStr);
+  
+      // Check if the start time is valid
+      if (isNaN(startTime.getTime())) {
+          console.error("Invalid start time:", startTimeStr);
+          document.getElementById("timer").innerHTML = "Invalid time configuration!";
+          return;
+      }
+  
+      // Ensure the duration is in the "HH:MM:SS" format
+      if (!countdownDuration) {
+          console.error("Duration is not available or improperly formatted.");
+          document.getElementById("timer").innerHTML = "Invalid time configuration!";
+          return;
+      }
+  
+      // Split the duration string into hours, minutes, and seconds
+      var durationParts = countdownDuration.split(":");
+  
+      // Parse hours, minutes, and seconds into integers
+      var hours = parseInt(durationParts[0], 10);
+      var minutes = parseInt(durationParts[1], 10);
+      var seconds = parseInt(durationParts[2], 10);
+  
+      // Calculate the countdown time in milliseconds
+      var countdownTime = (hours * 60 * 60 + minutes * 60 + seconds) * 1000;
+  
+      // Get the current time (when the page is loaded)
+      var currentTime = new Date().getTime();
+  
+      // Get the stored exam start time
+      var examStartTimeStr = sessionStorage.getItem('examStartTime');
+      var examStartTime = new Date(examStartTimeStr).getTime();
+  
+      // Calculate the end time by adding the countdown duration to the start time
+      var endTime = new Date(examStartTime + countdownTime).getTime();
+  
+      // If time has already passed, show "Time's Up!" and stop the function
+      if (currentTime > endTime) {
+          document.getElementById("timer").innerHTML = "Time's Up!";
+          window.location.href = "/student/online_exam_complete"; // Redirect to another page if time's up
+          return;
+      }
+  
+      // Update the countdown every second
+      var countdownInterval = setInterval(function () {
+        // Get the current time
+        var now = new Date().getTime();
+    
+        // Calculate the time remaining
+        var remainingTime = endTime - now;
+    
+        // If the time is up, stop the countdown and submit the form
+        if (remainingTime <= 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("timer").innerHTML = "Time's Up!";
+            
+            // Submit the form via AJAX
+            var form = document.querySelector('form');
+            var formData = new FormData(form);
+    
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = "/student/online_exam_complete"; // Replace with your desired URL
+                } else {
+                    console.error('Form submission failed');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+    
+            return;
+        }
+    
+        // Time calculations for hours, minutes, and seconds
+        var remainingHours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var remainingMinutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        var remainingSeconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+    
+        // Display the time in the hh:mm:ss format
+        document.getElementById("timer").innerHTML = 
+            (remainingHours.toString().padStart(2, '0')) + ":" + 
+            (remainingMinutes.toString().padStart(2, '0')) + ":" + 
+            (remainingSeconds.toString().padStart(2, '0'));
+    
+    }, 1000);
+  
+      // Function to handle page unload
+      {% comment %} window.addEventListener('beforeunload', function (e) {
+          var confirmationMessage = 'You will lose your progress if you leave this page. Are you sure you want to continue?';
+          e.returnValue = confirmationMessage; // Standard for most browsers
+          return confirmationMessage; // For some older browsers
+      }); {% endcomment %}
+  
+      // Function to disable navigation elements
+      function disableNavigation() {
+        var links = document.querySelectorAll('a');
+        var buttons = document.querySelectorAll('button');
+        var submitButton = document.querySelector('button[type="submit"]');
+        
+        links.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+            });
+        });
+        
+        buttons.forEach(function(button) {
+            if (button !== submitButton) {
+                button.disabled = true;
+            }
+        });
+    }
+  
+      // Call this function at the start of the exam
+      disableNavigation();
+  
+      // Function to enable navigation elements
+      function enableNavigation() {
+        var links = document.querySelectorAll('a');
+        var buttons = document.querySelectorAll('button');
+        
+        links.forEach(function(link) {
+            link.removeEventListener('click', function(event) {
+                event.preventDefault();
+            });
+        });
+        
+        buttons.forEach(function(button) {
+            button.disabled = false;
+        });
+    }
+  
+      // Example: Call `enableNavigation()` when the exam is completed
+      function examComplete() {
+        enableNavigation();
+        // Redirect or show a completion message
+        window.location.href = "/online_exam_complete";
+    }
+  
+      // Call `examComplete()` function at the appropriate time
+      // e.g., after the countdown is over
+  
+      // Fullscreen API Function
+      function enterFullscreen() {
+          if (document.documentElement.requestFullscreen) {
+              document.documentElement.requestFullscreen();
+          } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+              document.documentElement.mozRequestFullScreen();
+          } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+              document.documentElement.webkitRequestFullscreen();
+          } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+              document.documentElement.msRequestFullscreen();
+          }
+      }
+  
+      // Enter fullscreen on page load
+      enterFullscreen();
+  
+      // Optional: Prevent context menu (right-click)
+      document.addEventListener('contextmenu', function(e) {
+          e.preventDefault();
+      });
+  });
+  </script>
+</body>
+</html>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock  %}

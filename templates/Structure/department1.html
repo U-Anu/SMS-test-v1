@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Class</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'class_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if edit %}
+                        <h4> Edit Class </h4>
+                        {% else %}
+                        <h4>Add Class</h4>
+                        {% endif %}
+
+                    </div>
+                    <hr>
+                    <form method="post">
+                        {% csrf_token %} 
+                        <div class="row">
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_Class">Name:</label>
+                                <input type="text" name="name" maxlength="255" class="form-control" required
+                                id="id_class" value="{{record.name}}">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="branchSelect">Branch:</label>
+                                <select id="branchSelect" name="branchSelect">
+                                    {% for branch in section_records %}
+                                    <option value="{{ branch.id }}">{{ branch.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="staffHeadField">Staff Head:</label>
+                                <select id="staffHeadField" name="staff_head" class="form-control">
+                                {% for staff in staff_records %}
+                                <option value="{{ staff.id }}">{{ staff.name }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="emailField">Email:</label>
+                                <input type="email" id="emailField" name="email" class="form-control">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="phoneField">Phone:</label>
+                                <input type="text" id="phoneField" name="phone" class="form-control">
+                            </div>
+                            
+                            </div><br>
+                        <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'class_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Class List</h4>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display">
+                            <thead>
+                                <tr>
+                                    <th>Class Section</th>
+                                    <th>Sections</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in records %}
+                                <tr>
+                                    <td>{{data.Class}}</td>
+                                    <td>
+                                        {% for section in data.section.all %}
+                                        {{ section.section_name }}
+                                        {% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% if 'class_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'Classes_edit' data.id %}" class="bozero"><span
+                                                data-toggle="tooltip" title="edit" style="color: black;"><i
+                                                    class='fa fa-edit'></i></a>
+                                        {% endif %}
+                                        {% if 'class_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'Classes_delete' data.id %}" class="bozero"><span
+                                                data-toggle="tooltip" title="Delete" style="color: black;"><i
+                                                    class='fa fa-remove'
+                                                    onclick="alert('You want to Delete this Item..?')"></i></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

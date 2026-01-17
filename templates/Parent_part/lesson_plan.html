@@ -1,0 +1,327 @@
+{% extends 'parent_base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    .col-md-12 {
+        background-color: whitesmoke;
+        font-size: small;
+    }
+
+    tr {
+        padding: 20px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Lesson Plan</h4>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Select Week</label>
+                        <input type="week" name="week_days" class="form-control" value="{{week}}">
+                    </div>
+
+
+                    <div class="col-md-4 mb-3"><br>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            {% for data in dates_in_week %}
+                            <th style="text-align: center;">
+                                {% if forloop.counter == 1 %}
+                                Monady<br> {{data.date}}
+                                {% elif forloop.counter == 2 %}
+                                Tuseday<br> {{data.date}}
+                                {% elif forloop.counter == 3 %}
+                                Wednesday<br> {{data.date}}
+                                {% elif forloop.counter == 4 %}
+                                Thursday<br> {{data.date}}
+                                {% elif forloop.counter == 5 %}
+                                Friday<br> {{data.date}}
+                                {% elif forloop.counter == 6 %}
+                                Saturday<br> {{data.date}}
+                                {% elif forloop.counter == 7 %}
+                                Sunday<br> {{data.date}}
+                                {% endif %}
+                            </th>
+                            {% endfor %}
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {% for data in Monday %}
+                                {% if data.0 == 'Edit' %}
+                                <div class="row">
+                                    <div id="icons">
+                                        <i class="fa fa-reorder" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Subject:{{data.1.time_table.subject}} <br>
+                                        ({{data.1.time_table.subject.subject_code}}) <br>
+                                        {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                        Room Number : {{data.1.time_table.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td>
+                                {% for data in Tuesday %}
+                                {% if data.0 == 'Edit' %}
+                                <div class="row">
+                                    <div id="icons">
+                                        <i class="fa fa-reorder" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Subject:{{data.1.time_table.subject}} <br>
+                                        ({{data.1.time_table.subject.subject_code}}) <br>
+                                        {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                        Room Number : {{data.1.time_table.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td>
+                                {% for data in Wednesday %}
+                                {% if data.0 == 'Edit' %}
+                                <div class="row">
+                                    <div id="icons">
+                                        <i class="fa fa-reorder" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Subject:{{data.1.time_table.subject}} <br>
+                                        ({{data.1.time_table.subject.subject_code}}) <br>
+                                        {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                        Room Number : {{data.1.time_table.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td>
+                                {% for data in Thursday %}
+                                {% if data.0 == 'Edit' %}
+                                <div class="row">
+                                    <div id="icons">
+                                        <i class="fa fa-reorder" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Subject:{{data.1.time_table.subject}} <br>
+                                        ({{data.1.time_table.subject.subject_code}}) <br>
+                                        {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                        Room Number : {{data.1.time_table.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td>
+                                {% for data in Friday %}
+                                {% if data.0 == 'Edit' %}
+                                <div class="row">
+                                    <div id="icons">
+                                        <i class="fa fa-reorder" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Subject:{{data.1.time_table.subject}} <br>
+                                        ({{data.1.time_table.subject.subject_code}}) <br>
+                                        {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                        Room Number : {{data.1.time_table.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td>
+                                {% for data in Saturday %}
+                                {% if data.0 == 'Edit' %}
+                                <div class="row">
+                                    <div id="icons">
+                                        <i class="fa fa-reorder" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Subject:{{data.1.time_table.subject}} <br>
+                                        ({{data.1.time_table.subject.subject_code}}) <br>
+                                        {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                        Room Number : {{data.1.time_table.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td>
+                                {% for data in Sunday %}
+                                {% if data.0 == 'Edit' %}
+                                <div class="row">
+                                    <div id="icons">
+                                        <i class="fa fa-reorder" data-toggle="modal"
+                                            data-target=".bd-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        Subject:{{data.1.time_table.subject}} <br>
+                                        ({{data.1.time_table.subject.subject_code}}) <br>
+                                        {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                        Room Number : {{data.1.time_table.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                {% endfor %}
+
+                            </td>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+
+
+  <!-- Modal -->
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Lesson Plan</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+                <tr>
+                    <th  style="width:200px;">Class</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_class"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Subject</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Subject"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Date</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Date"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Lesson</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Lesson"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Topic</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Topic"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Sub Topic</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Sub_Topic"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">General Objectives</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_General_Objectives"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Teaching Method</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Teaching_Method"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Previous Knowledge</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Previous_Knowledge"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:300px;">Comprehensive Questions</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Comprehensive_Questions"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Presentation</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Presentation"></span></td>
+                </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<script>
+    function view_plan(id){
+        var url = "{% url 'edit_manage_lesson_js' %}";
+        $.ajax({
+          url: url,
+          data: {
+            'pk': id
+          },
+          success: function (data) {
+            $('#view_class').text(data.class +'('+data.section+')');
+            $('#view_Subject').text(data.subject);
+            $('#view_Date').text(data.date);
+            $('#view_Lesson').text(data.lesson_name);
+            $('#view_Topic').text(data.topic_name);
+            $('#view_Sub_Topic').text(data.sub_topic);
+            $('#view_Teaching_Method').text(data.teaching_method);
+            $('#view_General_Objectives').text(data.general_objectives);
+            $('#view_Comprehensive_Questions').text(data.comprehensive_questions);
+            $('#view_Previous_Knowledge').text(data.pervious_knowledge);
+            $('#view_Presentation').text(data.presentation);
+         
+          },
+          error: function (data) {
+            console.log(data);
+          }
+        });
+    }
+</script>
+
+{% endblock %}

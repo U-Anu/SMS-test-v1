@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+
+       <div class="main-header">
+        <div class="col-md-4">
+          <h4>Finance</h4>
+          </div>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'Finances_report' %}" >Fees statement</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'balances_fees_report' %}" >Balances Fees Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'fees_collection_report' %}">Fees collection Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+                <a href=""> Online Fees Collection Report</a>
+              </div>           
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'income_report' %}">Income Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'expense_report' %}" class="text-primary"> Expense Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'Report_payroll_report' %}">Payroll Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'income_group_report' %}"> Income Group Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'expense_group_report' %}"> Expense Group Report</a>
+              </div> 
+          </div>
+          <hr>
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="from_date">From Date</label>
+                    <input type="date" class="form-control" name="from_date">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="to_date">To Date</label>
+                    <input type="date" class="form-control" name="to_date">
+                </div>
+             
+                <div class="col-md-12 mb-3"><br>
+                    <button type="submit" class="btn btn-primary" style="float: right;">🔍 Search</button>
+                </div>
+            </div>
+        </form>
+            </div>
+        </div>
+   
+   
+
+
+   {% if expenses %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+          <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Expense Id</th>
+                        <th>Date</th>
+                        <th>Expense Head</th>
+                        <th>Name</th>
+                        <th>Invoice Number</th>
+                        <th>Amount ($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.id }}</td>
+                        <td>{{ expense.date }}</td>
+                        <td>{{ expense.expense_head }}</td>
+                        <td>{{ expense.name }}</td>
+                        <td>{{ expense.invoice_number }}</td>
+                        <td>{{ expense.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <th colspan="5">Grand Total</th>
+                        <th>{{ grand_total|floatformat:"2" }}</th>
+                    </tr>
+                </tbody>
+            </table>
+            
+            
+            
+            
+            </div>
+         
+           
+    
+    </div>
+    {% else %}
+       <center> <h5>No Records Found </h5></center>
+    {% endif %}
+    </div>
+   
+</div>
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

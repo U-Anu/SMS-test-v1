@@ -1,0 +1,677 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    td {
+        text-align: center;
+    }
+
+    #icons {
+        text-align: left;
+        padding-left: 3px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Manage Lesson Plan</h4>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Teachers</label>
+                        <select class="form-control" name="teacher">
+                            <option value="">---Select---</option>
+                            {% for data in staff_records %}
+                            <option value="{{data.id}}" {% if teacher == data.id %}selected{% endif %}>{{data.first_name}}({{data.staff_id}})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Select Week</label>
+                        <input type="week" name="week_days" class="form-control" value="{{week}}">
+                    </div>
+
+
+                    <div class="col-md-4 mb-3"><br>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                <div class="table-responsive">
+                    <table class="table" style="font-size: smaller;">
+                        <thead>
+                            <tr>
+                                {% for data in dates_in_week %}
+                                <th style="text-align: center;">
+                                    {% if forloop.counter == 1 %}
+                                    Monady<br> {{data.date}}
+                                    {% elif forloop.counter == 2 %}
+                                    Tuseday<br> {{data.date}}
+                                    {% elif forloop.counter == 3 %}
+                                    Wednesday<br> {{data.date}}
+                                    {% elif forloop.counter == 4 %}
+                                    Thursday<br> {{data.date}}
+                                    {% elif forloop.counter == 5 %}
+                                    Friday<br> {{data.date}}
+                                    {% elif forloop.counter == 6 %}
+                                    Saturday<br> {{data.date}}
+                                    {% elif forloop.counter == 7 %}
+                                    Sunday<br> {{data.date}}
+                                    {% endif %}
+                                </th>
+                                {% endfor %}
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    {% for data in Monday %}
+                                    <div class="row">
+                                        {% if data.0 == 'Add' %}
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-plus" data-toggle="modal"
+                                                    data-target=".bd-example-modal-lg" onclick="pass_value_to_modal('{{data.1.id}}','{{data.1.time_from}}','{{data.1.time_to}}','{{dates_in_week.1.date}}')"></i>
+                                            </div>
+                                            Class : {{data.1.Class}}<br>
+                                            Subject:{{data.1.subject}} <br>
+                                            ({{data.1.subject.subject_code}}) <br>
+                                            {{data.1.time_from}} - {{data.1.time_to}}<br>
+                                            Room Number : {{data.1.room_no}}<br>
+
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-reorder"  data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i> 
+                                                <i class="fa fa-pencil " data-toggle="modal" data-target=".bd-example-modal-lg" onclick="edit_plan('{{data.1.id}}')"></i> 
+                                                <a href="{% url 'manage_lesson_delete' data.1.id %}"><i class="fa fa-remove " ></i></a>
+                                            </div>
+
+                                            Class : {{data.1.time_table.Class}}<br>
+                                            Subject:{{data.1.time_table.subject}} <br>
+                                            ({{data.1.time_table.subject.subject_code}}) <br>
+                                            {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                            Room Number : {{data.1.time_table.room_no}}
+                                        </div>
+                                        {% endif %}
+                                    </div><br>
+                                    {% endfor %}
+
+                                </td>
+
+                                <td>
+                                    {% for data in Tuesday %}
+                                    <div class="row">
+                                        {% if data.0 == 'Add' %}
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-plus" data-toggle="modal"
+                                                    data-target=".bd-example-modal-lg" onclick="pass_value_to_modal('{{data.1.id}}','{{data.1.time_from}}','{{data.1.time_to}}','{{dates_in_week.2.date}}')"></i>
+                                            </div>
+                                            Class : {{data.1.Class}}<br>
+                                            Subject:{{data.1.subject}} <br>
+                                            ({{data.1.subject.subject_code}}) <br>
+                                            {{data.1.time_from}} - {{data.1.time_to}}<br>
+                                            Room Number : {{data.1.room_no}}<br>
+
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-reorder"  data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i> 
+                                                <i class="fa fa-pencil " data-toggle="modal" data-target=".bd-example-modal-lg" onclick="edit_plan('{{data.1.id}}')"></i> 
+                                                <a href="{% url 'manage_lesson_delete' data.1.id %}"><i class="fa fa-remove " ></i></a>
+                                            </div>
+
+                                            Class : {{data.1.time_table.Class}}<br>
+                                            Subject:{{data.1.time_table.subject}} <br>
+                                            ({{data.1.time_table.subject.subject_code}}) <br>
+                                            {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                            Room Number : {{data.1.time_table.room_no}}
+                                        </div>
+                                        {% endif %}
+                                    </div><br>
+                                    {% endfor %}
+
+                                </td>
+                                <!-- Wednesday -->
+                                <td>
+                                    {% for data in Wednesday %}
+                                    <div class="row">
+                                        {% if data.0 == 'Add' %}
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-plus" data-toggle="modal"
+                                                    data-target=".bd-example-modal-lg" onclick="pass_value_to_modal('{{data.1.id}}','{{data.1.time_from}}','{{data.1.time_to}}','{{dates_in_week.3.date}}')"></i>
+                                            </div>
+                                            Class : {{data.1.Class}}<br>
+                                            Subject:{{data.1.subject}} <br>
+                                            ({{data.1.subject.subject_code}}) <br>
+                                            {{data.1.time_from}} - {{data.1.time_to}}<br>
+                                            Room Number : {{data.1.room_no}}<br>
+
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-reorder"  data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i> 
+                                                <i class="fa fa-pencil " data-toggle="modal" data-target=".bd-example-modal-lg" onclick="edit_plan('{{data.1.id}}')"></i> 
+                                                <a href="{% url 'manage_lesson_delete' data.1.id %}"><i class="fa fa-remove " ></i></a>
+                                            </div>
+
+                                            Class : {{data.1.time_table.Class}}<br>
+                                            Subject:{{data.1.time_table.subject}} <br>
+                                            ({{data.1.time_table.subject.subject_code}}) <br>
+                                            {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                            Room Number : {{data.1.time_table.room_no}}
+                                        </div>
+                                        {% endif %}
+                                    </div><br>
+                                    {% endfor %}
+
+                                </td>
+                                <!-- Thursday -->
+                                <td>
+                                    {% for data in Thursday %}
+                                    <div class="row">
+                                        {% if data.0 == 'Add' %}
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-plus" data-toggle="modal"
+                                                    data-target=".bd-example-modal-lg" onclick="pass_value_to_modal('{{data.1.id}}','{{data.1.time_from}}','{{data.1.time_to}}','{{dates_in_week.4.date}}')"></i>
+                                            </div>
+                                            Class : {{data.1.Class}}<br>
+                                            Subject:{{data.1.subject}} <br>
+                                            ({{data.1.subject.subject_code}}) <br>
+                                            {{data.1.time_from}} - {{data.1.time_to}}<br>
+                                            Room Number : {{data.1.room_no}}<br>
+
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-reorder"  data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i> 
+                                                <i class="fa fa-pencil " data-toggle="modal" data-target=".bd-example-modal-lg" onclick="edit_plan('{{data.1.id}}')"></i> 
+                                                <a href="{% url 'manage_lesson_delete' data.1.id %}"><i class="fa fa-remove " ></i></a>
+                                            </div>
+
+                                            Class : {{data.1.time_table.Class}}<br>
+                                            Subject:{{data.1.time_table.subject}} <br>
+                                            ({{data.1.time_table.subject.subject_code}}) <br>
+                                            {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                            Room Number : {{data.1.time_table.room_no}}
+                                        </div>
+                                        {% endif %}
+                                    </div><br>
+                                    {% endfor %}
+
+                                </td>
+                                <!-- Friday -->
+                                <td>
+                                    {% for data in Friday %}
+                                    <div class="row">
+                                        {% if data.0 == 'Add' %}
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-plus" data-toggle="modal"
+                                                    data-target=".bd-example-modal-lg" onclick="pass_value_to_modal('{{data.1.id}}','{{data.1.time_from}}','{{data.1.time_to}}','{{dates_in_week.5.date}}')"></i>
+                                            </div>
+                                            Class : {{data.1.Class}}<br>
+                                            Subject:{{data.1.subject}} <br>
+                                            ({{data.1.subject.subject_code}}) <br>
+                                            {{data.1.time_from}} - {{data.1.time_to}}<br>
+                                            Room Number : {{data.1.room_no}}<br>
+
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-reorder"  data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i> 
+                                                <i class="fa fa-pencil " data-toggle="modal" data-target=".bd-example-modal-lg" onclick="edit_plan('{{data.1.id}}')"></i> 
+                                                <a href="{% url 'manage_lesson_delete' data.1.id %}"><i class="fa fa-remove " ></i></a>
+                                            </div>
+
+                                            Class : {{data.1.time_table.Class}}<br>
+                                            Subject:{{data.1.time_table.subject}} <br>
+                                            ({{data.1.time_table.subject.subject_code}}) <br>
+                                            {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                            Room Number : {{data.1.time_table.room_no}}
+                                        </div>
+                                        {% endif %}
+                                    </div><br>
+                                    {% endfor %}
+
+                                </td>
+                                <!-- Saturday -->
+                                <td>
+                                    {% for data in Saturday %}
+                                    <div class="row">
+                                        {% if data.0 == 'Add' %}
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-plus" data-toggle="modal"
+                                                    data-target=".bd-example-modal-lg" onclick="pass_value_to_modal('{{data.1.id}}','{{data.1.time_from}}','{{data.1.time_to}}','{{dates_in_week.6.date}}')"></i>
+                                            </div>
+                                            Class : {{data.1.Class}}<br>
+                                            Subject:{{data.1.subject}} <br>
+                                            ({{data.1.subject.subject_code}}) <br>
+                                            {{data.1.time_from}} - {{data.1.time_to}}<br>
+                                            Room Number : {{data.1.room_no}}<br>
+
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-reorder"  data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i> 
+                                                <i class="fa fa-pencil " data-toggle="modal" data-target=".bd-example-modal-lg" onclick="edit_plan('{{data.1.id}}')"></i> 
+                                                <a href="{% url 'manage_lesson_delete' data.1.id %}"><i class="fa fa-remove " ></i></a>
+                                            </div>
+
+                                            Class : {{data.1.time_table.Class}}<br>
+                                            Subject:{{data.1.time_table.subject}} <br>
+                                            ({{data.1.time_table.subject.subject_code}}) <br>
+                                            {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                            Room Number : {{data.1.time_table.room_no}}
+                                        </div>
+                                        {% endif %}
+                                    </div><br>
+                                    {% endfor %}
+
+                                </td>
+                                <!-- Sunday -->
+                                <td>
+                                    {% for data in Sunday %}
+                                    <div class="row">
+                                        {% if data.0 == 'Add' %}
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-plus" data-toggle="modal"
+                                                    data-target=".bd-example-modal-lg" onclick="pass_value_to_modal('{{data.1.id}}','{{data.1.time_from}}','{{data.1.time_to}}','{{dates_in_week.7.date}}')"></i>
+                                            </div>
+                                            Class : {{data.1.Class}}<br>
+                                            Subject:{{data.1.subject}} <br>
+                                            ({{data.1.subject.subject_code}}) <br>
+                                            {{data.1.time_from}} - {{data.1.time_to}}<br>
+                                            Room Number : {{data.1.room_no}}<br>
+
+                                        </div>
+                                        {% else %}
+
+                                        <div class="col-md-12">
+                                            <div id="icons">
+                                                <i class="fa fa-reorder"  data-toggle="modal" data-target=".bd1-example-modal-lg" onclick="view_plan('{{data.1.id}}')"></i> 
+                                                <i class="fa fa-pencil " data-toggle="modal" data-target=".bd-example-modal-lg" onclick="edit_plan('{{data.1.id}}')"></i> 
+                                                <a href="{% url 'manage_lesson_delete' data.1.id %}"><i class="fa fa-remove " ></i></a>
+                                            </div>
+
+                                            Class : {{data.1.time_table.Class}}<br>
+                                            Subject:{{data.1.time_table.subject}} <br>
+                                            ({{data.1.time_table.subject.subject_code}}) <br>
+                                            {{data.1.time_table.time_from}} - {{data.1.time_table.time_to}}<br>
+                                            Room Number : {{data.1.time_table.room_no}}
+                                        </div>
+                                        {% endif %}
+                                    </div><br>
+                                    {% endfor %}
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+                <!-- =========================================== -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add Lesson Plan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'manage_lesson_save' %}" method="post" id="addform" enctype="multipart/form-data">
+                        {% csrf_token %} 
+                    <div class="row">
+                        <input type="hidden" class="form-control" name="timetable_id" id="timetable_id" readonly>
+                        <input type="hidden" class="form-control" name="lesson_plan_id" id="lesson_plan_id" readonly>
+                        <div class="col-md-4">
+                            <label for="">Lesson</label><span class="text-danger">*</span>
+                            <select name="lesson" id="lesson_id" class="form-control" required>
+                                <option value="">-- select --</option>
+                                {% for data in lesson_records %}
+                                <option value="{{data.id}}">{{data.lesson_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Topic</label><span class="text-danger">*</span>
+                            <select name="topic" id="topic_id" class="form-control" required>
+                                <option value="">-- select --</option>
+                                {% for data in topic_records %}
+                                <option value="{{data.id}}">{{data.topic_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Sub Topic</label><span class="text-danger">*</span>
+                            <input type="text" class="form-control" name="sub_topic" id="sub_topic_id" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="">Date</label><span class="text-danger">*</span>
+                            <input type="date" class="form-control" name="date" id="date_id" readonly required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Time From </label><span class="text-danger">*</span>
+                            <input type="text" class="form-control" name="time_from" id="time_from_id" readonly required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">Time to</label><span class="text-danger">*</span>
+                            <input type="text" class="form-control" name="time_to" id="time_to_id" readonly required>
+                        </div>
+                    </div>
+                
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="">Lecture YouTube URL</label>
+                        <input type="url" class="form-control" name="lecture_youtube_url">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="">Lecture Video </label>
+                        <input type="file" class="form-control" name="lecture_vedio">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="">Attachment</label>
+                        <input type="file" class="form-control" name="attachment">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Teaching Method</label>
+                        <textarea name="teaching_method" id="id_teaching_method" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">General Objectives</label>
+                        <textarea name="general_objectives" id="id_general_objectives" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Previous Knowledge</label>
+                        <textarea name="pervious_knowledge" id="id_pervious_knowledge" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Comprehensive Questions</label>
+                        <textarea name="comprehensive_questions" id="id_comprehensive_questions" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="">Presentation</label>
+                        <textarea name="presentation" id="id_presentation" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
+                </div>
+            </form>
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" form="addform" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade bd1-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Lesson Plan</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+                <tr>
+                    <th  style="width:200px;">Class</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_class"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Subject</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Subject"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Date</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Date"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Lesson</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Lesson"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Topic</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Topic"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Sub Topic</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Sub_Topic"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">General Objectives</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_General_Objectives"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Teaching Method</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Teaching_Method"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Previous Knowledge</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Previous_Knowledge"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:300px;">Comprehensive Questions</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Comprehensive_Questions"></span></td>
+                </tr>
+                
+                <tr>
+                    <th  style="width:200px;">Presentation</th>
+                    <td colspan="2" style="text-align: left;"><span id="view_Presentation"></span></td>
+                </tr>
+            </table>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+    {% endblock %}
+    {% block script_block %}
+
+<script>
+    $(document).ready(function () {
+        $(document).on('change', '#lesson_id', function () {
+          var lesson_id = $('#lesson_id').val();
+          var url = "{% url 'manage_lesson_topic_js' %}";
+          $.ajax({
+            url: url,
+            data: {
+              'lesson_id': lesson_id
+            },
+            success: function (data) {
+                $("#topic_id").html(data);
+                let html_data = '<option value="">--------</option>';
+                data.forEach(function (topic) {
+                    html_data += `<option value="${topic.id}">${topic.topic_name}</option>`
+                });
+                $("#topic_id").html(html_data);
+            },
+            error: function (data) {
+              console.log(data);
+            }
+          });
+        });
+      
+      });
+</script>
+
+<script>
+    function pass_value_to_modal(id,from_time,to_time,date){
+        var formattedDate = new Date(date).toISOString().slice(0, 10);
+        $('#date_id').val(formattedDate);
+        $('#time_from_id').val(change_time_formate(from_time));
+        $('#time_to_id').val(change_time_formate(to_time));
+        $('#timetable_id').val(id);
+    }
+
+    function change_time_formate(time){
+        var timeParts = time.split(" ");
+        var time = timeParts[0];
+        var period = timeParts[1];
+        if (period === "pm") {
+          var timeParts = time.split(":");
+          var hours = parseInt(timeParts[0], 10) + 12;
+          time = hours + ":" + timeParts[1];
+        }
+        return time
+    }
+</script>
+
+
+<script>
+// edit script
+
+function edit_plan(id){
+    var url = "{% url 'edit_manage_lesson_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'pk': id
+      },
+      success: function (data) {
+        $('#date_id').val(data.date);
+        $('#lesson_id').val(data.lesson);
+        $('#topic_id').val(data.topic);
+        $('#sub_topic_id').val(data.sub_topic);
+        $('#time_from_id').val(data.time_from);
+        $('#time_to_id').val(data.time_to);
+        $('#id_teaching_method').val(data.teaching_method);
+        $('#id_general_objectives').val(data.general_objectives);
+        $('#id_comprehensive_questions').val(data.comprehensive_questions);
+        $('#id_pervious_knowledge').val(data.pervious_knowledge);
+        $('#id_presentation').val(data.presentation);
+        $('#lesson_plan_id').val(data.id);
+        $('#timetable_id').val(data.time_table);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+}
+
+// view 
+function view_plan(id){
+    var url = "{% url 'edit_manage_lesson_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'pk': id
+      },
+      success: function (data) {
+        $('#view_class').text(data.class +'('+data.section+')');
+        $('#view_Subject').text(data.subject);
+        $('#view_Date').text(data.date);
+        $('#view_Lesson').text(data.lesson_name);
+        $('#view_Topic').text(data.topic_name);
+        $('#view_Sub_Topic').text(data.sub_topic);
+        $('#view_Teaching_Method').text(data.teaching_method);
+        $('#view_General_Objectives').text(data.general_objectives);
+        $('#view_Comprehensive_Questions').text(data.comprehensive_questions);
+        $('#view_Previous_Knowledge').text(data.pervious_knowledge);
+        $('#view_Presentation').text(data.presentation);
+     
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+}
+
+$(document).ready(function () {
+    $(document).on('change', '#lesson_id', function () {
+      var lesson_id = $('#lesson_id').val();
+      var url = "{% url 'manage_lesson_topic_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'lesson_id': lesson_id
+        },
+        success: function (data) {
+            $("#topic_id").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (topic) {
+                html_data += `<option value="${topic.id}">${topic.topic_name}</option>`
+            });
+            $("#topic_id").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  
+  });
+</script>
+
+
+
+
+    {% endblock %}

@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+     @media print {
+            #print_btn_btn {
+                display: none;
+            }
+                 }
+</style>
+
+<br>
+<h4>Select Criteria</h4>
+
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="class">Role</label>
+                            <select class="form-control" name="class" required>
+                                <option value="">---Select---</option>
+                                {% for data in roles %}
+                                <option value="{{data.id}}">{{data.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="class">Month</label>
+                            <select class="form-control" name="months" required>
+                                <option value="">---Select---</option>
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="class">Year</label>
+                            <select class="form-control" name="years" required>
+                                <option value="">---Select---</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-12 mb-3"><br>
+
+                            <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <br>
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;">
+                <div class="table-responsive">
+                    <table id="tableID" class="display">
+                        <thead>
+                            <tr>
+                                <th>Staff ID</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.staff_id}}</td>
+                                <td>{{ data.first_name }}</td>
+                                <td>{{ data.store }}</td>
+                                <td>{{ data.department }}</td>
+                                <td>{{ data.designation }}</td>
+                                <td>{{ data.phone_no }}</td>
+                                
+                                <td>{{ data.basic_salary }}</td>
+
+                                <td>
+                                    <a href="{% url 'payroll_view' data.id %}"><button type="submit"
+                                            class="btn btn-primary" style="color: black;">Generate Payroll</button></a>
+                                </td>
+
+
+                            </tr>
+                            {% endfor %}
+
+
+                            {% for data in record %}
+                            <tr>
+                                <td>{{data.Frist_name.staff_id}}</td>
+                                <td>{{ data.Frist_name.first_name}}</td>
+                                <td>{{ data.Frist_name.roles }}</td>
+                                <td>{{ data.Frist_name.designation }}</td>
+                                <td>{{ data.Frist_name.department }}</td>
+                                <td>{{ data.Frist_name.phone_no }}</td>
+                                <td>{{ data.status }}</td>
+                                <td>
+                                    {% if data.status == 'Generated' %}
+                                    <a href="{% url 'payroll_piad' data.id %}"><button type="submit"
+                                            class="btn btn-primary" style="color: black;">Proceed to Pay</button></a>
+                                    {% elif data.status == 'Paid' %}
+
+
+
+                                    <a href="" style="color: black;" data-toggle="modal"
+                                        data-target="#payroll_slip{{data.id}}"><button type="submit"
+                                            class="btn btn-primary" style="color: black;">View to payslip</button></a>
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Large modal -->
+{% for data in record %}
+<div class="modal fade bd-example-modal-lg" id="payroll_slip{{data.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">PayRoll slip</h5>
+
+  
+
+    <a href="" class="close" data-dismiss="modal" aria-label="Close"> <button type="button" class="close" >
+                    <span aria-hidden="true">&times;</span>
+                </button></a>
+            </div>
+            <div class="modal-body"id="cardToPrint">
+                <div class="card" >
+                    <div class="certificate-container" >
+
+                        <img src="#" class="img-fluid img-responsive"
+                            style="height: 120px;width: auto;">
+
+                    </div>
+                    <br>
+                    <center>
+                        <b>Payslip for the period of August 2023</b>
+                    </center>
+                    <br>    
+                  
+                        <label class="col-sm-12 col-form-label"><strong>Payslip</strong> #{{data.id}}</label>
+                        <div class="row">
+                            <table class="table mb0 font13">
+                                <tbody>
+                                    <tr>
+                                        <th>Staff ID</th>
+                                        <td>{{data.Frist_name.staff_id}} </td>
+                                        <th>Staff ID</th>
+                                        <td>{{data.staff_id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>{{data.Frist_name.first_name}}</td>
+                                        <th>Department</th>
+                                        <td>{{data.Frist_name.department}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Earning</th>
+                                        <td>{{data.earning}}</td>
+                                        <th>Deduction</th>
+                                        <td>{{data.deduction}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Earning</th>
+                                        <td>{{ data.earning }}</td>
+                                        <th>Total Deduction</th>
+                                        <td>{{ data.deduction }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                  
+
+                     
+                        <div class="form-group">
+                            <label class="col-sm-6 col-form-label"><strong>Payment Mode</strong></label>
+                            <div class="col-sm-6">
+                                <label class="col-form-label">{{data.Payment_mode}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-form-label"><strong>Basic Salary</strong></label>
+                            <div class="col-sm-6">
+                                <label class="col-form-label">{{data.deduction}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-form-label"><strong>Basic Salary</strong></label>
+                            <div class="col-sm-6">
+                                <label class="col-form-label">{{data.basic_salary}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-form-label"><strong>Gross Salary</strong></label>
+                            <div class="col-sm-6">
+                                <label class="col-form-label">{{data.gross_salary}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-form-label"><srtong>Tax</srtong></label>
+                            <div class="col-sm-6">
+                                <label class="col-form-label">{{data.deduction}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-6 col-form-label"><strong>Net Salary</strong></label>
+                            <div class="col-sm-6">
+                                <label class="col-form-label">{{data.net_salary}}</label>
+                            </div>
+                        </div>
+                        <div class="certificate-container">
+
+                         
+                               {{header.note_payslip}}
+                         
+    
+                        </div> 
+                    </div>
+                <hr>
+            </div>
+            <div class="container">
+                <button type="button" id="print_btn_btn" class="btn btn-primary"  onclick="printCard()">Print</button>
+        </div> 
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+{% block script_block %}
+<script>
+    function printCard() {
+        var card = document.getElementById('cardToPrint');
+        var originalContent = document.body.innerHTML;
+        var cardContent = card.innerHTML;
+  
+        // Replace the entire page content with the card content
+        document.body.innerHTML = cardContent;
+  
+        // Call the browser's print function
+        window.print();
+  
+        // Restore the original content
+        document.body.innerHTML = originalContent;
+    }
+  </script>
+{% endblock %}

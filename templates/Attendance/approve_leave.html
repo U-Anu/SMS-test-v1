@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+<style>
+  .highlight-pending {
+    background-color: #ffecec; /* Very light red for pending */
+    color: #d60e0e; /* Darker red text for pending */
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.highlight-approved {
+    background-color: #eaffea; /* Very light green for approved */
+    color: #16ce16; /* Darker green text for approved */
+    padding: 3px;
+    border-radius: 3px;
+}
+</style>
+
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <form method="post" >
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="class">Class</label>
+                <select class="form-control" name="class" id="id_Class1" required>
+                    <option value="" >---Select---</option>
+                    {% for data in class_records %}
+                    <option value="{{ data.id }}">{{data.Class}}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="section">Section</label>
+                <select class="form-control" name="section" id="id_section1" required>
+                    <option value="">---Select---</option>
+                    {% for data in section_records %}
+                    <option value="{{ data.id }}">{{data.section_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+                <div class="col-md-4 mb-3" style="padding-top: 30px;">
+                <button type="submit" value="search" name="search" class="btn btn-primary">save</button>
+                 </div>
+              </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="main-header">
+           <h4>Approve Leave List</h4>
+        </div>
+     </div>
+     {% if 'approve_leave_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br>
+     {% endif %}
+     {% if 'approve_leave_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+
+            <br><div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Apply Date</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Status</th>
+                        <th>Approved By</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      {% for data in records %}
+                      <tr>
+                          <td>{{data.student.first_name}} {{data.student.last_name}}</td>
+                          <td>{{data.Class}}</td>
+                          <td>{{data.section}}</td>
+                          <td>{{data.apply_date}}</td>
+                          <td>{{data.from_date}}</td>
+                          <td>{{data.to_date}}</td>
+                          <td class="{% if data.status == 'disapprove' %}highlight-pending{% elif data.status == 'approve' %}highlight-approved{% endif %}">
+                            {% if data.status == 'disapprove' %}
+                                Pending
+                            {% else %}
+                                {{ data.status }}
+                            {% endif %}
+                        </td>
+                          <td>{{data.approved_by}}</td>
+                        <td>
+                          {% if 'approve_leave_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'leave_approve_disappove' data.id %}" style="color: black;"  >{% if data.status == 'disapprove' %} <i class='fa fa-check' data-toggle="tooltip" title="approve"></i> {% else %}<i class='fa fa-remove' data-toggle="tooltip" title="disapprove"></i>{% endif %}</a>
+                          {% endif %}
+                          {% if 'approve_leave_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'approve_leave_edit' data.id %}" style="color: black;"><i class='fa fa-edit' data-toggle="tooltip" title="Edit"></i></a>
+                          {% endif %}
+                          {% if 'approve_leave_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'approve_leave_delete' data.id %}" style="color: black;"><i class='fa fa-trash'data-toggle="tooltip" title="Delete"  onclick="alert('You want to Delete this Item..?')"></i></a>
+                          {% endif %}
+                           </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+            </div>
+         </div>
+     </div>
+     {% endif   %}
+ </div>
+
+             <!-- modal End -->
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add List</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form method="post">
+            {% csrf_token %}
+        <div class="row">
+          {% for data in form %}
+          <div class="col-md-4 mb-3">
+              {{data.label_tag}}
+            {{ data }}
+          </div>
+          {% endfor %}
+        </div>
+        <br>
+        <center>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </center>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+ {% endblock %}
+ {% block script_block %}
+
+
+
+<script>
+  $(document).ready(function () {
+  $(document).on('change', '#id_Class', function () {
+    var class_id = $('#id_Class').val();
+    var url = "{% url 'section_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'class_id': class_id
+      },
+      success: function (data) {
+          $("#id_section").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (section) {
+              html_data += `<option value="${section.id}">${section.section_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_section").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+
+});
+</script>
+
+<script>
+  $(document).ready(function () {
+  $(document).on('change', '#id_Class1', function () {
+    var class_id = $('#id_Class1').val();
+    var url = "{% url 'section_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'class_id': class_id
+      },
+      success: function (data) {
+          $("#id_section1").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (section) {
+              html_data += `<option value="${section.id}">${section.section_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_section1").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+
+});
+</script>
+
+
+<script>
+  $(document).ready(function () {
+  $(document).on('change', '#id_section', function () {
+    var class_id = $('#id_section').val();
+    var id_section = $('#id_section').val();
+    var url = "{% url 'student_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'class_id': class_id,
+        'id_section': id_section,
+      },
+      success: function (data) {
+          $("#id_student").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (section) {
+              html_data += `<option value="${section.id}">${section.first_name}  ${section.last_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_student").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+
+});
+</script>
+ {% endblock  %}

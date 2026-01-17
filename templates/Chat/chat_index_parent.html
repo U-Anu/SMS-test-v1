@@ -1,0 +1,308 @@
+{% extends 'parent_base.html' %}
+{% load static %}
+{% block head_block %}
+<link rel="stylesheet" href="{% static 'chat/chat_style.css' %}">
+{% endblock %}
+
+{% block body_block %}
+
+    <!-- Google Fonts -->
+
+    <link href= "{% static 'chat/bootstrap.min.css' %}" rel="stylesheet" >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+    <!-- char-area -->
+    <section class="message-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="chat-area">
+                        <!-- chatlist -->
+                        <div class="chatlist" id="chatlist">
+                            <div class="modal-dialog-scrollable" >
+                                <div class="modal-content">
+                                    <div class="chat-header">
+                                        <div class="msg-search">
+                                            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Search" aria-label="search">
+                                            <a class="add" href="#" onclick="search_cocntact()"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/add.svg" alt="add"></a>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                    <div class="modal-body">
+                                        <!-- chat-list -->
+                                        <div class="chat-lists">
+                                            <div class="tab-content" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
+                                                    <!-- chat-list -->
+                                                    <div class="chat-list">
+                                                        {% for data in records %}
+                                                        <a href="{% url 'chat_parent' data.obj.id %}" class="d-flex align-items-center" {% if data.obj.id == pk %} style="background-color: whitesmoke;" {% endif %}>
+                                                            <div class="flex-shrink-0">
+                                                                <img class="img-fluid" id="user_logo" src="{% static 'assets/images/user.jpg' %}" alt="user img">
+                                                             
+                                                            </div>
+                                                           
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h3>{{data.obj.contact_user.first_name}}</h3><p>({{data.obj.usertype}}) {% if data.unread_count > 0 %} <span class="badge"  >{{data.unread_count}}</span>{% endif %}</p>
+                                                            </div>
+                                                            
+                                                        </a>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <!-- chat-list -->
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- chat-list -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- chatlist -->
+                    <!-- SearchList -->
+                        <div class="chatlist" id="search_list" style="display: none;">
+                            <div class="modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="chat-header">
+                                        <div class="msg-search">
+                                            <input type="text" class="form-control" id="Search" onkeyup="myFunction()" placeholder="Search" aria-label="search">
+                                            <a class="add" href="#" onclick="back_to_contact()"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <!-- chat-list -->
+                                        <div class="chat-lists">
+                                            <div class="tab-content" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
+                                                    <!-- chat-list -->
+                                                    
+                                                    <div class="chat-list" id="search_listt" style="display: none;">
+                                                        {% for data in staff_records %}
+                                                      
+                                                            <div class="flex-grow-1 ms-3 target" tabindex="{{forloop.counter}}">
+                                                                <h3 onclick="add_contact_pass_value('Staff','{{data.id}}')">{{data.first_name}} (Staff)</h3>
+                                                            </div>
+                                                        {% endfor %}
+                                                        {% for data in student_records %}
+                                                            <div class="flex-grow-1 ms-3 target" tabindex="{{forloop.counter}}">
+                                                                <h3 onclick="add_contact_pass_value('Student','{{data.id}}')">{{data.first_name}} (Student)</h3>
+                                                            </div>
+                                                        {% endfor %}
+                                                        {% for data in student_records %}
+                                                        {% if request.parent.id != data.id %}
+                                                            <div class="flex-grow-1 ms-3 target" tabindex="{{forloop.counter}}">
+                                                                <h3 onclick="add_contact_pass_value('Parent','{{data.id}}')">{{data.guardian_name}} (Parent)</h3>
+                                                            </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                    <!-- chat-list -->
+                                                </div>
+                                               
+                                            </div>
+                                            <form method="post" action="/save_contact">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="usertype" id="usertype">
+                                                <input type="hidden" name="user_id" id="user_id">
+                                                <button class="btn btn-primary" style="float: right;" type="submit">Add</button>
+                                            </form>
+                                        </div>
+                                        <!-- chat-list -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Search List  -->
+
+
+                        <!-- chatbox -->
+                        <div class="chatbox">
+                            <div class="modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="msg-head">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="d-flex align-items-center">
+                                                    <span class="chat-icon"><img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg" alt="image title"></span>
+                                                    <div class="flex-shrink-0">
+                                                        <img class="img-fluid" id="user_logo" src="{% static 'assets/images/user.jpg' %}" alt="user img">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <p>Select any user to start your chat</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="modal-body" id="chat-body">
+                                        <div class="msg-body" id="messageContainer">
+                                            <ul id="msg_ul_id">
+                                                {% for data in message_records %}
+                                                {% if data.to_message %}
+                                                <li class="sender">
+                                                    <p> {{data.to_message}} </p>
+                                                    <span class="time">{{data.created_at|time}}</span>
+                                                </li>
+                                                {% elif data.from_message %}
+                                                <li class="repaly">
+                                                    <input type="hidden" name="msg_id" id="msg_id"  value="{{data.id}}">
+                                                    <p>{{data.from_message}} </p>
+                                                    <span class="time">{{data.created_at|time}}</span>
+                                                </li>
+                                                {% endif %}
+                                                {% endfor %}
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div class="send-box">
+                                        <form action="">
+                                            <input type="text" class="form-control" id="message_id" aria-label="message…" placeholder="Write message…">
+
+                                            <button type="button" id="send_btn"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
+                                        </form>
+                                   
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- chatbox -->
+<!-- Button trigger modal -->
+
+  
+
+
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- char-area -->
+
+
+<!--  popup add contact -->
+
+  
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+    function scrollToBottom() {
+var messageContainer = document.getElementById("messageContainer");
+messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
+// Call scrollToBottom whenever you add new data to the container
+scrollToBottom();
+
+    </script>
+
+<script>
+    // Message send to backend
+    $(document).ready(function () {
+        $(document).on('click', '#send_btn', function () {
+          var message = $('#message_id').val();
+          var url = "{% url 'chat_msg_save_js' %}";
+          $.ajax({
+            url: url,
+            data: {
+              'message': message,
+              'pk': '{{pk}}',
+            },
+            success: function (data) {
+                $('#message_id').val('');
+            },
+            error: function (data) {
+              console.log(data);
+            }
+          });
+        });
+      
+      }); 
+</script>
+
+<script>
+    setInterval(getChatsUpdates, 2000);
+    function getChatsUpdates() {
+        var last_msg_id=$('.msg-body ul li:last #msg_id').val();
+        var url = "{% url 'chat_view_js' %}";
+        $.ajax({
+            url: url,
+            data: {
+                'last_msg_id':last_msg_id,
+                'pk': '{{pk}}',
+            },
+            success: function (data) {
+                if (data != ''){
+                    if ( data.from_message != null ){
+                        $('#msg_ul_id').append(` <li class='repaly'> <input type='hidden' name='msg_id' id='msg_id'  value='${data.id}'><p>${data.from_message} </p> <span class='time'>${data.created_at}</span>  </li>`);
+                    }else{
+                        $('#msg_ul_id').append(` <li class='sender'> <input type='hidden' name='msg_id' id='msg_id'  value='${data.id}'><p>${data.to_message} </p> <span class='time'>${data.created_at}</span>  </li>`);
+                    }
+                    var messageContainer = document.getElementById("messageContainer");
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                    scrollToBottom();
+                }
+                console.log('hi');
+            },
+        });
+    }
+</script>
+
+<script>
+    // seach contact 
+    function myFunction() {
+        var input = document.getElementById("Search");
+        var filter = input.value.toLowerCase();
+        var nodes = document.getElementsByClassName('target');
+        var len = $('#Search').val().length
+        if (len >= 2 ){
+            $('#search_listt').show()
+            for (i = 0; i < nodes.length; i++) {
+                if (nodes[i].innerText.toLowerCase().includes(filter)) {
+                  nodes[i].style.display = "block";
+                } else {
+                  nodes[i].style.display = "none";
+                }
+              }
+        }
+       
+      }
+    </script>
+
+
+<script>
+ 
+    // side chat list 
+    function search_cocntact(){
+        $('#chatlist').hide();
+        $('#search_list').show();
+    }
+    function back_to_contact(){
+        $('#chatlist').show();
+        $('#search_list').hide();
+    }
+    function add_contact_pass_value(type,id){
+        $('#usertype').val(type);
+        $('#user_id').val(id);
+
+    }
+</script>
+
+{% endblock %}

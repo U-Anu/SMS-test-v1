@@ -1,0 +1,79 @@
+gl_line_id,gl_line_number_id,name,description,master_gl,asset_type
+GID-0024,2008,School Fees,School Fees,GID-0022,AT-2592
+GID-0023,2006,Little Rock Friends,Little Rock Friends,GID-0022,AT-2592
+GID-0025,2009,Other income,Other income,GID-0022,AT-2592
+GID-0034,2502,Training & workshop,Training & workshop,GID-0032,1010
+GID-0033,2406,Statutory Deductions,Statutory Deductions,GID-0032,1010
+GID-0026,2012,FUND RAISING ACTIVITIES,FUND RAISING ACTIVITIES,GID-0022,AT-2592
+GID-0039,2704, After School feeding Program, After School feeding Program,GID-0036,AT-2592
+GID-0038,2703,Neema Outreach Scholarships,Neema Outreach Scholarships,GID-0036,AT-2592
+GID-0037,2702,Rescue programme,Rescue programme,GID-0036,1010
+GID-0044,2904,Co- Curricular Activities,Co- Curricular Activities,GID-0043,1010
+GID-0041,2701,P.M.T.C.T,P.M.T.C.T,GID-0040,1010
+GID-0072,4903,Teacher Training,Teacher Training,GID-0069,1010
+GID-0071,4902,Preparing Pilot Schfor Disabled,Preparing Pilot Schfor Disabled,GID-0069,1010
+GID-0070,4901, Provide Pry Educ for Disabled, Provide Pry Educ for Disabled,GID-0069,1010
+GID-0073,4904,Exchange Program,Exchange Program,GID-0069,1010
+GID-0074,4905,Advocacy and Awareness Raising,Advocacy and Awareness Raising,GID-0069,1010
+GID-0001,1000,Cash and Cash Equivalents,Cash and Cash Equivalents,,1000
+GID-0002,10051,KCB 1000 CALL DEPOSIT,KCB 1000 CALL DEPOSIT,,1000
+GID-0003,1400,Accounts Receivable,Accounts Receivable,,1001
+GID-0004,1100,Undeposited Funds,Undeposited Funds,,1002
+GID-0005,1110,Prepaid Expenses,Prepaid Expenses,,1002
+GID-0006,1210,Stock,Stock,,1002
+GID-0007,1211,Work in progress - Greenhouse,Work in progress - Greenhouse,,1002
+GID-0008,1212,Work in progress -Poultry,Work in progress -Poultry,,1002
+GID-0011,11001,Short- term investments,Short- term investments,,1004
+GID-0012,1500,Accounts Payable,Accounts Payable,,1005
+GID-0013,1502,NSSF payable,NSSF payable,,1005
+GID-0014,1503,NHIF Payable,NHIF Payable,,1005
+GID-0015,1599,EPN -Receipt in Advance,EPN -Receipt in Advance,,1006
+GID-0016,1700,Prepayments,Prepayments,,1006
+GID-0017,1802,Tax Account,Tax Account,,1006
+GID-0018,1800,Retained Earnings,Retained Earnings,,1007
+GID-0019,1801,opening Equity,opening Equity,,1007
+GID-0020,1805,Director's Account,Director's Account,,1007
+GID-0022,2000,ECD OPERATIONAL COSTS DONATIONS,ECD OPERATIONAL COSTS DONATIONS,,1008
+GID-0021,1900,Unrestricted Net Assets,Unrestricted Net Assets,,1007
+GID-0028,2200,OTHER PROJECTS-DONOR RESTRICTED,OTHER PROJECTS-DONOR RESTRICTED,,1008
+GID-0027,2100,ECD CAPITAL PROJECTS DONATIONS,ECD CAPITAL PROJECTS DONATIONS,,1008
+GID-0030,4990,Uncategorized Income,Uncategorized Income,,1008
+GID-0029,2300,SUSTAINABILITY PROGRAMS INCOME,SUSTAINABILITY PROGRAMS INCOME,,1008
+GID-0031,5000,Cost of Goods Sold,Cost of Goods Sold,,1009
+GID-0035,2600,EPN Scholarships,EPN Scholarships,,1010
+GID-0032,2400,SALARIES & WAGES,SALARIES & WAGES,,1010
+GID-0042,2800,Sustainability Program Expenses,Sustainability Program Expenses,,1010
+GID-0040,2750,ELMA projects,ELMA projects,,1010
+GID-0036,2700,NEEMA OUTREACH PROGRAM Expenses,NEEMA OUTREACH PROGRAM Expenses,,1010
+GID-0045,2999,Awana Project,Awana Project,,1010
+GID-0043,2900,LR ECD CHILDREN Expenses,LR ECD CHILDREN Expenses,,1010
+GID-0048,3200,Insurance,Insurance,,1010
+GID-0047,3100,Cleaning Expenses,Cleaning Expenses,,1010
+GID-0046,3000,LITTLE ROCK CHARITY,LITTLE ROCK CHARITY,,1010
+GID-0050,3400,Utilities,Utilities,,1010
+GID-0049,3300,NON- CASH Expenses,NON- CASH Expenses,,1010
+GID-0051,3500,Repairs & Mainteinance,Repairs & Mainteinance,,1010
+GID-0054,3710,KCB 077X Running Expenses,KCB 077X Running Expenses,,1010
+GID-0053,3700,VAN RUNNING Expenses,VAN RUNNING Expenses,,1010
+GID-0052,3600,Printing & Stationery,Printing & Stationery,,1010
+GID-0057,4000,Security Expenses,Security Expenses,,1010
+GID-0056,3900,Professional Fees,Professional Fees,,1010
+GID-0055,3800,Travelling & Accommodation,Travelling & Accommodation,,1010
+GID-0060,4201,Interest Expenses,Interest Expenses,,1010
+GID-0059,4200,Bank charges,Bank charges,,1010
+GID-0058,4100,Fund Raising activities,Fund Raising activities,,1010
+GID-0061,4202,M-pesa Charges,M-pesa Charges,,1010
+GID-0062,4203,Penalty & fines,Penalty & fines,,1010
+GID-0063,4300,Licences & permits,Licences & permits,,1010
+GID-0064,4400,Reconciliation Discrepancies,Reconciliation Discrepancies,,1010
+GID-0067,4700,Land Rates,Land Rates,,1010
+GID-0066,4600,Annual Subscriptions,Annual Subscriptions,,1010
+GID-0065,4500,Meeting and Conferences,Meeting and Conferences,,1010
+GID-0075,60001,Chicken feeds expenses,Chicken feeds expenses,,1010
+GID-0069,4900,JOAC PROJECT COSTS,JOAC PROJECT COSTS,,1010
+GID-0068,4800,Desire of Nation Project costs,Desire of Nation Project costs,,1010
+GID-0076,6002,Consultancy fees,Consultancy fees,,1010
+GLID-6729,1100120,Funds Transfer,Funds Transfer,,1002
+GID-0077,7000,Donations,Donations,,1010
+GLID-6237,99882,Payroll,Payroll,,1004
+GLID-4821,812,Customer,Customer GL Line,,1010

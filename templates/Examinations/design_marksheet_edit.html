@@ -1,0 +1,335 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    .form-group {
+       margin-bottom: 0rem;
+    }
+
+    @charset "UTF-8";
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+    }
+    
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+    
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+    
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+    
+    
+
+
+
+.toggler-wrapper.style-4 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+	left: calc(100% - 19px - 3px);
+}
+
+.toggler-wrapper.style-4 .toggler-knob {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	left: 0;
+	top: 0;
+	background-color: #fff;
+	-webkit-box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+	box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+}
+
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Mark Sheet</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                     </div><hr>
+                        {% if not view %}
+                        <h4>Edit Mark Sheet</h4>
+                        {% else %}
+                        <h4>View Mark Sheet</h4>
+                        {% endif %}
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                             <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_template">Template:</label>
+                                        <input type="text" name="template" maxlength="255" class="form-control" value="{{record.template}}" required id="id_template">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_heading">Heading:</label>
+                                        <input type="text" name="heading" maxlength="255" class="form-control" value="{{record.heading}}" id="id_heading">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_title">Title:</label>
+                                        <input type="text" name="title" maxlength="255" class="form-control" value="{{record.title}}" id="id_title">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_exam_name">Exam name:</label>
+                                        <input type="text" name="exam_name" maxlength="255" class="form-control" value="{{record.exam_name}}" id="id_exam_name">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_school_name">School name:</label>
+                                        <input type="text" name="school_name" maxlength="255" class="form-control" value="{{record.school_name}}" id="id_school_name">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_exam_center">Exam center:</label>
+                                        <input type="text" name="exam_center" maxlength="255" class="form-control" value="{{record.exam_center}}" id="id_exam_center">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_body_text">Body text:</label>
+                                        <textarea name="body_text" cols="40" rows="10" maxlength="255" class="form-control"  id="id_body_text">{{record.body_text}}
+                                                </textarea>
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_footer_text">Footer text:</label>
+                                        <textarea name="footer_text" cols="40" rows="10" maxlength="255" class="form-control"  id="id_footer_text">{{record.footer_text}}
+                                            </textarea>
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_printing_date">Printing date:</label>
+                                        <input type="date" name="printing_date" class="form-control" id="id_printing_date" value="{{record.printing_date}}">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_left_logo">Left logo:</label>
+                                        <br>
+                                        {% if record.left_logo %}
+                                <a href="{{record.left_logo.url}}" class="text-primary">{{record.left_logo}}</a>
+                                {% endif %}
+                                        <input type="file" name="left_logo" class="form-control" id="id_left_logo" value="{{record.left_logo}}">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_right_logo">Right logo:</label>
+                                        <br>
+                                        {% if record.right_logo %}
+                                <a href="{{record.right_logo.url}}" class="text-primary">{{record.right_logo}}</a>
+                                {% endif %}
+                                        <input type="file" name="right_logo" class="form-control" id="id_right_logo" value="{{record.right_logo}}">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_left_sign">Left sign:</label>
+                                        <br>
+                                        {% if record.left_sign %}
+                                <a href="{{record.left_sign.url}}" class="text-primary">{{record.left_sign}}</a>
+                                {% endif %}
+                                        <input type="file" name="left_sign" class="form-control" id="id_left_sign" value="{{record.left_sign}}">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_middle_sign">Middle sign:</label>
+                                        <br>
+                                        {% if record.middle_sign %}
+                                <a href="{{record.middle_sign.url}}" class="text-primary">{{record.middle_sign}}</a>
+                                {% endif %}
+                                        <input type="file" name="middle_sign" class="form-control" id="id_middle_sign" value="{{record.middle_sign}}">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_right_sign">Right sign:</label>
+                                        <br>
+                                        {% if record.right_sign %}
+                                <a href="{{record.right_sign.url}}" class="text-primary">{{record.right_sign}}</a>
+                                {% endif %}
+                                        <input type="file" name="right_sign" class="form-control" id="id_right_sign" value="{{record.right_sign}}">
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label for="id_background_image">Background image:</label>
+                                        <br>
+                                        {% if record.background_image %}
+                                <a href="{{record.background_image.url}}" class="text-primary">{{record.background_image}}</a>
+                                {% endif %}
+                                        <input type="file" name="background_image" class="form-control" id="id_background_image" value="{{record.background_image}}">
+                                    </div>
+                                    <div class="col-md-12 mb-3"><br>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_name">Name:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="name" id="id_name" {% if record.name %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_father_name">Father name:</label>
+                                    </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="toggler-wrapper style-4">
+                                                <input type="checkbox" name="father_name" id="id_father_name" {% if record.father_name %}checked{% endif %}>
+                                                <div class="toggler-slider">
+                                                  <div class="toggler-knob"></div>
+                                                </div>
+                                              </label>
+                                        </div>                                   
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_mother_name">Mother name:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="mother_name" id="id_mother_name" {% if record.mother_name %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div>   
+                                       
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_date_of_birth">Date of birth:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="date_of_birth" id="id_date_of_birth" {% if record.date_of_birth %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div>  
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_admission_no">Admission no:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="admission_no" id="id_admission_no" {% if record.admission_no %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div> 
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_roll_no">Roll no:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="roll_no" id="id_roll_no" {% if record.roll_no %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div> 
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_address">Address:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="address" id="id_address" {% if record.address %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div> 
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_gender">Gender:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="gender" id="id_gender" {% if record.gender %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div> 
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_photo">Photo:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="photo" id="id_photo" {% if record.photo %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div> 
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_grade">Grade:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="grade" id="id_grade" {% if record.grade %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="id_section">Section:</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="toggler-wrapper style-4">
+                                            <input type="checkbox" name="section" id="id_section" {% if record.section %}checked{% endif %}>
+                                            <div class="toggler-slider">
+                                              <div class="toggler-knob"></div>
+                                            </div>
+                                          </label>
+                                    </div>
+                                    
+                                </div><br>
+                                </div>
+    
+                            <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                        </form>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <br>
+    <div class="col-md-12">
+        <div class="row">
+          {% if 'online_live_class_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}    
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                      {% if not view %}
+                      <h4>Edit Online Class</h4>
+                      {% else %}
+                      <h4>View Online Class</h4>
+                      {% endif %}                       
+                     </div><hr>
+                    
+                     <!-- <form method="post">
+                        {% csrf_token %}
+                      <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                      {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form> -->
+                    <form id="online_class_form" method="post">
+                      {% csrf_token %}
+                      <div class="row">
+                          <div class="col-md-4 mb-3">
+                              <label for="class_title">Class Title:</label>
+                              {{ form.class_title }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="class_date_time">Class Date Time:</label>
+                              {{ form.class_date_time }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="start_time">Start Time:</label>
+                              {{ form.start_time }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="end_time">End Time:</label>
+                              {{ form.end_time }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="role">Role:</label>
+                              {{ form.role }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="staff">Staff:</label>
+                              {{ form.staff }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="Class">Class:</label>
+                              {{ form.Class }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="section">Section:</label>
+                              {{ form.section }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                            <label for="meeting_link">Meeting Link:</label>
+                            <select id="meeting_link" name="meeting_link" class="form-control">
+                                <option value="" selected disabled>-- Select Link --</option>
+                                <option value="new">Add New Link</option>
+                                {% for link in meeting_links %}
+                                    <option value="{{ link.id }}" {% if link.id == form.instance.meeting_link.id %} selected {% endif %} data-url="{{ link.link }}">{{ link.link_for }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="meeting_url">Meeting URL:</label>
+                            <input type="text" id="meeting_url" name="meeting_url" class="form-control" readonly value="{{ form.instance.meeting_url }}">
+                        </div>
+                        
+                        
+                          <div class="col-md-4 mb-3">
+                              <label for="description">Description:</label>
+                              {{ form.description }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="status">Status:</label>
+                              {{ form.status }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="meeting_document">Meeting Document:</label>
+                              {{ form.meeting_document }}
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="meeting_notes">Meeting Notes:</label>
+                              {{ form.meeting_notes }}
+                          </div>
+                      </div>
+                      <!-- Other form fields -->
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                  
+                </div>
+            </div>
+            {% endif %}
+           
+        </div>
+    </div>
+
+     
+    </div>
+  
+    <!-- For Meeting Url change -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const meetingLinkSelect = document.getElementById("meeting_link");
+      const meetingUrlInput = document.getElementById("meeting_url");
+  
+      // Add change event listener to the meeting link select element
+      meetingLinkSelect.addEventListener("change", function() {
+          // Get the selected option
+          const selectedOption = meetingLinkSelect.options[meetingLinkSelect.selectedIndex];
+          
+          if (selectedOption.value === "new") {
+              // If "Add New Link" is selected, make the meeting URL field editable
+              meetingUrlInput.readOnly = false;
+              meetingUrlInput.value = ""; // Clear meeting URL field
+          } else {
+              // Otherwise, display the selected link's URL in the meeting URL field
+              meetingUrlInput.readOnly = true;
+              // Retrieve the data-url attribute value of the selected option and set it as the meeting URL
+              meetingUrlInput.value = selectedOption.getAttribute("data-url");
+          }
+      });
+  
+      const onlineClassForm = document.getElementById("online_class_form");
+      onlineClassForm.addEventListener("submit", function(event) {
+          const meetingLinkSelect = document.getElementById("meeting_link");
+          if (meetingLinkSelect.value === "new") {
+              // If "Add New Link" is selected, use the value entered in the meeting URL field
+              meetingUrlInput.value = meetingUrlInput.value;
+          }
+          // Continue with form submission
+      });
+  });
+  
+  </script>
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

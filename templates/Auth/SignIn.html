@@ -1,0 +1,247 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <title>BB School Management</title>
+
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <!-- Favicon icon -->
+  <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
+
+  
+
+  <!-- Required Fremwork -->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+
+ 
+
+  <!-- Style.css -->
+  <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main.css' %}">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+    
+    .login-box {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 5px;
+      margin-top: 100px;
+      background-color: #f8f9fa;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    
+    .login-box .logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    
+    .login-box .logo img {
+      max-height: 40px;
+    }
+    
+    .login-box .form-control {
+      border-radius: 2px;
+    }
+    
+    .login-box .btn-primary {
+      background-color: #764ba2;
+      border-color: #764ba2;
+    }
+    
+    .login-box .btn-primary:hover {
+      background-color: #5c3c86;
+      border-color: #5c3c86;
+    }
+    
+    .login-box .forgot-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .custom-form {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.custom-form:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+}
+
+.custom-input {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease;
+}
+
+.custom-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-btn {
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+    background-color: #007bff;
+}
+
+.custom-link {
+    color: #007bff;
+    transition: color 0.3s ease;
+}
+
+.custom-link:hover {
+    color: #0056b3;
+}
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 1px solid #ced4da;
+    width: 100%;
+    transition: border-bottom-color 0.3s ease;
+    background-color: transparent;
+}
+
+.form-control:focus {
+    outline: none;
+    border-bottom-color: black;
+}
+
+.form-control:focus + label,
+.form-control:not(:placeholder-shown) + label {
+    transform: translateY(-1.5rem);
+    font-size: 0.8rem;
+    color: black;
+    transition: all 0.3s ease;
+}
+
+label {
+    position: absolute;
+    left: 0.5rem;
+    bottom: 0;
+    font-size: 1rem;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+
+
+#alert {
+  padding: 25px 15px;
+  color: rgb(243, 10, 10);
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-box">
+     
+    
+
+      <form method="POST" class="mt-4 custom-form">
+        <div class="logo">
+          <h3>Vyas EduERP</h3>
+          {% comment %} <img src="{% static 'assets/images/sign.png' %}" alt="Logo"><br> {% endcomment %}
+        </div>
+      <br>
+
+      {% for message in messages %}
+      <div class="container-fluid p-0 " id="alert">
+
+        <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+           
+          </button>
+          <b>{{ message }}</b>
+        </div>
+      </div>
+
+      {% endfor %}
+
+        {% csrf_token %}
+        <div class="form-group">
+          <input type="text" class="form-control" id="username" name="username" required>
+          <label for="username">User Name (or) Email</label>
+      </div>
+      
+      <div class="form-group">
+        <input type="password" class="form-control" id="password" name="password" required>
+        <label for="password">Password</label>
+    </div>
+    
+        <button type="submit" class="btn btn-primary btn-block custom-btn">Sign Up</button>
+       
+    </form>
+    
+    </div>
+  </div>
+<script>
+  function config($httpProvider) {
+    // state provider code
+
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+    document.getElementById("username").addEventListener("focus", function() {
+    this.classList.add("focused");
+});
+
+document.getElementById("username").addEventListener("blur", function() {
+    if (!this.value.trim()) {
+        this.classList.remove("focused");
+    }
+});
+document.getElementById("password").addEventListener("focus", function() {
+    this.classList.add("focused");
+});
+
+document.getElementById("password").addEventListener("blur", function() {
+    if (!this.value.trim()) {
+        this.classList.remove("focused");
+    }
+});
+
+}
+</script>
+
+<script>
+  window.setTimeout(function() {
+  $(".alert").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 1000);
+</script>
+
+</body>
+</html>

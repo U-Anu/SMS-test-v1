@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Event</h4>
+       </div>
+    </div>
+    <div class="col" style="padding: 30px;">
+        {% if 'event_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+        <a href="{% url 'add_event' %}">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add" style="float:right;">+ Add</button><br>
+        </a>
+        {% endif %}
+    </div>
+    {% if 'event_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+                <table id="tableID" class="display"  >
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>Venue</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                          {% for data in records %}   
+                          <tr>
+                              <td>{{data.event_title}}</td>
+                              <td>{{data.event_start_date}}- {{data.event_end_date}}</td>
+                              <td>{{data.venue}}</td>
+                            <td>
+                                {% if 'event_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                              <a href="{% url 'event_edit' data.pk%}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                {% endif %}
+                                {% if 'event_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                              <a href="{% url 'event_delete' data.pk%}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                {% endif %}
+                               </td>
+                        </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+            
+                </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+   
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

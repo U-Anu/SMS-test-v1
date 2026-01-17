@@ -1,0 +1,90 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .pass {
+        color: #fff; /* White text color */
+        background-color: #28a745; /* Green background */
+    }
+    
+    .fail {
+        color: #fff; /* White text color */
+        background-color: #dc3545; /* Red background */
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Online Exam Result</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            
+            <div class="table-responsive">
+                <table id="tableID" class="display"  >
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Question paper name</th>
+                            <th>Exam Date:</th> 
+                            <th>Total mark:</th>
+                            <th>Pass mark:</th>           
+                          
+                            
+                            <th>Total Mark</th>                            
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in record %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{data.question_paper.question_paper_name}}</td>
+                            <td>{{exam_date}}</td>
+                            
+                            <td>{{data.question_paper.total_mark}}</td>
+                            <td>{{data.question_paper.pass_mark}}</td>
+                           
+                                   
+                           
+                          
+                            <td >{{ data.total_mark   }}</td> 
+                             
+                            <td>
+                                {% if data.is_pass %}
+                                    <span class="status pass">Pass</span> <!-- Font Awesome Check -->
+                                {% else %}
+                                    <span class="status fail">Fail</span> <!-- Font Awesome Cross -->
+                                {% endif %}
+                            </td>       
+                            
+                              
+                        </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+            
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+    <div class="row">
+        <div class="main-header">
+           <h4>Staff Meeting</h4>
+        </div>
+     </div>
+     <!-- modal Start -->
+     <div class="col" style="padding: 30px;">
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Staff Meeting</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+     
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+     <script>
+        $(document).ready(function () {
+            var selectedStaffIDsByRole = {}; // Object to store selected staff IDs by role
+    
+            $(document).on('change', '#id_role', function () {
+                var role_id = $(this).val();
+                var url = "{% url 'demo_js' %}";
+                $.ajax({
+                    url: url,
+                    data: {
+                        'role_id': role_id
+                    },
+                    success: function (data) {
+                        let html_data = '';
+                        data.forEach(function (classs) {
+                            const isChecked = isStaffSelected(role_id, classs.staff_id) ? 'checked' : '';
+                            html_data += `
+                                <li>
+                                    <label for="${classs.staff_id}">
+                                        <input type="checkbox" name="staff" value="${classs.id}" class="form-control" id="${classs.staff_id}" ${isChecked}>
+                                        ${classs.first_name}
+                                    </label>
+                                </li>`;
+                        });
+                        $("#id_staff").html('<ul>' + html_data + '</ul>');
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+    
+            $(document).on('click', 'input[name="staff"]', function () {
+                const staff_id = this.id;
+                const role_id = $('#id_role').val();
+                if (!selectedStaffIDsByRole.hasOwnProperty(role_id)) {
+                    selectedStaffIDsByRole[role_id] = [];
+                }
+                if (this.checked) {
+                    selectedStaffIDsByRole[role_id].push(staff_id);
+                } else {
+                    const index = selectedStaffIDsByRole[role_id].indexOf(staff_id);
+                    if (index !== -1) {
+                        selectedStaffIDsByRole[role_id].splice(index, 1);
+                    }
+                }
+                // Update the selected staff display
+                updateSelectedStaffDisplay();
+            });    
+            // Function to check if staff is selected for a role
+            function isStaffSelected(role_id, staff_id) {
+                return selectedStaffIDsByRole.hasOwnProperty(role_id) && selectedStaffIDsByRole[role_id].includes(staff_id);
+            }   
+            // Function to update the selected staff display
+            function updateSelectedStaffDisplay() {
+                const selectedStaffList = [];
+                for (const role_id in selectedStaffIDsByRole) {
+                    if (selectedStaffIDsByRole.hasOwnProperty(role_id)) {
+                        selectedStaffIDsByRole[role_id].forEach(staff_id => {
+                            selectedStaffList.push($(`label[for="${staff_id}"]`).text().trim());
+                        });
+                    }
+                }
+                const selectedStaffHtml = selectedStaffList.map(staffName => {
+                    return `<li>${staffName}</li>`;
+                }).join('');
+                $("#selected-staff-list").html(selectedStaffHtml);
+            }
+        });
+    </script>
+
+
+   
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <form method="post">
+                {% csrf_token %}
+            <div class="col-md-6 mb-3">
+                <label for="student_admission"> Title : </label>
+                    {{record.meeting_title}}                        
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="student_admission"> Meeting Date Time : </label>
+                    {{record.meeting_date_time}}                        
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="student_admission"> Meeting Duration : </label>
+                    {{record.meeting_duration}}                        
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="student_admission"> Staff : </label>
+                {% for staff in record.staff.all %}
+                    {{ staff.first_name }},                               
+                    {% endfor %}
+                            
+            </div>
+            <br>
+            <br>
+            <div class="col-md-12 mb-3">
+                <label for="student_admission">Meeting Notes :  </label>
+                    {{form.note}}
+                    
+            </div>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+        </form>
+          
+            </div>
+            </div>
+ </div>
+
+ {% endblock %}
+ {% block script_block %}
+
+ <!-- <script>
+    $(document).ready(function () {
+        var selectedCheckboxes = {}; // Object to store selected checkbox values
+
+        function updateCheckboxes() {
+            $("input[name='staff']").each(function () {
+                const staff_id = this.id;
+                this.checked = selectedCheckboxes[staff_id] || false;
+            });
+        }
+
+        updateCheckboxes();
+
+        $(document).on('change', '#id_role', function () {
+            var role_id = $(this).val();
+            var url = "{% url 'demo_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'role_id': role_id
+                },
+                success: function (data) {
+                    let html_data = '';
+                    data.forEach(function (classs) {
+                        const isChecked = selectedCheckboxes[classs.staff_id] ? 'checked' : '';
+                        html_data += `
+                            <li>
+                                <label for="${classs.staff_id}">
+                                    <input type="checkbox" name="staff" value="${classs.id}" class="form-control" id="${classs.staff_id}" ${isChecked}>
+                                    ${classs.first_name}
+                                </label>
+                            </li>`;
+                    });
+                    $("#id_staff").html('<ul>' + html_data + '</ul>');
+                   
+                    updateCheckboxes();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        $(document).on('click', 'input[name="staff"]', function () {
+            const staff_id = this.id;
+            selectedCheckboxes[staff_id] = this.checked;
+        });
+    });
+</script> -->
+
+
+ <!-- <script>
+    $(document).ready(function () {
+  $(document).on('change', '#id_role', function () {
+    var role_id = $('#id_role').val();
+    var url = "{% url 'demo_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'role_id': role_id
+      },
+      success: function (data) {
+          $("#id_staff").html(data);
+          let html_data =''
+          data.forEach(function (classs) {
+              html_data += `
+                <li><label for="${classs.staff_id}"><input type="checkbox" name="${classs.staff_id}" value="${classs.id}" class="form-control" id="${classs.staff_id}">
+                    ${classs.first_name}
+            </label></li>`;
+       
+          });
+          console.log(html_data);
+          $("#id_staff").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+});
+</script> -->
+ {% endblock  %}

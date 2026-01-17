@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="main-header">
+      <div class="col-md-4">
+        <h4>Inventory Report</h4>
+      </div>
+  
+</div>
+<div class="col-md-12">
+  <div class="card" style="padding: 10px;">
+    <div class="container-fluid" style="padding: 10px;">
+      <div class="col-md-4  mb-3">
+        <a href="{% url 'stock_report' %}">Stock Report</a>
+      </div>
+      <div class="col-md-4  mb-3">
+        <a href="{% url 'Add_item_report' %}" class="text-primary">Add Item Report</a>
+      </div>
+      <div class="col-md-4  mb-3">
+        <a href="{% url 'issue_item_report' %}">Issue Item Report</a>
+      </div>
+      <br><br><br>
+
+    </div>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="row">
+    <form method="post" class="card">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-2 mb-3">
+          <br>
+          <label for="enquiry">From Date</label>
+          <input type="date" class="form-control" name="from_date">
+        </div>
+        <div class="col-md-2 mb-3">
+          <br>
+          <label for="enquiry">To Date</label>
+          <input type="date" class="form-control" name="to_date">
+        </div>
+
+        <div class="col-md-12 mb-3"><br>
+          <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+<br><br>
+
+
+{% if records %}
+
+<div class="col-md-12">
+  <div class="card" style="padding: 10px;">
+    <div class="table-responsive">
+      <table id="tableID" class="display">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Store</th>
+            <th>Quantity</th>
+            <th>Purchase Price</th>
+            <th>Date</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for data in records %}
+
+          <tr>
+            <td>{{data.item}}</td>
+            <td>{{data.item_category}}</td>
+            <td>{{data.supplier}}</td>
+            <td>{{data.store}}</td>
+            <td>{{data.quantity}}</td>
+            <td>{{data.purchase_price}}</td>
+            <td>{{data.date}}</td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+</div>
+</div>
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rating Stars</title>
+    <style>
+        .rating {
+            unicode-bidi: bidi-override;
+            direction: rtl;
+            text-align: center;
+        }
+        .rating > span {
+            display: inline-block;
+            position: relative;
+            width: 1.1em;
+            font-size: 24px;
+            color: #FFD700;
+        }
+        .rating > span:hover:before,
+        .rating > span:hover ~ span:before {
+            content: "\2605";
+            position: absolute;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            var ratingContainers = document.querySelectorAll('.rating');
+            ratingContainers.forEach(function(container) {
+                var starCount = parseInt(container.dataset.stars, 10);
+                displayRating(starCount, container);
+            });
+        };
+
+        function displayRating(starCount, container) {
+            container.innerHTML = "";
+
+            for (var i = 0; i < starCount; i++) {
+                var star = document.createElement("span");
+                star.innerHTML = "&#9734;";
+                container.appendChild(star);
+            }
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="rating" data-stars="3"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="rating" data-stars="4"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="rating" data-stars="2"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

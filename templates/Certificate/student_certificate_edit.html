@@ -1,0 +1,346 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Student Certificate</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                     </div><hr>
+                     {% if not view %}
+                     <h4>Edit Student Certificate</h4>
+                     {% else %}
+                     <h4>View Student Certificate</h4>
+                     {% endif %}
+                     <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                     {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Student Certificate List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Certificate Name</th>
+                                <th>Background Image</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>
+                                    <a href="#" style="color: black;" data-toggle="modal" data-target="#studentCertificate{{ data.id }}">{{ data.certificate_name }}</a>
+
+                                </td>                               
+                                <td>{{data.background_image}}</td>
+                                <td>  
+                                    <a href="{% url 'student_certificate_view' data.id %}" style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    <a href="{% url 'student_certificate_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    <a href="{% url 'student_certificate_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+    
+    {% for data in records %}
+    <style>
+        body {
+            font-family: Roboto;
+        }
+    
+        .certificate-container {
+            padding: 20px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+    
+        .certificate {
+            padding: 25px;
+            position: relative;
+            border: 20px solid {{data.background_color_code}};
+        }
+    
+        .certificate-header > .logo {
+            width: 80px;
+            height: 80px;
+        }
+    
+        .certificate-title {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 20px;
+        }
+    
+        .certificate-body {
+            text-align: center;
+        }
+    
+        h1 {
+            font-weight: 400;
+            font-size: 48px;
+            color: {{data.background_color_code}};
+        }
+    
+        .student-name {
+            font-size: 24px;
+        }
+    
+        .certificate-content {
+            margin: 0 auto;
+            max-width: 600px;
+        }
+    
+        .about-certificate {
+            margin: 0 auto;
+            max-width: 380px;
+        }
+    
+        .topic-description {
+            text-align: center;
+        }
+    
+        .certificate-footer {
+            font-weight: 400;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    
+        .certificate::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-size: cover;
+            filter: blur(5px);
+            z-index: -1;
+            background-image: url({{data.background_image}});
+
+        }
+    
+        /* Responsive Styles */
+    
+        @media (max-width: 768px) {
+            .certificate {
+                border-width: 10px;
+                padding: 15px;
+            }
+    
+            .certificate-title {
+                font-size: 24px;
+            }
+    
+            h1 {
+                font-size: 32px;
+            }
+    
+            .student-name {
+                font-size: 18px;
+            }
+    
+            .certificate-content {
+                max-width: 400px;
+            }
+    
+            .about-certificate {
+                max-width: 280px;
+            }
+    
+            .certificate-footer {
+                font-size: 18px;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .certificate {
+                border-width: 5px;
+                padding: 10px;
+            }
+    
+            .certificate-title {
+                font-size: 20px;
+            }
+    
+            h1 {
+                font-size: 24px;
+            }
+    
+            .student-name {
+                font-size: 16px;
+            }
+    
+            .certificate-content {
+                max-width: 280px;
+            }
+    
+            .about-certificate {
+                max-width: 180px;
+            }
+    
+            .certificate-footer {
+                font-size: 16px;
+            }
+        }
+    </style>
+    
+
+{% endfor %}
+
+
+
+
+
+
+
+
+
+    {% for data in records %}
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="studentCertificate{{ data.id }}" tabindex="-1" role="dialog" aria-labelledby="studentCertificateLabel{{ data.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="studentCertificateLabel{{ data.id }}">Certificate Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card" >
+                    <div class="certificate-container">
+                        <div class="certificate" >
+                                <div class="water-mark-overlay"></div>
+                            <div class="certificate-header">
+                                {% if data.header_logo %}
+                              <center> <img src="{{data.header_logo.url}}"  height="100px" class="logo" alt="{{data.header_logo}}">
+                              </center> 
+                              {% endif %}
+
+                            </div>
+                            <div class="certificate-title">
+                                {% if data.certificate_header %}
+
+                                <h1>{{data.certificate_header}}</h1>
+                                {% endif %}
+
+                            </div>
+                            <div class="certificate-body">
+                                {% if data.certificate_name %}
+
+                                <p class="certificate-title"><strong>{{data.certificate_name}}</strong></p>
+                                {% endif %}
+                                <div class="certificate-body">
+                                    {% if data.student_name %}
+                                    <p class="student-name">{{data.student_name}}</p>
+                                    {% endif %}
+                 
+                                </div>  
+                                <div class="certificate-content">
+                                    {% if data.topic_description %}
+                           
+                                    <p class="topic-title">
+                                       {{data.topic_description}}
+                                    </p>
+                                    {% endif %}
+
+                                    {% if data.body_text %}
+
+                                    <div class="text-center">
+                                        <p class="topic-description text-muted">{{data.body_text}} </p>
+                                    </div>
+                                    {% endif %}
+
+                                </div>
+                                {% if data.date %}
+                                <p class="certificate-footer">Date: {{data.date}}</p>
+                                {% endif %}
+
+                                <div class="certificate-footer text-muted">
+                                    <div class="row">
+                                        {% if data.principal_name %}
+                                        <div class="col-md-6">
+                                            <p>Principal:{{data.principal_name}}</p>
+                                        </div>
+                                        {% endif %}
+
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    {% if data.accredited_by %}
+
+                                                    <p>
+                                                        Accredited by
+                                                    </p>
+                                                    <p>{{data.accredited_by}}</p>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {% if data.endorsed_by %}
+
+                                                    <p>
+                                                        Endorsed by
+                                                    </p>
+                                                    <p>{{data.endorsed_by}}</p>
+                                                    {% endif %}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+{% endfor %}
+{% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

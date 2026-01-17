@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    .col-md-12{
+        background-color: whitesmoke; 
+        font-size: small;
+    }
+    tr{
+        padding: 20px;
+    }
+    
+</style>
+<div class="container-fluid">
+    <div class="row">
+        {% if 'class_time_table_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+        <div class="main-header">
+            <h4>Select Criteria</h4>
+            <a href="{% url 'class_timetable' %}" class="btn btn-primary" style="float: right; margin-right:3%;">Add</a>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <br>
+    <br>
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Class/Grade</label>
+                        <select class="form-control" name="class" id="id_Class" required>
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}" {% if data.id == classs %} selected {% endif %}>{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="section">Streams/Section</label>
+                        <select class="form-control" name="section" id="id_section" required>
+                            <option value="">---Select--- </option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}" {% if data.id == section %}selected{% endif %}>{{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div><br>
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="search">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+    {% if TimeTable_records %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <table class="table" style="text-align: center;">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                            <th>Saturday</th>
+                            <th>Sunday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td >
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Monday' %}
+                                    <div class="row" >
+                                    <div class="col-md-12">
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                </div><br>
+                                {% endif %}
+                                    {% endfor %}
+                                
+                            </td>
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Tuesday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Wednesday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Thursday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Friday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Saturday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+                            
+                            <td>
+                                
+                                    {% for data in TimeTable_records %}
+                                    {% if data.day == 'Sunday' %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Subject:{{data.subject}} <br>
+                                        ({{data.subject.subject_code}}) <br>
+                                        {{data.time_from}} - {{data.time_to}}<br>
+                                        Room Number : {{data.room_no}}
+                                    </div>
+                                    </div><br>
+                                    {% endif %}
+                                    {% endfor %}
+                            </td>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <center> <h5>No Records Found </h5></center>
+    {% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+ 
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+
+{% endblock %}

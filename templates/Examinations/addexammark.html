@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Add Mark</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                <div class="main-header">
+                    <div class="col-md-3">
+                        <h5>Exam </h5>
+                        <p>Unit Test</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Exam Group </h5>
+                        <p>Demo </p>
+                    </div>
+                </div>
+                <div class="table-responsive"><br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Date From</th>
+                                <th>Start Time</th>
+                                <th>Duration</th>
+                                <th>Room No</th>
+                                <th>Marks (Max..)</th>
+                                <th>Marks (Min..)</th>
+                                <th>Enter Mark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.subject}}</td>
+                                <td>{{data.date}}</td>
+                                <td>{{data.time}}</td>
+                                <td>{{data.duration}}</td>
+                                <td>{{data.room_number}}</td>
+                                <td>{{data.marks_max}}</td>
+                                <td>{{data.marks_min}}</td>
+                                <td><a href="{% url 'enter_mark' data.id %}">
+                                        <i class="fa fa-address-card-o" style="color: black;" data-toggle="tooltip"
+                                            data-placement="top" title="Enter Mark"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

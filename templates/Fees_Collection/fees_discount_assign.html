@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="class">Class</label>
+                    <select class="form-control" name="class" id="id_Class">
+                        <option value="" >---Select---</option>
+                        {% for data in class_records %}
+                        <option value="{{ data.id }}">{{data.Class}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Section</label>
+                    <select class="form-control" name="section" id="id_section">
+                        <option value="">---Select---</option>
+                        {% for data in section_records %}
+                        <option value="{{ data.id }}">{{data.section_name}}</option>
+                        {% endfor %}
+                    </select>                
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Category</label>
+                    <select class="form-control" name="category">
+                        <option value="">---Select---</option>
+                        {% for data in category_records %}
+                        <option value="{{ data.id }}">{{data.category}}</option>
+                        {% endfor %}
+                    </select>                
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Gender</label>
+                    <select class="form-control" name="gender">
+                        <option value="">---Select---</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>                
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">RET</label>
+                    <select class="form-control" name="RET">
+                        <option value="">---Select---</option>
+                        <option value="Yes">Yes</option>
+                        <option value="no">no</option>
+                    </select>                
+                </div>
+               
+                <div class="col-md-4 mb-3" style="padding-top: 30px;">
+                <button type="submit" class="btn btn-primary">Search</button>
+                 </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+
+    {% if records %}
+    <div class="row">
+      <div class="col-md-12">
+          <div class="card" style="padding: 10px; border-top: 5px solid black;">
+              <div class="table-responsive">
+                  <form method="post" id="discount-form">
+                      {% csrf_token %}
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th colspan="2"><h5>Discount</h5></th>
+                                  <th>
+                                      <input type="checkbox" id="select-all-checkbox">
+                                      <label for="select-all-checkbox">All</label>
+                                  </th>
+                                  <th>Admission No</th>
+                                  <th>Student Name</th>
+                                  <th>Class</th>
+                                  <th>Father Name</th>
+                                  <th>Category</th>
+                                  <th>Gender</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {% for data in records %}
+                              <tr>
+                                  <td>{{ fees_discount.discount_code }}</td>
+                                  <td>{{ fees_discount.amount }}</td>
+                                  <td>
+                                      <input type="checkbox" name="selected_students[]" class="student-checkbox" value="{{ data.id }}">
+                                  </td>
+                                  <td>{{ data.admission_no }}</td>
+                                  <td>{{ data.first_name }} {{ data.last_name }}</td>
+                                  <td>{{ data.Class }}</td>
+                                  <td>{{ data.Father_name }}</td>
+                                  <td>{{ data.category }}</td>
+                                  <td>{{ data.gender }}</td>
+                              </tr>
+                              {% endfor %}
+                              <tr>
+                                  <td colspan="8"></td>
+                                  <td>
+                                      <button type="button" class="btn btn-primary" onclick="submitForm()">Save</button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+ {% endif %}
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+
+
+
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+
+
+<script>
+  function save() {
+    var fees_id = {{ fees_discount.id }};
+    var id_list = [];
+
+    for (var i = 1; i < {{ records_count }} + 1; i++) {
+        if ($('#check_' + i).prop('checked') == true) {
+            id_list.push($('#check_' + i).val());
+        }
+    }
+
+    fetch("{% url 'fees_discount_assign_js' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}",  // Ensure CSRF protection
+        },
+        body: JSON.stringify({ id_list: id_list, fees_id: fees_id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message || "Updated Successfully");
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+</script>
+
+
+<!-- JavaScript code to handle checkbox behavior -->
+<script>
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const dataCheckboxes = document.getElementsByClassName('data-checkbox');
+  
+    selectAllCheckbox.addEventListener('change', function() {
+      for (let i = 0; i < dataCheckboxes.length; i++) {
+        dataCheckboxes[i].checked = selectAllCheckbox.checked;
+      }
+    });
+  
+    for (let i = 0; i < dataCheckboxes.length; i++) {
+      dataCheckboxes[i].addEventListener('change', function() {
+        if (!this.checked) {
+          selectAllCheckbox.checked = false;
+        } else {
+          // Check if all other checkboxes are selected
+          let allSelected = true;
+          for (let j = 0; j < dataCheckboxes.length; j++) {
+            if (!dataCheckboxes[j].checked) {
+              allSelected = false;
+              break;
+            }
+          }
+          selectAllCheckbox.checked = allSelected;
+        }
+      });
+    }
+  </script>
+
+  
+<script>
+  $(document).ready(function () {
+  $(document).on('change', '#id_Class', function () {
+    var class_id = $('#id_Class').val();
+    var url = "{% url 'section_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'class_id': class_id
+      },
+      success: function (data) {
+          $("#id_section").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (section) {
+              html_data += `<option value="${section.id}">${section.section_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_section").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+
+});
+</script>
+
+<script>
+  // Select all checkboxes when "All" is clicked
+  document.getElementById("select-all-checkbox").addEventListener("change", function() {
+      let checkboxes = document.querySelectorAll(".student-checkbox");
+      checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+  });
+
+  function submitForm() {
+      let selectedValues = [];
+      document.querySelectorAll(".student-checkbox:checked").forEach(checkbox => {
+          selectedValues.push(checkbox.value);
+      });
+
+      if (selectedValues.length === 0) {
+          alert("Please select at least one student.");
+          return;
+      }
+
+      let form = document.getElementById("discount-form");
+      let input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "selected_students";
+      input.value = JSON.stringify(selectedValues);
+      form.appendChild(input);
+
+      form.submit(); // Submit form
+  }
+</script>
+
+ {% endblock  %}

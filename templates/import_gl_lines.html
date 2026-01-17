@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+
+<div class="container mt-5">
+    <h2>Import Staff Data</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="gl_line_file">Upload Excel File:</label>
+            <input type="file" name="gl_line_file" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Upload</button>
+    </form>
+</div>
+
+
+
+{% endblock %}
+

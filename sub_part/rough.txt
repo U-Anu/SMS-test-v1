@@ -1,0 +1,111 @@
+session=request.Session
+
+ id="id_Class"
+ 
+ id="id_section"
+ 
+
+    session=models.ForeignKey('sub_part.Session',on_delete=models.CASCADE)
+
+<script>
+    $(document).ready(function () {
+        // Open the modal when the page is loaded
+        $('.bd-example-modal-lg').modal('show');
+
+    });
+</script>
+
+
+
+<script>
+  // Get the modal element and close button
+  const modal = document.getElementById("myModal");
+  const closeButton = modal.querySelector(".close");
+
+  // Add event listener to close button
+  closeButton.addEventListener("click", function () {
+    closeModalAndRedirect();
+  });
+
+  // Add event listener to modal overlay
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      closeModalAndRedirect();
+    }
+  });
+
+  // Function to close the modal and perform the redirection
+  function closeModalAndRedirect() {
+    modal.style.display = "none"; // Hide the modal
+
+    // Perform the redirection
+    window.location.href = "/student/apply_leave"; // R
+  }
+</script>
+
+
+
+{% if 'student_information_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+ {% endif %}
+
+
+  if request.user.is_superuser or request.user.is_school_admin or 'student_information_view' in request.permissions:
+        try:
+        
+        except Exception as error:
+           return render(request,'error.html',{'error':error})
+    else:
+        return redirect('dashboard')
+
+
+
+    created_by=models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+    created_at=models.DateTimeField(auto_now_add=True)
+
+ enctype="multipart/form-data"
+
+  class="bozero"><span data-toggle="tooltip" title="view"
+
+                      {% if view %}
+                      <h4> View Postal Receive </h4>
+                      {% elif edit %}
+                      <h4> Edit Postal Receive </h4>
+                      {% else %}
+                      <h4>Add Postal Receive </h4>                            
+                      {% endif %}  
+
+                       {% if not view %}
+                       {% endif %}
+
+if request.user.is_superuser or request.user.is_school_admin or 'examinations_report_view' in request.permissions:
+     try:     
+
+                except Exception as error:
+           return render(request,'error.html',{'error':error})
+    else:
+           return render(request,'page_not_found.html',{'error':error})     
+
+
+record saved :
+
+ messages.success(request, 'Record Saved Successfully')
+
+ record edit :
+ 
+ messages.warning(request, 'Record Updated Successfully')
+
+ record delete:
+
+ messages.error(request, 'Record Deleted Successfully')
+
+      {% else %}
+      <center> <h5>No Records Found </h5></center>
+      {% endif %}
+
+
+  <div class="row">
+    <div class="main-header">
+       <h4>Student Information Report</h4>
+    </div>
+  </div>

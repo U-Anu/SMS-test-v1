@@ -1,0 +1,105 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+
+<style>
+    /* Your styles here */
+</style>
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>{{ screen_name }}</h2>
+                <div>
+                    <button type="submit" form="myForm" class="btn btn-primary">Pay</button>
+                    <a href="{{ list_url }}" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            <div class="card card-body">
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    <div>
+                        <p style="color:red;">{{ message }}</p>
+                        {% if messages %}
+                            <div class="messages">
+                                {% for message in messages %}
+                                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">
+                                       <span style="color:red;"> {{ message }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div><hr>
+                    {% csrf_token %}
+                    {% for form_field in form %}
+                        <div class="form-group">
+                            {{ form_field.label_tag }}
+                            {{ form_field }}
+                            <!-- Display errors associated with the form field -->
+                            {% if form_field.errors %}
+                                <div class="text-danger">
+                                    {% for error in form_field.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% if record_details %}
+                        {% for key, value in record_details.items %}
+                            <div class="form-group">
+                                <label>{{ key }}</label>
+                                <input name="{{ key }}" value="{{ value }}" class="form-control readonly-field" readonly>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function checkTransactionType() {
+        var transactionType = document.getElementById("id_transaction_type").value;
+
+        fetch(`/check-transaction-type/?transaction_type_id=` + transactionType)
+            .then(response => response.json())
+            .then(data => {
+                var isSpecial = data.is_special;
+                console.log('isSpecial',isSpecial)
+
+                if (isSpecial == 'PreDefineAccount') {
+                    // Redirect to another screen if the transaction type is special
+                    window.location.href = `/special-transaction-create/${transactionType}/`;
+                }
+                else if (isSpecial == 'PaymentAndReceipt' ) {
+                    // Redirect to another screen if the transaction type is special
+                    window.location.href = `/rec-and-pay-transaction/${transactionType}/`;
+                } else {
+                    // Redirect to another screen if the transaction type is not special
+                    window.location.href = `/transaction-create/`;
+                }
+            });
+    }
+
+    function updateCurrency(accountFieldId, currencyFieldId) {
+        var accountId = document.getElementById(accountFieldId).value;
+        var currencyField = document.getElementById(currencyFieldId);
+
+        // Clear the current currency value
+        currencyField.value = "";
+
+        if (accountId) {
+            fetch(`/get-account-currency/${accountId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    currencyField.value = data.currency_id;
+                });
+        }
+    }
+</script>
+
+
+
+{% endblock %}

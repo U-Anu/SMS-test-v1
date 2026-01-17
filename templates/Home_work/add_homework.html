@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+<div class="row">
+    <div class="main-header">
+        <h4>Homework List</h4>
+    </div>
+</div>
+<!-- modal Start -->
+{% if 'homework_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+<div class="col" style="padding: 30px;">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add"
+        style="float:right;">Add</button><br>
+</div>
+<div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Homework List</h5>
+        
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-4 mb-3">
+                            {{data.label_tag}}
+                            {{ data }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <center>
+                        
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal End -->
+{% endif %}
+
+
+{% if 'homework_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Subject Group</th>
+                        <th>Subject</th>
+                        <th>Homework Date</th>
+                        <th>Submission Date</th>
+                        <th>Evaluation Date</th>
+                        <th>Created By</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.Class}}</td>
+                        <td>{{data.section}}</td>
+                        <td>{{data.subject_group}}</td>
+                        <td>{{data.subject}}</td>
+                        <td>{{data.homework_date}}</td>
+                        <td>{{data.submission_date}}</td>
+                        <td>{{data.evaluation_date}}</td>
+                        <td>Admin</td>
+                        <td>
+                            {% if 'homework_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                            <a href="{% url 'add_homework_view' data.id  %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"><i class='fa fa-server'></i></a>
+                                {% endif %}
+                                {% if 'homework_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                            <a href="{% url 'add_homework_edit' data.id  %}"class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                {% endif %}
+                                {% if 'homework_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                            <a href="{% url 'add_homework_delete' data.id %}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove'
+                                    onclick="alert('You want to Delete this Item..?')"></i></a>
+                                    {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  
+  });
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_section', function () {
+      var section_id = $('#id_section').val();  
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'subject_grp_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+            'class_id': class_id,
+            'section_id': section_id,
+        },
+        success: function (data) {
+            $("#id_subject_group").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subjectt) {
+                html_data += `<option value="${subjectt.id}">${subjectt.name}</option>`
+            });
+            console.log(html_data);
+            $("#id_subject_group").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  
+  });
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_subject_group', function () {
+      var class_id = $('#id_Class').val();
+      var section_id = $('#id_section').val();  
+      var subject_grps = $('#id_subject_group').val();
+      var url = "{% url 'subject_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+            'class_id': class_id,
+            'section_id': section_id,
+            'subject_grp_id': subject_grps
+        },
+        success: function (data) {
+            $("#id_subject").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (subjecttt) {
+                html_data += `<option value="${subjecttt.id}">${subjecttt.subject_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_subject").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+  
+  });
+  </script>
+{% endblock %}

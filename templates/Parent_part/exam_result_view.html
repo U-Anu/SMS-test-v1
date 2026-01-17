@@ -1,0 +1,93 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="main-header">
+           <h4>{{records.0.exam.Exam}} Result</h4>
+        </div>
+     </div>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table class="table"  >
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Max. Marks</th>
+                        <th>Min. Marks</th>
+                        <th>Marks Obtained</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.subject}}</td>
+                        <td><span class="max">{{data.exam_subject.marks_max}}</span></td>
+                        <td><span>{{data.exam_subject.marks_min}}</span></td>
+                        <td><span class="total">{{data.marks}}</span></td>
+                        <td><span>{{data.note}}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Percentage : <span id="percentage"></span></strong>
+
+                </div>
+              
+                <div class="col-md-3">
+                    <strong>Grand Total : <span id="grand_total"></span></strong>
+
+                </div>
+                <div class="col-md-3">
+                    <strong>Total Obtain Marks : <span id="total_obtain"></span></strong>
+
+                </div>
+
+            </div>
+            <br><br>
+            </div>
+         </div>
+     </div>
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+
+<script>
+    calc_total();
+    function calc_total(){
+
+        // total obtained
+        var sum = 0;
+        $(".total").each(function(){
+          sum += parseFloat($(this).text());
+        });
+        $('#total_obtain').text(sum);
+
+        // Grand total
+        var sum1 = 0;
+        $(".max").each(function(){
+          sum1 += parseFloat($(this).text());
+        });
+        $('#grand_total').text(sum1);
+
+        // percentage
+        percentage = parseInt(sum * 100 / sum1)
+        $('#percentage').text(percentage);
+
+        // pass or fail
+
+
+      }
+  </script>
+
+ {% endblock  %}

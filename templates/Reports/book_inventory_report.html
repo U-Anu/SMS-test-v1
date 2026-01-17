@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+<h4>
+  Library Report</h4>
+    <div class="main-header">
+      <div class="col-md-4">
+      </div>
+    </div>
+
+
+    <div class="col-md-12">
+      <div class="card" style="padding: 10px;">
+        <div class="container-fluid" style="padding: 10px;">
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'book_isseu_report' %}">Book Issue Report</a>
+          </div>
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'book_inventory_report' %}">Book Inventory Report</a>
+          </div>
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'book_issue_return_report' %}">Book Issue Return Report</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+
+
+
+    <div class="col-md-12">
+      <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+          <table id="tableID" class="display">
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>Book Number</th>
+                <th>ISBN Number</th>
+                <th>Publisher</th>
+                <th>Author</th>
+                <th>Subject</th>
+                <th>Qty</th>
+                <th>Available</th>
+                <th>Book Price</th>
+                <th>Post Date</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in records %}
+
+              <tr>
+                <td>{{data.book_title}}</td>
+                <td>{{data.book_number}}</td>
+                <td>{{data.ISBN_number}}</td>
+                <td>{{data.publisher}}</td>
+                <td>{{data.author}}</td>
+                <td>{{data.subject}}</td>
+                <td>{{data.qty}}</td>
+                <td>{{data.available_qty}}</td>
+                <td>{{data.book_price}}</td>
+                <td>{{data.post_date}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

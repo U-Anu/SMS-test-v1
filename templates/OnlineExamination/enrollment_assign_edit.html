@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>EnRollment </h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'expense_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-12">
+                <div class="card card-body" style=" border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if view %}
+                            <h4>View Expense</h4>
+                        {% elif edit %}
+                            <h4>Edit Expense</h4>
+                        {% else %}
+                            <h4>Question Paper List</h4>          
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <form method="post">
+                        {% csrf_token %}
+            
+                        <div class="row mb-2">
+                            <div class="col-md-8 text-center">
+                                <strong>Question Name:</strong>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <strong>{{ records.question_paper_name }}</strong>
+                            </div>
+                        </div>
+                      
+            
+                        <div id="form-container">
+                            <div class="row mb-3" id="row-template">
+                                <div class="col-md-6">
+                                    <label for="class">Class</label>
+                                    <select class="form-control class-select" name="class" id="id_class">
+                                        <option value="">---Select---</option>
+                                        {% for data in class_records %}
+                                        <option value="{{ data.id }}" {% if data.id == record.Class.id %}selected{% endif %}>
+                                            {{ data.Class }}
+                                        </option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="section">Section</label>
+                                    <div class="section-checkboxes">
+                                        {% for section in section_records %}
+                                            <label>
+                                                <input type="checkbox" name="selected_sections" value="{{ section.id }}"  
+                                                    {% if section in record.section.all %}checked{% endif %}>
+                                                {{ section.section_name }}
+                                                &nbsp;  
+                                                &nbsp;  
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                       
+                           
+                            {% comment %} <div class="text-right">
+                                <button type="button" id="add-row-btn" class="btn btn-primary">Add Row</button>
+                            </div> {% endcomment %}
+                        </div>
+            
+                        <div class="form-group">
+                            <label for="exam_date">Exam Date</label>
+                            <input type="date" class="form-control" name="exam_date" value="{{exam_date_str}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="any_time">Any Time</label>
+                            <input type="checkbox" id="any_time" name="any_time" {% if record.enrollment.any_time == True %}checked  {% endif %}>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="start_time">Start Time</label>
+                            <input type="time" class="form-control" name="start_time" value="{{start_time_str}}">
+                         </div>
+                        
+                
+                        <button type="submit" class="btn btn-primary float-right">Save</button>
+                        <br><br>
+                      
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Qusetion Paper List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Question paper</th>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Exam Date</th>
+                               
+                                <th>Any Time</th>
+                                <th>Start Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                          
+
+                            
+                            {% for data in enrollment_assign %}
+                            <tr>
+                                <td>{{data.enrollment.question_paper.question_paper_name}}</td>
+                                <td>{{data.Class}}</td>
+                                <td>
+                                    {% for section in data.section.all %}
+                                      {{ section.section_name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                  </td>
+                                <td>{{data.enrollment.exam_date}}</td>
+                                <td>
+                                    {% if data.enrollment.any_time %}
+                                      &#10003;
+                                    {% else %}
+                                      &#10007;
+                                    {% endif %}
+                                  </td>                           
+                                <td>{{data.enrollment.start_time}}</td>
+                                <td>  
+                                   
+                                  {% if 'expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'add_expense_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                  {% endif %}
+                                  {% if 'expense_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'add_expense_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                  {% endif %}
+                                  {% if 'expense_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'enrollment_assign_delete' question_paper_id=records.id data_id=data.id %}" class="bozero">
+                                    <span data-toggle="tooltip" title="delete" style="color: black;">
+                                        <i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i>
+                                    </span>
+                                </a>
+                                   {% endif %}
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+    $(document).ready(function () {
+        // Handle class change and load sections dynamically
+        $(document).on('change', '.class-select', function () {
+            var $row = $(this).closest('.row');
+            var class_id = $(this).val();
+            var url = "{% url 'section_js' %}";
+        
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    let html_data = '';
+                    data.forEach(function (section, index) {
+                        html_data += `
+                            <div class="form-check">
+                                <input class="form-check-input section-checkbox" type="checkbox" name="sections_name[${index}]" value="${section.id}" id="section_${section.id}">
+                                <label class="form-check-label" for="section_${section.id}">
+                                    ${section.section_name}
+                                </label>
+                            </div>`;
+                    });
+                    $row.find(".section-checkboxes").html(html_data);
+                    updateSelectedSections($row);  // Update hidden field for this row
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+        
+        // Handle section checkbox change and update the hidden field
+        $(document).on('change', '.section-checkbox', function () {
+            var $row = $(this).closest('.row');
+            updateSelectedSections($row);
+        });
+        
+        // Function to update hidden field with selected section values
+        function updateSelectedSections($row) {
+            let selected = [];
+            $row.find('.section-checkbox:checked').each(function() {
+                selected.push($(this).val());
+            });
+            $row.find('.selected_sections').val(selected.join(','));
+        }
+        
+        // Handle adding a new row with cleared fields
+        $('#add-row-btn').on('click', function() {
+            var $newRow = $('#row-template').clone().removeAttr('id').addClass('new-row');
+            $newRow.find('select').val(''); // Clear selected class
+            $newRow.find('.section-checkboxes').empty(); // Clear checkboxes
+            $newRow.find('.selected_sections').val(''); // Clear hidden field
+            
+            // Add remove button to the new row
+            $newRow.append(`
+                <div class="col-md-12 mb-3">
+                    <button type="button" class="btn btn-danger remove-row-btn">Remove</button>
+                </div>
+            `);
+            
+            $('#form-container').append($newRow); // Append new row
+        });
+        
+        // Handle removing a row
+        $(document).on('click', '.remove-row-btn', function () {
+            $(this).closest('.row').remove();
+        });
+    });
+</script>
+
+ {% endblock  %}

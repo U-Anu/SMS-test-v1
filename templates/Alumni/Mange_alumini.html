@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Pass Out Session</label><span class="text-danger">*</span>
+                        <select class="form-control" name="session" required>
+                            <option value="" >---Select---</option>
+                            {% for data in session_recods %}
+                            <option value="{{data.id}}">{{data.session}}</option>
+                            {% endfor %}
+                
+                        </select>
+                    </div>
+              
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Class</label><span class="text-danger">*</span>
+                        <select class="form-control" name="class" id="id_Class" required>
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}" {% if data.id == classs %} selected {% endif %}>{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="section">Section</label><span class="text-danger">*</span>
+                        <select class="form-control" name="section" id="id_section" required>
+                            <option value="">---Select--- </option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}" {% if data.id == section %}selected{% endif %}>{{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>  
+                <br>              
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="search">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="main-header">
+           <h4>Students List</h4>
+        </div>
+     </div>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>                    
+                    <tr>
+                        <th>Admission No </th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Gender</th>
+                        <th>Current Email</th>
+                        <th>Current Phone</th>
+                        <th>Action</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in record %}
+                    <tr>
+                        <td>{{data.admission_no}}</td>
+                        <td>{{data.first_name}}</td>
+                        <td>{{data.Class}}({{data.section}})</td>
+                        <td>{{data.gender}}</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <a href="{% url 'Mange_alumini_add' data.id %}"><button type="button" class="btn btn-primary">+</button></a>
+                        </td>
+            
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+                {% for data in recordss %}               
+                <tr>
+                    <td>{{ data.students_id.admission_no }}</td>
+                    <td>{{ data.students_id.first_name }}</td>
+                    <td>{{ data.students_id.Class }}{{ data.students_id.section }}</td>
+                    <td>{{ data.students_id.gender }}</td>
+                    <td>{{ data.current_email }}</td>
+                    <td>{{ data.Current_phone }}</td>
+                    <td>
+                        {% if 'manage_alumni_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                    <a href="{% url 'Mange_alumini_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                        {% endif %}
+                        {% if 'manage_alumni_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                    <a href="{% url 'Mange_alumini_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                        {% endif %}
+
+
+                    </td> 
+                   
+                </tr>
+                {% endfor %} 
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+
+ 
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+ {% endblock  %}

@@ -1,0 +1,96 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">{{screen_name}}</h3>
+                    {% for msg in messages %}
+                        <center><span style="color:red;">{{msg}}</span></center>
+                    {% endfor %}
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    {% csrf_token %}
+                    {% for form_field in form %}
+                        <div class="form-group">
+                            {{ form_field.label_tag }}
+                            {{ form_field }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" form="myForm" class="btn btn-primary">Extract Report</button>
+                    <br><br><br>
+                </form><br>
+
+                <div class="table-responsive">
+                    {% if obj %}
+                    <table id="tableID" class="display table table-hover">
+                         <thead class="bg-col">
+                                    <tr>
+                                        <th>No.</th>
+                                        {% for field in obj_fields %}
+                                        <th>{{field.verbose_name|upper}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in obj %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        {% for field in obj_fields %}
+                                        {% if record|get_field_value:field.name != "NA" %}
+                                            <td>
+                                                {{ record|get_field_value:field.name }}
+                                            </td>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                    </table>
+                    {% endif %}
+
+                    {% if enable_extra %}
+                    <center>
+                        <strong>Total Debit</strong>: {{total_debit}}
+                    <strong>Total Credit</strong>: {{total_credit}}
+                    </center>
+                    {% endif %}
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        {% if is_train_balance %}
+                                        <th>No.</th>
+                                        <th>account_id</th>
+                                        <th>account_number</th>
+                                        <th>debit_amount</th>
+                                        <th>credit_amount</th>
+                                        {% endif %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if is_train_balance %}
+                                        {% for data in my_list %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ data.account_id }}</td>
+                                            <td>{{ data.account_number }}</td>
+                                            <td>{{ data.debit_amount }}</td>
+                                            <td>{{ data.credit_amount }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                </tbody>
+                        </table>
+                </div>
+                <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

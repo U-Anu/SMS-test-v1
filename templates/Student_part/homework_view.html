@@ -1,0 +1,180 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+<div class="row">
+    <div class="main-header">
+        <h4>Homework </h4>
+    </div>
+</div>
+
+
+
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Subject</th>
+                        <th>Homework Date</th>
+                        <th>Submission Date</th>
+                        <th>Evaluation Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.Class}}</td>
+                        <td>{{data.section}}</td>
+                        <td>{{data.subject}}</td>
+                        <td>{{data.homework_date}}</td>
+                        <td>{{data.submission_date}}</td>
+                        <td>{{data.evaluation_date}}</td>
+                        <td><button type="button" class="btn btn-danger">Incomplete</button></td>                       
+                        <td>
+                          <a href="{% url 'add_homework_view' data.id %}" style="color: black;"><i class='fa fa-server'></i></a>
+                          <a href="{% url 'add_homework_edit' data.id  %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                          <a href="{% url 'add_homework_delete' data.id  %}" style="color: black;"><i class='fa fa-remove'
+                              onclick="alert('You want to Delete this Item..?')"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+  <!-- modal Start -->
+
+  
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Homework Assignments</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+           
+            <div class="col-md-12 mb-3">
+               <label>Message</label>
+              <textarea class="form-control"></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label>Attach Document</label>
+               <input type="file" class="form-control"> 
+             </div>
+          </div>
+          <br>
+          <center>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal End -->
+
+  <!-- modal Start View -->
+
+  <div class="modal fade View" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Homework Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card">
+            <div class="row">
+              <div class="col-md-6">
+                {{record.description}}
+              </div>
+              <div class="col-md-6" style="background-color: rgb(240, 241, 241);">
+                <div class="main-header">
+                  <h4>Summary </h4>
+                  <hr>
+                </div>
+                <h6><i class='fa fa-upload'></i>Homework Date:{{record.homework_date}}</h6>
+                <h6><i class='fa fa-upload'></i>Submission Date: {{record.submission_date}}</h6>
+                <h6><i class='fa fa-upload'></i>Evaluation Date: *Need to add in models*</h6><br>
+                <h6>Created By: Super Admin</h6>
+                <h6>Evaluated By: Super Admin</h6>
+                <p>Class: {{record.Class}}</p>
+                <p>Section: {{record.section}}</p>
+                <p>Subject: {{record.subject}}</p>
+                <p>Status: </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
+{% block script_block %}
+
+<script>
+    $(document).ready(function () {
+        // Open the modal when the page is loaded
+        $('.View').modal('show');
+
+   
+    });
+</script>
+
+
+<script>
+  $(document).ready(function () {
+    // Open the modal when the page is loaded
+    $('.View').modal('show');
+
+  });
+</script>
+<script>
+  // Get the modal element and close button
+  const modal = document.getElementById("myModal");
+  const closeButton = modal.querySelector(".close");
+
+  // Add event listener to close button
+  closeButton.addEventListener("click", function () {
+    closeModalAndRedirect();
+  });
+
+  // Add event listener to modal overlay
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      closeModalAndRedirect();
+    }
+  });
+
+  // Function to close the modal and perform the redirection
+  function closeModalAndRedirect() {
+    modal.style.display = "none"; // Hide the modal
+
+    // Perform the redirection
+    window.location.href = "/parent/homework"; // R
+  }
+</script>
+{% endblock %}

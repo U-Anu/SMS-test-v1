@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+{% block head_block %}
+<style>
+    .profile-user-img {
+        margin: 5px auto;
+        width: 100px;
+        padding: 3px;
+        border: 3px solid #d2d6de
+    }
+
+    .timeline {
+        position: relative;
+        margin: 0 0 30px 0;
+        padding: 0;
+        list-style: none
+    }
+
+    .timeline:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #ddd;
+        left: 31px;
+        margin: 0;
+        border-radius: 2px;
+    }
+
+    .timeline>li {
+        position: relative;
+        /*margin-right:10px;*/
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+
+    .timeline>li:before,
+    .timeline>li:after {
+        content: " ";
+        display: table
+    }
+
+    .timeline>li:after {
+        clear: both
+    }
+
+    .timeline>li>.timeline-item {
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+        margin-top: 0;
+        background: #fff;
+        color: #444;
+        margin-left: 60px;
+        /*margin-right:15px;*/
+        padding: 0;
+        position: relative
+    }
+
+    .timeline>li>.timeline-item>.time {
+        color: #999;
+        float: right;
+        padding: 10px;
+        font-size: 12px
+    }
+
+    .timeline>li>.timeline-item>.timeline-header {
+        margin: 0;
+        color: #555;
+        border-bottom: 1px solid #f4f4f4;
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.1
+    }
+
+    .timeline>li>.timeline-item>.timeline-header>a {
+        /* font-weight:600 */
+        font-family: 'Roboto-Bold';
+    }
+
+    .timeline>li>.timeline-item>.timeline-body,
+    .timeline>li>.timeline-item>.timeline-footer {
+        padding: 10px
+    }
+
+    .timeline>li>.fa,
+    .timeline>li>.glyphicon,
+    .timeline>li>.ion {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+        line-height: 30px;
+        position: absolute;
+        color: #666;
+        background: #d2d6de;
+        border-radius: 50%;
+        text-align: center;
+        left: 18px;
+        top: 0;
+    }
+
+    .timeline>.time-label>span {
+        /* font-family:'Roboto-Bold'; */
+        padding: 5px;
+        display: inline-block;
+        background-color: #fff;
+        border-radius: 4px;
+        font-family: 'Roboto-Bold';
+        font-size: 10px;
+    }
+
+    .timeline-inverse>li>.timeline-item {
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+    .timeline-inverse>li>.timeline-item>.timeline-header {
+        border-bottom-color: #ddd
+    }
+</style>
+{% endblock %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+
+
+    <div class="col-md-12">
+        <br>
+     
+        <div class="row">
+            <center>
+            <div class="main-header">
+             <div class="col-md-4">
+               <h4>More Details </h4>
+               </div>
+            </div>
+        </center>
+         </div>
+       
+
+       
+
+
+        <div class="col-md-12">
+            <br>
+        
+         <form action="{% url 'disable_enable' %}" method="post" id="enable_form">
+            {% csrf_token %}
+            <input type="hidden" name="student_id" value="{{student.id}}">
+         </form>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="card " >
+                        <div class="card-body">
+                            <div class="table-responsive around10 pt0">
+
+                                <table class="table table-hover  tmb0">
+                                    <tbody>
+                                        <tr>
+                                            <th >Student Name</th>
+                                            <th >Custom Code</th>
+                                            {% for data in transation_more_details %}
+                                            <tr>
+                                                <td>{{data.field_value}}</td>
+                                                <td>{{data.custom_field_id}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tr> 
+                                     </tbody>
+                                </table>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="tab-pane fade" id="timeline" role="tabpanel" aria-labelledby="contact-tab">
+
+                    <div class="card" style="padding: 10px;"><br>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                            style="float: right;">
+                            + Add
+                        </button><br>
+
+                        <div class="container-fluid">
+
+                            <div class="timeline-header no-border">
+                                <div id="timeline_list">
+                                    {% for data in records %}
+                                    <ul class="timeline timeline-inverse">
+                                        <li class="time-label">
+                                            <span class="bg-blue">{{data.date}}</span>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-list-alt bg-blue"></i>
+                                            <div class="timeline-item">
+                                                <div class="timeline-body">
+                                                    {{data.title}}
+                                                    <a href="{% url 'student_list_delete' data.id %}"
+                                                        data-toggle="tooltip" title="" data-original-title="Delete"
+                                                        style="float: right;"
+                                                        onclick="alert('You want to Delete this Item..?')"><i
+                                                            class="fa fa-trash"></i></a></span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+
+                                            <i class="fa fa-clock-o bg-gray"></i>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Timeline</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+
+                                            {% csrf_token %}
+                                            {{form}}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Disable Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="post" action="{% url 'disable_enable' %}">
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <input type="hidden" name="student_id" value="{{student.id}}">
+                    <label for="">Reason</label>
+                    <select name="reason" id="reason" class="form-control">
+                        <option value="">select...</option>
+                        {% for data in reason %}
+                        <option value="{{data.id}}">{{data.name}}</option>
+                        {% endfor  %}
+                    </select>
+                    <label for="">Date</label>
+                    <input type="date" class="form-control" name="disable_date">
+                    <label for="">Note</label>
+                    <textarea name="disable_note" id="" cols="30" rows="3" class="form-control"></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+ <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+
+
+
+          <h5 class="modal-title">Login Details <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></h5>
+
+
+          </button><br>
+          <div class="modal-body">
+
+            <div class="col-md-10">
+                <div class="row">
+                    <table class="table mb0 font13">
+                        <tbody>
+                            <center>
+                                <th>Student Name:</th>
+                            <th>{{login_records.student.first_name}}</th>
+                        </center>
+                            <tr>
+
+
+                                <th>User Type</th>
+                                <th>Username</th>
+                                <th>Password</th>
+
+                            </tr>
+                            <tr>
+                                <tr>
+                                        <th>Preant</th>
+                                        <th>{{login_records.parent_username}}</th>
+                                        <th>{{login_records.parent_passwod}}</th>
+
+                                    </tr>
+                                    <tr>
+
+                                            <th>Student</th>
+
+
+
+                                            <th>{{login_records.student_username}}</th>
+
+                                            <th>{{login_records.student_password}}</th>
+                                        </tr>
+                                    <tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // Get all the <td> elements in your HTML document
+const tdElements = document.querySelectorAll('td');
+
+// Loop through each <td> element
+tdElements.forEach(td => {
+  // Check if the <td> has no text content
+  if (td.textContent.trim() === 'None') {
+    // Set its content to be empty
+    td.textContent = '';
+  }
+});
+  </script>
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

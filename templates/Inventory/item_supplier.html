@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Item Supplier</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'item_supplier_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">                        
+                      {% if view %}
+                      <h4> View Item Supplier </h4>
+                      {% elif edit %}
+                      <h4> Edit Item Supplier </h4>
+                      {% else %}
+                      <h4>Add Item Supplier</h4>                            
+                      {% endif %}  
+                       
+                     </div><hr>
+                     <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                      {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'item_supplier_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Item Supplier List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Item Supplier</th>
+                                <th>Contact Person</th>
+                                <th>Address</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.name}},<br>
+                                    {{data.phone_no}}, <br>
+                                    {{data.email}}</td>
+                                
+                                <td>{{data.phone_no}},<br>
+                                    {{data.contact_person_phone}}, <br>
+                                    {{data.contact_person_email}}</td>
+                             
+                                <td>{{data.address}}</td>
+                                <td> 
+                                    {% if 'item_supplier_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'item_supplier_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    {% endif %}
+                                    {% if 'item_supplier_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'item_supplier_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                    {% endif %}
+                                    {% if 'item_supplier_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'item_supplier_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                    {% endif %}
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

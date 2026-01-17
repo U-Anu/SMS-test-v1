@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="main-header">
+       <h4>Library Report</h4>
+    </div>
+ </div>
+
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'attendence_report' %}"> Attendance Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_attendance_type_report' %}"> Student Attendance Type Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'staff_attendance_report' %}"> Staff Attendance Report</a>
+            </div>
+            <br><br><br>
+               <div class="col-md-4  mb-3">
+              <a href="{% url 'daily_attendance_report' %}">Daily Attendance Report</a>
+            </div>
+   </div>
+   </div>
+   </div>
+   
+
+
+
+ 
+   
+
+ 
+ 
+ 
+           
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

@@ -1,0 +1,518 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    @charset "UTF-8";
+
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+    }
+
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    /*Style 6*/
+
+    .toggler-wrapper.style-6 {
+        width: 54px;
+        -webkit-box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0))), #ddd;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0)), #ddd;
+        border-radius: 100px;
+    }
+
+    .toggler-wrapper.style-6 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+        left: calc(100% - 19px - 3px + 5px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-slider {
+        -webkit-box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0.1))), #d0d0d0;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0.1)), #d0d0d0;
+        top: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-knob {
+        width: calc(25px - 6px);
+        height: calc(25px - 6px);
+        border-radius: 50%;
+        left: calc(3px - 5px);
+        top: calc(3px - 5px);
+        -webkit-box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #f5f5f5), to(#eeeeee));
+        background: linear-gradient(#f5f5f5 10%, #eeeeee);
+    }
+</style>
+
+<br>
+<br>
+
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="container-fluid">
+<h4>Modules</h4>
+</div>
+<br>
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button  class="btn btn-white" style="float: right;"><a href="{% url 'modules' %}" class="text-primary">System</a></button>
+        </li>
+    <li class="nav-item" role="presentation">
+        <button  class="btn btn-white" style="float: right;"><a href="{% url 'modules_parent' %}" class="text-primary">Parent</a></button>   </li>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button  class="btn btn-white" style="float: right;"><a href="{% url 'modules_student' %}" class="text-primary">Student</a></button> </li>
+    </li>
+  </ul>
+  <br>
+
+
+
+    <div class="card" style="padding: 10px;border-top: 5px solid black;">
+        <div class="table-responsive">
+            <form id="myForm1" method="post">
+                {% csrf_token %}
+            <table id="tableID4" class="display">
+                <thead>
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>Live Sessions </td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="live_sesion_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'live_sesion_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Fees</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="fess_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'fess_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Homework</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="home_work_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'home_work_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Download Center</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="download_center_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'download_center_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Attendance</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="attendances_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'attendances_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Examinations</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="examination_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'examination_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Notice Board</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="notice_board_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'notice_board_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Library</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="libray_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'libray_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Transport Routes</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="transport_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'transport_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hostel Rooms</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="hostel_roooms_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'hostel_roooms_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Calendar To Do List</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="calendar_to_do_list_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'calendar_to_do_list_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Online Examination</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="online_examination_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'online_examination_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Teachers Rating</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="teachers_rating_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'teachers_rating_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Chat</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="chat_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'chat_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Lesson Plan</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id"  name="modules_val_parent" value="lession_plan_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'lession_plan_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Syllabus Status</td>
+                          <td>
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id"  name="modules_val_parent" value="syllabus_status_modules_parent"
+                                    onclick="myFunction()" data-toggle="modal"   {% if 'syllabus_status_modules_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Apply Leave</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="aplly_leave_module_parent"
+                                    onclick="myFunction()" data-toggle="modal" {% if 'aplly_leave_module_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Class Time Table</td>
+                        <td>
+
+                            <!-- Toggle Button Style 6 -->
+                            <label class="toggler-wrapper style-6">
+                                <input type="checkbox" id="active_id" name="modules_val_parent" value="class_time_table_module_parent"
+                                    onclick="myFunction()" data-toggle="modal" {% if 'class_time_table_module_parent' in records.parent %}checked{% endif %}
+                                    data-target=".bd-example-modal-sm">
+                                <div class="toggler-slider">
+                                    <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+        </form>
+
+        </div>
+    </div>
+    <div>
+
+    </div>
+<script>
+function myFunction() {
+
+let form = document.getElementById("myForm1");
+        form.submit();
+}
+</script>
+
+<script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID4').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[ 25, 50, 100, 250], [ 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+
+  <script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID3').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[ 25, 50, 100, 250], [ 25, 50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+{% endblock %}

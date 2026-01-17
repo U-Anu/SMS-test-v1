@@ -1,0 +1,387 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+<style>
+    .nav {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .nav li {
+        list-style-type: none;
+        margin-right: 10px;
+    }
+
+    .nav li:last-child {
+        margin-right: 0;
+    }
+
+    .nav li.active {
+        font-weight: bold;
+    }
+
+    .nav li a {
+        text-decoration: none;
+        color: #333;
+    }
+
+    .nav li.active a {
+        color: #000;
+    }
+
+    #sendemail {
+        line-height: 35px;
+        padding: 0 10px;
+        font-size: 20px;
+        color: #444;
+    }
+
+    .recipient-dropdown {
+        width: 200px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 5px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .recipient-dropdown li {
+        padding: 5px 10px;
+    }
+
+    .recipient-dropdown li:hover {
+        background-color: #f5f5f5;
+    }
+
+    .recipient-dropdown li a {
+        text-decoration: none;
+        color: #333;
+    }
+
+    .recipient-dropdown li.active {
+        font-weight: bold;
+    }
+
+    .recipient-dropdown li.active a {
+        color: #000;
+    }
+</style>
+
+<div class="container">
+    <br><h4>Send SMS</h4>
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Group</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'indvidula_send_sms' %}">Individual</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Class</a>
+        </li>
+    </ul><!-- Tab panes -->
+    <div class="tab-content card">
+        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+            <form action="#" method="post" id="group_form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- /.box-header -->
+                <div class="box-body ">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h1 id="sendemail"> Send Email</h1>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <small class="req"> *</small>
+                                <input autofocus="" class="form-control" name="title">
+                            </div>
+                            <input type="hidden" name="group_send_by" value="email">
+                         
+                            <div class="form-group">
+                                <label>Message</label><small class="req"> *</small>
+                                <textarea id="group_msg_text" name="message"
+                                    class="form-control compose-textarea ckeditor" cols="35" rows="20"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Message To</label>
+                                <small class="req"> *</small>
+
+                                <div class="minheight303">
+                                    <div class="col-md-3 mb-3 form-check">
+                                        <input class="form-check-input" type="checkbox" value="student" id="student"
+                                            name="noties_all[]">
+                                        <label class="form-check-label" for="student">
+                                            Student
+                                        </label>
+                                        <input class="form-check-input" type="checkbox" value="parent" id="parent"
+                                            name="noties_all[]">
+                                        <label class="form-check-label" for="parent">
+                                            Parent
+                                        </label>
+                                        {% for data in forms %}
+                                        <input class="form-check-input" type="checkbox" value="{{ data.id }}"
+                                            id="{{ data.name }}_id" name="noties_all[]">
+                                        <label class="form-check-label" for="{{ data.name }}_id">
+                                            {{ data.name }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary submit_group"
+                            data-loading-text="<i class='fa fa-spinner fa-spin'></i> Sending"><i
+                                class="fa fa-envelope-o"></i> Send</button>
+                    </div>
+                </div>
+                <!-- /.box-footer -->
+            </form>
+        </div>
+        <div class="tab-pane" id="tabs-2" role="tabpanel">
+            <form action="#" method="post" id="individual_form">
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <small class="req"> *</small>
+
+                                <input class="form-control" name="individual_title">
+                            </div>
+                            <input type="hidden" name="individual_send_by" value="email">
+                           
+                            <div class="form-group">
+                                <label>Message</label><small class="req"> *</small>
+                                <textarea id="individual_msg_text" name="individual_message"
+                                    class="form-control compose-textarea ckeditor">
+                                </textarea>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <!--  karan -->
+                     
+
+
+                            <div class="form-group">
+                                <label for="inpuFname">Message To</label><small class="req"> *</small>
+                                <div class="input-group">
+                                    <div class="input-group-btn bs-dropdown-to-select-group">
+                                        <button type="button"
+                                            class="btn btn-default btn-searchsm dropdown-toggle as-is bs-dropdown-to-select"
+                                            data-toggle="dropdown">
+                                            <span data-bind="bs-drp-sel-label" id="select_id">Select</span>
+                                            <input type="hidden" name="selected_value" data-bind="bs-drp-sel-value"
+                                                value="">
+                                            <span class=""></span>
+
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+
+                                            <li data-value="student" onclick="pass_value('Students')">Students</li>
+                                            <li data-value="parent" onclick="pass_value('Students')">Guardians</li>
+                                            {% for data in roles_records %}
+                                            <li data-value="staff"  onclick="pass_value('{{data.name}}')">{{data.name}}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <input list="brow" id="selected" class="form-control">
+                                    <datalist id="brow">
+                                        <option value="Internet Explorer" data-value="1">
+                                    </datalist> 
+                                  
+                                    <div id="suggesstion-box"></div>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-searchsm add-btn" id="submit" type="button">Add</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="dual-list list-right">
+                                <div class="well minheight260">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="input-group">
+                                                <input type="text" name="SearchDualList" class="form-control"
+                                                    placeholder="Search..." />
+                                                <div class="input-group-btn"><span
+                                                        class="btn btn-default input-group-addon bright"><i
+                                                            class="fa fa-search"></i></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="wellscroll">
+                                        <ul class="list-group send_list">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary submit_individual"
+                            data-loading-text="<i class='fa fa-spinner fa-spin '></i> Sending"><i
+                                class="fa fa-envelope-o"></i> Send</button>
+                    </div>
+
+                </div>
+                <!-- /.box-footer -->
+            </form>
+        </div>
+        <div class="tab-pane" id="tabs-3" role="tabpanel">
+            <form method="post" id="class_form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h1 id="sendemail"> Send Email</h1>
+                            <div class="form-group">
+                                <label>Title</label><small class="req"> *</small>
+                                <input class="form-control" name="title">
+                            </div>
+                         
+                            <div class="form-group">
+                                <label>Message</label><small class="req"> *</small>
+                                <textarea id="class_msg_text" name="message"
+                                    class="form-control compose-textarea ckeditor"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="form-group col-xs-10 col-sm-12 col-md-12 col-lg-12">
+                                    <label for="exampleInputEmail1">Message To</label><small class="req"> *</small>
+                                    <select id="class_id" name="class_id" class="form-control">
+                                        <option value="">Select</option>
+                                        {% for data in classes %}
+                                        <option value="{{ data.id }}">{{ data.Class }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="dual-list list-right m-2">
+                                <div class="well minheight260">
+                                    <div class="wellscroll section-select">
+                                        <b>Section</b>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-envelope-o"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+   function pass_value(val){
+    $('#select_id').text(val)
+   }
+</script>
+<script>
+    $(document).ready(function() {
+
+        $('#submit').click(function()
+        {
+            var value = $('#selected').val();
+            alert($('#brow [value="' + value + '"]').data('value'));
+        });
+    });
+</script>
+
+<script>
+    document.getElementById('class_id').addEventListener('change', function () {
+        const classId = this.value;
+        const sectionSelect = document.querySelector('.section-select');
+
+        fetch(`/get_sections/?class_id=${classId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update the section select element with the received data
+                sectionSelect.innerHTML = ''; // Clear existing sections
+
+                if (data.length > 0) {
+                    data.forEach(section => {
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = section.id;
+                        checkbox.id = `section${section.id}`;
+                        checkbox.name = 'sectionss';
+
+                        const label = document.createElement('label');
+                        label.htmlFor = `section${section.id}`;
+                        label.textContent = section.section_name;
+
+                        const div = document.createElement('div');
+                        div.classList.add('form-check');
+                        div.classList.add('section-select');
+
+                        div.appendChild(checkbox);
+                        div.appendChild(label);
+
+                        sectionSelect.appendChild(div);
+                    });
+                } else {
+                    const div = document.createElement('div');
+                    div.textContent = 'No sections available';
+
+                    sectionSelect.appendChild(div);
+                }
+            })
+            .catch(error => console.log(error));
+    });
+
+    function selectOption(value, displayText) {
+        document.getElementById('recipient_option').value = value;
+        document.getElementById('selected_item').innerHTML = displayText;
+    }
+
+</script>
+
+<script>
+    function myFunction() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput");
+        if (input.value != "") {
+            document.getElementById("myUL").style.display = "block";
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myUL");
+            li = ul.getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }else{
+            document.getElementById("myUL").style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'bank_detail_create' %}">
+                    <button type="button" class="btn btn-primary float-right">+ Add New Bank Detail</button>
+                </a>
+                <h4 class="card-title">Bank Details</h4>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="nav-bank-details" role="tabpanel">
+
+                        <div class="table-responsive">
+                            <table id="bankTable" class="display table table-hover">
+                                <thead class="bg-col">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Code</th>
+                                        <th>Account Number</th>
+                                        <th>Account Type</th>
+                                        <th>Bank Name</th>
+                                        <th>IFSC Code</th>
+                                        <th>Branch Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for detail in bank_details %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ detail.code }}</td>
+                                        <td>{{ detail.account_number }}</td>
+                                        <td>{{ detail.account_type }}</td>
+                                        <td>{{ detail.bank_name }}</td>
+                                        <td>{{ detail.ifsc_code }}</td>
+                                        <td>{{ detail.branch_name }}</td>
+                                        <td>
+                                            <a href="{% url 'bank_detail_update' detail.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{% url 'bank_detail_delete' detail.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

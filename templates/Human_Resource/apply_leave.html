@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Apply Leave </h4>
+        </div>
+     </div>
+     {% if 'apply_leave_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add " style="float: right;">Apply Leave </button>
+     {% endif %}
+     {% if 'apply_leave_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-12"><br>
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="table-responsive">
+                    <table id="tableID" class="display">
+                        <thead>
+                            <tr>
+                                <th>Staff</th>
+                                <th>Leave Date</th>
+                                <th>Apply Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for leave in approval_leaves %}
+                            <tr>
+                                <td>admin</td>
+                                <td>{{leave.leave_type}}({{leave.number_of_days}}) {% if leave.LOP_number_of_days > 0 %}- LOP({{leave.LOP_number_of_days}}){% endif %}</td>
+                                <td>{{leave.apply_date}}</td>
+                                <td>
+                                  {% if leave.status == 'Pending' %}
+                                  <small class="label label-warning">{{leave.status}}</small>
+                                  {% elif leave.status == 'Approve' %}
+                                  <small class="label label-success">{{leave.status}}</small>
+                                  {% elif leave.status == 'Disaprove' %}
+                                  <small class="label label-danger">{{leave.status}}</small>
+                                  {% endif  %}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+
+  <!-- modal Start -->
+
+  <div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+
+        <div class="modal-body">
+            <form  method="post" id="myForm" enctype="multipart/form-data">
+              {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+               <label for="">Apply Date</label>
+               <input type="date" name="apply_date" id="apply_date_id" class="form-control" required>
+               <span id="apply_date_error" class="text-danger text-sm" style="display: none;">Select date</span>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="">Available Leave </label>
+              <select name="available_leave" id="id_leave_type" class="form-control" required onchange="ValidationCheck()">
+                <option value="">select</option>
+                {% for data in available_leaves %}
+                <option value="{{data.staff_leave.leave_type.id}}">{{data.staff_leave.leave_type}}({{data.available_leave}})</option>
+                {% endfor %}
+              </select><br>
+           </div>
+           <div class="col-md-6 mb-3">
+              <label for="">Leave Dates </label><span class="text-danger">*</span>
+              <input type="text" name="dates" id="datePicker" class="form-control" onclick="ValidationCheck()"/>
+              <span id="date_error" class="text-danger" style="display: none;">Select leave dates</span>
+              <!-- <input type="date" name="leave_form" id="id_leave_date_from" class="form-control" onclick="lof_hide()" required> -->
+           </div>
+           <div class="col-md-6 mb-3" id="lop_div" style="display: none;">
+            <label for="">LOP(days)</label>
+            <input type="number" name="lop" id="lop_id" class="form-control" value="0" readonly>
+            <p class="text-warning">This laeve should be consider as LOP</p>
+          </div>
+
+           <div class="col-md-12 mb-3">
+            <label for="">Reason</label>
+            <textarea name="reason" id="" cols="30" rows="3" class="form-control"></textarea>
+         </div>
+
+         <div class="col-md-12 mb-3">
+          <label for="">Attach Document</label>
+          <input type="file" name="document" id="" class="form-control" >
+       </div>
+
+
+
+          </div>
+          <br>
+          <button type="button" onclick="ValidationForSubmitForm()"  class="btn btn-primary" id="submit_btn1" style="float: right;">Save</button>
+        </form>
+        <br><br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+     <!-- modal End -->
+
+
+ {% endblock %}
+ {% block script_block %}
+
+
+
+
+<script>
+  function ValidationForSubmitForm() {
+    const datesStr = $('#datePicker').val(); // getting Dates as string
+    const no_of_leave_days = datesStr.split(', '); // dates converting str to list
+    var leave_type=$('#id_leave_type :selected').text() // selected leave type
+    var lop=$('#lop_id').val(); // lop value
+    const leave_count = parseInt(leave_type.split("(")[1]); // from leave type iam spliting avaiable leaves
+    
+    var apply_date=$('#apply_date_id').val(); 
+    if(apply_date == '' ){
+      document.getElementById('apply_date_error').style.display = 'block';
+    }else{
+      if (no_of_leave_days != '' ){ // leave dates is selected
+        if (leave_type == 'select' ){ // not leave type
+          if (no_of_leave_days.length == parseInt(lop)){
+            document.getElementById("myForm").submit();
+            }else{
+              document.getElementById('lop_div').style.display = 'block';
+              $('#lop_id').val(no_of_leave_days.length);
+              document.getElementById('date_error').style.display = 'none';
+            }
+        }else { // leave type is
+          if (no_of_leave_days.length <= leave_count + parseInt(lop)){
+            document.getElementById("myForm").submit();
+          }else if (no_of_leave_days.length > leave_count) {
+            document.getElementById('lop_div').style.display = 'block';
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(no_of_leave_days.length-leave_count);
+          } else {
+            document.getElementById('lop_div').style.display = 'none';
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(0);
+
+          }
+        }
+    }else{
+      document.getElementById('date_error').style.display = 'block';
+    }
+  }
+
+    }
+
+</script>
+<script>
+  $(document).ready(function() {
+    $('#datePicker').change(function() {
+      document.getElementById('date_error').style.display = 'none';
+  });
+  $('#apply_date_id').change(function() {
+    document.getElementById('apply_date_error').style.display = 'none';
+  });
+  });
+</script>
+
+<script>
+  function ValidationCheck() {
+    const datesStr = $('#datePicker').val();
+    const no_of_leave_days = datesStr.split(', ');
+    var leave_type=$('#id_leave_type :selected').text()
+    var lop=$('#lop_id').val()
+    const leave_count = parseInt(leave_type.split("(")[1]);
+    if (no_of_leave_days.length <= leave_count + parseInt(lop) && no_of_leave_days != '' ){
+      document.getElementById('lop_div').style.display = 'none';
+      $('#lop_id').val(0);
+    }else{
+      if (no_of_leave_days != '' ){
+        if (leave_type == 'select' ){
+          document.getElementById('lop_div').style.display = 'block';
+          document.getElementById('date_error').style.display = 'none';
+          $('#lop_id').val(no_of_leave_days.length);
+
+        }else {
+          if (no_of_leave_days.length > leave_count) {
+            document.getElementById('lop_div').style.display = 'block';
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(no_of_leave_days.length-leave_count);
+          } else {
+            document.getElementById('lop_div').style.display = 'none'
+            document.getElementById('date_error').style.display = 'none';
+            $('#lop_id').val(0);
+
+          }
+        }
+    }else{
+      document.getElementById('date_error').style.display = 'block';
+    }
+
+    }
+}
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+$(document).ready(function() {
+  var selectedDatesArray = [];
+  // Initialize the custom multi-select calendar
+  var datePicker = flatpickr('#datePicker', {
+    mode: 'multiple',
+    dateFormat: 'd-m-Y',
+  });
+
+  // Handle when a date is selected
+
+
+});
+</script>
+
+ {% endblock  %}

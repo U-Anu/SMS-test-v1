@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+    <div class="row">
+        <div class="main-header">
+           <h4>Meeting Link Master</h4>
+        </div>
+     </div>
+     <!-- modal Start -->
+     {% if 'online_live_class_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}    
+
+     <div class="col" style="padding: 30px;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          {% if edit %}         
+          <h4> Edit Meeting Link Master </h4>
+          {% else %}
+          <h5 class="modal-title">Meeting Link Master</h5>                         
+          {% endif %} 
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-3 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+         
+          <button type="submit" class="btn btn-primary">Submit</button>
+          
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
+     <!-- modal End -->
+
+     {% if 'online_live_class_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}    
+   
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Link For</th>
+                        <th>Type Of Application</th>
+                        <th>Link </th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                      <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td>{{data.link_for}}</td>
+                          <td>{{data.type_of_application}}</td>
+                          <td>{{data.link}}</td>
+                            <td>
+                              <span class="label label-{% if data.status == 'Active' %}success{% elif data.status == 'Inactive' %}danger{% endif %}">{{ data.status }}</span>
+                            </td>                       
+                           <td>
+                            
+                          <a href="{{data.link}}"class="bozero"><span data-toggle="tooltip" title="Meeting" style="color: black;" target="_blank"  ><button type="button" class="btn btn-success"><i class='fa fa-video'></i>Start</button></a>
+                            {% if 'online_live_class_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}    
+                          <a href="{% url 'meeting_link_master_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                            {% endif %}
+                            {% if 'online_live_class_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}    
+                          <a href="{% url 'meeting_link_master_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                           {% endif %}
+                           </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% endif %}
+ </div>
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Online Classes</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Save</button>
+                    </form>
+                    <form>
+                  <div class="row">
+                    <!-- {% for data in form %} -->
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    <!-- {% endfor %} -->
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

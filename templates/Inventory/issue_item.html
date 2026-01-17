@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Issue Item</h4>
+        </div>
+    </div>
+    {% if 'issue_item_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <a href="{% url 'add_issue_item' %}" style="float: right;"><button type="button" class="btn btn-primary" ><i class='fa fa-plus-square'></i> Issue Item</button></a>
+    {% endif %}
+
+{% if 'issue_item_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+<div class="col-md-12">    <br>
+    <div class="card" style="padding: 10px;border-top: 5px solid black;">
+        <div class="table-responsive">
+            <table id="tableID" class="display table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Item Category </th>
+                        <th>Issue-Return</th>
+                        <th>Issue To</th>
+                        <th>Issued By</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                      <td> <input type="hidden" value="{{data.id}}" id="item_return_id"><input type="hidden" value="{{data.item}}" id="item_return_item">{{data.item}}</td>
+                      <td><input type="hidden" value="{{data.item_category}}" id="item_return_cat">{{data.item_category}}</td>
+                      <td>{{data.return_date}}</td>
+                      <td>{{data.issued_to}} - {{data.issued_to.department.name}}</td>
+                      <td>{{data.issued_by}} - {{data.issued_to.department.name}}</td>
+                      <td><input type="hidden" value="{{data.quantity}}" id="item_return_qty">{{data.quantity}}</td>
+                      <td>Issued</td>
+                       
+                        {% comment %} <td><button type="button" class="btn btn-warning">Click to return</button></td> {% endcomment %}
+                        <td>
+                          {% if data.status == 'retured' %}
+                          <button type="button" class="btn btn-danger btn-sm" style="padding:5px;">Item Returned</button>
+                         {% elif data.status == 'issued' %}
+                          <button type="button" class="btn btn-primary btn-sm" style="padding:5px;" data-toggle="modal" data-target=".add" id="item_return_btn">Item Return</button>
+                        {% endif %}
+                        </td>
+                        <td>
+                          {% if 'issue_item_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'issue_item_delete' data.id %}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                          {% endif %}
+                           </td>
+                  </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+</div>
+
+
+  <!-- modal Start -->
+  <div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Issue Item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% if 'issue_item_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">            
+            <div class="col-md-6 mb-3">
+              <label for="">Item</label>
+              <input type="text" class="form-control" id="item" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="">Item Category</label>
+              <input type="text" class="form-control" id="item_category" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="">Item return Date</label>
+              <input type="Date" name="item_return_date" class="form-control" id="item_return_date" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="">Quantity</label>
+              <input type="number" name="item_qty" class="form-control" id="item_qty" required>
+              <input type="hidden" name="id" class="form-control" id="idd" required>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label for="">Remark</label>
+              <textarea name="remark" id="remark" cols="30" rows="5" class="form-control"></textarea>
+            </div>
+
+          </div>
+          <br>
+          <center>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </center>
+        </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+     <!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+
+  $(document).ready(function () {
+
+    $(document).on('click', '#item_return_btn', function () {
+        var dumy = this;
+        var id = $(dumy).closest('tr').find('#item_return_id').val();
+        var item = $(dumy).closest('tr').find('#item_return_item').val();
+        var cat = $(dumy).closest('tr').find('#item_return_cat').val();
+        var qty = $(dumy).closest('tr').find('#item_return_qty').val();
+        $('#idd').val(id);
+        $('#item').val(item);
+        $('#item_category').val(cat);
+        $('#item_qty').val(qty);
+
+
+    });
+});
+</script>
+{% endblock %}

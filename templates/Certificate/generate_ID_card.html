@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+            <div class="row">
+            
+                <div class="col-md-4 mb-3">
+                    <label for="enquiry">Class </label><span class="text-danger">*</span>
+                    <select class="form-control" id="id_Class" name="class" required>
+                        <option value="">--Select--</option>
+                        {% for data in class_records %}
+                        <option value="{{data.id}}" {% if classs == data.id %}selected{% endif %}>{{data.Class}}</option>
+                        {% endfor %}
+                   
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="enquiry">Section </label><span class="text-danger">*</span>
+                    <select class="form-control" name="section" id="id_section" required>
+                        <option value="">--Select--</option>
+                        {% for data in section_records %}
+                        <option value="{{data.id}}" {% if section == data.id %}selected{% endif %}>{{data.section_name}}</option>
+                        {% endfor %}
+                   
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="enquiry">ID Card</label><span class="text-danger">*</span>
+                    <select class="form-control" name="ID_card" required> 
+                        <option value="">--Select--</option>
+                        {% for data in ID_card_records %}
+                        <option value="{{data.id}}" {% if id_card == data.id %}selected{% endif %}>{{data.id_card_title}}</option>
+                        {% endfor %}
+                   
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3"><br>
+                    <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+                </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+    {% if records %}
+    <div class="row">
+        <div class="main-header">
+           <h4>Student List</h4>
+        </div>
+     </div>
+     
+     <form action="/print_ID_card" method="post">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit" style="float: right;">Generate</button><br>
+        <input type="hidden" name="id_card" value="{{id_card}}">
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all-checkbox"> <label for="select-all-checkbox">All</label></th>
+                        <th>Admission No</th>
+                        <th>Student Name</th>
+                        <th>Father Name</th>
+                        <th>Date Of Birth</th>
+                        <th>Gender</th>
+                        <th>Category</th>
+                        <th>Mobile Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td><input type="checkbox"  class="data-checkbox" id="check_{{forloop.counter}}" name="checkbox" value="{{data.id}}"></td>
+                        <td>{{data.admission_no}}</td>
+                        <td>{{data.first_name}} {% if data.last_name %}{{data.last_name}}{% endif %}</td>
+                        <td>{{data.Father_name}}</td>
+                        <td>{{data.date_of_birth}}</td>
+                        <td>{{data.gender}}</td>
+                        <td>{{data.category}}</td>
+                        <td>{{data.mobile_number}}</td>
+                        
+                    </tr>
+                  {% endfor %}
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+    </form>
+     {% endif %}
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+
+<!-- JavaScript code to handle checkbox behavior -->
+<script>
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const dataCheckboxes = document.getElementsByClassName('data-checkbox');
+  
+    selectAllCheckbox.addEventListener('change', function() {
+      for (let i = 0; i < dataCheckboxes.length; i++) {
+        dataCheckboxes[i].checked = selectAllCheckbox.checked;
+      }
+    });
+  
+    for (let i = 0; i < dataCheckboxes.length; i++) {
+      dataCheckboxes[i].addEventListener('change', function() {
+        if (!this.checked) {
+          selectAllCheckbox.checked = false;
+        } else {
+          // Check if all other checkboxes are selected
+          let allSelected = true;
+          for (let j = 0; j < dataCheckboxes.length; j++) {
+            if (!dataCheckboxes[j].checked) {
+              allSelected = false;
+              break;
+            }
+          }
+          selectAllCheckbox.checked = allSelected;
+        }
+      });
+    }
+  </script>
+
+  
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+ {% endblock  %}

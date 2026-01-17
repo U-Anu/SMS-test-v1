@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Week-wise Schedule</title>
+  <style>
+    /* CSS styles for the schedule */
+    /* Add your styles here */
+  </style>
+</head>
+<body>
+  <h1>Weekly Schedule</h1>
+  <button onclick="nextWeek()">Next Week</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Task</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Week 1 -->
+      <tr>
+        <td>Monday</td>
+        <td>Task 1</td>
+      </tr>
+      <tr>
+        <td>Tuesday</td>
+        <td>Task 2</td>
+      </tr>
+      <!-- ... Add rows for each day of the week -->
+    </tbody>
+  </table>
+
+  <script>
+    // JavaScript logic to handle the next week button
+    function nextWeek() {
+      // Replace the table content with the schedule for the next week
+      // You can use AJAX or fetch to load data from a server or manually update the table content here
+      // For simplicity, let's assume we have an array of schedules for each week
+      const schedules = [
+        [
+          { day: "Monday", task: "Task 1" },
+          { day: "Tuesday", task: "Task 2" },
+          // Week 1 schedule
+        ],
+        [
+          { day: "Monday", task: "Task 3" },
+          { day: "Tuesday", task: "Task 4" },
+          // Week 2 schedule
+        ],
+        // Add schedules for subsequent weeks
+      ];
+
+      // Get the table body element
+      const tableBody = document.querySelector("tbody");
+
+      // Clear the existing table content
+      tableBody.innerHTML = "";
+
+      // Get the index of the current week
+      const currentWeekIndex = schedules.findIndex((week) =>
+        week.some((day) => day.day === "Monday")
+      );
+
+      // Calculate the index of the next week
+      const nextWeekIndex =
+        (currentWeekIndex + 1) % schedules.length;
+
+      // Get the schedule for the next week
+      const nextWeekSchedule = schedules[nextWeekIndex];
+
+      // Generate table rows for the next week schedule
+      nextWeekSchedule.forEach((day) => {
+        const row = document.createElement("tr");
+        const dayCell = document.createElement("td");
+        const taskCell = document.createElement("td");
+
+        dayCell.textContent = day.day;
+        taskCell.textContent = day.task;
+
+        row.appendChild(dayCell);
+        row.appendChild(taskCell);
+        tableBody.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>

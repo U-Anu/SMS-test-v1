@@ -1,0 +1,14 @@
+asset_type_id,asset_type_category,name,description
+1000,,Bank,Bank
+1001,,Accounts Receivable,Accounts Receivable
+1003,ATC-3530,Fixed Asset,Fixed Asset
+1002,,Other Current Asset,Other Current Asset
+1004,,Other Asset,Other Asset
+1005,,Accounts Payable,Accounts Payable
+1006,,Other Current Liability,Other Current Liability
+1009,,Cost of Goods Sold,Cost of Goods Sold
+1008,,Income,Income
+1007,,Equity,Equity
+1010,,Expense,Expense
+AT-2592,,Blank,Blank
+AT-2326,,Cash,Cash assets including physical currency and bank deposits

@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Select Criteria</h4>
+        </div>
+    </div>
+    {% if 'promote_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="id_Class" required>
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}">{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="section">Section</label>
+                        <select class="form-control" name="section" id="id_section" required>
+                            <option value="">---Select---</option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}">{{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div><br>
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="search">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+
+    {% if records %}
+
+    <div class="row" style="padding:20px;">
+
+        <div class="main-header">
+            <h4>Student List</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+            <h4>Promote Students In Next Session</h4>
+
+                <div class="card" style="border-top: 5px solid black;">
+                    <div class="table-responsive">
+
+                        <form action="" method="post">
+                            {% csrf_token %}
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td colspan="10">
+                                            <div class="row">
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="class">Session *</label>
+                                                    <select class="form-control" name="session" id="session" required>
+                                                        <option value="">---Select---</option>
+                                                        {% for data in session_records %}
+                                                        <option value="{{ data.id }}">{{data.session}}</option>
+                                                        {% endfor %}
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="class">Class *</label>
+                                                    <select class="form-control" name="class" id="id_Classs" required>
+                                                        <option value="">---Select---</option>
+                                                        {% for data in class_records %}
+                                                        <option value="{{ data.id }}">{{data.Class}}</option>
+                                                        {% endfor %}
+
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="section">Section *</label>
+                                                    <select class="form-control" name="section" id="id_sectionn"
+                                                        required>
+                                                        <option value="">---Select---</option>
+                                                        {% for data in section_records %}
+                                                        <option value="{{ data.id }}">{{data.section_name}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Admission No</th>
+                                        <th>Name</th>
+                                        <th>father Name</th>
+                                        <th>Date of Birth</th>
+                                        <th colspan="2">Current Result</th>
+                                        <th></th>
+                                        <th colspan="2">Next Session Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in records %}
+                                    <tr>
+
+                                        <td><input type="hidden" name="student_id"
+                                                value="{{data.id}}">{{forloop.counter}}</td>
+                                        <td>{{ data.admission_no }}</td>
+                                        <td>{{ data.first_name }} {{ data.last_name }}</td>
+                                        <td>{% if data.Father_name != None %}{{ data.Father_name }}{% endif %}</td>
+                                        <td>{{ data.date_of_birth }}</td>
+                                        <td><input type="radio" name="current_result{{data.id}}" value="pass"
+                                                id="pass{{data.id}}" checked> <label for="pass{{data.id}}">Pass</label>
+                                        </td>
+                                        <td><input type="radio" name="current_result{{data.id}}" value="fail"
+                                                id="fail{{data.id}}"> <label for="fail{{data.id}}">Fail</label></td>
+                                        <td></td>
+                                        <td><input type="radio" name="next_session_status{{data.id}}" value="continue"
+                                                id="continue{{data.id}}" checked> <label
+                                                for="continue{{data.id}}">Continue</label></td>
+                                        <td><input type="radio" name="next_session_status{{data.id}}" value="leave"
+                                                id="leave{{data.id}}"> <label for="leave{{data.id}}">Leave</label></td>
+
+
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td colspan="9"></td>
+                                        <td><button type="submit" class="btn btn-primary" name="all_save" value="all_save">Promote</button></td>
+                                    </tr>
+
+
+                                </tbody>
+
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     {% else %}
+     <center> <h5>No Records Found </h5></center>
+     {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+    $(document).ready(function () {
+
+        $(document).on('change', '#id_Class', function () {
+            var class_id = $('#id_Class').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_section").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_section").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        $(document).on('change', '#id_Classs', function () {
+            var class_id = $('#id_Classs').val();
+            var url = "{% url 'section_js' %}";
+            $.ajax({
+                url: url,
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $("#id_sectionn").html(data);
+                    let html_data = '<option value="">--------</option>';
+                    data.forEach(function (section) {
+                        html_data += `<option value="${section.id}">${section.section_name}</option>`
+                    });
+                    console.log(html_data);
+                    $("#id_sectionn").html(html_data);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+
+
+    });
+</script>
+{% endblock %}

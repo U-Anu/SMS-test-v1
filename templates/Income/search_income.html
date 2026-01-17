@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="enquiry">From Date</label>
+                        <input type="date" class="form-control" name="from_date">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="enquiry">To Date</label>
+                        <input type="date" class="form-control" name="to_date">
+                    </div>
+                    <div class="col-md-12 mb-3"><br>
+                        <button type="submit" class="btn btn-primary" style="float: right;">🔍 Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="main-header">
+           <h4>Income Result</h4>
+        </div>
+     </div>
+     {% if records %}
+
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Invoice Number</th>
+                        <th>Income Head</th>
+                        <th>Date</th>
+                        <th>Amount ($)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+
+                    <tr>
+                        <td>{{data.name}}</td>
+                        <td>{{data.invoice_number}}</td>
+                        <td>{{data.Income_head}}</td>
+                        <td>{{data.date}}</td>
+                        <td>{{data.amount}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% else %}
+     <center> <h5>No Records Found </h5></center>
+  {% endif %}
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

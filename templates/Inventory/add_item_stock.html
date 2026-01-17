@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block head_block %}
+
+{% endblock %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Item Stock</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'add_item_stock_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Add Item Stock</h4>
+                     </div><hr>
+                     <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}  {% if data.field.required %}<span class="special_class">*</span>{% endif %}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                     
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'add_item_stock_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Item Stock List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display table"  >
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Supplier</th>
+                                <th>Store</th>
+                                <th>Quantity</th>
+                                <th>Purchase Price($)</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.item}}</td>
+                                <td>{{data.item_category}}</td>
+                                <td>{{data.supplier}}</td>
+                                <td>{{data.store}}</td>
+                                <td>{{data.quantity}}</td>
+                                <td>{{data.purchase_price}}</td>
+                                <td>{{data.date}}</td>
+                                <td>
+                                  {% if 'add_item_stock_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}  
+                                  <a href="{% url 'add_item_stock_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                  {% endif %}
+                                  {% if 'add_item_stock_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}  
+                                  <a href="{% url 'add_item_stock_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                  {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+<script>
+    $("#id_item_category").change(function () {
+        const url ='{% url "item_js" %}';
+        const cat_id = $(this).val();
+
+        $.ajax({
+            url: url,
+            data: {
+                'cat_id': cat_id
+            },
+            success: function (data) {
+                $("#id_item").html(data);
+                let html_data = '<option value="">select...</option>';
+                data.forEach(function (item_records) {
+                console.log(item_records)
+                    html_data += `<option value="${item_records.id}">${item_records.item}</option>`
+                });
+                console.log(html_data);
+                $("#id_item").html(html_data);
+
+
+            }
+        });
+
+    });
+    </script>
+ {% endblock  %}

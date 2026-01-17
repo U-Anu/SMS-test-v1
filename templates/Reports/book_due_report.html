@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+
+     <div class="main-header">
+      <div class="col-md-4">
+        </div>
+     </div>
+  </div>
+  </div>
+
+  <div class="col-md-12">
+      <div class="card" style="padding: 10px;">
+        <div class="container-fluid" style="padding: 10px;">
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'book_isseu_report' %}">Book Issue Report</a>
+          </div>
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'book_inventory_report' %}">BooK Due Report</a>
+          </div>
+          <div class="col-md-4  mb-3">
+            <a href="{% url 'book_due_report' %}">Book Inventory Report</a>
+          </div>
+          <br><br><br>
+             <div class="col-md-4  mb-3">
+            <a href="{% url 'book_issue_return_report' %}">Book Issue Return Report</a>
+          </div>
+ </div>
+ </div>
+ </div>
+ <div class="col-md-12">
+<div class="container-fluid">
+  <div class="row">
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+          <div class="col-md-6 mb-3">
+            <br>
+              <label for="enquiry">From Date</label>
+              <input type="date" class="form-control" name="from_date">
+          </div>
+          <div class="col-md-6 mb-3">
+            <br>
+              <label for="enquiry">To Date</label>
+              <input type="date" class="form-control" name="to_date">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="enquiry">Members Type</label>
+            <select class="form-control" name="staffs">
+                <option value="nil">--Select</option>
+                <option value="staff">Staffs</option>
+                <option value="student">Students</option>    
+               
+            </select>
+        </div>
+          <div class="col-md-12 mb-3"><br>
+              <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+          </div>
+      </div>
+     
+  </form>
+      
+
+          </div> 
+          </div>
+          </div>
+<br><br>
+
+<div class="row">
+  <div class="main-header">
+     <h4>Income Result</h4>
+  </div>
+</div>
+{% if records %}
+
+<div class="col-md-12">
+   <div class="card" style="padding: 10px;">
+      <div class="table-responsive">
+      <table id="tableID" class="display"  >
+          <thead>
+              <tr>
+                  <th>Book Title</th>
+                  <th>Book Number</th>
+                  <th>Issue Date</th>
+                  <th>Due Return Date</th>
+                  <th>Member Id</th>
+                  <th>Library Card No</th>
+                  <th>Admission No</th>
+                  <th>Issue By</th>
+                  <th>Members Type</th>                  
+			   			
+              </tr>
+          </thead>
+          <tbody>
+              {% for data in records %}
+
+              <tr>
+                  <td>{{data.book.book_title}}</td>
+                  <td>{{data.book.book_number}}</td>
+                  <td>{{data.issued_date}}</td>
+                  <td>{{data.due_return_date}}</td>
+                  <td>{{data.member.id}}</td>
+                  <td>{{data.member.library_card_no}}</td>
+                  <td>{{data.member.student.id}}</td>                  
+                  <td>{{data.member.member_type}}</td>
+                  <td>{{data.member.student.first_name}}{{data.member.student.first_name}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+  
+      </table>
+      </div>
+   </div> 
+</div>
+{% else %}
+<center> <h5>No Records Found </h5></center>
+{% endif %}
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

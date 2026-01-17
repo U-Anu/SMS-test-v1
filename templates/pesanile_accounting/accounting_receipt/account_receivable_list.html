@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+{% load custom_filter %}
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {% if add_new != 'no' %}
+                <a href="{{create_url}}">
+                    <button type="button" class="btn btn-primary float-right">+ New</button>
+                </a>
+                {% else %}
+                <button type="button" class="btn btn-primary float-right" disabled>+ New</button>
+                {% endif %}
+
+                <h4 class="card-title">{{screen_name}}</h4>
+                <nav>
+<!--                    <div class="nav nav-tabs" id="nav-tab" role="tablist">-->
+<!--                        <a class="nav-item nav-link active" id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="true">List</a>-->
+
+<!--                    </div>-->
+                </nav>
+
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- New Tab -->
+                    <div class="tab-pane fade show active" id="nav-new" role="tabpanel" aria-labelledby="nav-new-tab">
+                        <div class="table-responsive">
+                            <table id="tableID" class="display table table-hover">
+                                <thead class="bg-col">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Reference Type</th>
+                                        <th>Reference Number</th>
+                                        <th>Vendor Name</th>
+                                        <th>Vendor Id</th>
+                                        <th>Actual Amount</th>
+                                        <th>Amount Received</th>
+                                        <th>Amount Due</th>
+                                        <th>Payment Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in obj %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{record.reference_type}}</td>
+                                        <td>{{record.reference_number}}</td>
+                                        <td>{{record.customer_name}}</td>
+                                        <td>{{record.customer_id}}</td>
+                                        <td>{{record.actual_amount}}</td>
+                                        <td>{{record.amount_received}}</td>
+                                        <td>{{record.amount_due}}</td>
+                                        <td>{{record.payment_status}}</td>
+                                        <td>
+                                            
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

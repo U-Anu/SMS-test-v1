@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Grade</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                     </div><hr>
+                     {% if not view %}
+                     <h4>Edit Grade List</h4>
+                     {% else %}
+                     <h4>View Grade List</h4>
+                     {% endif %}
+                     <form method="post">
+                        {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                     {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Grade List</h4>
+                     </div><hr>
+
+
+                    <div class="table-responsive">
+                    <table class="table"  >
+                        <thead>
+                            <tr>
+                                <th>Exam Type</th>
+                                <th>Grade Name</th>
+                                <th>Percent From / Upto</th>
+                                <th>Grade Point</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             {% regroup records by exam_type as group_list %}
+                            {% for record in group_list %}
+                            <tr>
+                                <td>{{record.list.0.exam_type}}</td>
+                                <td>{{record.list.0.grade_name}}</td>
+                                <td>{{record.list.0.percent_from}} / {{record.list.0.percent_up_to}}</td>
+                                <td>{{record.list.0.grade_point}}</td>
+                                <td>
+                                    <a href="{% url 'marks_grade_view' record.list.0.id %}" style="color: black;"  ><i class='fa fa-server'></i></a>
+                                    <a href="{% url 'marks_grade_edit' record.list.0.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    <a href="{% url 'marks_grade_delete' record.list.0.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                   </td>
+                            </tr>
+                            {% for data in record.list|slice:"1:" %}
+                            <tr>
+                                <td></td>
+                                <td>{{data.grade_name}}</td>
+                                <td>{{data.percent_from}} / {{data.percent_up_to}}</td>
+                                <td>{{data.grade_point}}</td>
+                                <td>
+                                    <a href="{% url 'marks_grade_view' data.id %}" style="color: black;"  ><i class='fa fa-server'></i></a>
+                                  <a href="{% url 'marks_grade_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                                  <a href="{% url 'marks_grade_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                   </td>
+
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

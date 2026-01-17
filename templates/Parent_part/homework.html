@@ -1,0 +1,116 @@
+{% extends 'parent_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+
+<div class="row">
+    <div class="main-header">
+        <h4>Homework </h4>
+    </div>
+</div>
+
+
+
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Subject</th>
+                        <th>Homework Date</th>
+                        <th>Submission Date</th>
+                        <th>Evaluation Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.student.Class}}</td>
+                        <td>{{data.student.section}}</td>
+                        <td>{{data.home_work.subject}}</td>
+                        <td>{{data.home_work.homework_date}}</td>
+                        <td>{{data.home_work.submission_date}}</td>
+                        <td>{% if data.evaluation_date %}{{data.evaluation_date}}{% endif %}</td>
+                        <td>
+                          {% if data.status == 'Pending' %}
+                          <button type="button" class="btn btn-danger">Incomplete</button>
+                          {% elif data.status == 'Submitted' %}
+                          <button type="button" class="btn btn-success">Complete</button>
+                          {% endif %}
+                        </td>
+                        
+                        <td>
+                          {% if data.status == 'Pending' %}
+                            <a style="color: black;" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="pass_id('{{data.id}}')"><i class='fa fa-upload'></i></a>
+                            {% endif %}
+                            <a href="{% url 'homework_view' data.id %}" style="color: black;"><i class='fa fa-reorder'></i></a>
+                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+  <!-- modal Start -->
+
+  
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Homework Assignments</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+           
+            <div class="col-md-12 mb-3">
+               <label>Message *</label>
+               <input type="hidden" name="id" id="pop_id">
+              <textarea class="form-control" name="message" required></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label>Attach Document</label>
+               <input type="file" class="form-control" name="document"> 
+             </div>
+          </div>
+          <br>
+          <center>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal End -->
+
+  
+  
+{% endblock %}
+{% block script_block %}
+
+
+<script>
+  function pass_id(id){
+    $('#pop_id').val(id);
+  }
+</script>
+{% endblock %}

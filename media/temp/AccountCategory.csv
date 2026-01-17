@@ -1,0 +1,12 @@
+account_category_id,name,description
+AC-004,Fixed Asset,Fixed Asset
+AC-003,Other Current Asset,Other Current Asset
+AC-002,Accounts Receivable,Accounts Receivable
+AC-001,Bank,Bank
+AC-005,Other Asset,Other Asset
+AC-006,Accounts Payable,Accounts Payable
+AC-007,Other Current Liability,Other Current Liability
+AC-008,Equity,Equity
+AC-009,Income,Income
+AC-010,Cost of Goods Sold,Cost of Goods Sold
+AC-011,Expense,Expense

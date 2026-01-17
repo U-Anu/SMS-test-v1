@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Student Certificate</h4>
+        </div>
+    </div>
+    {% for data in records %}
+    {% endfor %}
+    {% for data in records %}
+
+    <style>
+
+
+
+
+    </style>
+    {% endfor %}
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'student_certificate_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if view %}
+                        <h4> View Student Certificate </h4>
+                        {% elif edit %}
+                        <h4> Edit Student Certificate </h4>
+                        {% else %}
+                        <h4>Add Student Certificate</h4>                        
+                        {% endif %}  
+  
+                        
+                    </div>
+                    <hr>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission"> Certificate Name </label>
+                                {{form.certificate_name}}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Header Left Text</label>
+                                {{form.header_left_text}}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Header Center Text</label>
+                                {{form.header_center_text}}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Header Right Text</label>
+                                {{form.header_right_text}}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Body Text</label>
+                                {{form.body_text}}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                [name], [admission_no],[dob],[present_address],[guardian],[created_at],
+                                ,[roll_no],[class],[section],[gender],[admission_date],[category],
+                                [cast],[father_name],[mother_name],[religion],[email],[phone],
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Footer Left Text</label>
+                                {{form.footer_left_text}}
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Footer Center Text</label>
+                                {{form.footer_center_text}}
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Footer Right Text</label>
+                                {{form.footer_right_text}}
+                            </div>
+                            <!-- <div class="col-md-12 mb-3">
+                            <label for="id_background_image">Background image:</label>
+                            <input type="file" name="background_image" class="form-control" id="id_background_image">
+                        </div> -->
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">background_image</label >
+                                {{form.background_image}} 
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="student_admission">Background color code</label>
+                                {{form.background_color_code}}
+                            </div>
+
+                        </div><br>
+                        {% if not view %}
+                        <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'student_certificate_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Student Certificate List</h4>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display">
+                            <thead>
+                                <tr>
+                                    <th>Certificate Name</th>
+                                    <th>Background Image</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in records %}
+                                <tr>
+                                    <td>
+                                        <a href="#" style="color: black;" data-toggle="modal"
+                                            data-target="#studentCertificate{{ data.id }}">{{ data.certificate_name}}</a>
+
+                                    </td>
+                                    <td>{{data.background_image}}</td>
+                                    <td>
+                                        {% if 'student_certificate_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'student_certificate_view' data.id %}"class="bozero"><span data-toggle="tooltip" title="view" style="color: black;"><i
+                                                class='fa fa-server'></i></a>
+                                                {% endif %}
+                                        {% if 'student_certificate_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'student_certificate_edit' data.id %}"class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i
+                                                class='fa fa-edit'></i></a>
+                                                {% endif %}
+                                        {% if 'student_certificate_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'student_certificate_delete' data.id %}"
+                                        class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove'
+                                                onclick="alert('You want to Delete this Item..?')"></i></a>
+                                                {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% for data in records %}
+<style>
+    .certificate {
+        border: 20px solid {{data.background_color_code}};
+    }
+    .center  {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 10px;
+      }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="studentCertificate{{ data.id }}" tabindex="-1" role="dialog"
+    aria-labelledby="studentCertificateLabel{{ data.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="studentCertificateLabel{{ data.id }}">Certificate Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="certificate-container">
+                        <div class="certificate" style="height: 400px; background-image: url({{data.background_image.url}});background-repeat: no-repeat;
+                        background-attachment: fixed;
+                        background-position: center; ">
+                        <div class="center">
+                            <!-- <div class="certificate-title">
+                                {% if data.certificate_name %}
+
+                                <h1>{{data.certificate_name}}</h1>
+                                {% endif %}
+
+                            </div> -->
+                            <div class="certificate-body row">
+                                <div class="col-md-4">
+                                    <p>{{data.header_left_text}}</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <p>{{data.header_center_text}}</p>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <p>{{data.header_right_text}}</p>
+                                </div>
+                            </div>
+
+                            <div class="certificate-content">
+                                {% if data.body_text %}
+
+                                <div class="text-center">
+                                    <p class="topic-description text-muted">{{data.body_text}} </p>
+                                </div>
+                                {% endif %}
+                            </div>
+
+
+
+                            <!-- {% if data.date %}
+                                <p class="certificate-footer">Date: {{data.date}}</p>
+                                {% endif %} -->
+
+                            <div class="certificate-footer text-muted">
+                                <div class="row">
+
+
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            {% if data.footer_left_text %}
+                                            <div class="col-md-4">
+                                                <p>{{data.footer_left_text}}</p>
+                                            </div>
+                                            {% endif %}
+                                            <div class="col-md-4">
+                                                {% if data.footer_center_text %}
+
+
+                                                <p>{{data.footer_center_text}}</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-4">
+                                                {% if data.footer_right_text %}
+
+
+                                                <p>{{data.footer_right_text}}</p>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endfor %}
+{% endblock %}
+{% block script_block %}
+
+ {% endblock  %}

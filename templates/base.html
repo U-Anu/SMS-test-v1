@@ -1,0 +1,2135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>BB School Management</title>
+
+
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+   <!-- Favicon icon -->
+   <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon">
+   <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/x-icon">
+
+   <!-- Google font-->
+   <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700" rel="stylesheet">
+
+   <!-- themify -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/themify-icons/themify-icons.css' %}">
+
+   <!-- iconfont -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/icofont/css/icofont.css' %}">
+
+   <!-- simple line icon -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/icon/simple-line-icons/css/simple-line-icons.css' %}">
+
+   <!-- Required Fremwork -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/plugins/bootstrap/css/bootstrap.m.css' %}">
+
+   <!-- fontawesome -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <!-- Chartlist chart css -->
+   <link rel="stylesheet" href="{% static 'assets/plugins/chartist/dist_css/chartist.css' %}" type="text/css" media="all">
+
+   <!-- Weather css -->
+   <!-- <link href="{% static 'assets/css/svg-weather.css' %}" rel="stylesheet"> -->
+
+
+   <!-- Style.css -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main.css' %}">
+
+   <!-- Responsive.css-->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/css/responsive.css' %}">
+
+
+   <!-- jQuery -->
+   <!-- DataTables CSS -->
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+   <!-- DataTables JS -->
+
+<!-- For Report head -->
+<link href="{% static 'assets/css/student_information_report.css' %}" rel="stylesheet" type="text/css">
+
+<!-- For datatables excel,pdf..etc -->
+<!-- ==================Translater============== -->
+<link rel="stylesheet" href="{% static 'assets/css/google_translation.css' %}">
+<style>
+   html:after {
+
+
+      /* common custom values */
+    
+      content: "Bharathbrands"; /* your site name */
+    
+      font-size: 520%;         /* font size */
+    
+      color: rgba(134, 134, 134, 0.1);
+    
+      /* alpha, could be even rgba(0,0,0,.05) */
+    
+    
+      /* rest of the logic */
+    
+      z-index: 9999;
+    
+      cursor: default;
+    
+      display: block;
+    
+      position: fixed;
+    
+      top: 33%;
+    
+      right: 0;
+    
+      bottom: 0;
+    
+      left: 15%;
+    
+      font-family: sans-serif;
+    
+      font-weight: bold;
+    
+      font-style: italic;
+    
+      text-align: center;
+    
+      line-height: 100%;
+    
+    
+      /* not sure about who implemented what ..
+    
+        ... so bring it all */
+    
+      -webkit-pointer-events: none;
+    
+      -moz-pointer-events: none;
+    
+      -ms-pointer-events: none;
+    
+      -o-pointer-events: none;
+    
+      pointer-events: none;
+    
+    
+      -webkit-transform: rotate(-45deg);
+    
+      -moz-transform: rotate(-45deg);
+    
+      -ms-transform: rotate(-45deg);
+    
+      -o-transform: rotate(-45deg);
+    
+      transform: rotate(-45deg);
+    
+    
+      -webkit-user-select: none;
+    
+      -moz-user-select: none;
+    
+      -ms-user-select: none;
+    
+      -o-user-select: none;
+    
+      user-select: none;
+    
+    }
+   /* General menu item styles */
+.menu-item {
+    position: relative;
+}
+
+/* Toggle link style */
+.menu-toggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Submenu styles */
+.submenu {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Submenu link styles */
+.submenu-link {
+    display: block;
+    padding: 8px 16px;
+}
+
+/* Icon rotation for toggle */
+.toggle-icon {
+    transition: transform 0.3s;
+}
+
+.icon-arrow-down toggle-icon {
+    transform: rotate(0deg);
+}
+
+.icon-arrow-up {
+    transform: rotate(180deg);
+    padding-left: 70px;
+    font-size: 10px;
+}
+
+   .cust{
+    padding: 0px !important;
+    /* border-radius: 3px; */
+    border: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0px !important;
+    background: none !important;
+   }
+
+  </style>
+ <style>
+
+.search {
+	width: 60px;
+	height: 30px;
+	transform: 0.5s;
+	background: #fff;
+	overflow: hidden;
+	position: relative;
+	border-radius: 60px;
+	box-shadow: 0 0 0 0 5px #7532d4;
+}
+
+.search.active {
+	width: 360px;
+}
+
+.search .icon {
+	top: 0;
+	left: 0;
+	width: 60px;
+	height: 30px;
+	display: flex;
+	z-index: 1000;
+	cursor: pointer;
+	position: absolute;
+	background: #fff;
+	border-radius: 60px;
+	align-items: center;
+	justify-content: center;
+}
+
+.search .icon:before {
+	content: "";
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid #8338ec;
+	transform: translate(-4px, -4px);
+}
+
+.search .icon:after {
+	content: "";
+	width: 3px;
+	height: 6px;
+	position: absolute;
+	background: #8338ec;
+	transform: translate(6px, 6px) rotate(315deg);
+}
+
+.search .input {
+	left: 60px;
+	width: 300px;
+	height: 60px;
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+}
+
+.search .input input {
+	top: 0;
+	width: 100%;
+	height: 50%;
+	border: none;
+	outline: none;
+	font-size: 18px;
+	padding: 10px 0;
+	position: absolute;
+}
+
+.clear {
+	top: 50%;
+	right: 15px;
+	width: 15px;
+	height: 15px;
+	display: flex;
+	cursor: pointer;
+	background: #ff0;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	transform: translateY(-20%);
+}
+
+.clear:before {
+	width: 1px;
+	height: 15px;
+	content: "";
+	position: absolute;
+	background: #999;
+	transform: rotate(45deg);
+}
+
+.clear:after {
+	width: 1px;
+	height: 15px;
+	content: "";
+	position: absolute;
+	background: #999;
+	transform: rotate(100deg);
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #e74c3c;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 250px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 9999;
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+   </style>
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css">
+  <!-- Add Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- For datatables excel,pdf..etc end -->
+
+
+
+
+{% block head_block %}
+
+
+   {% endblock %}
+   <style>
+      .special_class{
+          color: rgb(250, 83, 83) !important;
+      }
+  </style>
+  <style>
+
+   #alert {
+     position: fixed;
+     top: 10%;
+     right: 20px;
+     margin-left: 20px;
+     max-width: 300px;
+     z-index: 1;
+   }
+
+   #alert {
+     padding: 25px 15px;
+     color: white;
+   }
+   .bg-error{
+      background-color: #f55162;
+   }
+/* Hide on desktop screens and larger */
+@media (min-width: 992px) {
+   .hide-on-desktop {
+     display: none !important;
+   }
+ }
+ @media (max-width: 767px) {
+   .hide-on-mobile {
+     display: none !important;
+   }
+ }
+ 
+   </style>
+</head>
+
+<body class="sidebar-mini fixed">
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"> </script>
+   <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+   <div class="loader-bg">
+      <div class="loader-bar">
+      </div>
+   </div>  
+   <div class="wrapper">
+      <!-- Navbar-->
+      <header class="main-header-top hidden-print">
+         {% comment %} <a href="#" class="logo"><img class="img-fluid able-logo" src="{{general_setting.edit_admin_logo.url}}" {% endcomment %}
+         <a href="#" class="logo"><img class="img-fluid able-logo" src=""
+               alt="Theme-logo"></a>
+         <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+                <!-- header and search -->
+                <div class="navbar-custom-menu f-left">
+                <ul class="top-nav" style="padding: 15px 20px;">
+                  
+                  <li class="pc-rheader-submenu">
+                     <div class="search">
+
+                     <form action="{% url 'student_search' %}" method="post">
+                        {% csrf_token %}
+                     <div class="icon"></div>
+
+                     <div class="input">
+                        <input type="text" name="search_txt" placeholder="Search By Student Name, Roll Number, Enroll Number, National Id, Local Id Etc." id="mysearch">
+
+                     </div>
+
+                     <span class="clear" onclick="document.getElementById('mysearch').value = ''">x</span>
+                  </form>
+                  </div>
+               </li>
+               
+                  </ul>
+               <ul class="top-nav" style="padding: 15px 20px;">
+               <li class="pc-rheader-submenu"><h4 style="color:white;">{{general_setting.school_name}} </h4></li>
+
+            </ul>
+
+
+            </div>
+            <!-- Navbar Right Menu-->
+            <div class="navbar-custom-menu f-right">
+
+
+               <ul class="top-nav">
+
+  <!-- Custom Dropdown Button -->
+  <li class="dropdown hide-on-desktop">
+   <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+      class="dropdown-toggle drop icon-circle drop-image">
+      <i class="fa fa-caret-down" style="color: black;"></i>
+      </i> <!-- Down icon -->
+   </a>
+   <ul class="dropdown-menu settings-menu">
+     <!-- window screen -->
+                  <li class="pc-rheader-submenu">
+                     <a href="#!" class="drop icon-circle" onclick="javascript:toggleFullScreen()">
+                        <i class="icon-size-fullscreen"></i>
+                     </a>
+
+                  </li>
+
+                  <li class="cal15"><a  data-toggle="modal"data-target="#language_nodel" data-original-title="Language"><i data-toggle="tooltip" data-placement="bottom"class="fa fa-language todoicon" title="Language"></i> </a></li>
+
+
+                  {% if 'calendar_to_do_list_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+                  {% if 'event_Calendar_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                      {% comment %} <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="{% url 'eventcalendar' %}" data-original-title="calender" class="todoicon"><i class="fa fa-calendar"></i></a></li> {% endcomment %}
+                  {% endif %}
+                  {% endif %}
+                  {% if 'chat_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="{% url 'chat_index' %}" data-original-title="Chat" class="todoicon"><i class="fa fa-sms"></i></a></li>
+                   {% endif %}
+                  <li class="cal15">
+                     <a
+                        data-placement="bottom"
+                        data-toggle="tooltip"
+                        title=""
+                        href="{% url 'feedback_create' %}"
+                        data-original-title="Feedback"
+                        class="todoicon"
+                     >
+                        <i class="fa fa-comment"></i>
+                     </a>
+                  </li>
+
+                  <!-- User Menu-->
+                  <li class="dropdown">
+                     <a href="#" class="dropdown-toggle drop icon-circle drop-image" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                         <span>
+                             <img class="img-circle" src="{% static 'assets/images/user.jpg' %}" style="width:40px;" alt="User Image">
+                         </span>
+                         <span>
+                             {{ request.user.first_name }} <b>{{ request.user.last_name }}</b> 
+                             <i class="icofont icofont-simple-down"></i>
+                         </span>
+                     </a>
+                 
+                     <ul class="dropdown-menu settings-menu">
+                         {% if request.user.is_superuser or request.user.is_school_admin %}
+                             <li><a href="{% url 'signout' %}"><i class="icon-logout"></i> Logout</a></li>
+                         {% else %}
+                             <li><a href="/profile"><i class="icon-user"></i> Profile</a></li>
+                             <li><a href="{% url 'signout' %}"><i class="icon-logout"></i> Logout</a></li>
+                         {% endif %}
+                     </ul>
+                 </li>
+               </ul></li>
+
+
+ 
+
+
+                  <!-- window screen -->
+                  <li class="pc-rheader-submenu  hide-on-mobile">
+                     <a href="#!" class="drop icon-circle" onclick="javascript:toggleFullScreen()">
+                        <i class="icon-size-fullscreen"></i>
+                     </a>
+
+                  </li>
+
+ <li class="cal15  hide-on-mobile"><a  data-toggle="modal"data-target="#language_nodel" data-original-title="Language"><i data-toggle="tooltip" data-placement="bottom"class="fa fa-language todoicon" title="Language"></i> </a></li>
+
+
+                  {% if 'calendar_to_do_list_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+                  {% if 'event_Calendar_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                      {% comment %} <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="{% url 'eventcalendar' %}" data-original-title="calender" class="todoicon"><i class="fa fa-calendar"></i></a></li> {% endcomment %}
+                  {% endif %}
+                  {% endif %}
+                  {% if 'chat_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="cal15"><a data-placement="bottom" data-toggle="tooltip" title="" href="{% url 'chat_index' %}" data-original-title="Chat" class="todoicon"><i class="fa fa-sms"></i></a></li>
+                   {% endif %}
+                  <li class="cal15">
+    <a
+        href="/feedback_create"
+        class="feedback-btn"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="Feedback"
+    >
+        <i class="fa fa-comment"></i>
+        <span>Feedback</span>
+    </a>
+</li>
+
+                  <!-- User Menu-->
+                  <li class="dropdown hide-on-mobile">
+                     <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                        class="dropdown-toggle drop icon-circle drop-image">
+                        <span><img class="img-circle " src="{% static 'assets/images/user.jpg' %}"
+                              style="width:40px;" alt="User Image"></span>
+                        <span>{{request.user.first_name}} <b>{{request.user.last_name}}</b> <i class=" icofont icofont-simple-down"></i></span>
+
+                     </a>
+                     {% if request.user.is_superuser or request.user.is_school_admin %}
+                     <ul class="dropdown-menu settings-menu  hide-on-mobile">
+                       
+                        <a href="{% url 'signout' %}"> <li><i class="icon-logout"></i> Logout</li></a>
+                     </ul>
+                     {% else %}
+                     <ul class="dropdown-menu settings-menu">
+                        <a href="/profile"><li><i class="icon-user"></i> Profile</li></a>
+                        <a href="{% url 'signout' %}"> <li><i class="icon-logout"></i> Logout</li></a>
+                     </ul>
+                     {% endif %}
+                  </li>
+               </ul>
+
+
+               <!-- search end -->
+            </div>
+         </nav>
+      </header>
+{% if alert_messages and alert_messages.message != "success" and request.user.is_school_admin %}
+    <div id="alert" class="notification bg-error">
+        <span>{{ alert_messages.message }}</span>
+        <span class="close-btn" onclick="closeAlert()">&times;</span>
+    </div>
+{% endif %}
+
+
+      <!-- Side-Nav-->
+      <aside class="main-sidebar hidden-print ">
+         <section class="sidebar" id="sidebar-scroll">
+            <!-- Sidebar Menu-->
+            <ul class="sidebar-menu">
+               <li class="nav-level">--- Navigation</li>
+               <li class="treeview {{dashboard}}">
+                  <a class="waves-effect waves-dark" href="{% url 'dashboard' %}">
+                     <i class="icon-speedometer"></i><span> Dashboard</span>
+                  </a>
+               </li>
+               <li class="nav-level">--- Components</li>
+               {% if 'live_sesion_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if request.permissions == 'all' or  'online_live_class_view' in request.permissions or 'online_live_class_add' in request.permissions or 'staff_meeting_view' in request.permissions or 'staff_meeting_add' in request.permission or 'parent_meeting_view' in request.permission or 'parent_meeting_add' in request.permission or request.user.is_superuser or request.user.is_school_admin %}
+               <li
+               class="treeview menu-item {{meeting_link_master}}  {{online_class}}{{staff_meeting}}{{parent_meeting}}">
+               <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-chalkboard-teacher" aria-hidden="true"></i><span> Live Sessions</span><i class="icon-arrow-down toggle-icon"></i></a>
+               <ul class="treeview-menu">
+                  {% if request.permissions == 'all' or 'online_live_class_view' in request.permissions  or 'online_live_class_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="{{online_class}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'online_class' %}"><i class="icon-arrow-right"></i> Online Classes</a>
+                  </li>
+                  {% endif %}
+                  {% if request.permissions == 'all' or 'staff_meeting_view' in request.permissions or 'staff_meeting_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="{{staff_meeting}}"><a class="submenu-link waves-effect waves-dark"
+                     href="{% url 'staff_meeting' %}"><i class="icon-arrow-right"></i> Staff Meeting</a>
+               </li>
+               {% endif %}
+               {% if request.permissions == 'all' or 'parent_meeting_view' in request.permissions or 'parent_meeting_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{parent_meeting}}"><a class="submenu-link waves-effect waves-dark"
+                  href="{% url 'parent_meeting' %}"><i class="icon-arrow-right"></i> Parent Meeting</a>
+                </li>
+               {% endif %}
+               <li class="{{meeting_link_master}}"><a class="submenu-link waves-effect waves-dark"
+                  href="{% url 'meeting_link_master' %}"><i class="icon-arrow-right"></i> Meeting Link Master</a>
+                </li>
+
+
+               </ul>
+            </li>
+              
+            {% endif %}
+            {% endif %}
+            {% if 'fronts_ofiices_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+            {% if 'admission_enquiry_view' in request.permissions or 'admission_enquiry_add' in request.permissions or 'visitor_book_view' in request.permissions  or 'visitor_book_add' in request.permission or 'phone_call_log_view' in request.permission  or 'phone_call_log_add' in request.permission or 'postal_dispatch_view' in request.permission or 'postal_dispatch_add' in request.permission  or 'postal_receive_view' in request.permission  or 'postal_receive_add' in request.permission or 'complain_view' in request.permission or 'complain_add' in request.permission or 'setup_front_office_view' in request.permission or 'setup_front_office_add' in request.permission or request.user.is_superuser or request.user.is_school_admin %}
+             <li
+                  class="treeview menu-item {{admission_enquiry}}{{visitor_book}}{{phone_call_log}}{{postal_dispatch}}{{postal_receive}}{{complain}} {{setup_front_office_purpose}} ">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="icon-briefcase"></i><span> Front
+                        Office</span><i class="icon-arrow-down toggle-icon "></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'admission_enquiry_view' in request.permissions or 'admission_enquiry_add' in request.permissions or 'online_class_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{admission_enquiry}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'admission_enquiry' %}"><i class="icon-arrow-right"></i> Admission Enquiry</a>
+                     </li>
+                     {% endif %}
+                     {% if 'visitor_book_view' in request.permissions or 'visitor_book_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{visitor_book}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'visitor_book' %}"><i
+                              class="icon-arrow-right"></i> Visitor Book</a></li>
+                     {% endif %}
+                     {% if 'phone_call_log_view' in request.permissions or 'phone_call_log_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{phone_call_log}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'phone_call_log' %}"><i class="icon-arrow-right"></i> Phone Call Log</a></li>
+                     {% endif %}
+                     {% if 'postal_dispatch_view' in request.permissions or 'postal_dispatch_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{postal_dispatch}}"> <a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'postal_dispatch' %}"><i class="icon-arrow-right"></i> Postal Dispatch</a></li>
+                     {% endif %}
+                     {% if 'postal_receive_view' in request.permissions or 'postal_receive_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{postal_receive}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'postal_receive' %}"><i class="icon-arrow-right"></i> Postal Receive</a></li>
+                     {% endif %}
+                     {% if 'complain_view' in request.permissions or 'complain_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{complain}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'complain' %}"><i
+                              class="icon-arrow-right"></i> Complain</a></li>
+                       {% endif %}
+                       {% if 'setup_front_office_view' in request.permissions or 'setup_front_office_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{setup_front_office_purpose}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'setup_front_office_purpose' %}"><i class="icon-arrow-right"></i> Setup Front Office</a>
+                     </li>
+                     {% endif %}
+
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'student_information_view' in request.permissions or 'student_information_add' in request.permissions or 'disble_student_view' in request.permission or 'student_information_delete' in request.permission  or 'student_categories_view' in request.permission or 'student_categories_add' in request.permission or 'student_house_view' in request.permission  or 'student_house_add' in request.permission  or 'disable_student_view' in request.permission or 'disable_student_add' in request.permission  or request.user.is_superuser or request.user.is_school_admin %}
+
+               <li
+                  class="treeview menu-item {{bulk_delete}}{{multi_class_student}}{{disabled_students}}{{online_admission}} {{student_admission}} {{student_details}}{{disabled_reason}}{{student_category}} {{student_house}} {{guardainmaster}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="icon-chart"></i><span> Student
+                        Information</span><i class="icon-arrow-down toggle-icon "></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'student_information_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{student_details}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'student_details' %}"><i class="icon-arrow-right"></i> Student Details</a></li>
+                     {% endif %}
+                     {% if 'student_information_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{student_admission}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'student_admission' %}"><i class="icon-arrow-right"></i> Student Admission</a>
+                     </li>
+                     {% endif %}
+                     <!-- {% if 'online_admission_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{online_admission}}"><a class="waves-effect waves-dark"
+                           href="{% url 'online_admission' %}"><i class="icon-arrow-right"></i> Online Admission</a>
+                     </li>
+                     {% endif %} -->
+                     {% if 'disble_student_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{disabled_students}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'disabled_students' %}"><i class="icon-arrow-right"></i> Disable Student </a>
+                     </li>
+                     {% endif %}
+                     <!-- <li class="{{multi_class_student}}"><a class="waves-effect waves-dark"
+                           href="{% url 'multi_class_student' %}"><i class="icon-arrow-right"></i> Multi Class Student</a></li> -->
+                     {% if 'student_information_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{bulk_delete}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'bulk_delete' %}"><i
+                              class="icon-arrow-right"></i>Bulk Delete</a></li>
+                     {% endif %}
+                     {% if 'student_categories_view' in request.permissions or 'student_categories_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{student_category}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'student_category' %}"><i class="icon-arrow-right"></i> Student Categories</a>
+                     </li>
+                     {% endif %}
+                     <li class="{{guardainmaster}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'guardian_master' %}"><i class="icon-arrow-right"></i> Guardian Master </a></li>
+                  
+                     {% if 'disable_student_view' in request.permissions or 'disable_student_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li calss="{{disabled_reason}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'disabled_reason' %}"><i class="icon-arrow-right"></i> Diasble Reason</a></li>
+                     {% endif %}
+                  </ul>
+
+               </li>
+               {% endif %}
+               {% if 'fess_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+           {% if 'collect_fees_view' in request.permissions or 'fees_master_add' in request.permissions or 'fees_master_view' in request.permissions or 'fees_discount_view' in request.permission or 'fees_discount_view' in request.permission or 'fees_discount_add' in request.permission or 'fees_type_add' in request.permission or 'fees_type_view' in request.permission or 'fees_group_view' in request.permissions or 'fees_group_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li
+               class="treeview menu-item {{fees_carry_forward_all}} {{fees_remainder}}{{fees_carry_forward}} {{search_due_fee}} {{search_fee_payment}}{{collect_fees}}{{fees_discountt}}{{fees_type}}{{fees_group}}{{fees_master}}">
+               <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-money"></i><span> Fees
+                     Collection</span><i class="icon-arrow-down toggle-icon "></i></a>
+               <ul class="treeview-menu">
+
+                  {% if 'collect_fees_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="{{collect_fees}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'collect_fees' %}"><i
+                           class="icon-arrow-right"></i> Collect Fees </a></li>
+                  {% endif %}
+                  
+                  <li class="{{search_fee_payment}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'search_fee_payment' %}"><i class="icon-arrow-right"></i> Search Fees
+                        Payment</a></li>
+                  <li class="{{search_due_fee}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'search_due_fee' %}"><i class="icon-arrow-right"></i> Search Due Fees</a></li>
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'fees_master_add' in request.permissions or 'fees_master_view' in request.permissions %}
+                  <li class="{{fees_master}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'fees_master' %}"><i
+                           class="icon-arrow-right"></i> Fees Master</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'fees_group_view' in request.permissions or 'fees_group_add' in request.permissions %}
+                  <li class="{{fees_group}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'fees_group' %}"><i
+                           class="icon-arrow-right"></i> Fees Group</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'fees_type_view' in request.permissions or 'fees_type_add' in request.permissions %}
+                  <li class="{{fees_type}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'fees_type' %}"><i
+                           class="icon-arrow-right"></i> Fees Type</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'fees_discount_add' in request.permissions or 'fees_discount_view' in request.permissions %}
+                  <li class="{{fees_discountt}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'fees_discount' %}"><i class="icon-arrow-right"></i> Fees Discount</a></li>
+                  {% endif %}
+                  <li class="{{fees_carry_forward}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'fees_carry_forward' %}"><i class="icon-arrow-right"></i> Fees Carry Forward</a>
+                  </li>
+
+                  <li class="{{fees_carry_forward_all}}"><a class="submenu-link waves-effect waves-dark"
+                     href="{% url 'fees_carry_forward_all' %}"><i class="icon-arrow-right"></i> Fees Pending</a>
+               </li>
+                    <!--
+                  <li class="{{fees_remainder}}"><a class="waves-effect waves-dark"
+                        href="{% url 'fees_remainder' %}"><i class="icon-arrow-right"></i> Fees Reminder</a></li>
+                         -->
+               </ul>
+            </li>
+            {% endif %}
+            {% endif %}
+
+           
+
+               {% if 'attendances_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'student_period_attendance_add' in request.permissions or 'attendance_by_date_view' in request.permissions or 'approve_leave_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+
+
+               <li class="treeview menu-item {{student_attendance}} {{attendance_by_date}}{{approve_leave}}"><a
+                     class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-calendar-check-o"></i><span> Attendance</span><i
+                        class="icon-arrow-down toggle-icon "></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'student_period_attendance_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{student_attendance}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'student_attendance' %}"><i class="icon-arrow-right"></i> Student Attendance</a>
+                     </li>
+                     {% endif %}
+
+                     {% if 'attendance_by_date_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{attendance_by_date}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'attendance_by_date' %}"><i class="icon-arrow-right"></i>Attendance By Date</a>
+                     </li>
+                     {% endif %}
+                     {% if 'approve_leave_view' in request.permissions or 'approve_leave_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{approve_leave}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'approve_leave' %}"><i class="icon-arrow-right"></i> Approve Leave</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'examination_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'exam_group_view' in request.permissions or 'print_marksheet_view' in request.permissions or 'design_marksheet_add' in request.permissions or 'design_marksheet_view' in request.permissions or 'print_admit_card_view' in request.permissions or 'print_admit_card_view' in request.permissions or 'exam_schedule_view' in request.permissions  or 'exam_group_add' in request.permissions or 'design_admit_card_view' in request.permissions or 'design_admit_card_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+               <li
+                  class="treeview menu-item {{print_marksheet}} {{marks_grade}}{{design_marksheet}}{{print_admit_card}}{{design_admit_card}} {{exam_result}} {{exam_schedule}} {{exam_group}} {{exam_type_list}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-map-o ftlayer"></i><span>
+                        Examinations</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'exam_group_view' in request.permissions or 'exam_group_add' in request.permissions %}
+                     <li class="{{exam_type_list}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_type_list' %}"><i
+                              class="icon-arrow-right"></i> Exam Type</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'exam_group_view' in request.permissions or 'exam_group_add' in request.permissions %}
+                     <li class="{{exam_group}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_group' %}"><i
+                              class="icon-arrow-right"></i> Exam Group</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'exam_schedule_view' in request.permissions or 'exam_group_add' in request.permissions %}
+                     <li class="{{exam_schedule}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'exam_schedule' %}"><i class="icon-arrow-right"></i> Exam Schedule</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'exam_result_view' in request.permissions or 'exam_group_add' in request.permissions %}
+                     <li class="{{exam_result}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_result' %}"><i
+                              class="icon-arrow-right"></i> Exam Result</a></li>
+                      {% endif %}
+                      {% if request.user.is_superuser or request.user.is_school_admin or 'design_admit_card_view' in request.permissions or 'design_admit_card_add' in request.permissions %}
+                     <li class="{{design_admit_card}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'design_admit_card' %}"><i class="icon-arrow-right"></i> Design Admit Card</a>
+                     </li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'print_admit_card_view' in request.permissions %}
+                     <li class="{{print_admit_card}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'print_admit_card' %}"><i class="icon-arrow-right"></i> Print Admit Card </a>
+                     </li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'design_marksheet_add' in request.permissions or 'design_marksheet_view' in request.permissions %}
+                     <li class="{{design_marksheet}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'design_marksheet' %}"><i class="icon-arrow-right"></i> Design Marksheet </a>
+                     </li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'print_marksheet_view' in request.permissions %}
+                     <li class="{{print_marksheet}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'print_marksheet' %}"><i class="icon-arrow-right"></i> Print Marksheet</a></li>
+                     {% endif %}
+                      <li class="{{marks_grade}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'marks_grade' %}"><i
+                              class="icon-arrow-right"></i> Marks Grade</a></li> 
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'online_examination_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'question_bank_view' in request.permissions or 'question_bank_add' in request.permissions or  request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{create_question_paper}}{{enrollment}}{{answer_paper_correction}}{{question_paper_sent}}{{online_exam}}"><a class="menu-toggle waves-effect waves-dark" href="#!"><i
+                        class="fa fa-rss ftlayer"></i><span> Online Examinations</span><i class="icon-arrow-down  toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     <!-- <li class="{{online_exam}}"> <a class="waves-effect waves-dark" href="{% url 'online_exam' %}"><i
+                              class="icon-arrow-right"></i> Online Exam</a></li> -->
+                     <!-- {% if 'question_bank_view' in request.permissions or  'question_bank_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin  %}
+
+                     <li class="{{question_bank}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'question_bank' %}"><i class="icon-arrow-right"></i> Question Bank</a></li>
+                           {% endif %} -->
+                     <li class="{{create_question_paper}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'create_question_paper' %}"><i class="icon-arrow-right"></i> Question Paper</a>
+                     </li>
+                     <li class="{{enrollment}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'enrollment' %}"><i class="icon-arrow-right"></i> EnRollment </a></li>
+                     {% comment %} <li class="{{question_paper_sent}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'question_paper_sent' %}"><i class="icon-arrow-right"></i> Question Paper Sent </a></li> {% endcomment %}
+                        <li class="{{answer_paper_correction}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'answer_paper_correction' %}"><i class="icon-arrow-right"></i> Answer Paper Correction</a></li>
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'lession_plan_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'manage_syllabus_status_view' in request.permissions or 'lesson_view' in request.permissions or 'lesson_add' in request.permissions  or 'topic_view' in request.permissions or 'topic_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{manage_syllabus_status}}{{topicc}}{{lesson}}{{manage_lesson_plan}}">
+                  <a class="menu-toggle waves-effect waves-dark"
+                  href="#!"><i class="fa fa-list-alt ftlayer"></i><span> Lesson Plan</span><i
+                     class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     <li class="{{manage_lesson_plan}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'manage_lesson_plan' %}"><i class="icon-arrow-right"></i> Manage Lesson Plan</a>
+                     </li>
+                     {% if 'manage_syllabus_status_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin  %}
+                     <li class="{{manage_syllabus_status}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'manage_syllabus_status' %}"><i
+                        class="icon-arrow-right"></i>Manage syllabus Status</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'lesson_view' in request.permissions or 'lesson_add' in request.permissions %}
+                     <li class="{{lesson}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'lesson' %}"><i
+                              class="icon-arrow-right"></i>Lesson</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'topic_view' in request.permissions or 'topic_add' in request.permissions %}
+                     <li class="{{topicc}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'topicc' %}"><i
+                              class="icon-arrow-right"></i> Topics</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+            {% comment %} Academics {% endcomment %}
+
+            {% if 'class_time_table_view' in request.permissions or 'class_time_table_edit' in request.permissions or 'teachers_time_table_view' in request.permissions  or 'assign_class_teacher_view' in request.permissions or 'promote_view' in request.permissions or 'subject_group_view' in request.permissions  or 'subject_view' in request.permissionsor  or 'class_view' in request.permissionsor or 'section_view' in request.permissionsor or request.user.is_superuser or request.user.is_school_admin %}
+            <li class="treeview menu-item {{grading_system_act}}{{Classes}}{{teacher_timetable}}{{sections}}{{class_timetablee}}{{subjects}}{{subject_group}}{{assign_class_teacher}}{{promote_students}} {{school_years_all}} {{school_terms}} "><a
+               class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-mortar-board ftlayer"></i><span> Academics</span><i
+                  class="icon-arrow-down toggle-icon "></i></a>
+            <ul class="treeview-menu">
+               {%  if request.user.is_superuser or request.user.is_school_admin or 'class_time_table_view' in request.permissions or 'class_time_table_edit' in request.permissions %}
+               <li class="{{class_timetablee}}"><a class="submenu-link waves-effect waves-dark"
+                  href="{% url 'class_timetable_view' %}"><i class="icon-arrow-right"></i> Class TimeTable
+                  </a></li>
+                  {% endif %}
+                  {%  if request.user.is_superuser or request.user.is_school_admin or 'teachers_time_table_view' in request.permissions %}
+               <li class="{{teacher_timetable}}"><a class="submenu-link waves-effect waves-dark"
+                  href="{% url 'teacher_timetable' %}"><i class="icon-arrow-right"></i> Teacher TimeTable
+                  </a></li>
+                  {% endif %}
+                  {%  if request.user.is_superuser or request.user.is_school_admin or 'assign_class_teacher_view' in request.permissionsor  or 'assign_class_teacher_add' in request.permissions %}
+               <li class="{{assign_class_teacher}}"><a class="submenu-link waves-effect waves-dark"
+                     href="{% url 'assign_class_teacher' %}"><i class="icon-arrow-right"></i> Assign Class
+                     Teacher</a></li>
+                     {% endif %}
+                  {%  if request.user.is_superuser or request.user.is_school_admin or 'promote_view' in request.permissions %}
+                        <li class="{{promote_students}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'promote_students' %}"><i class="icon-arrow-right"></i> Promote Student
+                                 </a></li>
+                        {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'subject_group_view' in request.permissions or 'subject_group_add' in request.permissions  %}
+                        <li class="{{subject_group}}"><a class="submenu-link waves-effect waves-dark"
+                     href="{% url 'subject_group' %}"><i class="icon-arrow-right"></i> Subject Group</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'subject_view' in request.permissions or 'subject_add' in request.permissions   %}
+               <li class="{{subjects}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'subjects' %}"><i
+                        class="icon-arrow-right"></i> Subjects</a></li>
+               {% endif %}
+               {% if request.user.is_superuser or request.user.is_school_admin or 'class_view' in request.permissions or 'class_add' in request.permissions   %}
+               <li class="{{Classes}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'Classes' %}"><i
+                        class="icon-arrow-right"></i> Class/Grade</a></li>
+                        {% endif %}
+               {% if request.user.is_superuser or request.user.is_school_admin or 'section_view' in request.permissions or 'section_add' in request.permissions  %}
+                        <li class="{{sections}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'sections' %}"><i
+                        class="icon-arrow-right"></i> Streams</a></li>
+               {% endif %}               
+               {% if request.user.is_superuser or request.user.is_school_admin or 'designation_view' in request.permissions or 'designation_add' in request.permissions %}
+               <li class="{{school_years_all}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'school_years' %}"><i
+                        class="icon-arrow-right"></i> School Year</a></li>
+               {% endif %}
+               {% if request.user.is_superuser or request.user.is_school_admin or 'disable_staff_view' in request.permissions %}
+               <li class="{{school_terms}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'school_terms' %}"><i
+                        class="icon-arrow-right"></i> School Term </a></li>
+               {% endif %}
+
+               {% if request.user.is_superuser or request.user.is_school_admin or 'disable_staff_view' in request.permissions %}
+               <li class="{{grading_system_act}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'grading_systems' %}"><i
+                        class="icon-arrow-right"></i> Grading Systems </a></li>
+               {% endif %}
+                     </ul>
+               </li>
+               {% endif %}
+         {% comment %} Accounts {% endcomment %}
+            <!-- {% if 'class_time_table_view' in request.permissions or 'class_time_table_edit' in request.permissions or 'teachers_time_table_view' in request.permissions  or 'assign_class_teacher_view' in request.permissions or 'promote_view' in request.permissions or 'subject_group_view' in request.permissions  or 'subject_view' in request.permissionsor  or 'class_view' in request.permissionsor or 'section_view' in request.permissionsor or request.user.is_superuser or request.user.is_school_admin %}
+            <li class="treeview menu-item {{add_account}}{{add_gline}}">
+               <a class="menu-toggle waves-effect waves-dark" href="#!">
+                  <i class="fa fa-user ftlayer"></i><span> Accounts</span>
+                  <i class="icon-arrow-down toggle-icon"></i>
+                </a>
+               <ul class="treeview-menu">
+                  {%  if request.user.is_superuser or 'class_time_table_view' in request.permissions or 'class_time_table_edit' in request.permissions %}
+                  <li class="{{add_account}}"><a class="submenu-link waves-effect waves-dark"
+                     href="{% url 'add_account' %}"><i class="icon-arrow-right"></i> Account</a>
+                  </li>
+                  {% endif %}
+                  {%  if request.user.is_superuser or 'teachers_time_table_view' in request.permissions %}
+                  <li class="{{add_gline}}"><a class="submenu-link waves-effect waves-dark"
+                     href="{% url 'add_gline' %}"><i class="icon-arrow-right"></i> GL Line</a>
+                  </li>
+                  {% endif %}
+                  {%  if request.user.is_superuser or 'assign_class_teacher_view' in request.permissionsor  or 'assign_class_teacher_add' in request.permissions %}
+                  <li class="{{assign_class_teacher}}"><a class="submenu-link waves-effect waves-dark"
+                     href="{% url 'account_entry' %}"><i class="icon-arrow-right"></i> Account Entry Teacher</a>
+                  </li>
+                  {% endif %}
+                  {%  if request.user.is_superuser or 'promote_view' in request.permissions %}
+                     <li class="{{promote_students}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'account_type' %}"><i class="icon-arrow-right"></i> Account Type</a>
+                     </li>
+                  {% endif %}
+                  {% if request.user.is_superuser or 'subject_group_view' in request.permissions or 'subject_group_add' in request.permissions  %}
+                     <li class="{{subject_group}}"><a class="submenu-link waves-effect waves-dark"
+                        href="{% url 'charge_type' %}"><i class="icon-arrow-right"></i> Charge Type</a>
+                     </li>
+                  {% endif %}
+               </ul>
+            </li>
+            {% endif %} -->
+            <!--  human resource -->
+            {% if 'staff_view' in request.permissions or 'staff_add' in request.permissions or 'staff_attendance_view' in request.permissions  or 'staff_payroll_view' in request.permissions or 'approve_leave_request_view' in request.permissions or 'approve_leave_request_add' in request.permissions or 'apply_leave_view' in request.permissionsor  or 'apply_leave_add' in request.permissionsor or 'leave_types_add' in request.permissionsor or 'teacher_reating_view' in request.permissionsor or 'department_add' in request.permissionsor or 'designation_view' in request.permissionsor or 'designation_add' in request.permissionsor or 'leave_types_view' in request.permissionsor or request.user.is_superuser or request.user.is_school_admin %}
+            <li class="treeview menu-item {{staff_directory}} {{staff_attendance_view}}  {{payroll}} {{approve_leave_request}} {{apply_leave}} {{add_leave_type}}  {{teachers_rating_list}}  {{department}} {{designation}} {{disabled_staff}} ">
+               <a class="menu-toggle waves-effect waves-dark" href="#!">
+                  <i class="fa fa-user-tie ftlayer"></i><span> Human Resource</span>
+                  <i class="icon-arrow-down toggle-icon"></i>
+                </a>
+                
+               <ul class="treeview-menu">
+                  {% if 'staff_view' in request.permissions or 'staff_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class=" {{staff_directory}} {{add_staff}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'staff_directory' %}"><i
+                     class="icon-arrow-right"></i> Staff Directory</a>
+                  </li>
+                  {% endif %}
+                  {% if 'staff_attendance_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class=" {{staff_attendance_view}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'staff_attendance_view' %}"><i
+                     class="icon-arrow-right"></i> Staff Attendance</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'staff_payroll_view' in request.permissions %}
+                  <li class=" {{payroll}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'payroll' %}"><i
+                           class="icon-arrow-right"></i> Payroll</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'approve_leave_request_view' in request.permissions or 'approve_leave_request_add' in request.permissions %}
+                  <li class=" {{approve_leave_request}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'approve_leave_request' %}"><i
+                           class="icon-arrow-right"></i> Approve Absent Request</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'apply_leave_view' in request.permissions or 'apply_leave_add' in request.permissions %}
+                  <li class=" {{apply_leave}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'apply_leave' %}"><i
+                           class="icon-arrow-right"></i> Apply Absent</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'leave_types_view' in request.permissions or 'leave_types_add' in request.permissions %}
+                  <li class=" {{add_leave_type}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'add_leave_type' %}"><i
+                           class="icon-arrow-right"></i> Absent Type</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'teacher_reating_view' in request.permissions  %}
+                  <li class=" {{teachers_rating_list}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'teachers_rating_list' %}"><i
+                              class="icon-arrow-right"></i> Teachers Rating</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'department_view' in request.permissions or 'department_add' in request.permissions %}
+                  <li class=" {{department}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'department' %}"><i
+                           class="icon-arrow-right"></i> Department</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'designation_view' in request.permissions or 'designation_add' in request.permissions %}
+                  <li class=" {{designation}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'designation' %}"><i
+                           class="icon-arrow-right"></i> Designation</a></li>
+                  {% endif %}
+                  {% if request.user.is_superuser or request.user.is_school_admin or 'disable_staff_view' in request.permissions %}
+                  <li class=" {{disabled_staff}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'disabled_staff' %}"><i
+                     class="icon-arrow-right"></i> Disabled  Staff</a></li>
+                  {% endif %}
+               </ul>
+            </li>
+            {% endif %}
+            {% comment %} <!-- Structure --> {% endcomment %}
+            {% comment %} {% if 'staff_view' in request.permissions or 'staff_add' in request.permissions or 'staff_attendance_view' in request.permissions  or 'staff_payroll_view' in request.permissions or 'approve_leave_request_view' in request.permissions or 'approve_leave_request_add' in request.permissions or 'apply_leave_view' in request.permissionsor  or 'apply_leave_add' in request.permissionsor or 'leave_types_add' in request.permissionsor or 'teacher_reating_view' in request.permissionsor or 'department_add' in request.permissionsor or 'designation_view' in request.permissionsor or 'designation_add' in request.permissionsor or 'leave_types_view' in request.permissionsor or request.user.is_superuser or request.user.is_school_admin %}
+            <li class="treeview menu-item">
+               <a class="menu-toggle waves-effect waves-dark" href="#!">
+                  <i class="fa fa-sitemap ftlayer"></i><span> Structure</span>
+                  <i class="icon-arrow-down toggle-icon"></i>
+                </a>
+                
+                  <ul class="treeview-menu">
+                     {% if 'staff_view' in request.permissions or 'staff_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{company}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'company' %}"><i
+                        class="icon-arrow-right"></i> Company </a></li>
+                     {% endif %}
+                     {% if 'staff_attendance_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{school}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'schools' %}"><i
+                        class="icon-arrow-right"></i>School </a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or 'staff_payroll_view' in request.permissions %}
+                     <li class="{{branch}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'branch' %}"><i
+                        class="icon-arrow-right"></i> Branch</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or 'approve_leave_request_view' in request.permissions or 'approve_leave_request_add' in request.permissions %}
+                     <li class="{{school_compositions}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'school_compositions' %}"><i
+                        class="icon-arrow-right"></i> School Composition</a>
+                     </li>
+                     {% endif %} 
+                     {% if request.user.is_superuser or 'approve_leave_request_view' in request.permissions or 'approve_leave_request_add' in request.permissions %}
+                     <li class="{{education_levels}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'education_levels' %}"><i
+                        class="icon-arrow-right"></i> Level of Education</a>
+                     </li>
+                     {% endif %}           
+                  
+                  </ul>
+            </li>
+            {% endif %} {% endcomment %}
+
+            <!-- Communication -->
+            {% if 'communicate_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+            {% if 'notice_borad_view' in request.permissions or 'notice_borad_add' in request.permissions or 'email_view' in request.permissions  or 'sms_view' in request.permissions or 'email_sms_log_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{notices}}{{send_email}}{{send_sms}}{{email_sms_log}} ">
+                     <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-bullhorn ftlayer"></i><span>
+                        Communication</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'notice_borad_view' in request.permissions or 'notice_borad_add' in request.permissions %}
+                     <li class="{{notices}}" ><a class="submenu-link waves-effect waves-dark" href="{% url 'notice_board' %}"><i
+                              class="icon-arrow-right"></i> Notice Board</a></li>
+                              {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'email_view' in request.permissions %}
+                     <li class="{{send_email}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'send_email' %}"><i
+                              class="icon-arrow-right"></i> Send Email</a></li>
+                              {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'sms_view' in request.permissions %}
+                     <li class="{{send_sms}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'send_sms' %}"><i
+                              class="icon-arrow-right"></i> Send SMS</a></li>
+                              {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'email_sms_log_view' in request.permissions %}
+
+                      <li class="{{email_sms_log}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'email_sms_log' %}"><i
+                              class="icon-arrow-right"></i> Email / SMS Log</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               
+               {% if 'download_center_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'upload_content_view' in request.permissions or 'upload_content_add' in request.permissions or 'assigment_view' in request.permissions  or 'study_material' in request.permissions or 'syllabus_view' in request.permissions or 'other_dowload_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+               <li class="treeview menu-item {{upload_content}}{{assignment_list}}{{study_material}}{{syllabus}}{{other_download_list}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-download ftlayer"></i><span>
+                        Download Center</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'upload_content_view' in request.permissions or 'upload_content_add' in request.permissions %}
+                     <li class={{upload_content}}><a class="submenu-link waves-effect waves-dark" href="{% url 'upload_content' %}"><i
+                              class="icon-arrow-right"></i> Upload Content</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'assigment_view' in request.permissions %}
+                     <li class={{assignment_list}}><a class="submenu-link waves-effect waves-dark" href="{% url 'assignment_list' %}"><i
+                              class="icon-arrow-right"></i> Assignments</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'study_material' in request.permissions %}
+                     <li class={{study_material}}><a class="submenu-link waves-effect waves-dark" href="{% url 'study_material' %}"><i
+                              class="icon-arrow-right"></i> Study Material</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'syllabus_view' in request.permissions %}
+                     <li class={{syllabus}}><a class="submenu-link waves-effect waves-dark" href="{% url 'syllabus' %}"><i class="icon-arrow-right"></i>
+                           Syllabus</a></li>
+                     {% endif %}
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'other_dowload_view' in request.permissions %}
+                     <li class='{{other_download_list}}'><a class="submenu-link waves-effect waves-dark" href="{% url 'other_download_list' %}"><i
+                              class="icon-arrow-right"></i> Other Downloads</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'home_work_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'homework_view' in request.permissions or 'homework_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{add_homework}} "><a class="menu-toggle waves-effect waves-dark" href="#!"><i
+                        class="fa fa-flask ftlayer"></i><span>Homework</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'homework_view' in request.permissions or 'homework_add' in request.permissions %}
+                     <li class="{{add_homework}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'add_homework' %}"><i
+                              class="icon-arrow-right"></i> Add Homework</a></li>
+                     {% endif %}
+
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'libray_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'books_list_view' in request.permissions or 'books_list_add' in request.permissions or 'issue_return_view' in request.permissions or 'add_student_view' in request.permissions or 'add_staff_member_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{book_list}}{{book_issuse_return}}{{add_student_member}}{{add_staff_member}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i
+                        class="fa fa-book ftlayer"></i><span>Library</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'books_list_view' in request.permissions or 'books_list_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{book_list}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'book_list' %}"><i
+                              class="icon-arrow-right"></i> Book List</a></li>
+                     {% endif %}
+                     {% if 'issue_return_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{book_issuse_return}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'book_issuse_return' %}"><i
+                              class="icon-arrow-right"></i> Issue Return</a></li>
+                     {% endif %}
+                     {% if 'add_student_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{add_student_member}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'add_student_member' %}"><i
+                              class="icon-arrow-right"></i> Add Student</a></li>
+                     {% endif %}
+                     {% if 'add_staff_member_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{add_staff_member}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'add_staff_member' %}"><i
+                              class="icon-arrow-right"></i> Add Staff Member</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'inventory_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'issue_item_view' in request.permissions or 'issue_item_add' in request.permissions or 'add_item_stock_view' in request.permissions or 'add_item_stock_add' in request.permissions or 'item_add_view' in request.permissions or 'item_add_add' in request.permissions or 'item_category_view' in request.permissions or 'item_category_add' in request.permissions  or 'item_store_view' in request.permissions or 'item_store_add' in request.permissions or 'item_supplier_view' in request.permissions or 'item_supplier_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li
+                  class="treeview menu-item {{non_returnable_item}}{{item_supplier}}{{item_store}}{{add_item_category}}{{add_item_stock}} {{issue_item}} {{add_item}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-object-group ftlayer"></i><span>Inventory</span><i
+                        class="icon-arrow-down toggle-icon"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                     {% if 'issue_item_view' in request.permissions or 'issue_item_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{issue_item}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'issue_item' %}"><i
+                              class="icon-arrow-right"></i> Issue Item</a></li>
+                     {% endif %}
+                     {% if 'non_returnable_items' in request.permissions or 'issue_item_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{non_returnable_items}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'non_returnable_items_view' %}"><i
+                              class="icon-arrow-right"></i>Non Returnable Item</a></li>
+                     {% endif %}
+                    {% if 'add_item_stock_view' in request.permissions or 'add_item_stock_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{add_item_stock}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'add_item_stock' %}"><i class="icon-arrow-right"></i> Add Item Stock</a></li>
+                    {% endif %}
+                     {% if 'item_add_view' in request.permissions or 'item_add_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{add_item}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'add_item' %}"><i
+                              class="icon-arrow-right"></i> Add Item</a></li>
+                     {% endif %}
+                     {% if 'item_category_view' in request.permissions or 'item_category_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{add_item_category}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'add_item_category' %}"><i class="icon-arrow-right"></i> Item Category</a></li>
+                     {% endif %}
+
+                     {% if 'item_store_view' in request.permissions or 'item_store_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{item_store}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'item_store' %}"><i
+                              class="icon-arrow-right"></i> Item Store</a></li>
+                     {% endif %}
+                     {% if 'item_supplier_view' in request.permissions or 'item_supplier_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{item_supplier}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'item_supplier' %}"><i class="icon-arrow-right"></i>Item Supplier</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'transport_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'routes_view' in request.permissions or 'routes_add' in request.permissions or 'vehicle_view' in request.permissions  or 'vehicle_add' in request.permissions or 'assign_vehicle_view' in request.permissions or 'assign_vehicle_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+               <li class="treeview menu-item {{assign_vehicle}} {{vehicle}} {{routes}}"><a class="menu-toggle waves-effect waves-dark"
+                     href="#!"><i class="fa fa-bus ftlayer"></i><span>Transport</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'routes_view' in request.permissions or 'routes_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{routes}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'routes' %}"><i
+                              class="icon-arrow-right"></i> Routes</a></li>
+                     {% endif %}
+                     {% if 'vehicle_view' in request.permissions or 'vehicle_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{vehicle}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'vehicle' %}"><i
+                              class="icon-arrow-right"></i> Vehicles</a></li>
+                     {% endif %}
+                     {% if 'assign_vehicle_view' in request.permissions or 'assign_vehicle_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{assign_vehicle}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'assign_vehicle' %}"><i class="icon-arrow-right"></i> Assign Vehicle</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'hostel_roooms_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'hostel_rooms_view' in request.permissions or 'hostel_rooms_add' in request.permissions or 'hostel_view' in request.permissions  or 'room_type_add' in request.permissions or 'room_type_view' in request.permissions or 'hostel_rooms_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{hostel}}{{room_type}}{{hostel_room}}">
+                  <a class="menu-toggle waves-effect waves-dark"
+                     href="#!"><i class="fa fa-building-o ftlayer"></i><span>Hostel</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'hostel_rooms_view' in request.permissions or 'hostel_rooms_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{hostel_room}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'hostel_room' %}"><i
+                              class="icon-arrow-right"></i> Hostel Rooms</a></li>
+                     {% endif %}
+                     {% if 'room_type_view' in request.permissions or 'room_type_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{room_type}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'room_type' %}"><i
+                              class="icon-arrow-right"></i> Room Type</a></li>
+                     {% endif %}
+                     {% if 'hostel_view' in request.permissions or 'hostel_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{hostel}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'hostel' %}"><i
+                              class="icon-arrow-right"></i> Hostel</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'certificate_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'student_certificate_view' in request.permissions or 'student_certificate_add' in request.permissions or 'generate_certificate_view' in request.permissions  or 'student_id_card_view' in request.permissions or 'student_id_card_add' in request.permissions or 'generate_id_card_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{student_id_card}}{{student_certificate}}{{generate_ID_card}}{{generate_student_certificate}}">
+                  <a class="menu-toggle waves-effect waves-dark"
+                     href="#!"><i class="fa fa-newspaper-o ftlayer"></i><span>Certificate</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'student_certificate_view' in request.permissions or 'student_certificate_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+                     <li class="{{student_certificate}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'student_certificate' %}"><i class="icon-arrow-right"></i> Student
+                           Certificate</a></li>
+                           {% endif %}
+                           {% if 'generate_certificate_view' in request.permissions or  'student_certificate_add' in request.permissions or   request.user.is_superuser or request.user.is_school_admin %}
+
+                     <li class="{{generate_student_certificate}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'generate_student_certificate' %}"><i
+                              class="icon-arrow-right"></i> Generate Certificate </a></li>
+                              {% endif %}
+                              {% if 'student_id_card_view' in request.permissions or 'student_id_card_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+                     <li class="{{student_id_card}}"><a class="submenu-link waves-effect waves-dark"
+                           href="{% url 'student_id_card' %}"><i class="icon-arrow-right"></i> Student ID Card</a></li>
+                           {% endif %}
+                           {% if 'generate_id_card_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+
+                     <li class="{{generate_ID_card}}"><a class="submenu-link aves-effect waves-dark" href="{% url 'generate_ID_card' %}"><i
+                              class="icon-arrow-right"></i> Generate ID Card</a></li>
+                              {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+               {% if 'fronts_cms_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'banner_image_view' in request.permissions or 'banner_image_add' in request.permissions  or 'carosel_view' in request.permissions or 'carosel_add' in request.permissions or 'event_view' in request.permissions or 'event_add' in request.permissions or 'infrastructure_view' in request.permissions or 'infrastructure_add' in request.permissions   or 'school_staff_view' in request.permissions   or 'school_staff_add' in request.permissions   or 'school_head_view' in request.permissions or 'school_head_add' in request.permissions  or 'news_view' in request.permissions  or 'news_add' in request.permissions  or 'offers_view' in request.permissions  or 'offers_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+
+               <li class="treeview menu-item {{menus}}{{media_manager}}{{news}} {{offers}} {{carousel}}{{event}}{{basic_detail}}{{infrastructure}}{{school_staff}}{{school_head}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i
+                  class="fa fa-empire ftlayer"></i><span>Front CMS</span><i class="icon-arrow-down toggle-icon"></i></a>
+               <ul class="treeview-menu">
+               {% if 'banner_image_view' in request.permissions or 'banner_image_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{basic_detail}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'basic_detail' %}"><i
+                  class="icon-arrow-right"></i> Basic Details</a></li>
+                  {% endif %}
+                  {% if 'carosel_view' in request.permissions or 'carosel_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="{{carousel}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'carousel' %}"><i
+                     class="icon-arrow-right"></i> Carousel</a></li>
+                     {% endif %}
+                     {% if 'event_view' in request.permissions or 'event_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="{{event}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'event' %}"><i
+                        class="icon-arrow-right"></i> Event</a></li>
+                        {% endif %}
+                  {% if 'infrastructure_view' in request.permissions or 'infrastructure_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{infrastructure}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'infrastructure' %}"><i
+                           class="icon-arrow-right"></i> Infrastructure</a></li>
+                           {% endif %}
+                  {% if 'school_staff_view' in request.permissions or 'school_staff_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                   <li class="{{school_staff}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'school_staff' %}"><i
+                  class="icon-arrow-right"></i> School Staff</a></li>
+                  {% endif %}
+                  {% if 'school_head_view' in request.permissions or 'school_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                 <li class="{{school_head}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'school_head' %}"><i
+                  class="icon-arrow-right"></i> School Head</a></li>
+                  {% endif %}
+                  {% if 'news_view' in request.permissions or 'news_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="{{news}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'news' %}"><i
+                     class="icon-arrow-right"></i>News</a></li>
+                     {% endif %}
+                     {% if 'offers' in request.permissions or 'offers' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class=" {{offers}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'offers' %}"><i
+                     class="icon-arrow-right"></i> Offers</a></li>
+                     {% endif %}
+              </ul>
+             </li>
+             {% endif %}
+             {% endif %}
+           
+
+               {% if 'expense_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'expense_view' in request.permissions or 'expense_add' in request.permissions or 'search_expense_view' in request.permissions  or 'expense_head_view' in request.permissions or 'expense_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+   
+               <li class="treeview menu-item {{vendor_create}} "><a
+                     class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-store"></i> Vendor</span><i
+                        class="icon-arrow-down toggle-icon "></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'expense_head_view' in request.permissions or 'expense_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{vendor_create}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'vendor' %}"><i
+                              class="icon-arrow-right"></i>Create Vendor</a></li>
+                     {% endif %}
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %}
+   
+               {% if 'expense_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+                  {% if 'expense_view' in request.permissions or 'expense_add' in request.permissions or 'search_expense_view' in request.permissions  or 'expense_head_view' in request.permissions or 'expense_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+   
+   
+                  <li class="treeview menu-item {{create_expense}}{{expense_category}} {{expense_head}} {{search_expense}} {{add_expense}}"><a
+                        class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-line-chart"></i><span> Expenses</span><i
+                           class="icon-arrow-down toggle-icon "></i></a>
+                     <ul class="treeview-menu">
+                        {% if 'expense_view' in request.permissions or 'expense_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <!-- <li class="{{add_expense}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'add_expense' %}"><i
+                                 class="icon-arrow-right"></i> Add Expenses</a></li>
+                        {% endif %}
+                        {% if 'search_expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{search_expense}}"><a class="submenu-link waves-effect waves-dark"
+                              href="{% url 'search_expense' %}"><i class="icon-arrow-right"></i> Search Expenses</a></li>
+                        {% endif %} -->
+                        <!-- {% if 'expense_head_view' in request.permissions or 'expense_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{expense_head}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'expense_head' %}"><i
+                                 class="icon-arrow-right"></i> Expenses Head</a></li>
+                        {% endif %} -->
+   
+                        {% if 'expense_head_view' in request.permissions or 'expense_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{expense_category}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'expense_category' %}"><i
+                                 class="icon-arrow-right"></i> Expense Category</a></li>
+                        {% endif %}
+   
+                        {% if 'expense_head_view' in request.permissions or 'expense_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{create_expense}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'create_expense' %}"><i
+                                 class="icon-arrow-right"></i>Expense</a></li>
+                        {% endif %}
+                     </ul>
+                  </li>
+                  {% endif %}
+                  {% endif %}
+   
+   
+   
+                  {% if 'income_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+                  {% if 'income_view' in request.permissions or 'income_add' in request.permissions or 'search_income_view' in request.permissions  or 'income_head_view' in request.permissions or 'income_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+   
+                  <li class="treeview menu-item {{invoice_details_view}} {{expense_categorys}}{{search_income}} {{income_head}} {{add_income}}"><a class="menu-toggle waves-effect waves-dark"
+                        href="#!"><i class="fa fa-usd"></i><span> Invoice  </span><i class="icon-arrow-down  toggle-icon"></i></a>
+                     <ul class="treeview-menu">
+                        <!-- {% if 'income_view' in request.permissions or 'income_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{add_income}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'add_income' %}"><i
+                                 class="icon-arrow-right"></i> Add Income</a></li>
+                        {% endif %} -->
+                        <!-- {% if 'search_income_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{search_income}}"><a class="submenu-link waves-effect waves-dark"
+                              href="{% url 'search_income' %}"><i class="icon-arrow-right"></i> Search Income</a></li>
+                        {% endif %} -->
+                        <!-- {% if 'income_head_view' in request.permissions or 'income_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{income_head}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'income_head' %}"><i
+                                 class="icon-arrow-right"></i> Income Head</a></li>
+                        {% endif %} -->
+   
+                        {% if 'income_head_view' in request.permissions or 'income_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{expense_categorys}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'invoice_granate' %}"><i
+                                 class="icon-arrow-right"></i> Invoice Generated</a></li>
+                        {% endif %}
+   
+                        {% if 'income_head_view' in request.permissions or 'income_head_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                        <li class="{{invoice_details_view}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'invoice_details' %}"><i
+                                 class="icon-arrow-right"></i> Invoice </a></li>
+                        {% endif %}
+                     </ul>
+                  </li>
+                  {% endif %}
+                  {% endif %}
+
+                  {% if 'alumni_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+                  {% if 'manage_alumni_view' in request.permissions or 'manage_alumni_add' in request.permissions or 'Alumni_events_edit' in request.permissions or 'Alumni_events_view' in request.permissions or 'Alumni_events_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                  <li class="treeview menu-item {{alumni_type}} {{alumni_create}} {{create_event_type}} {{create_event}} "><a class="menu-toggle waves-effect waves-dark" href="#!"><i
+                             class="fa fa-universal-access ftlayer"></i><span>Alumni</span><i class="icon-arrow-down toggle-icon"></i></a>
+                       <ul class="treeview-menu">
+                          <!-- {% if 'manage_alumni_view' in request.permissions or 'manage_alumni_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     
+                          <li class="{{mange_alumini}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'mange_alumini' %}"><i
+                                   class="icon-arrow-right"></i>Manage Alumni</a></li>
+                          {% endif %}
+                          {% if 'Alumni_events_view' in request.permissions or 'Alumni_events_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <li class="{{alumni_events}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'alumni_events' %}"><i
+                                   class="icon-arrow-right"></i> Events </a></li>
+                          {% endif %} -->
+     
+                          {% if 'Alumni_events_view' in request.permissions or 'Alumni_events_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <li class="{{alumni_type}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'alumni_type' %}"><i
+                                   class="icon-arrow-right"></i> Alumni Type </a></li>
+                          {% endif %}
+     
+                          {% if 'Alumni_events_view' in request.permissions or 'Alumni_events_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <li class="{{alumni_create}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'alumni_create' %}"><i
+                                   class="icon-arrow-right"></i> Alumni Create </a></li>
+                          {% endif %}
+                          {% if 'Alumni_events_view' in request.permissions or 'Alumni_events_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <li class="{{create_event_type}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'create_event_type' %}"><i
+                                   class="icon-arrow-right"></i> Create Event Type </a></li>
+                          {% endif %}                     
+                          {% if 'Alumni_events_view' in request.permissions or 'Alumni_events_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <li class="{{create_event}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'create_event' %}"><i
+                                   class="icon-arrow-right"></i> Create Event </a></li>
+                          {% endif %}
+                
+                       </ul>
+                    </li>
+                    {% endif %}
+                    {% endif %}
+               <!-- {% if 'home_work_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'homework_view' in request.permissions or 'homework_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="treeview menu-item {{statement_payment}} "><a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-wallet"></i></i><span>Account Transaction</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if request.user.is_superuser or 'homework_view' in request.permissions or 'homework_add' in request.permissions %}
+                     <li class="{{statement_payment}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'account_transaction' %}"><i
+                              class="icon-arrow-right"></i> Money Transfer</a></li>
+                     {% endif %}
+
+                  </ul>
+               </li>
+               {% endif %}
+               {% endif %} -->
+
+  
+         {% if 'student_report_view' in request.permissions or 'finance_report_view' in request.permissions or 'attendance_report_view' in request.permissions or 'exanmination_report_view' in request.permissions  or 'online_examination_report' in request.permissions or 'lesson_plan_report_view' in request.permissions or 'human_resource_report_view' in request.permissions or 'library_report_view' in request.permissions or 'inventory_report_view' in request.permissions or 'transport_report_view' in request.permissions or 'hostel_report_view' in request.permissions or 'Alumini_report_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+               <li class="treeview menu-item {{examinations_report}} {{Finances_report}}{{lesson_paln_report}}{{attendence_report}} {{issue_item_report}}{{libary_report}}{{mange_alumini_report}}{{transport_report}}{{hostel_repoert}}{{Human_Resource_report}}{{student_information_report}}{{feedback_list}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-chart-pie"></i></i><span>Reports</span><i class="icon-arrow-down toggle-icon"></i></a>
+            <ul class="treeview-menu">
+               {% if 'student_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{student_information_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'student_information_report' %}"><i
+                        class="icon-arrow-right"></i> Student Information</a></li>
+               {% endif %}
+               {% if 'finance_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{Finances_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'Finances_report' %}"><i
+                        class="icon-arrow-right"></i> Finance </a></li>
+               {% endif %}
+
+               {% if 'attendances_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'attendance_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{attendence_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'attendence' %}"><i
+                        class="icon-arrow-right"></i> Attendance </a></li>
+               {% endif %}
+               {% endif %}
+               {% if 'examination_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'exanmination_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{examinations_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'examinations_report' %}"><i
+                        class="icon-arrow-right"></i> Examinations </a></li>
+               {% endif %}
+               {% endif %}
+               <!-- {% if 'online_examination_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'online_examination_report' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li><a class="submenu-link waves-effect waves-dark" href="{% url 'dashboard' %}"><i
+                        class="icon-arrow-right"></i> Online Examinations </a></li>
+               {% endif %}
+               {% endif %} -->
+               {% if 'lession_plan_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'lesson_plan_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{lesson_paln_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'syllabus_status_report' %}"><i
+                        class="icon-arrow-right"></i> Lesson Plan </a></li>
+               {% endif %}
+               {% endif %}
+               {% if 'human_resource_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{Human_Resource_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'Human_Resource' %}"><i
+                        class="icon-arrow-right"></i> Human Resource </a></li>
+               {% endif %}
+               {% if 'libray_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'library_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{libary_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'library' %}"><i
+                        class="icon-arrow-right"></i> Library </a></li>
+               {% endif %}
+               {% endif %}
+               {% if 'inventory_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'inventory_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{issue_item_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'Inventory' %}"><i
+                        class="icon-arrow-right"></i> Inventory </a></li>
+               {% endif %}
+               {% endif %}
+               {% if 'transport_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'transport_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{transport_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'transport_report' %}"><i
+                        class="icon-arrow-right"></i> Transport </a></li>
+               {% endif %}
+               {% endif %}
+               {% if 'hostel_roooms_modules' in request.system_modules or request.user.is_superuser or request.user.is_school_admin %}
+               {% if 'hostel_report_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{hostel_repoert}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'hostel_repoert' %}"><i
+                        class="icon-arrow-right"></i> Hostel </a></li>
+               {% endif %}
+               {% endif %}
+             
+               <li class="{{mange_alumini_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'mange_alumini_report' %}"><i
+                        class="icon-arrow-right"></i> Alumni </a></li>
+          
+               {% if request.user.is_superuser or request.user.is_school_admin %}
+               <li class="{{feedback_list}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'feedback_list' %}"><i
+                        class="icon-arrow-right"></i> Feedback </a></li>
+               {% endif %}
+
+               <!-- <li class="{{accouting_report}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'accouting_report' %}"><i
+                        class="icon-arrow-right"></i> Accouting Report </a></li> -->
+               <!-- <li class=""><a class="waves-effect waves-dark" href="{% url 'mange_alumini_report' %}"><i
+                        class="icon-arrow-right"></i> User Log </a></li>
+               <li><a class="waves-effect waves-dark" href="{% url 'dashboard' %}"><i
+                        class="icon-arrow-right"></i> Audit Trail Report </a></li> -->
+            </ul>
+         </li>
+         {% endif %}
+
+
+               {% if 'general_setting_view' in request.permissions or 'session_setting_view' in request.permissions or 'session_setting_add' in request.permissions or 'roles_premission_view' in request.permissions  or 'email_setting_view' in request.permissions or 'sms_setting_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+
+               <li class="treeview menu-item {{school_registrations}}{{print_header_footer}}{{modules}}{{student_profile_update}}{{student_user}} {{session}} {{role}}{{email_setting}}{{payment_method}}{{sms_setting}}{{general_setting_setting}} {{custom_fields}} {{system_fields_student}} {{buyer_register}} {{backup_data}}">
+                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i
+                        class="fa fa-gears ftlayer"></i><span>System Settings</span><i class="icon-arrow-down toggle-icon"></i></a>
+                  <ul class="treeview-menu">
+                     {% if 'general_setting_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{general_setting_setting}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'general_setting' %}"><i
+                              class="icon-arrow-right"></i> General Setting</a></li>
+                     {% endif %}
+                     {% if 'session_setting_view' in request.permissions  or 'session_setting_add' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class=" {{session}} "><a class="submenu-link waves-effect waves-dark" href="{% url 'session' %}"><i
+                              class="icon-arrow-right"></i> Session Setting </a></li>
+                     {% endif %}
+                      {% if 'roles_premission_view' in request.permissions or 'roles_premission_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                              <li class="{{role}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'role' %}"><i
+                                 class="icon-arrow-right"></i> Roles Permissions </a></li>
+                     {% endif %}
+                     {% if 'payment_methods_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{payment_method}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'payment_method' %}"><i
+                              class="icon-arrow-right"></i> Payment Methods </a></li>
+                     {% endif %}
+                     {% if 'email_setting_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin %}
+                     <li class="{{email_setting}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'email_setting' %}"><i
+                              class="icon-arrow-right"></i> Email Setting </a></li>
+                     {% endif %}
+                     {% if 'sms_setting_view' in request.permissions  or request.user.is_superuser or request.user.is_school_admin  %}
+                      <li class="{{sms_setting}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'sms_setting' %}"><i
+                              class="icon-arrow-right"></i> SMS Setting </a></li>
+                     {% endif %}
+                     <li class="{{student_user}}"><a class="waves-effect waves-dark" href="{% url 'student_user' %}"><i
+                        class="icon-arrow-right"></i> User </a></li>
+                     <li class="{{modules}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'modules' %}"><i
+                           class="icon-arrow-right"></i> Modules </a></li>
+
+                    <li ><a class="submenu-link waves-effect waves-dark" href="{% url 'custom_fields' %}"><i
+                              class="icon-arrow-right"></i> Custom Fields </a></li>
+                     <li class="{{system_fields_student}}" ><a class="submenu-link waves-effect waves-dark" href="{% url 'system_fields_student' %}"><i
+                              class="icon-arrow-right"></i> System Fields </a></li>
+                      <li class="{{student_profile_update}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'student_profile_update' %}"><i
+                          class="icon-arrow-right"></i> Student Profile Update </a></li>
+                     <li class="{{print_header_footer}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'print_header_footer' %}"><i
+                           class="icon-arrow-right"></i> Print Header Footer </a></li>
+                 
+                     <li class="{{school_registrations}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'school_registration' %}"><i
+                        class="icon-arrow-right"></i> School Registration </a></li>  
+
+                     <li class="{{buyer_register}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'buyer_register' %}"><i
+                        class="icon-arrow-right"></i> Customers Registration </a></li>    
+                       
+                        <li class="{{backup_data}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'backup' %}"><i class="icon-arrow-right"></i> Data BackUp</a>
+                           
+                                                     </li>    
+                  </ul>
+                  <li class="nav-item">
+                     <a class="nav-link" href="{% url 'dashboard_finance' %}">
+                        <i class="fa fa-bank ftlayer"></i>
+                       <span class="menu-title">Finance</span>
+                     </a>
+                   </li>
+               </li>
+            {% endif %}
+            {% comment %} <li class="treeview menu-item{{school_registration}}{{print_header_footer}}{{modules}}{{student_profile_update}}{{student_user}}{{session}}{{role}}{{email_setting}}{{payment_method}}{{sms_setting}}{{general_setting_ac}}">
+               <a class="menu-toggle waves-effect waves-dark" href="#!">
+                  <i class="fa fa-download"></i><span> CSV Download</span><i class="icon-arrow-down toggle-icon"></i>
+               </a>
+               <ul>
+                  <li><a class="submenu-link waves-effect waves-dark" href="{% url 'export_all_data_zip' %}"><i class="icon-arrow-right"></i> Data Download</a>
+                  </li>
+               </ul>
+            </li> {% endcomment %}
+            
+
+
+            </ul>
+         </section>
+      </aside>
+      <!-- Sidebar chat start -->
+      <div id="sidebar" class="p-fixed header-users showChat">
+         <div class="had-container">
+            <div class="card card_main header-users-main">
+               <div class="card-content user-box">
+                  <div class="md-group-add-on p-20">
+                     <span class="md-add-on">
+                        <i class="icofont icofont-search-alt-2 chat-search"></i>
+                     </span>
+                     <div class="md-input-wrapper">
+                        <input type="text" class="md-form-control" name="username" id="search-friends">
+                        <label>Search</label>
+                     </div>
+
+                  </div>
+                  <div class="media friendlist-main">
+
+                     <h6>Friend List</h6>
+
+                  </div>
+                  <div class="main-friend-list">
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="3" data-status="online" data-username="Alice"
+                        data-toggle="tooltip" data-placement="left" title="Alice">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-2.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Alice</div>
+                           <span>1 hour ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="7" data-status="offline"
+                        data-username="Michael Scofield" data-toggle="tooltip" data-placement="left"
+                        title="Michael Scofield">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-3.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-danger"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Michael Scofield</div>
+                           <span>3 hours ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="5" data-status="online" data-username="Irina Shayk"
+                        data-toggle="tooltip" data-placement="left" title="Irina Shayk">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-4.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Irina Shayk</div>
+                           <span>1 day ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="6" data-status="offline" data-username="Sara Tancredi"
+                        data-toggle="tooltip" data-placement="left" title="Sara Tancredi">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-5.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-danger"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Sara Tancredi</div>
+                           <span>2 days ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="3" data-status="online" data-username="Alice"
+                        data-toggle="tooltip" data-placement="left" title="Alice">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-2.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Alice</div>
+                           <span>1 hour ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="3" data-status="online" data-username="Alice"
+                        data-toggle="tooltip" data-placement="left" title="Alice">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-2.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Alice</div>
+                           <span>1 hour ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="3" data-status="online" data-username="Alice"
+                        data-toggle="tooltip" data-placement="left" title="Alice">
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-2.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Alice</div>
+                           <span>1 hour ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                     <div class="media friendlist-box" data-id="1" data-status="online" data-username="Josephin Doe"
+                        data-toggle="tooltip" data-placement="left" title="Josephin Doe">
+
+                        <a class="media-left" href="#!">
+                           <img class="media-object img-circle" src="assets/images/avatar-1.png"
+                              alt="Generic placeholder image">
+                           <div class="live-status bg-success"></div>
+                        </a>
+                        <div class="media-body">
+                           <div class="friend-header">Josephin Doe</div>
+                           <span>20min ago</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+      <div class="showChat_inner">
+         <div class="media chat-inner-header">
+            <a class="back_chatBox">
+               <i class="icofont icofont-rounded-left"></i> Josephin Doe
+            </a>
+         </div>
+         <div class="media chat-messages">
+            <a class="media-left photo-table" href="#!">
+               <img class="media-object img-circle m-t-5" src="assets/images/avatar-1.png"
+                  alt="Generic placeholder image">
+               <div class="live-status bg-success"></div>
+            </a>
+            <div class="media-body chat-menu-content">
+               <div class="">
+                  <p class="chat-cont">I'm just looking around. Will you tell me something about yourself?</p>
+                  <p class="chat-time">8:20 a.m.</p>
+               </div>
+            </div>
+         </div>
+         <div class="media chat-messages">
+            <div class="media-body chat-menu-reply">
+               <div class="">
+                  <p class="chat-cont">I'm just looking around. Will you tell me something about yourself?</p>
+                  <p class="chat-time">8:20 a.m.</p>
+               </div>
+            </div>
+            <div class="media-right photo-table">
+               <a href="#!">
+                  <img class="media-object img-circle m-t-5" src="assets/images/avatar-2.png"
+                     alt="Generic placeholder image">
+                  <div class="live-status bg-success"></div>
+               </a>
+            </div>
+         </div>
+         <div class="media chat-reply-box">
+            <div class="md-input-wrapper">
+               <input type="text" class="md-form-control" id="inputEmail" name="inputEmail">
+               <label>Share your thoughts</label>
+               <span class="highlight"></span>
+               <span class="bar"></span> <button type="button" class="chat-send waves-effect waves-light">
+                  <i class="icofont icofont-location-arrow f-20 "></i>
+               </button>
+
+               <button type="button" class="chat-send waves-effect waves-light">
+                  <i class="icofont icofont-location-arrow f-20 "></i>
+               </button>
+            </div>
+
+         </div>
+      </div>
+      <!-- Sidebar chat end-->
+      <div class="content-wrapper">
+         <!-- Container-fluid starts -->
+         <!-- Main content starts -->
+         {% for message in messages %}
+         <div class="container-fluid p-0 " id="alert">
+
+           <div class="alert {{ message.tags }} alert-dismissible bg-{{ message.tags }}" role="alert" >
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="True">&times;</span>
+             </button>
+             <b>{{ message }}</b>
+           </div>
+         </div>
+
+         {% endfor %}
+
+         {% block body_block %}
+
+         {% endblock %}
+         <footer>
+   
+            <div class="container-fluid" > <hr>
+               <center><b>Powered By &nbsp;&nbsp;&nbsp;  </b> <a href="https://www.bharathbrands.in/" target="_blank">
+                  <img src="https://www.bharathbrands.in/images/logo.png" style="height: 70px;">  </a>  </center>
+            </div> 
+         
+         </footer>
+<!-- Translation Modal -->
+
+ <div class="modal fade" id="language_nodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLongTitle">Choose Language</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+               <div id="google_translate_element"></div>
+
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+         <!-- Main content ends -->
+         <!-- Container-fluid ends -->
+
+      </div>
+   </div>
+
+   <script>
+      window.setTimeout(function() {
+      $(".alert").fadeTo(500, 0).slideUp(500, function(){
+          $(this).remove();
+      });
+    }, 3000);
+    </script>
+<script>
+  function closeAlert() {
+    document.getElementById('alert').style.display = 'none';
+  }
+</script>
+
+   <!-- Required Jqurey -->
+   <!-- <script src="{% static 'assets/plugins/Jquery/dist/jquery.min.js' %}"></script> -->
+   <script src="{% static 'assets/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+
+   <script src="{% static 'assets/plugins/tether/dist_css/js/tether.min.js' %}"></script>
+
+   <!-- Required Fremwork -->
+   <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+   <!-- Scrollbar JS-->
+   <script src="{% static 'assets/plugins/jquery-slimscroll/jquery.slimscroll.js' %}"></script>
+   <script src="{% static 'assets/plugins/jquery.nicescroll/jquery.nicescroll.min.js' %}"></script>
+
+   <!--classic JS-->
+   <script src="{% static 'assets/plugins/classie/classie.js' %}"></script>
+
+   <!-- notification -->
+   <script src="{% static 'assets/plugins/notification/js/bootstrap-growl.min.js' %}"></script>
+
+   <!-- Sparkline charts -->
+   <script src="{% static 'assets/plugins/jquery-sparkline/dist_css/jquery.sparkline.js' %}"></script>
+
+   <!-- Counter js  -->
+   <script src="{% static 'assets/plugins/waypoints/jquery.waypoints.min.js' %}"></script>
+   <script src="{% static 'assets/plugins/countdown/js/jquery.counterup.js' %}"></script>
+
+   <!-- Echart js -->
+   <script src="{% static 'assets/plugins/charts/echarts/js/echarts-all.js' %}"></script>
+
+   <script src="https://code.highcharts.com/highcharts.js"></script>
+   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+   <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+
+   <!-- custom js -->
+   <script type="text/javascript" src="{% static 'assets/js/main.min.js' %}"></script>
+   <script type="text/javascript" src="{% static 'assets/pages/dashboard.js' %}"></script>
+   <script type="text/javascript" src="{% static 'assets/pages/elements.js' %}"></script>
+   <script src="{% static 'assets/js/menu.min.js' %}"></script>
+
+<!-- For Datatables excel,pdf etc... -->
+
+   <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.print.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
+   <!-- Add JSZip and pdfmake libraries for Excel and PDF buttons -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
+
+
+     <script>
+       $(document).ready(function () {
+         const dataTable = $('#tableID').DataTable({
+           dom: 'Blfrtip', // Add custom buttons to the DataTable
+           buttons: [
+             {
+               extend: 'copy',
+               text: '<i class="fas fa-copy" style="color:black"></i>',
+               titleAttr: 'Copy',
+               className: 'cust ',
+             },
+             {
+               extend: 'csv',
+               text: '<i class="fas fa-file-csv"></i>',
+               titleAttr: 'CSV',
+               className: 'cust',
+             },
+             {
+               extend: 'excel',
+               text: '<i class="fas fa-file-excel"></i>',
+               titleAttr: 'Excel',
+               className: 'cust ',
+             },
+             {
+               extend: 'pdf',
+               text: '<i class="fas fa-file-pdf"></i>',
+               titleAttr: 'PDF',
+               className: 'cust',
+             },
+             {
+               extend: 'print',
+               text: '<i class="fas fa-print"></i>',
+               titleAttr: 'Print',
+               className: 'cust',
+             },
+           ],
+           lengthMenu: [[10, 25, 50, 100, 250], [10, 25, 50, 100, 250]],
+         });
+
+         // Update the DataTable entries when the selection changes
+         $('#showEntries').on('change', function () {
+           dataTable.page.len($(this).val()).draw();
+         });
+       });
+     </script>
+
+
+
+   {% block script_block %}
+   
+      
+   {% endblock %}
+
+   <!-- <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const menuToggles = document.querySelectorAll('.menu-toggle');
+          
+          menuToggles.forEach(toggle => {
+              toggle.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  
+                  const submenu = this.nextElementSibling;
+                  const icon = this.querySelector('.toggle-icon');
+                  
+                  if (submenu.style.display === 'block') {
+                      submenu.style.display = 'none';
+                      icon.classList.remove('icon-arrow-up');
+                      icon.classList.add('icon-arrow-down toggle-icon');
+                  } else {
+                      submenu.style.display = 'block';
+                      icon.classList.remove('icon-arrow-down toggle-icon');
+                      icon.classList.add('icon-arrow-up');
+                  }
+              });
+          });
+      });
+      </script> -->
+
+
+   <script>
+      var $window = $(window);
+      var nav = $('.fixed-button');
+      $window.scroll(function () {
+         if ($window.scrollTop() >= 200) {
+            nav.addClass('active');
+         }
+         else {
+            nav.removeClass('active');
+         }
+      });
+
+$(document).ready(function(){
+    $( document ).on( 'focus', ':input', function(){
+        $( this ).attr( 'autocomplete', 'off' );
+    });
+});
+   </script>
+  <script>
+   const icon = document.querySelector(".icon");
+const search = document.querySelector(".search");
+
+icon.onclick = function () {
+	search.classList.toggle("active");
+};
+
+</script>
+ <!-- google_translation  -->
+ <script src="{% static 'assets/js/google_translation.js' %}"></script>
+ <script src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
+ <script>
+   $(document).ready(function () {
+       $('.dropdown-toggle').on('click', function (event) {
+           event.preventDefault();
+           $(this).next('.dropdown-menu').toggle();
+       });
+   });
+</script>
+<script>
+function closeAlert() {
+    const alertBox = document.getElementById('alert');
+    if (alertBox) {
+        alertBox.style.display = 'none';
+    }
+}
+
+// Auto hide after 5 seconds
+setTimeout(() => {
+    closeAlert();
+}, 5000);
+</script>
+
+</body>
+
+</html>

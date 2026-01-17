@@ -1,0 +1,40 @@
+{% extends 'base copy.html' %} 
+{% block body_block %} 
+{% load static %} 
+{% load custom_filter %}  
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                    <h3 class="card-title">
+    <h2>Statement of Changes in Equity</h2>
+</h3>
+
+   
+<div class="table-responsive">
+    <table id="tableID" class="display table table-hover">
+        <thead class="bg-col">
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Opening Equity</td>
+                <td>{{ opening_equity }}</td>
+            </tr>
+            <tr>
+                <td>Current Equity</td>
+                <td>{{ current_equity }}</td>
+            </tr>
+            <tr>
+                <td><strong>Change in Equity</strong></td>
+                <td><strong>{{ equity_change }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

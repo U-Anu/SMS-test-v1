@@ -1,0 +1,367 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+<style>
+    .form-group {
+       margin-bottom: 0rem;
+    }
+
+    @charset "UTF-8";
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+    }
+    
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+    
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+    
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+    
+    
+
+
+
+.toggler-wrapper.style-4 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+	left: calc(100% - 19px - 3px);
+}
+
+.toggler-wrapper.style-4 .toggler-knob {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	left: 0;
+	top: 0;
+	background-color: #fff;
+	-webkit-box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+	box-shadow: 0 2px 6px rgba(153, 153, 153, 0.75);
+}
+
+</style>
+<div class="container-fluid"> 
+    <div class="row">
+        <div class="main-header">
+           <h4>Admit Card</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            {% if 'design_admit_card_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                       
+                        
+                      {% if view %}
+                      <h4> View Admit Card </h4>
+                      {% elif edit %}
+                      <h4> Edit Admit Card </h4>
+                      {% else %}
+                      <h4>Add Admit Card</h4>                   
+                      {% endif %}  
+                    </div><hr>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_template">Template:</label>
+                                <input type="text" name="template" maxlength="255" class="form-control" required id="id_template">
+                               
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_heading">Heading:</label>
+                                <input type="text" name="heading" maxlength="255" class="form-control" id="id_heading">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_title">Title:</label>
+                                <input type="text" name="title" maxlength="255" class="form-control" id="id_title">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_exam_name">Exam name:</label>
+                                <input type="text" name="exam_name" maxlength="255" class="form-control" id="id_exam_name">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_school_name">School name:</label>
+                                <input type="text" name="school_name" maxlength="255" class="form-control" id="id_school_name">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_exam_center">Exam center:</label>
+                                <input type="text" name="exam_center" maxlength="255" class="form-control" id="id_exam_center">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_footer_text">Footer text:</label>
+                                <input type="text" name="footer_text" maxlength="255" class="form-control" id="id_footer_text">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_left_logo">Left logo:</label>
+                                <input type="file" name="left_logo" class="form-control" id="id_left_logo">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_right_logo">Right logo:</label>
+                                <input type="file" name="right_logo" class="form-control" id="id_right_logo">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_sign">Sign:</label>
+                                <input type="file" name="sign" class="form-control" id="id_sign">
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="id_background_image">Background image:</label>
+                                <input type="file" name="background_image" class="form-control" id="id_background_image">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <br>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                <label for="id_name">Name:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="name" id="id_name">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                    </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_father_name">Father name:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="father_name" id="id_father_name">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_mother_name">Mother name:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="mother_name" id="id_mother_name">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_date_of_birth">Date of birth:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="date_of_birth" id="id_date_of_birth">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_admission_no">Admission no:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="admission_no" id="id_admission_no">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_roll_no">Roll no:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="roll_no" id="id_roll_no">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_address">Address:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="address" id="id_address">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_gender">Gender:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="gender" id="id_gender">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_photo">Photo:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="photo" id="id_photo">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_Class">Class:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="Class" id="id_Class">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-6">
+                                    <label for="id_section">Section:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="toggler-wrapper style-4">
+                                        <input type="checkbox" name="section" id="id_section">
+                                        <div class="toggler-slider">
+                                          <div class="toggler-knob"></div>
+                                        </div>
+                                      </label>
+                                </div>
+                            </div>
+                            
+                        </div><br>
+                        {% if not view %}
+                        <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if 'design_admit_card_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Admit Card List</h4>
+                    </div><hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="flex: 1;">Certificate Name</th>
+                                    <th style="flex: 1;">Background Image</th>
+                                    <th style="margin-left: 20px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                {% for data in records %}
+                                <tr>
+                                    <td>
+                                        <a href="#" style="color: black;" data-toggle="modal" data-target="#admitCardModal{{ data.id }}">{{ data.template }}</a>
+                                    </td>
+                                    <td>{{ data.background_image }}</td>
+                                
+                                    <td>  
+                                        {% if 'design_admit_card_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'design_admit_card_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"><i class='fa fa-server'></i> </a>
+                                        {% endif %}
+                                        {% if 'design_admit_card_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'design_admit_card_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i> </a>
+                                        {% endif %}
+                                        {% if 'design_admit_card_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                        <a href="{% url 'design_admit_card_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove'></i> </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script_block %}
+<script>
+   // Initialize the DataTable 
+   $(document).ready(function() {
+      $('#tableID').DataTable();
+   });
+</script>
+{% endblock %} 

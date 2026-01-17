@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="class">Class</label>
+                    <select class="form-control" name="class" id="id_Class">
+                        <option value="" >---Select---</option>
+                        {% for data in class_records %}
+                        <option value="{{ data.id }}">{{data.Class}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Section</label>
+                    <select class="form-control" name="section" id="id_section">
+                        <option value="">---Select---</option>
+                        {% for data in section_records %}
+                        <option value="{{ data.id }}">{{data.section_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Category</label>
+                    <select class="form-control" name="category">
+                        <option value="">---Select---</option>
+                        {% for data in category_records %}
+                        <option value="{{ data.id }}">{{data.category}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Gender</label>
+                    <select class="form-control" name="gender">
+                        <option value="">---Select---</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">RTE</label>
+                    <select class="form-control" name="RET">
+                        <option value="">---Select---</option>
+                        <option value="Yes">Yes</option>
+                        <option value="no">no</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3" style="padding-top: 30px;">
+                <button type="submit" class="btn btn-primary">Search</button>
+                 </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+
+    {% if records %}
+    <div class="row">
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+            <table  class="table"  >
+                <thead>
+                    <tr>
+                       <th colspan="2">Test</th>
+                       
+                        <th><input type="checkbox" id="select-all-checkbox"> <label for="select-all-checkbox">All</label></th>
+                        <th>Admission No</th>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Category</th>
+                        <th>Gender</th>
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                    <form  method="post">
+                        {% for data in records %}
+                        <tr>
+                            <td>{{ fees_record.fees_group }}</td>
+                            <td>{{ fees_record.amount }}</td>
+                            <td><input type="checkbox" name="check" class="data-checkbox" id="check_{{forloop.counter}}" value="{{data.id}}"></td>
+                            <td>{{ data.admission_no }}</td>
+                            <td>{{ data.first_name }} {{ data.last_name }}</td>
+                            <td>{{ data.Class }}</td>
+                            <td>{{ data.category }}</td>
+                            <td>{{ data.gender }}</td>
+                      
+                        </tr>
+                        {% endfor %}
+                    <tr>
+                        <td colspan="8"></td>
+                            {% comment %} <td ><button type="button" class="btn btn-primary" name="assign_btn" value="assign_btn" onclick="save()">Save</button></td> {% endcomment %}
+                            <td><button type="button" class="btn btn-primary" name="assign_btn" value="assign_btn" onclick="save()">Save</button></td>
+
+                        </tr>
+                </form>
+                </tbody>
+
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+ {% else %}
+ <center> <h5>No Records Found </h5></center>
+ {% endif %}
+     <!-- modal Start -->
+
+
+ {% endblock %}
+ {% block script_block %}
+
+
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+
+
+{% comment %} <script>
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const dataCheckboxes = document.getElementsByClassName('data-checkbox');
+
+    // Handle "Select All" checkbox
+    selectAllCheckbox.addEventListener('change', function() {
+        for (let i = 0; i < dataCheckboxes.length; i++) {
+            dataCheckboxes[i].checked = selectAllCheckbox.checked;
+        }
+    });
+
+    // Handle individual checkbox change
+    for (let i = 0; i < dataCheckboxes.length; i++) {
+        dataCheckboxes[i].addEventListener('change', function() {
+            if (!this.checked) {
+                selectAllCheckbox.checked = false;
+            } else {
+                // Check if all checkboxes are selected
+                let allSelected = true;
+                for (let j = 0; j < dataCheckboxes.length; j++) {
+                    if (!dataCheckboxes[j].checked) {
+                        allSelected = false;
+                        break;
+                    }
+                }
+                selectAllCheckbox.checked = allSelected;
+            }
+        });
+    }
+
+    function save() {
+        // Safely pass Django variables to JavaScript
+        var fees_id = "{{ fees_record.id }}";
+    
+        // Alert the `fees_id`
+        alert("The fees_id is: " + fees_id);
+        var url = "{% url 'fees_master_assign_js' %}";
+    
+        var id_list = [];
+        for (var i = 1; i <= {{ records_count }}; i++) {
+            var checkbox = $('#check_' + i);
+            if (checkbox.prop('checked')) {
+                id_list.push(checkbox.val());
+            }
+        }
+    
+        // Make AJAX request with POST method
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: {
+                "id_list": JSON.stringify(id_list),  // Serialize array
+                "fees_id": fees_id,
+                "csrfmiddlewaretoken": '{{ csrf_token }}'  // Add CSRF token
+            },
+            success: function(data) {
+                alert("Updated successfully");
+            },
+            error: function(xhr, status, error) {
+                console.log("Error:", xhr.responseText);
+            }
+        });
+    }
+</script> {% endcomment %}
+
+{% comment %} <script>
+function save()
+    {
+        var fees_id = {{fees_record.id}};
+        var url="{% url 'fees_master_assign_js' %}";
+
+        var id_list=[]
+        for(var i = 1; i < {{records_count}}+1; i++){
+            if($('#check_'+i).prop('checked') == true){
+                check = $('#check_'+i).val();
+                id_list.push(check);
+            }
+        }
+        $.ajax({
+            url:url,
+            data: {
+            "id_list": id_list,
+            "fees_id":fees_id,
+            },
+            success: function(data){
+                alert("Updated");
+           },
+           error:function(data)
+            {
+                console.log(data);
+            }
+     });
+    }
+
+</script> {% endcomment %}
+<script>
+    function save() {
+        // Safely pass Django variables to JavaScript
+        var fees_id = "{{ fees_record.id }}";
+    
+        // Initialize an empty array to hold checked checkbox values
+        var id_list = [];
+    
+        // Loop through the checkboxes
+        for (var i = 1; i <= {{ records_count }}; i++) {
+            var checkbox = $('#check_' + i);
+            // Check if the checkbox is checked
+            if (checkbox.prop('checked')) {
+                // Add the value of the checked checkbox to the id_list
+                id_list.push(checkbox.val());
+            }
+        }
+    
+        // Alert the contents of id_list
+    
+        var url = "{% url 'fees_master_assign_js' %}";
+    
+        // Make AJAX request with POST method
+        $.ajax({
+            url: url,
+            method: 'POST',  // Use POST instead of GET
+            data: {
+                "id_list": JSON.stringify(id_list),  // Serialize array
+                "fees_id": fees_id,
+                "csrfmiddlewaretoken": '{{ csrf_token }}'  // Add CSRF token
+            },
+            success: function(data) {
+                alert("Updated successfully");
+            },
+            error: function(xhr, status, error) {
+                alert("Error: " + xhr.status + " " + xhr.statusText + " - " + xhr.responseText);
+            }
+        });
+    }
+    </script>
+    
+    <!-- Button to trigger the save function -->
+    
+
+<!-- JavaScript code to handle checkbox behavior -->
+<script>
+    const selectAllCheckbox = document.getElementById('select-all-checkbox');
+    const dataCheckboxes = document.getElementsByClassName('data-checkbox');
+
+    selectAllCheckbox.addEventListener('change', function() {
+      for (let i = 0; i < dataCheckboxes.length; i++) {
+        dataCheckboxes[i].checked = selectAllCheckbox.checked;
+        // Alert message when 'Select All' is changed
+      }
+    });
+
+    for (let i = 0; i < dataCheckboxes.length; i++) {
+      dataCheckboxes[i].addEventListener('change', function() {
+        if (!this.checked) {
+          selectAllCheckbox.checked = false;
+        } else {
+          // Check if all other checkboxes are selected
+          let allSelected = true;
+          for (let j = 0; j < dataCheckboxes.length; j++) {
+            if (!dataCheckboxes[j].checked) {
+              allSelected = false;
+              break;
+            }
+          }
+          selectAllCheckbox.checked = allSelected;
+        }
+        // Alert message when individual checkbox is changed
+      });
+    }
+</script>
+
+ {% endblock  %}

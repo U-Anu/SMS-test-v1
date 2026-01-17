@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Your existing CSS styles here */
+        .autocomplete {
+            display: none;
+            position: absolute;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            z-index: 999;
+            width: 100%;
+        }
+
+        .autocomplete-item {
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .autocomplete-item:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+    <label for="firstDropdown">Select Option 1:</label>
+    <select id="firstDropdown">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+        <!-- Add other options as needed -->
+    </select>
+
+    <label for="searchInput">Search Record:</label>
+    <input type="text" id="searchInput" placeholder="Search for records...">
+    
+    <!-- Autocomplete dropdown container -->
+    <div id="autocompleteContainer" class="autocomplete"></div>
+    
+    <button id="addButton">Add</button>
+    
+    <div id="result"></div>
+
+    <script>
+        $(document).ready(function () {
+            // Sample data representing the relationship between options in the first and second dropdowns
+            const data = {
+                option1: ["Option 1 - Item 1", "Option 1 - Item 2", "Option 1 - Item 3"],
+                option2: ["Option 2 - Item 1", "Option 2 - Item 2", "Option 2 - Item 3"],
+                option3: ["Option 3 - Item 1", "Option 3 - Item 2", "Option 3 - Item 3"],
+                // Add other data as needed
+            };
+
+            const autocompleteContainer = $("#autocompleteContainer");
+            const searchInput = $("#searchInput");
+
+            // Function to populate the second input field based on the selection in the first dropdown
+            function populateSecondInput(selectedOption) {
+                searchInput.val('');
+                searchInput.data('options', data[selectedOption] || []);
+            }
+
+            // Event listener for the first dropdown
+            $("#firstDropdown").change(function () {
+                const selectedOption = $(this).val();
+                populateSecondInput(selectedOption);
+            });
+
+            // Event listener for the input field on keyup (search)
+            searchInput.on("input", function () {
+                const searchQuery = $(this).val();
+                const options = $(this).data("options");
+                const filteredOptions = options.filter(option =>
+                    option.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+                showAutocomplete(filteredOptions);
+            });
+
+            // Function to show autocomplete suggestions
+            function showAutocomplete(options) {
+                autocompleteContainer.empty();
+                if (options.length > 0) {
+                    options.forEach(item => {
+                        autocompleteContainer.append(`<div class="autocomplete-item">${item}</div>`);
+                    });
+                    autocompleteContainer.css('display', 'block');
+                } else {
+                    autocompleteContainer.css('display', 'none');
+                }
+            }
+
+            // Event listener for clicking on an autocomplete item
+            autocompleteContainer.on("click", ".autocomplete-item", function () {
+                const selectedOption = $(this).text();
+                searchInput.val(selectedOption);
+                autocompleteContainer.css('display', 'none');
+            });
+
+            // Event listener for the "Add" button
+            $("#addButton").click(function () {
+                const firstSelectedOption = $("#firstDropdown").val();
+                const secondSelectedOption = searchInput.val();
+                $("#result").text(`First Option: ${firstSelectedOption}, Second Option: ${secondSelectedOption}`);
+            });
+        });
+    </script>
+</body>
+</html>

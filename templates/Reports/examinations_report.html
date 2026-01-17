@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Examinations Report</h4>
+       </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'examinations_report' %}" class="text-primary"> Rank Report</a>
+            </div>
+           
+   </div>
+   </div>
+   </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="enquiry">Exam Group</label> <span class="text-danger">*</span>
+                    <select class="form-control" id="exam_group" name="exam_group" required>
+                        <option value="">--Select</option>
+                        {% for data in exam_group %}
+                        <option value="{{ data.id }}">{{data.name}}</option>
+                        {% endfor %}
+                   
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="enquiry">Exam </label><span class="text-danger">*</span>
+                    <select class="form-control" id="exam" name="exam" required>
+                        <option value="nil">--Select</option>
+                        <option value="Demo">Unit Test</option>
+                   
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label >Session </label><span class="text-danger">*</span>
+                    <select class="form-control" id="session" name="session" required>
+                        <option value="nil">--Select</option>
+                        {% for data in session_records %}
+                        <option value="{{data.id}}">{{data.session}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="enquiry">Class </label><span class="text-danger">*</span>
+                    <select class="form-control" id="class" name="class" required>
+                        <option value="">--Select--</option>
+                        {% for data in class_records %}
+                        <option class="{{ data.id }}">{{data.Class}}</option>
+                        {% endfor %}
+                   
+                    </select>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <label for="enquiry">Section </label><span class="text-danger">*</span>
+                    <select class="form-control" id="section" name="section" required>
+                        <option value="">--Select--</option>
+                   
+                    </select>
+                </div>
+                <div class="col-md-12 mb-3" style="padding-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+                </div>
+
+            </div>
+        </form>
+        </div>
+    </div>
+    {% if listt %}
+   
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Admission No</th>
+                        <th>Roll Number</th>
+                        <th>Student Name</th>
+                        {% for data in exams %}
+                        <th style="width: 100px;">{{data.subject}} <br>
+                        <strong><p>{{data.marks_min}}-{{data.marks_max}}({{data.subject.subject_code}})</p></strong>
+                        </th>
+                        {% endfor %}
+                        <th>Grand Total</th>
+                        <th>Percent (%)</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in listt %}
+                    <tr>
+                        <td>{{data.obj.student.admission_no}}</td>
+                        <td>{{data.obj.student.roll_number}}</td>
+                        <td>{{data.obj.student.first_name}}</td>
+                        {% for mark in data.mark_list %}
+                        <td ><input type="hidden" value="{{mark.marks}}">{{mark.marks}}</td>
+                        {% endfor %}
+                        <td >{{data.total}}</td>
+                        <td>{{data.percentage}}</td>
+                        <td>
+                            {% if 'Fail' in data.result%}
+                            <button type="button" class="btn btn-outline-danger">Fail</button>
+                            {% elif None in data.result%}
+
+                            {% else %}
+                            <button type="button" class="btn btn-outline-success">Pass</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% else %}
+     <br/><br/>
+     <center> <h5 style="padding: 10px;border-radius: 5px;">No Records Found </h5></center>
+  {% endif %}
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+
+
+<script>
+    $(document).ready(function() {
+      var totalSum = 0;
+      
+      // Loop through each cell in the last column and calculate the sum
+      $("#tableID tbody tr").each(function() {      
+        var rowSum = 0;
+      
+        // Find the hidden input values or cell text within each row
+        $(this).find(".last-column input[type='hidden']").each(function() {
+          var inputValue = parseInt($(this).val());
+          if (!isNaN(inputValue)) {
+            rowSum += inputValue;
+          }
+        });     
+         // Set the row total in the corresponding row
+        $(this).find(".row-total").text(rowSum);
+  
+        
+  
+      });
+      
+      // Display the total sum
+      $("#totalSum").text(totalSum);
+    });
+  </script>
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#exam_group', function () {
+      var exam_group = $('#exam_group').val();
+      var url = "{% url 'exam_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'exam_group': exam_group
+        },
+        success: function (data) {
+            $("#exam").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (exam) {
+                html_data += `<option value="${exam.id}">${exam.Exam}</option>`
+            });
+            console.log(html_data);
+            $("#exam").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+  </script>
+  
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#class', function () {
+      var class_id = $('#class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+  </script>
+
+ {% endblock  %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

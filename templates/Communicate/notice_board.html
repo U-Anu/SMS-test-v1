@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Notice Board</h4>
+       </div>
+    </div>
+    {% if 'notice_borad_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <div class="col" style="padding: 30px;">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add" style="float:right;">+ Post New Message</button><br>
+        </div>
+        {% endif %}
+
+        {% if 'notice_borad_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;" >
+            <div class="row">
+                <div class="col-md-12">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <td>Title</td>
+                        <td>Action</td>
+                      </tr>
+                    </thead>
+                    <tbody> 
+                    {% for notice in records %}
+                    <tr>
+                      <td>{{notice.title}}</td>   
+                        <td>  
+                          {% if 'notice_borad_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'notice_board_edit' notice.id%}"  class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                            {% endif %}
+                            {% if 'notice_borad_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                          <a href="{% url 'notice_board_delete' notice.id%}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr> 
+                  {% endfor %}
+                </tbody>
+              </table>
+                </div>
+            </div>
+          
+            </div>
+        </div>
+        {% endif %}
+    </div>
+   
+   
+<div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Compose New Message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post">
+            {% csrf_token %}
+        <div class="row">
+          <div class="col-md-9 mb-6">
+            <label for="student_admission"> Title </label>
+                {{form.title}}                        
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="student_admission">Notice Date</label>
+                {{form.notice_date}}
+                
+        </div>
+        <div class="col-md-9 mb-3">
+            <label for="student_admission">Message</label>
+                {{form.message}}
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="student_admission">Publish On</label>
+                {{form.publish_on}}
+        </div>
+        
+        
+            <label for="student_admission">Message To</label>
+            <div class="col-md-3 mb-3 form-check">
+              <input class="form-check-input" type="checkbox" value="Student" id="student_id" name="noties_all" >
+              <label class="form-check-label" for="student_id">
+                Student
+              </label>
+            </div>
+            <div class="col-md-3 mb-3 form-check">
+              <input class="form-check-input" type="checkbox" value="Parent" id="parent_id" name="noties_all" >
+              <label class="form-check-label" for="parent_id">
+                Parent
+              </label>
+            </div>
+            {% for data in forms %}
+            <div class="col-md-3 mb-3 form-check">  
+              <input class="form-check-input" type="checkbox" value="{{data.name}}" id="{{data.name}}_id" name="noties_all" >
+              <label class="form-check-label" for="{{data.name}}_id">
+                {{data.name}}
+              </label>
+          </div>
+          {% endfor %}
+              
+        </div>
+        <br>
+        <center>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </center>
+      </form>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+
+   
+     
+          
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

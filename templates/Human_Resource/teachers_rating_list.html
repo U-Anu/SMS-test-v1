@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+<style>
+    .ratingg {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+        text-align: center;
+    }
+    .ratingg > span {
+        color: #FFD700;
+    }
+  
+  </style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Teachers Rating List</h4>
+        </div>
+     </div>
+
+            
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Staff Id</th>
+                                <th>Name</th>
+                                <th>Rating</th>
+                                <th>Comment</th>
+                                <th>Status</th>
+                                <th>Student Name</th>
+                                <th colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for data in records %}
+                            <tr>
+                                <td>{{data.staff.staff_id}}</td>
+                                <td>{{data.staff.first_name}} {% if data.staff.last_name %}{{data.staff.last_name}}{% endif %}</td>
+                                <td><div class="ratingg" data-stars="{{data.rating}}"></div></td>
+                                <td>{{data.comment}}</td>
+                                <td>
+                                    {% if data.status == 'pending' %}
+                                    <small class="label label-warning"> {{data.status}}</small>
+                                    {% elif data.status == 'approval' %}
+                                    <small class="label label-success"> {{data.status}}</small>
+                                    {% endif %}
+                                </td>
+                                <td>{{data.student.first_name}} {% if data.student.last_name %}{{data.student.last_name}}{% endif %}</td>
+                                <td>  
+                                    {% if 'teacher_reating_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    {% if data.status == 'pending' %}
+                                    <a href="{% url 'teacher_rating_approval' data.id %}" class="btn btn-primary btn-sm">Approval</a>
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if 'teacher_reating_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    <a href="{% url 'teacher_rating_delete' data.id %}"class="bozero"><span data-toggle="tooltip" title="delete" ><i class="fa fa-remove"></i></a>
+                                   </td>
+                                   {% endif %}
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+
+
+<script>
+    window.onload = function() {
+        var ratingContainers = document.querySelectorAll('.ratingg');
+        ratingContainers.forEach(function(container) {
+            var starCount = parseInt(container.dataset.stars, 10);
+            displayRatingg(starCount, container);
+        });
+    };
+  
+    function displayRatingg(starCount, container) {
+        container.innerHTML = "";
+  
+        for (var i = 0; i < starCount; i++) {
+            var star = document.createElement("span");
+            star.innerHTML = "★";
+            container.appendChild(star);
+        }
+    }
+  </script>
+ {% endblock  %}

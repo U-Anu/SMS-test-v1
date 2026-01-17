@@ -1,0 +1,89 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    
+    <div class="row">
+        <div class="main-header">
+           <h4>Exam Schedule</h4>
+        </div>
+     </div>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Subject</th>
+                        <th>Date From</th>
+                        <th>Start Time</th>
+                        <th>Duration</th>
+                        <th>Room No</th>
+                        <th>Marks (max)</th>
+                        <th>Marks (min)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{data.subject}}</td>
+                        <td>{{data.date}}</td>
+                        <td>{{data.time}}</td>
+                        <td>{{data.duration}}</td>
+                        <td>{{data.room_number}}</td>
+                        <td>{{data.marks_max}}</td>
+                        <td>{{data.marks_min}}</td>
+                        
+                    </tr>
+                  {% endfor %}
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#exam_group', function () {
+      var exam_group = $('#exam_group').val();
+      var url = "{% url 'exam_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'exam_group': exam_group
+        },
+        success: function (data) {
+            $("#exam").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (exam) {
+                html_data += `<option value="${exam.id}">${exam.Exam}</option>`
+            });
+            console.log(html_data);
+            $("#exam").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+  </script>
+ {% endblock  %}

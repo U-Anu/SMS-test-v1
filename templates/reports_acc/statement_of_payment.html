@@ -1,0 +1,52 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+{% load custom_filter %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="card card-body">
+                <h3 class="card-title">{{screen_name}}</h3>
+                    {% for msg in messages %}
+                        <center><span style="color:red;">{{msg}}</span></center>
+                    {% endfor %}
+
+                <div class="table-responsive">
+                        <table id="tableID" class="display table table-hover">
+                             <thead class="bg-col">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Payable</th>
+                                        <th>Amount Paid</th>
+                                        <th>Payment Date</th>
+                                        <th>Reference Number</th>
+                                        <th>Created By</th>
+                                        <th>Company Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {% for data in obj %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ data.account_payable }}</td>
+                                            <td>{{ data.amount_paid }}</td>
+                                            <td>{{ data.payment_date }}</td>
+                                            <td>{{ data.reference_number }}</td>
+                                            <td>{{ data.created_by }}</td>
+                                            <td>{{ data.company }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                </tbody>
+                        </table>
+                </div>
+                <br><br><br>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

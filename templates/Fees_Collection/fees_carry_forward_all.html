@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Select Criteria</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="main-header">
+            <h4>Previous Session Balance Fees</h4>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-12 float-right">
+        <div class="card dashboard-product link-with-zoom">
+            <a href="{% url 'collect_fees' %}">
+                <h6>Outstanding Total</h6>
+                <h2 class="dashboard-total-products"><span>{{ total_fees_amount }}</span></h2>
+                <h6 class="label label-danger">Pending</h6>
+            </a>
+            <div class="side-box">
+                <i class="fas fa-money-bill text-danger-color"></i> KSh
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="{% url 'fees_carry_forward_save' %}" method="post">
+                {% csrf_token %}
+                <div class="table-responsive">
+                    <table class="display" id="tableID">
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Section</th>
+                                <th>Student Name</th>
+                                <th>Admission Number</th>
+                                <th>Admission Date</th>
+                                <th>Roll Number</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in pre_fees_rcords %}
+                            <tr>
+                                <td>{{ data.obj.student.Class.Class }}</td>
+                                <td>{{ data.obj.student.section }}</td>
+                                <td>{{ data.obj.student.first_name }}</td>
+                                <td>{{ data.obj.student.admission_no }}</td>
+                                <td>{{ data.obj.student.admission_date }}</td>
+                                <td>{{ data.obj.student.roll_number }}</td>
+                                <td>
+                                    <input type="hidden" name="amount_{{ data.obj.student.admission_no }}" value="{{ data.total_amount }}">
+                                    {{ data.total_amount }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <br>
+                </div>
+            </form>
+            <br><br>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block script_block %}
+{% endblock %}

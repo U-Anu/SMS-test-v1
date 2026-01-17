@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Subject Group</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                     </div><hr>
+                     {% if not view %}
+                     <h4>Edit  Subject Group</h4>
+                     {% else %}
+                     <h4>View  Subject Group</h4>
+                     {% endif %}
+                     <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_name">Name:</label>
+                                <input type="text" name="name" maxlength="255" class="form-control" required
+                                    id="id_name" value="{{record.name}}">
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_Class">Class:</label>
+                                <input type="text" name="class" maxlength="255" class="form-control" required
+                                id="id_class" value="{{record.Class}}">
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_section">Section:</label>
+                                <input type="text" name="section" maxlength="255" class="form-control" required
+                                id="id_section" value="{{record.section}}">
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label>Subject:</label>
+                                {% for data in subject_all %}
+                                    <div class="form-check" style="padding-left: 30px;">
+                                        <input type="checkbox" class="form-check-input" id="id_subject_{{forloop.counter}}" name="subject" value="{{data.id}}" {% if data.id in lists %}checked{% endif %}>
+                                        <label class="form-check-label" for="id_subject_{{forloop.counter}}" >{{data.subject_name}}</label>
+                                      </div>
+                                {% endfor %}
+
+                                  
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="id_description">Description:</label>
+                                <textarea name="description" cols="40" rows="10" maxlength="255" class="form-control"
+                                    required id="id_description">
+            </textarea>
+                            </div>
+
+                        </div><br>
+
+                        <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+
+
+                    </form>
+                </div>
+            </div>
+            {% if 'subject_group_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+
+    <div class="col-md-8">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="main-header">
+                <h4>Subject Group List</h4>
+            </div>
+            <hr>
+            <div class="table-responsive">
+                <table id="tableID" class="display">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Class Section</th>
+                            <th>Subject</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in records %}
+                        <tr>
+                            <td>{{data.name}}</td>
+                            <td>{{data.section}}</td>
+                            <td> {% for section in data.subject.all %}
+                                {{ section.subject_name }}
+                                {% if not forloop.last %}, {% endif %}
+                                {% endfor %}</td>
+                            <td>
+                                {% if 'subject_group_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                <a href="{% url 'subject_group_view' data.id %}" class="bozero"><span
+                                        data-toggle="tooltip" title="view" style="color: black;"><i
+                                            class='fa fa-server'></i></a>
+                                {% endif %}
+                                {% if 'subject_group_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                <a href="{% url 'subject_group_edit' data.id %}" class="bozero"><span
+                                        data-toggle="tooltip" title="edit" style="color: black;"><i
+                                            class='fa fa-edit'></i></a>
+                                {% endif %}
+                                {% if 'subject_group_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                <a href="{% url 'subject_group_delete' data.id %}" class="bozero"><span
+                                        data-toggle="tooltip" title="Delete" style="color: black;"><i
+                                            class='fa fa-remove'
+                                            onclick="alert('You want to Delete this Item..?')"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+        </div>
+        
+  
+    </div>
+
+    </div>
+    
+        
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %} 

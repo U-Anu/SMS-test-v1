@@ -1,0 +1,87 @@
+{% extends 'base copy.html' %}
+{% block body_block %}
+{% load static %}
+
+{% load custom_filter %}
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {% if add_new != 'no' %}
+                <a href="{% url 'account_payment_create' %}">
+                    <button type="button" class="btn btn-primary float-right">Direct Pay</button>
+                </a>
+                <a href="{{create_url}}">
+                    <button type="button" class="btn btn-primary float-right">+ New</button>
+                </a>
+                {% else %}
+                <button type="button" class="btn btn-primary float-right" disabled>+ New</button>
+                {% endif %}
+
+                <h4 class="card-title">{{screen_name}}</h4>
+                <nav>
+<!--                    <div class="nav nav-tabs" id="nav-tab" role="tablist">-->
+<!--                        <a class="nav-item nav-link active" id="nav-new-tab" data-toggle="tab" href="#nav-new" role="tab" aria-controls="nav-new" aria-selected="true">List</a>-->
+
+<!--                    </div>-->
+                </nav>
+
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- New Tab -->
+                    <div class="tab-pane fade show active" id="nav-new" role="tabpanel" aria-labelledby="nav-new-tab">
+                        <div class="table-responsive">
+                            <table id="tableID" class="display table table-hover">
+                                <thead class="bg-col">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Reference Type</th>
+                                        <th>Reference Number</th>
+                                        <th>vendor_name</th>
+                                        <th>vendor_id</th>
+                                        <th>actual_amount</th>
+                                        <th>amount_paid</th>
+                                        <th>amount_due</th>
+                                        <th>payment_status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in obj %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{record.reference_type}}</td>
+                                        <td>{{record.reference_number}}</td>
+                                        <td>{{record.vendor_name}}</td>
+                                        <td>{{record.vendor_id}}</td>
+                                        <td>{{record.actual_amount}}</td>
+                                        <td>{{record.amount_paid}}</td>
+                                        <td>{{record.amount_due}}</td>
+                                        <td>{{record.payment_status}}</td>
+                                        <td>
+                                            {% if record.payment_status|lower != 'paid' %}
+                                            <form method="GET" action="{% url 'post_receivable_and_payable_transaction' %}">
+                                                <input type="text" name="reference_number" value="{{record.reference_number}}" hidden="hidden">
+                                                <input type="text" name="transaction_type" value="payment" hidden="hidden">
+                                                <button type="submit" class="btn btn-primary">Post Payable</button>
+                                            </form>
+                                            {% else %}
+                                            <button class="btn btn-danger disabled">Paid</button>
+                                            {% endif %}
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

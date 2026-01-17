@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form method="post">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="payment_id">Fees Group </label>
+                    
+                    <select class="form-control" name="fees_type" required>
+                        <option value="">---Select-</option>
+                        {% for data in fees_type %}
+                        <option value="{{data.id}}">{{data.name}}</option>
+                        {% endfor %}
+                    </select>
+                
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="payment_id" >Class </label>
+                    <select class="form-control" id="id_Class" name="class" required>
+                        <option value="">---Select---</option>
+                        {% for data in Classs %}
+                        <option value="{{data.id}}">{{data.Class}}</option>
+                        {% endfor %}
+                    </select>                
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="payment_id">Section </label>
+                    <select class="form-control" id="id_section" name="section" required>
+                        <option value="">---Select---</option>
+                    </select> <br>                  
+                </div>
+               <button type="submit" class="btn btn-primary" style="float: right;">🔎 Search</button>
+
+            </div>
+        </form>
+            </div>
+        </div>
+    </div>
+    {% if records %}
+    <div class="row">
+        <div class="main-header">
+           <h4>Students List</h4>
+        </div>
+     </div>
+
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Admission No </th>
+                        <th>Roll Number</th>
+                        <th>Student Name</th>
+                        <th>Date Of Birth</th>
+                        <th>Due Date</th>
+                        <th>Amount ($)</th>
+                        <th>Deposit ($)</th>
+                        <th>Discount ($)</th>
+                        <th>Fine ($)</th>
+                        <th>Balance ($)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{data.student.admission_no}}</td>
+                        <td>{{data.student.roll_number}}</td>
+                        <td>{{data.student.first_name}} {% if data.student.last_name %}{{data.student.last_name}}{% endif %}</td>
+                        <td>{{data.student.date_of_birth}}</td>
+                        <td>{{data.fees.due_date}}</td>
+                        <td>{{data.paid_amount}}</td>
+                        <td>{{data.Dicount_amount}}</td>
+                        <td>{{data.fine_amount}}</td>
+                        <td>{{data.balance_amount}}</td>
+                        <td>
+                            <a href="collect_fees_detail/{{data.student.id}}"> <button type="button" class="btn btn-primary">$ Add Fees</button></td></a>
+                           
+                        </a>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% else %}
+     <center> <h5>No Records Found </h5></center>
+     {% endif %}
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+
+
+<script>
+    $(document).ready(function () {
+    $(document).on('change', '#id_Class', function () {
+      var class_id = $('#id_Class').val();
+      var url = "{% url 'section_js' %}";
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+            $("#id_section").html(data);
+            let html_data = '<option value="">--------</option>';
+            data.forEach(function (section) {
+                html_data += `<option value="${section.id}">${section.section_name}</option>`
+            });
+            console.log(html_data);
+            $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+});
+</script>
+
+ {% endblock  %}

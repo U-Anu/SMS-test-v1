@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>EnRollment</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            
+            {% if 'expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+            <div class="col-md-12">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Question Paper List</h4>
+                     </div><hr>
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Question paper name</th>
+                                <th>Total mark:</th>
+                                <th>Pass mark:</th>
+                                <th>Duration:</th>
+                              
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{data.question_paper_name}}</td>
+                                
+                                <td>{{data.total_mark}}</td>
+                                <td>{{data.pass_mark}}</td>
+                                <td>{{data.duration}}</td>
+                          
+                                <td>  
+                                   
+                                  {% comment %} {% if 'expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                  {% endif %}
+                                  {% if 'expense_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                  {% endif %} {% endcomment %}
+                                  {% if 'expense_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'question_paper_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                  {% endif %}
+                                  <a href="{% url 'enrollment_assign' data.id %}" class="bozero">
+                                    <span data-toggle="tooltip" title="Enroll" style="color: black;">
+                                        <i class="fa fa-clipboard-list"></i>
+                                    </span>
+                                </a>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                 </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

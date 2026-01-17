@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<style>
+  .more-details-link {
+    font-weight: bold;
+    color: #007bff; /* Highlight the link with a blue color */
+  }
+
+  .more-details-link:hover {
+    color: #0056b3; /* Darker shade on hover */
+    text-decoration: underline;
+  }
+</style>
+<br>
+<br>
+
+<div class="container-fluid">
+    <div class="row">
+
+       <div class="main-header">
+        <div class="col-md-12">
+          <h4>Account To Account Money Transfer</h4>
+          </div>
+       </div>
+    </div>
+  <br>
+ 
+   
+    </div>
+
+    <div class="col-md-12">
+      <div class="card" style="padding: 10px;">
+          <form action="" method="post">
+              {% csrf_token %}
+              <div class="row">
+                  <div class="col-md-6 mb-6">
+                      <label for="section">From Account</label>
+                      <select class="form-control" name="from_account" id="id_class"required>
+                          <option value="">---Select---</option>
+                          {% for data in account_list %}
+                          <option value="{{data.account_id}}" >
+                              {{data.account_number}} - (Amt {{data.total_balance}})
+                          </option>
+                         {% endfor %}
+                         
+                      </select>
+                  </div>
+                  <div class="col-md-6 mb-6">
+                    <label for="section">To Account</label>
+                    <select class="form-control" name="to_account" id="id_class"required>
+                        <option value="">---Select---</option>
+                        {% for data in account_list %}
+                        <option value="{{data.account_id}}" >
+                            {{data.account_number}} - (Amt {{data.total_balance}})
+                        </option>
+                        {% endfor %}
+                      
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <br>
+                  <label for="amount">Amount</label>
+                  <input type="number" class="form-control" name="amount" step="0.01" min="0" placeholder="Enter amount 0.00" required>
+              </div>
+                  
+                  
+              </div>
+              <br>
+              <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                  value="">Transfer 
+                </button><br><br>
+          </form>
+      </div>
+  </div>
+   
+
+
+    {% if account_number %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+          <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Account ID</th>
+                        <th>Account Number</th>
+                        <th>Amount</th>
+                    
+                        
+                        
+                   
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in account_number %}
+                    <tr>
+                      <td>{{data.account_id}}</td>
+                        <td>{{ data.account_number }}</td>
+                        <td>{{ data.total_balance }}</td>
+                     
+                                                                  
+                                       
+                         </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            
+            </div>
+         
+           
+    
+    </div>
+    {% else %}
+       <center> <h5>No Records Found </h5></center>
+    {% endif %}
+    </div> 
+   
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div> 
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load custom_filters%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marksheet Print</title>
+</head>
+
+   <!-- Style.css -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main.css' %}">
+      <!-- Required Fremwork -->
+   <link rel="stylesheet" type="text/css" href="{% static 'assets/plugins/bootstrap/css/bootstrap.m.css' %}">
+<style>
+    .form-group {
+        margin-bottom: 0rem;
+     }
+     body, p, label {
+        font-size: small!important;
+     }
+     @media print{
+        #print_btn{
+            display: none;
+        }
+     }
+
+</style>
+</head>
+<body>
+    <button type="button" id="print_btn" class="btn btn-primary" onclick="window.print()">Print</button>
+    
+    {% for student in records %}
+    <div class="card" style="padding: 20px; page-break-after: always;" >
+        <div class="modal-body" style="border: 2px solid rgb(97, 95, 95);padding: 20px;">
+            <div class="row" style="background-color: #ADD8E6;padding: 10px;">
+                <div class="col-md-2">
+                    {% if data.left_logo %}
+                    <img src="{{data.left_logo.url}}" alt="" width="100px" height="70px" style="float: left;">
+                    {% endif %}
+                </div>
+
+                <div class="col-md-8">
+                    <center>
+                        <h3><b>{{ data.school_name }}</b></h3>
+                        <h3><b>{{ data.exam_center }}</b></h3>
+                        <h4><b>{{request.Session}}</b></h4>
+
+                    </center>
+                </div>
+
+                <div class="col-md-2">
+                    {% if data.right_logo %}
+                    <img src="{{data.right_logo.url}}" alt="" width="100px" height="70px" style="float: left;">
+                    {% endif %}
+                </div>
+            </div><br>
+            <center> <h6 style="text-align: center;"><b>CERTIFIED THAT</b></h6></center>
+    <div class="row">
+            <div class="col-md-10">
+              
+                <table class="modal-table table">
+                    <thead>
+                        <tr>
+                            {% if data.admission_no %}
+                            <th style="text-align: center;">Admission Number</th>
+                            {% endif %}
+                            {% if data.roll_no %}
+                            <th style="text-align: center;">Roll Number</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% if data.admission_no %}
+                            <td style="text-align: center;">{{ student.student_obj.admission_no }}</td>
+                            {% endif %}
+                            {% if data.roll_no %}
+                            <td style="text-align: center;">{{ student.student_obj.roll_number }}</td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+       
+           
+
+        </div>
+            <div class="container-fluid">
+               
+                <div class="row" style="padding: 20px;">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col">
+
+
+                                {% if data.name %}
+                                <div class="form-group row">
+                                    <label class="col-sm-4 ">MR/MS</label>
+                                    <div class="col-sm-8">
+                                        <label>{{ student.student_obj.first_name }} {% if student.student_obj.last_name %}{{student.student_obj.last_name}}{% endif %}</label>
+                                    </div>
+                                </div>
+                            
+                            {% endif %}
+
+
+
+                            {% if data.father_name %}
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">FATHER / HUSBAND NAME</label>
+                                <div class="col-sm-8 ">
+                                    <label>{{ student.student_obj.Father_name }}</label>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% if data.mother_name %}
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">MOTHER NAME</label>
+                                <div class="col-sm-8 ">
+                                    <label>{{ student.student_obj.mother_name }}</label>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if data.section %}
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">CLASS</label>
+                                <div class="col-sm-8 ">
+                                    <label>{{ student.student_obj.Class }} ({{ student.student_obj.section }})</label>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% if data.school_name %}
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">SCHOOL NAME</label>
+                                <div class="col-sm-8 ">
+                                    <label>{{data.school_name}}</label>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            {% if data.exam_center %}
+                            <div class="form-group row">
+                                <label class="col-sm-4 ">EXAM CENTER</label>
+                                <div class="col-sm-8 ">
+                                    <label>{{data.exam_center}}L</label>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                    </div>
+                    <div class="col-md-2">
+                        {% if data.photo and student.student_obj.student_photo %}
+                        <img src="{{ student.student_obj.student_photo.url }}" alt="student_image" width="100px"
+                            height="90px" style="float: left;border: double rgb(96, 89, 89);">
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add other marksheet  details here -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">SUBJECTS</th>
+                        <th style="text-align: center;">MIN.MARKS</th>
+                        <th style="text-align: center;">MAX.MARKS</th>
+                        <th style="text-align: center;">MARKS OBTAINED</th>
+                        <th style="text-align: center;">REMARKS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mark in student.marks %}
+                    <tr>
+                        <td style="text-align: center;">{{ mark.exam_subject.subject }}</td>
+                        <td style="text-align: center;">{{ mark.exam_subject.marks_min }}</td>
+                        <td style="text-align: center;">{{ mark.exam_subject.marks_max }}</td>
+                        <td style="text-align: center;">{{ mark.marks }}</td>
+                        <td style="text-align: center;">{% if mark.note %}{{ mark.note }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Grand Total <b style="text-align: center;">{{ student.total }}</b> </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="text-align: left;">GRAND TOTAL IN WORDS : <b>&nbsp;&nbsp; {{student.total_in_words}}</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="text-align: left;">Grade : <b>&nbsp;&nbsp; {{student.grade}} </b>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table><br>
+            {% if data.footer_text %}
+            <h6 style="float: left;padding-left: 20px;"><b>{{data.footer_text}}</b></h6><br>
+            {% endif %}
+            <div class="container-fluid" style="background-color: rgb(241, 236, 236);padding: 10px;">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <div class="">
+                                
+
+                                {% if data.left_sign %}
+                                <img src="{{data.left_sign.url}}" alt="student_image"
+                                    width="100px" height="60px" style="float: left;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="">
+                                {% if data.middle_sign %}
+                                <img src="{{data.middle_sign.url}}" alt="student_image"
+                                width="100px" height="60px" style="float: center;">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+
+                            <div class="">
+                                {% if data.right_sign %}
+                                <img src="{{data.right_sign.url}}" alt="student_image"
+                                    width="100px" height="60px" style="float: right;">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>

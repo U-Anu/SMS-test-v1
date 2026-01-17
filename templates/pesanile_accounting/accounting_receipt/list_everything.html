@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filter %}
+
+{% block body_block %}
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                {% if add_new != 'no' %}
+                <a href="{{ create_url }}">
+                    <button type="button" class="btn btn-primary float-right">+ New</button>
+                </a>
+                {% else %}
+                <button type="button" class="btn btn-primary float-right" disabled>+ New</button>
+                {% endif %}
+
+                <h4 class="card-title">{{ screen_name }}</h4>
+                <div class="table-responsive">
+                    <table id="tableID" class="display table table-hover">
+                        <thead class="bg-col">
+                            <tr>
+                                <th>No.</th>
+                                {% for field in obj_fields %}
+                                    {% if obj|first|get_field_value:field.name %}  <!-- Check if the first record has the field -->
+                                        <th>{{ field.verbose_name|upper }}</th>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in obj %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                {% for field in obj_fields %}
+                                    {% if record|get_field_value:field.name %}
+                                        <td>{{ record|get_field_value:field.name }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

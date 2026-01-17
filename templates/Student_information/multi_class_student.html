@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="class">Class</label>
+                    <select class="form-control">
+                        <option value="select">---Select---</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="section">Section</label>
+                    <select class="form-control">
+                        <option value="select">---Select---</option>
+                        <option value="select">A</option>
+                        <option value="select">B</option>
+                    </select>                
+                </div>
+              
+                <div class="col-md-4 mb-3"><br>
+                <button type="button" class="btn btn-primary">Search</button>
+                 </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+       
+  
+
+
+   
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Section</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                       
+                        
+                    </tr>
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+   
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

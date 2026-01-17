@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <form method="post" >
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="enquiry">Class</label>
+                    <select class="form-control">
+                        <option value="nil">--Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                       
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="enquiry">Section</label>
+                    <select class="form-control">
+                        <option value="nil">--Select</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                       
+                    </select>
+          
+                <div class="col-md-4 mb-3"><br>
+                <button type="submit" class="btn btn-primary">save</button>
+                 </div>
+              </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="main-header">
+           <h4>Approve Leave List</h4>
+        </div>
+     </div>
+     <!-- modal Start -->
+     <div class="col" style="padding: 30px;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Edit</button><br>
+</div>
+<div class="modal fade bd-example-modal-lg" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add List</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% if not view %}
+        <h4>Edit Add List</h4>
+        {% else %}
+        <h4>View Add List</h4>
+        {% endif %}
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+            {% if not view %}
+          <button type="submit" class="btn btn-primary">Submit</button>
+          {% endif %}
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+     <!-- modal End -->
+
+
+   
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Apply Date</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Status</th>
+                        <th>Approved By</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      {% for data in records %}   
+                      <tr>
+                          <td>{{data.student}}</td>
+                          <td>{{data.Class}}</td>
+                          <td>{{data.section}}</td>
+                          <td>{{data.apply_date}}</td>
+                          <td>{{data.from_date}}</td>
+                          <td>{{data.to_date}}</td>
+                          <td>Pending</td>
+                          <td>Super Admin</td>
+                        <td>
+                          <a href="{% url 'approve_leave_view' data.id %}" style="color: black;"  ><i class='fa fa-server'></i></a>
+                          <a href="{% url 'approve_leave_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                          <a href="{% url 'approve_leave_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                           </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+     <!-- modal Start -->
+
+        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" >
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Admission Enquiry</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                  <div class="row">
+                    {% for data in form %}
+                    <div class="col-md-4 mb-3">
+                        {{data.label_tag}}
+                      {{ data }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <br>
+                  <center>
+                  <button type="button" class="btn btn-primary">Submit</button>
+                </center>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+             <!-- modal End -->
+
+ {% endblock %}
+ {% block script_block %}
+ <script>
+  $(document).ready(function () {
+      // Open the modal when the page is loaded
+      $('.bd-example-modal-lg').modal('show');
+
+  });
+</script>
+
+
+
+<script>
+// Get the modal element and close button
+const modal = document.getElementById("myModal1");
+const closeButton = modal.querySelector(".close");
+
+// Add event listener to close button
+closeButton.addEventListener("click", function () {
+  closeModalAndRedirect();
+});
+
+// Add event listener to modal overlay
+modal.addEventListener("click", function (event) {
+  if (event.target === modal) {
+    closeModalAndRedirect();
+  }
+});
+
+// Function to close the modal and perform the redirection
+function closeModalAndRedirect() {
+  modal.style.display = "none"; // Hide the modal
+
+  // Perform the redirection
+  window.location.href = "/approve_leave"; // R
+}
+</script>
+ {% endblock  %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="main-header">
+        <h4>Select Criteria</h4>
+
+
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="class">Class</label>
+                    <select class="form-control" name="class" id="id_Class" required>
+                        <option value="">---Select---</option>
+                        {% for data in class_records %}
+                        <option value="{{ data.id }}" {% if data.id == classs %} selected {% endif %}>{{data.Class}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="section">Section</label>
+                    <select class="form-control" name="section" id="id_section" required>
+                        <option value="">---Select--- </option>
+                        {% for data in section_records %}
+                        <option value="{{ data.id }}" {% if data.id == section %}selected{% endif %}>{{data.section_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div><br>
+            <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                value="search">Search</button><br><br>
+        </form>
+    </div>
+</div>
+    <div class="row">
+        <div class="main-header">
+            <h4>Student Member List</h4>
+        </div>
+    </div>
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;border-top: 5px solid black;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Member Id</th>
+                        <th>Library Card No </th>
+                        <th>Staff Name</th>
+                        <th>Email</th>
+                        <th>Date Of Birth</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.member_id}}</td>
+                        <td>{{data.library_card_no}}</td>
+                        <td>{{data.staff_name}}</td>
+                        <td>{{data.email}}</td>
+                        <td>{{data.date_of_birth}}</td>
+                        <td>{{data.phone_no}}</td>
+                        <td>
+                          {% if data.staff_id != None or data.status == 'deactive' %}
+                            <a data-toggle="modal" data-target=".add" class="bozero"><span data-toggle="tooltip" title="add"><i class='fa fa-plus'  onclick="pass('{{data.staff_id}}')"></i></a>
+                            {% else %}
+                            <a href="{% url 'stu_libary_surrender_card' data.member_id %}"class="bozero"><span data-toggle="tooltip" title="surrender membership" ><i class='fa fa-mail-reply'></i></a>
+                            {% endif %}
+                          </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
+
+  <!-- modal Start -->
+  <div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Member</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="">Library Card No</label>
+              <input type="text" class="form-control" name="card_no" required>
+              <input type="hidden" class="form-control" name="staff_id" id="staff_id">
+            </div>
+          </div>
+          <br>
+          <center>
+          <button type="submit" class="btn btn-primary" name="save" value="save">Submit</button>
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+     <!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+  function pass(id){
+    $('#staff_id').val(id);
+  }
+</script>
+
+<script>
+  $(document).ready(function () {
+  $(document).on('change', '#id_Class', function () {
+    var class_id = $('#id_Class').val();
+    var url = "{% url 'section_js' %}";
+    $.ajax({
+      url: url,
+      data: {
+        'class_id': class_id
+      },
+      success: function (data) {
+          $("#id_section").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (section) {
+              html_data += `<option value="${section.id}">${section.section_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_section").html(html_data);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
+  });
+
+});
+</script>
+{% endblock %}

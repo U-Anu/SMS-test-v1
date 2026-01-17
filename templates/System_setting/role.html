@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Role</h4>
+        </div>
+     </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        {% if view %}
+                        <h4> View Role </h4>
+                        {% elif edit %}
+                        <h4> Edit Role </h4>
+                        {% else %}
+                        <h4>Add Role</h4>                
+                        {% endif %}  
+                       
+                     </div><hr>
+                     <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                     <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-12 mb-3">
+                            {{data.label_tag}}
+                          {{ data }}
+                        </div>
+                        {% endfor %}
+                      </div><br>
+                      {% if not view %}
+                      <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+                      {% endif %}
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Role List</h4>
+                     </div><hr>
+
+
+
+                     <button class="btn btn-warning" role="button"
+            onclick="codespeedy()">PDF</button>&nbsp;
+        <button class="btn btn-sucess" style="background-color: green;" id="download-button"
+            role="button">CSV</button>&nbsp;
+
+
+
+            <div id="hello">
+                    <div class="table-responsive">
+                    <table id="tableID" class="display"  >
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{data.name}}</td>
+                               
+                                <td>  
+                                    <a href="{% url 'assign_permission' data.id%}"  class="bozero"><span data-toggle="tooltip" title="tags"style="color: black;"><i class='fa fa-tags'></i></a>
+                                    <a href="{% url 'role_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                                    <a href="{% url 'role_delete' data.id %}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                   </td>
+                            </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                
+                    </table>
+                    </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  
+    
+
+ {% endblock %}
+ {% block script_block %}
+
+
+<script>
+    $('tableID').margetable({
+      type: 1,
+      colindex: [{
+        index: 1,
+        dependent: [0]
+      }]
+    });
+  </script>
+
+<script type="text/javascript">
+
+    function codespeedy(){
+      var print_div = document.getElementById("hello");
+  var print_area = window.open();
+  print_area.document.write(print_div.innerHTML);
+  print_area.document.close();
+  print_area.focus();
+  print_area.print();
+  print_area.close();
+  // This is the code print a particular div element
+    }
+  </script>
+  
+  <script>
+  
+    // pdf preview
+  
+  function printData()
+  {
+  var mypage = document.getElementById("hello");
+  summathaan = window.open("");
+  summathaan.document.write(mypage.outerHTML);
+  summathaan.print();
+  summathaan.close();
+  }
+  
+        function htmlToCSV(html, filename) {
+            var data = [];
+            var rows = document.querySelectorAll("table tr");
+  
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+  
+                for (var j = 0; j < cols.length; j++) {
+                        row.push(cols[j].innerText);
+                }
+  
+                data.push(row.join(","));
+            }
+  
+            downloadCSVFile(data.join("\n"), filename);
+        }</script>
+  
+        <script>function downloadCSVFile(csv, filename) {
+            var csv_file, download_link;
+  
+            csv_file = new Blob([csv], {type: "text/csv"});
+  
+            download_link = document.createElement("a");
+  
+            download_link.download = filename;
+  
+            download_link.href = window.URL.createObjectURL(csv_file);
+  
+            download_link.style.display = "none";
+  
+            document.body.appendChild(download_link);
+  
+            download_link.click();
+        }</script>
+        <script>document.getElementById("csvdownload-button").addEventListener("click", function () {
+            var html = document.querySelector("table").outerHTML;
+            htmlToCSV(html, "PatientRegister.csv");
+        });</script>
+
+
+
+
+<!-- Export csv -->
+
+<script>
+    function htmlToCSV(html, filename) {
+        var data = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++) {
+                row.push(cols[j].innerText);
+            }
+
+            data.push(row.join(","));
+        }
+
+        downloadCSVFile(data.join("\n"), filename);
+    }</script>
+<script>
+    function downloadCSVFile(csv, filename) {
+        var csv_file, download_link;
+
+        csv_file = new Blob([csv], { type: "text/csv" });
+
+        download_link = document.createElement("a");
+
+        download_link.download = filename;
+
+        download_link.href = window.URL.createObjectURL(csv_file);
+
+        download_link.style.display = "none";
+
+        document.body.appendChild(download_link);
+
+        download_link.click();
+    }</script>
+
+<script>document.getElementById("download-button").addEventListener("click", function () {
+        var html = document.querySelector("table").outerHTML;
+        htmlToCSV(html, "role.csv");
+    });</script>
+
+ {% endblock  %}

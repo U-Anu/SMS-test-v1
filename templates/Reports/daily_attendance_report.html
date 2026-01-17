@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Select Criteria</h4>
+       </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'attendence_report' %}"> Attendance Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'student_attendance_type_report' %}"> Student Attendance Type Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'staff_attendance_report' %}"> Staff Attendance Report</a>
+            </div>
+            <br><br><br>
+               <div class="col-md-4  mb-3">
+              <a href="{% url 'daily_attendance_report' %}" class="text-primary">Daily Attendance Report</a>
+            </div>
+   </div>
+   </div>
+   </div>
+  
+   
+   <div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <form action="" method="post">
+            {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="DATe">Attendance Date</label>
+                <input type="date" required class="form-control" id="DATe" name="attendance_date" value="{{attendance_date}}">
+            </div>
+
+        </div><br>
+        <button type="submit" class="btn btn-primary" style="float: right;" name="search" value="search">Search</button><br><br>
+    </form>
+    </div>
+</div>
+{% if attendance_records %}
+<div class="row">
+    <div class="main-header">
+       <h4>Attendance List</h4>
+    </div>
+ </div>
+ <div class="col-md-12">
+     <div class="card" style="padding: 10px;">
+        <table  class="table" >
+            <thead>
+                <tr>
+                    <th>Class(Section)</th>
+                    <th>Total Present</th>
+                    <th>Total Absent</th>
+                    <th>Present %</th>
+                    <th>Absent %</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class_key, class_total in class_totals.items %}
+                <tr>
+                    <td>{{ class_key }}</td>
+                    <td>{{ class_total.total_present }}</td>
+                    <td>{{ class_total.total_absent }}</td>
+                    <td>{{ class_total.present_percentage }}%</td>
+                    <td>{{ class_total.absent_percentage }}%</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td>Total</td>
+                    <td>{{ total_present }}</td>
+                    <td>{{ total_absent }}</td>
+                    <td>{{ overall_present_percentage }}%</td>
+                    <td>{{ overall_absent_percentage }}%</td>
+                </tr>
+            </tbody>
+            <!-- <tbody>
+                {% for data in attendance_records %}
+                <tr>
+                    <td>{{ data.student.Class }} &nbsp;({{ data.student.section }})</td>
+                    <td>{{ data.total_present }}</td>
+                    <td>{{ data.total_absent }}</td>
+                    <td>{{ data.present_percentage }}</td>
+                    <td>{{ data.absent_percentage }}</td>
+                </tr>
+                {% endfor %}
+            </tbody> -->
+        </table>
+     </div>
+ </div>
+ {% else %}
+<center> <h5>No Records Found</h5></center>
+ {% endif %}
+</div>
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

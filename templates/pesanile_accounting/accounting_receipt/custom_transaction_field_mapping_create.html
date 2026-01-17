@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="content-wrapper">
+    <div class="col-12 grid-margin stretch-card">
+        {{ message }}
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>{{ screen_name }}</h2>
+                <div>
+                    <button type="submit" form="myForm" class="btn btn-primary">Save</button>
+                    <a href="{{ list_url }}" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            <div class="card card-body">
+                <form method="post" enctype="multipart/form-data" id="myForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for form_field in form %}
+                        <div class="col-lg-6 col-md-4 col-sm-6 col-12 form-group">
+                            {{ form_field.label_tag }}
+                            {{ form_field }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <center><h3><span>Add more fields</span></h3></center>
+                    <hr>
+                    <div id="fieldsContainer">
+                        <!-- Multiple sets of fields will be added here -->
+                    </div>
+                    <p><span><b>Note: </b>Click on the Add button to add more fields.</span></p>
+                    <button type="button" id="addButton" class="btn btn-primary">Add</button>
+                    <button type="button" id="removeButton" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    let fieldCount = 0; // Counter to keep track of the number of field sets
+
+    $('#addButton').click(function() {
+        fieldCount++; // Increment the counter
+
+        // Create a new set of fields
+        const newFields = `
+            <div class="form-group field-set">
+                <label>Field Name</label>
+                <select name="field_name" required class="form-control">
+                    <option value="">------------</option>
+                    {% for data in field_obj %}
+                    <option value="{{data.pk}}">{{data}}</option>
+                    {% endfor %}
+                </select>
+                <label>Field Type</label>
+                <select name="field_type" required class="form-control">
+                    <option value="">------------</option>
+                    {% for data in field_type_obj %}
+                    <option value="{{data.pk}}">{{data}}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Is required:</label>
+                <input type="checkbox" name="is_required" class="form-control">
+
+                <button type="button" class="removeFieldsButton btn btn-danger">Remove This Set</button>
+            </div>
+        `;
+
+        // Append the new fields to the container
+        $('#fieldsContainer').append(newFields);
+    });
+
+    $('#fieldsContainer').on('click', '.removeFieldsButton', function() {
+        $(this).closest('.field-set').remove(); // Remove the specific set of fields
+    });
+
+    $('#removeButton').click(function() {
+        // Find and remove the last set of fields if any are present
+        const lastFieldGroup = $('#fieldsContainer').children().last();
+        if (lastFieldGroup.length) {
+            lastFieldGroup.remove();
+        }
+    });
+
+    // Ensure all checkbox inputs are included in form submission
+    $('#myForm').submit(function() {
+        // Convert all unchecked checkboxes to hidden inputs with value 'False'
+        $('#fieldsContainer .field-set').each(function() {
+            const checkbox = $(this).find('input[type="checkbox"]');
+            const checkboxName = checkbox.attr('name');
+
+            // Check if the hidden input already exists
+            if (!checkbox.is(':checked') && $(this).find(`input[name="${checkboxName}"][type="hidden"]`).length === 0) {
+                $(this).append(`<input type="hidden" name="${checkboxName}" value="False">`);
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

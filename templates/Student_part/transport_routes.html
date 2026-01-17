@@ -1,0 +1,56 @@
+{% extends 'student_base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Transport Routes</h4>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="main-header">
+                <h4>Vehicle On Route List</h4>
+            </div>
+            <hr>
+            <div class="table-responsive">
+                <table id="tableID" class="display">
+                    <thead>
+                        <tr>
+                            <th>Route Title</th>
+                            <th>Vehicle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if assign_vehicle %}
+                        {% for data in assign_vehicle %}
+                        <tr>
+                            <td>{{data.route.route_title}}</td>
+                          
+                                <td>
+                                    {% for section in data.vehicle.all %}
+                                  
+                                      {{ section.vehicle_number }} &nbsp;&nbsp;  <i class="fa fa-bus" style="color: blue;"></i>
+                                      {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}                                  
+                                  </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

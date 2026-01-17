@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="main-header">
+          <h4>Hostal report</h4>
+       </div>
+    </div>
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row">                   
+             
+                    <div class="col-md-4 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="id_Class">
+                            <option value="">---Select---</option>
+                            {% for data in class_records %}
+                            <option value="{{ data.id }}">{{data.Class}}</option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="section">Section</label>
+                        <select class="form-control" name="section" id="id_section">
+                            <option value="">---Select--- </option>
+                            {% for data in section_records %}
+                            <option value="{{ data.id }}">{{data.section_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="section">Hostel Name</label>
+                        <select class="form-control" name="hostel_room" id="id_section">
+                            <option value="">---Select--- </option>
+                            {% for data in hostel_room %}
+                            <option value="{{ data.id }}">{{data.hostel_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>  
+                <br>              
+                <button type="submit" class="btn btn-primary" style="float: right;" name="search"
+                    value="">Search</button><br><br>
+            </form>
+        </div>
+    </div>
+    </div>
+{% if record %}
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>                    
+                    <tr>
+                        <th>Class - Section </th>
+                        <th>Admission No</th>
+                        <th>Student Name</th>
+                        <th>Mobile Number</th>
+                        <th>Guardian Phone</th>                       
+                        <th>Room Number/ Name</th>
+                        <th>Room Type</th>
+                        <th>Cost Per Bed ($)</th>
+                      
+                    </tr>
+                </thead>                
+                <tbody>
+                    {% for data in record %}
+                    <tr>
+                        <td>{{data.Class}}({{data.section}})</td>
+                        <td>{{data.admission_no}}</td>
+                        <td>{{data.first_name}}</td>
+                        <td>{{data.mobile_number}}</td>
+                        <td>{{data.guardian_phone}}</td>
+                        <td>{{data.room_number.room_name}}</td> 
+                        <td>{{data.room_number.room_type}}</td>
+                        <td>{{data.room_number.cost_per_bed}}</td>   
+                                       
+            
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+         
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% endif %}
+ </div>
+   
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

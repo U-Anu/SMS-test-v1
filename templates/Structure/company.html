@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    {% load static %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="main-header">
+                <h4>Company Details</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Form to add new school details -->
+                <div class="card" style="padding: 10px; border-top: 5px solid black;">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                          {% for data in form %}
+                                <div class="col-md-12 mb-3">
+                                    <label for="{{ data.id_for_label }}">{{ data.label }}</label>
+                                    {{ data }} <br>
+                                </div>
+                            {% endfor %}
+                     
+
+                        <button type="submit" class="btn btn-primary">Add Company</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <!-- Table to display existing school details -->
+                <div class="card" style="padding: 10px; border-top: 5px solid black;">
+                    <div class="main-header">
+                        <h4>Company List</h4>
+                    </div>
+                    <hr>
+                    <div class="table-responsive">
+                        <table id="tableID" class="display">
+                            <thead>
+                                <tr>
+                             
+                                    <th>Company Name</th>
+                                    <th> Action</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Loop through schools to display -->
+                                {% for company in companys %}
+                                    <tr>
+                                      
+                                        <td>{{ company.name }}</td>
+                                        <td>  {% if 'company' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                            <a href="{% url 'fees_discount_assign' company.id %}"class="bozero"><span data-toggle="tooltip" title="tags" style="color: black;"  ><i class='fa fa-tag'></i></a>
+                                            {% endif %}
+                                            {% if 'company_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                            <a href="{% url 'company_edit' company.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                            {% endif %}
+                                            {% if 'company_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                            <a href="{% url 'company_delete' company.id %}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                                            {% endif %}
+                                        </td>
+                                      
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script_block %}
+    <!-- Add your scripts here if needed -->
+{% endblock %}

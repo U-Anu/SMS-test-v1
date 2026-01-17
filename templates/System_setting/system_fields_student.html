@@ -1,0 +1,618 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<style>
+    .nav-tabs a.active {
+        border-bottom: 2px solid #5453d2 !important;
+    }
+</style>
+
+<style>
+    @charset "UTF-8";
+
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    .toggler-wrapper input[type="checkbox"] {
+        display: none;
+    }
+
+    .toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+        background-color: #44cc66;
+    }
+
+    .toggler-wrapper .toggler-slider {
+        background-color: #ccc;
+        position: absolute;
+        border-radius: 100px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    .toggler-wrapper .toggler-knob {
+        position: absolute;
+        -webkit-transition: all 300ms ease;
+        transition: all 300ms ease;
+    }
+
+    /*Style 6*/
+
+    .toggler-wrapper.style-6 {
+        width: 54px;
+        -webkit-box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        box-shadow: 0 0.07em 0.1em -0.1em rgba(0, 0, 0, 0.4) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7);
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0))), #ddd;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0)), #ddd;
+        border-radius: 100px;
+    }
+
+    .toggler-wrapper.style-6 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+        left: calc(100% - 19px - 3px + 5px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-slider {
+        -webkit-box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        box-shadow: 0 0.08em 0.15em -0.1em rgba(0, 0, 0, 0.5) inset, 0 0.05em 0.08em -0.01em rgba(255, 255, 255, 0.7), 0 0 0 0 rgba(68, 204, 102, 0.7) inset;
+        background: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.07)), to(rgba(255, 255, 255, 0.1))), #d0d0d0;
+        background: linear-gradient(rgba(0, 0, 0, 0.07), rgba(255, 255, 255, 0.1)), #d0d0d0;
+        top: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+    }
+
+    .toggler-wrapper.style-6 .toggler-knob {
+        width: calc(25px - 6px);
+        height: calc(25px - 6px);
+        border-radius: 50%;
+        left: calc(3px - 5px);
+        top: calc(3px - 5px);
+        -webkit-box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0.1em 0.15em -0.05em rgba(255, 255, 255, 0.9) inset, 0 0.2em 0.2em -0.12em rgba(0, 0, 0, 0.5);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(10%, #f5f5f5), to(#eeeeee));
+        background: linear-gradient(#f5f5f5 10%, #eeeeee);
+    }
+</style>
+<div class="container-fluid">
+    <div class="card">
+        <h3>System Fields</h3>
+        <br>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist" style="float: right;">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'system_fields_student' %}">Student</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="{% url 'system_fields_staff' %}">Staff</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="student" class="container tab-pane active"><br>
+                <div class="table-responsive"><br>
+                    <form method="post" id="myForm">
+                        {% csrf_token  %}
+                    <table id="tableID1" class="display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td>Roll Number</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="roll_number_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="roll_number"  {% if 'roll_number' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Last Name	</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="last_name_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="last_name"  {% if 'last_name' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Category</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="category_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="category"  {% if 'category' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Religion</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="religion_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="religion"  {% if 'religion' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Caste</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="caste_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="caste"  {% if 'caste' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile Number</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="mobile_number_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="mobile_number"  {% if 'mobile_number' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="email_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="email"  {% if 'email' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Admission Date	</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="admission_date_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="admission_date"  {% if 'admission_date' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Student Photo	</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="student_photo_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="student_photo"  {% if 'student_photo' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Student House</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="student_house_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="student_house"  {% if 'student_house' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Blood Group	</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="blood_group_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="blood_group"  {% if 'blood_group' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Height</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="height_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="height"  {% if 'height' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Weight</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="weight_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="weight"  {% if 'weight' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>As on Date	</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="as_on_date_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="as_on_date"  {% if 'as_on_date' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Father Name</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="father_name_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="father_name"  {% if 'father_name' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Father Phone</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="father_phone_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="father_phone"  {% if 'father_phone' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Father Occupation</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="father_occupation_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="father_occupation"  {% if 'father_occupation' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Father Photo</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="father_photo_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="father_photo"  {% if 'father_photo' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>mother_name</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="mother_name_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="mother_name"  {% if 'mother_name' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mother Phone</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="mother_phone_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="mother_phone"  {% if 'mother_phone' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mother Occupation</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="mother_occupation_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="mother_occupation"  {% if 'mother_occupation' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mother Photo</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="mother_photo_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="mother_photo"  {% if 'mother_photo' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Guardian Email</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="guardian_email_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="guardian_email"  {% if 'guardian_email' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Guardian Photo</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="guardian_photo_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="guardian_photo"  {% if 'guardian_photo' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Guardian Address</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="guardian_address_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="guardian_address"  {% if 'guardian_address' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>If Guardian Address is Current Address</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="if_guardian_address_is_current_address_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="if_guardian_address_is_current_address"  {% if 'if_guardian_address_is_current_address' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>If Permanent Address is Current Address</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="if_permanent_address_is_current_address_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="if_permanent_address_is_current_address"  {% if 'if_permanent_address_is_current_address' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Route List</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="route_list_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="route_list"  {% if 'route_list' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Hostel Details</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="hostel_details_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="hostel_details"  {% if 'hostel_details' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bank Account Number / Bank Name / IFSC Code</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="bank_deatils_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="bank_deatils"  {% if 'bank_deatils' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>National Identification Number</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="national_identification_number_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="national_identification_number"  {% if 'national_identification_number' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Local Identification Number	</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="LIN_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="LIN"  {% if 'LIN' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>RTE</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="RTE_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="RTE"  {% if 'RTE' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Previous School Details</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="previous_school_details_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="previous_school_details"  {% if 'previous_school_details' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Note</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="note_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="note"  {% if 'note' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Upload Documents</td>
+                                    <td>
+                                        <label class="toggler-wrapper style-6">
+                                            <input type="checkbox" id="upload_documents_id" name="system_fields"  onclick="SubmitForm()"
+                                                value="upload_documents"  {% if 'upload_documents' in obj %} checked {% endif %}>
+                                            <div class="toggler-slider">
+                                                <div class="toggler-knob" ></div>
+                                            </div>
+                                        </label>
+                                    </td>
+                                </tr>
+                                
+                        </tbody>
+                    </table>
+                </form>
+                </div>
+            </div>
+            <div id="staff" class="container tab-pane fade"><br>
+                <h3>Menu 1</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function SubmitForm(){
+        document.getElementById("myForm").submit();
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+      const dataTable = $('#tableID1').DataTable({
+        dom: 'Blfrtip', // Add custom buttons to the DataTable
+        buttons: [
+          {
+            extend: 'copy',
+            text: '<i class="fas fa-copy" style="color:black"></i>',
+            titleAttr: 'Copy',
+            className: 'cust ',
+          },
+          {
+            extend: 'csv',
+            text: '<i class="fas fa-file-csv"></i>',
+            titleAttr: 'CSV',
+            className: 'cust',
+          },
+          {
+            extend: 'excel',
+            text: '<i class="fas fa-file-excel"></i>',
+            titleAttr: 'Excel',
+            className: 'cust ',
+          },
+          {
+            extend: 'pdf',
+            text: '<i class="fas fa-file-pdf"></i>',
+            titleAttr: 'PDF',
+            className: 'cust',
+          },
+          {
+            extend: 'print',
+            text: '<i class="fas fa-print"></i>',
+            titleAttr: 'Print',
+            className: 'cust',
+          },
+        ],
+        lengthMenu: [[50, 100, 250], [50, 100, 250]],
+      });
+
+      // Update the DataTable entries when the selection changes
+      $('#showEntries').on('change', function () {
+        dataTable.page.len($(this).val()).draw();
+      });
+    });
+  </script>
+
+{% endblock %}

@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block head_block %}
+ <style>
+    @property --p{
+        syntax: '<number>';
+        inherits: true;
+        initial-value: 0;
+      }
+      
+      .pie {
+        --p:20;
+        --b:22px;
+        --c:darkred;
+        --w:150px;
+        
+        width:var(--w);
+        aspect-ratio:1;
+        position:relative;
+        display:inline-grid;
+        margin:5px;
+        place-content:center;
+        font-size:25px;
+        font-weight:bold;
+        font-family:sans-serif;
+      }
+      .pie:before,
+      .pie:after {
+        content:"";
+        position:absolute;
+        border-radius:50%;
+      }
+      .pie:before {
+        inset:0;
+        background:
+          radial-gradient(farthest-side,var(--c) 98%,#0000) top/var(--b) var(--b) no-repeat,
+          conic-gradient(var(--c) calc(var(--p)*1%),#0000 0);
+        -webkit-mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+                mask:radial-gradient(farthest-side,#0000 calc(99% - var(--b)),#000 calc(100% - var(--b)));
+      }
+      .pie:after {
+        inset:calc(50% - var(--b)/2);
+        background:var(--c);
+        transform:rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
+      }
+      .animate {
+        animation:p 1s .5s both;
+      }
+      .no-round:before {
+        background-size:0 0,auto;
+      }
+      .no-round:after {
+        content:none;
+      }
+      @keyframes p {
+        from{--p:0}
+      }
+      
+      body {
+        background:#ddd;
+      }
+</style>
+{% endblock %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="main-header">
+      <div class="col-md-12">
+        <h4>Lesson Plan Report</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+      <div class="container-fluid" style="padding: 10px;">
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'syllabus_status_report' %}" class="text-primary">Syllabus Status Report</a>
+        </div>
+        <div class="col-md-4  mb-3">
+          <a href="{% url 'subject_lesson_paln_report' %}">Subjects Lesson Plan Report</a>
+        </div>
+      </div>
+      <hr>
+      <div class="container-fluid">
+        <div class="row">
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                  <label for="class">Class</label>
+                  
+                  <select class="form-control" name="class" id="id_class" required>
+                      <option value="" >---Select---</option>
+                      {% for data in class_records %}
+                      <option value="{{ data.id }}">{{data.Class}}</option>
+                      {% endfor %}
+  
+                  </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="section">Section</label>
+                <select class="form-control" name="section" id="id_section" required>
+                  <option value="">---Select---</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="section">Subject_group</label>
+                <select name="subject_group" class="form-control" required id="id_subject_group">
+                    <option value="">------</option>
+
+                </select>
+            </div>
+            </div>
+            <div class="col-md-12 mb-3"><br>
+              <button type="submit" class="btn btn-primary" style="float: right;">Search</button>
+            </div>
+          </form>
+        </div>  
+      </div>
+    </div>
+  </div>
+</div>
+{% if records %}
+<div class="col-md-12">
+<div class="box-body card">
+    <div class="download_label"> Syllabus Status Report</div><br>
+    <div class="row">
+        <div class="text-center">
+            {% for num in chart_percent %}
+                <div class="col-md-2 col-xs-6 systatus">
+                    <b>{{num.1}}</b> 
+                    <div class="chart ptt10">
+                        <span class="pie animate" style="--p:{{num.0}};--c:orange;"> {{num.0}}%</span>
+                    </div>
+                     <span class="label" style="background:#000000; padding:3px;">Complete {{num.0}} %</span>  
+                </div>
+                {% endfor %}
+            
+        </div>
+    </div>
+
+</div>
+</div>
+
+<div class="col-md-12">
+  <div class="card" style="padding: 10px;">
+
+    
+    <div class="table-responsive">
+        
+      <table  class="table">
+        <thead>
+            <tr>
+                <th>Subject - Lesson - Topic Status</th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+                   
+            {% for list in records %}
+            <tr>
+                <th>{{list.subject}}</th>
+                <td style="text-align: right;"><strong>{{list.percentage}}</strong></td>
+            </tr>
+            {% for lesson in list.record %}
+            <tr>
+                <th>&nbsp;&nbsp; &nbsp;&nbsp;{{forloop.counter}}.&nbsp; {{lesson.lesson.lesson_name}}</th>
+                <td style="text-align: right;"><strong>{{lesson.percentage}}</strong></td>
+            {% regroup lesson.topic by lesson_name as record_group %}
+            {% for group in record_group %}
+            {% for data in group.list %}
+            <tr>           
+                <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;   {{forloop.counter}}. &nbsp;{{data.topic_name}}</td>                   
+                <td style="text-align: right;">{% if data.status %} <i>Completed</i> ({{data.date_save}}){% else %}Incomplete{% endif %}</td>
+            </tr>
+            {% endfor %} 
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <center>
+    <h5>No Records Found </h5>
+  </center>
+  {% endif %}
+</div>
+
+
+
+{% endblock %}
+{% block script_block %}
+
+<script>
+  $(document).ready(function () {
+    $(document).on('change', '#id_class', function () {
+      var class_id = $('#id_class').val();
+      var url = "{% url 'section_js' %}";
+
+      $.ajax({
+        url: url,
+        data: {
+          'class_id': class_id
+        },
+        success: function (data) {
+          $("#id_section").html(data);
+          let html_data = '<option value="">--------</option>';
+          data.forEach(function (section) {
+            html_data += `<option value="${section.id}">${section.section_name}</option>`
+          });
+          console.log(html_data);
+          $("#id_section").html(html_data);
+        },
+        error: function (data) {
+          console.log(data);
+        }
+      });
+    });
+
+  });  
+
+
+  $(document).ready(function () {
+    $(document).on('change', '#id_section', function () {
+        var section_id = $('#id_section').val();
+        var class_id = $('#id_class').val();
+        var url = "{% url 'subject_grp_js' %}";
+        $.ajax({
+            url: url,
+            data: {
+                'class_id': class_id,
+                'section_id': section_id,
+            },
+            success: function (data) {
+                $("#id_subject_group").html(data);
+                let html_data = '<option value="">--------</option>';
+                data.forEach(function (subjectt) {
+                    html_data += `<option value="${subjectt.id}">${subjectt.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_subject_group").html(html_data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Book List</h4>
+        </div>
+    </div>
+
+
+<!-- modal Start -->
+<div class="col" style="padding-bottom: 30px;">
+    {% if 'books_list_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add"
+        style="float:right;">+ Add Book</button><br>
+    {% endif %}
+</div>
+<div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <h5 class="modal-title">Book</h5>
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Add Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"> &times; </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for data in form %}
+                        <div class="col-md-4 mb-3">
+                            {{data.label_tag}}
+                            {{ data }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <center>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </center>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal End -->
+
+
+{% if 'books_list_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Book Number </th>
+                        <th>ISBN Number</th>
+                        <th>Publisher</th>
+                        <th>Author</th>
+                        <th>Subject</th>
+                        <th>Rank Number</th>
+                        <th>Qty</th>
+                        <th>Available</th>
+                        <th>Book Price</th>
+                        <th>Post Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in books %}
+                    <tr>
+                        <td>{{data.book_title}}</td>
+                        <td>{{data.book_number}}</td>
+                        <td>{{data.ISBN_number}}</td>
+                        <td>{{data.publisher}}</td>
+                        <td>{{data.author}}</td>
+                        <td>{{data.subject}}</td>
+                        <td>{{data.rank_number}}</td>
+                        <td>{{data.qty}}</td>
+                        <td>{{data.available_qty}}</td>
+                        <td>{{data.book_price}}</td>
+                        <td>{{data.post_date}}</td>
+                        <td>
+                            {% if 'books_list_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                            <a href="{% url 'book_list_edit' data.id %}"class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
+                            {% endif %}
+                            {% if 'books_list_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                            <a href="{% url 'book_list_delete' data.id%}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove'
+                                    onclick="alert('You want to Delete this Item..?')"></i></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+</div>
+
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}

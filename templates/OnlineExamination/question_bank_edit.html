@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  
+    <div class="row">
+        <div class="main-header">
+           <h4>Question Bank</h4>
+        </div>
+     </div>
+     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add" style="float: right;">+ Add Question</button><br>
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Question</th>
+                        <th>Answer</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for data in records %}
+                    <tr>
+                        <td>{{data.subject}}</td>
+                        <td>{{data.question}}</td>
+                        <td>{{data.answer}}</td>
+                        <td>  
+                          <a href="{% url 'question_bank_view' data.id %}" style="color: black;"  ><i class='fa fa-server'></i></a>
+                          <a href="{% url 'question_bank_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
+                          <a href="{% url 'question_bank_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                           </td>
+                        
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+ </div>
+   
+ <!-- Modal Start -->
+ 
+ <div class="modal fade add" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Online Exam</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% if not view %}
+        <h4>Edit Add Online Exam</h4>
+        {% else %}
+        <h4>View Add Online Exam</h4>
+        {% endif %}
+        <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+          <div class="row">
+            {% for data in form %}
+            <div class="col-md-4 mb-3">
+                {{data.label_tag}}
+              {{ data }}
+            </div>
+            {% endfor %}
+          </div>
+          <br>
+          <center>
+            {% if not view %}
+          <button type="submit" class="btn btn-primary">Submit</button>
+          {% endif %}
+        </center>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+ <!-- Modal Ends -->
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

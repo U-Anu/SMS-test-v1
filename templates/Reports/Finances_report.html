@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+{% block head_block %}
+
+{% endblock  %}
+
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="main-header">
+       <h4>Finance</h4>
+    </div>
+ </div>
+
+    <br>
+
+    <div class="col-md-12">
+      
+        
+  
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;">
+          <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'Finances_report' %}" class="text-primary">Fees statement</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'balances_fees_report' %}" >Balances Fees Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+              <a href="{% url 'fees_collection_report' %}">Fees collection Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+                <a href=""> Online Fees Collection Report</a>
+              </div>           
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'income_report' %}">Income Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'expense_report' %}"> Expense Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'Report_payroll_report' %}">Payroll Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'income_group_report' %}"> Income Group Report</a>
+              </div>
+              <div class="col-md-4  mb-3">
+                <a href="{% url 'expense_group_report' %}"> Expense Group Report</a>
+              </div>           
+          </div>
+          <hr>
+          <form method="post" >
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="class">Class</label>
+                <select class="form-control" name="class" id="id_class" required>
+                    <option value="" >---Select---</option>
+                    {% for data in class_records %}
+                    <option value="{{ data.id }}">{{data.Class}}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="section">Section</label>
+                <select class="form-control" name="section" id="id_section" required>
+                    <option value="">---Select---</option>
+                 
+                </select>                
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="section">Student</label>
+              <select class="form-control" name="student_name" id="id_category" required>
+                  <option value="">---Select---</option>
+              
+              </select>                
+          </div>
+        
+      <div class="col-md-12 mb-3"><br>
+
+           <button type="submit" class="btn btn-primary" style="float: right;">Submit</button>
+           </div>
+              </form>
+            </div>
+        </div>
+   
+   
+
+
+   {% if records %}
+   <div class="card" style="padding: 10px;">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="sfborder">
+          <div class="col-md-3">
+            <img class="round5"
+              src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxATEBUQEhAWFhUVGBIWFhAWFxUVFRcXFRUWFxUVExMYHSggGBolHhUVITEhJSktLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGy0mICUvLy0tLy0tLSstKy8tMC0tLS0rLS0tKy0tLS8tLy0rLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAEAAQUBAQAAAAAAAAAAAAAAAQIEBQYHAwj/xABCEAACAQIDBQQGBwQKAwAAAAAAAQIDEQQhMQUSQVFhBiJxgQcTMpGhwSNCUrHR4fBicoLxFSQzNUNTkrKzwhSTov/EABoBAQADAQEBAAAAAAAAAAAAAAABAgMEBQb/xAApEQEBAAMAAQMDAwQDAAAAAAAAAQIDETEEEiEFMkEiUXETQrHBFCNh/9oADAMBAAIRAxEAPwDIgEx4ffyPKXSv0/kQ2Q/AEgACAAAAAAAABU3xKWwAAAAAAAAABKjn8hu/kG/1yJCTIAIAAAAAAAAExIbAAAAAAAAAAAWCAAAAUzmkrtpLm3ZfE1ztL2nVFulRtKp9aTzjDpbjLpw48jRcViZ1Jb1Sbm+cnf3cvItMXRr9Pcp2/DqstpYda16X/sh+JMcfRelam/CcX8zkgsT7Wv8AxZ+7q1TbGHUlBVYynJpKnBqcm30jp4uyL45vsDbFDDJy9TKdV5b+8kkuUcnbqzL4HtDicVWjRpwjSi85zXfkoLW0nZJvRZasXFlnos8eG4k7pTGSejTtllnmuHiTwsUc6ZP9ciAAAAAAAAAAAAAAAAAAAAAAE293MCVl4FLZMYuUrJNt6RWbb6JGaq7C9RhquLxUt2FKEp+rVt52V1FvRNuytnrwL44XLwOadre0U4TeHoy3Wrb9Ra3ee7F8MtX1Ndwu3sVTvavN3TVpNztdare0a1MfVqOUnOXtSbk31k7v4spLc49PDVjjjziW/wCf4kABoAAAXNDH1acJQhNwUvaccpO2ictba5X4stjK9mqmEhiI1cXvSpU+/wCpgryqyXswvdKKvm23orcSZ5Rl4dA2Dg/VYanTas1FOS/al3pfFsvzKbB2a8dgoY2hH1e/Kr/V5S3rKFSUFapZXdo8Vx1MfXoThJwnFxktYtWZTPCzy8rLvb15gAogAAAAACbBakeBIW6oEWJIAAAAAAAROnD8wIu9C72ds+pXqblNeLfsxXOTGzMBOvUVOC6t8IrjJnSdl7Op0KapwXjLjJ82zbVq9/nwi1b7F2HSw6yW9N61Hr4L7K6HNPTv2lSjT2bCWcrVa37sX9FB+Mu9/BHmdfNQ9KWGp/0Vi57kd71a7+6t72or2tTsuPMeRfTZM5a+ajcth+j3EYvAxxdGrDelKolRneKlGEt26qK9neMsmraZo00+jexNFQ2bhIr/ACKUvOcVN/GTOG3kelnbPDgW1tiYrDO2Iw86f7UleD8KivF+TMfc+p5JNWaunwehicV2ZwE3vTwVBv7TpQv5uxHvis2fu5pg/Rd6+hSxFDGrdqQhPdnTeTlFNrejLg7rTgV0/RJiNJYukuqhNv3ZHVcDgKVGHqqNOMIK7VOKtHN5tJFwR76r764d217BSwNCFdVnVvPcn3NxR3leLXeeWTXmjSj6I7e4RVNmYqLXs0p1F40vpF/sPnctL2NML2fL6O9DX9zUP3sR/wA9Q2jauyqVeO7UjmvZmvaj4P5aGr+hr+5qH72I/wCeobsd8kuPK8zb99/lzDbOx6mHnaWcX7NRaPp0fQxx1nGYWFWDpzjeL1XzT4Pqc325smeHqbrzi84T5rk+qOPbq9vzPCsrHAAwSFS1ya8CFHoQiQvyABAAAAAAAWoKnbX9eYEefmIxcmopNtuyiuLeiRFzaew+zN6bxEllDuw/eazfkvv6F8MfdeDY+z2yVh6W7rOVnOXXkui/WplAD0ZJJyKBp3pFnOrs7FUY2vKElGPGTi1Ky6vdNxMXj8MlJTtzs+Tev3GW+5THsa6ee75fMvZLZ0MTjqGHnfcqTSlZ2e6k5Ss+GUWdn292fxso06eF2isHQowjBJU/WTkoxUU6lWUlkktPFtvho+zNkrDdpKUIq1OVStOny3ZUqvdXhK68Ejou0uzUK2LdaulWpTp7ioVe9ChUSaVajTfcbd87q/FP6pz487O3jr35XnxOte2bs/a6f0O3cPiba06lKEl/FKnJyXvNz2bUrOmvXwjCppJU5OcH1hJpOz5NZddXzns/6P1Dakq+KpTlT3WoKnKVP1dRKMVNThJd2yk00002ssjplGi4LddR1LZKo0lJr9uyScuq1L+p1ez8y/xz/Tk9Lv8A6s7yz+e/H/nyjFzmoN04Kc7d2Epbib4b07Oy62fgzUsVsbbtbN7SoYZf5dCi6iXjUqWk31yNuxKnuNU2lN6SeaV+LXG2tjU8T2FlOTqvaOIVR576VK1+icXJLpv5GGFn5/x10ZSmy+zO0oSlHEbU/wDJo1ITp1KM6W492aabp1FJ7sld8GunFcu9Imw6OCxnqaO9uOlCa3nvO7c08/4TtfZ/ZmJoJqti/Xr6t4Ti1+85VZ3fuNG7bYD123sNFq8Y0KVSa/Zp1a0rPxe6vMn3drXV8N97DwWGwNDDJpunBOazvvzvOp/9SZt6ZiMLh1Oe9bhm+mtjLo6fT3Kztce7nUlntXZ8K9J05cc1LjGXBovCGzezvwxclxeGnTnKnNWlF2f4ro9fM81l81+BufbXZt4rERXejaM+sXo/Jv49DTGzz9mHsy4vEMAGYAAAAAAAAAACYxbdkrt5Jc29EdU2Vg1RowpL6qzfOTzk/fc0DsrhfWYuCekbzf8ADp8d06Udfpsfi1WgAOpAedenvRaPQhkWdnCXjRNs9m3/AORhsVFPfoVk3l/h1fo6iT6b0ZeEWbDURmGjFVoWbj1OPbq9sdWGz3eXj+rlM6kY2u0r88jH7Y2m6E6C3LxrVY0XNuyhKf8AZuT5Nq3i0ZWWGq6Ojf8Aig18WYTDK/MjW5SeXnCrF6ST8HcqJhhaqVlRsujgl95jMLtOU8XXw25ZUI0t+ondb9RbygstVHN/vIXXlPmwmUvhkjC/0C6mNq4pp/2dGjCy4Rc6k8+u/D/SzNxV3bmZmnCyS5GmnX7+qbNnteeDobkUj3AO+SScjkt7ehDJBKHjXoqcZQkrxknFro1Y5XjMO6dSVOWsJOPjZ6+evmdaNB7c4XdxCmtKkV745P4bpz+ox7OpjXQAcSwAAAAAAXAAAAbX2Ao9+rPlGEV/E23/ALUbqar2Aj9FVf7aXuivxNqPQ0z9EVoADVAAAKbFrjaX1l5l4eeJ9iXg/uKbMe42LY3la9tTZ9KvSnQqwUqdRNSi+XNPg080+DRl6ONSSTTySV9dDD0MXn6ueUllfhLk/EuKkE1Z38m0/ejgx2ZYeHZlhMp8slPHx4J/cYXAYClRUlTjbfnUqzerlOpJynKT4u79yS4HtSpKKtdvq22/ieOKxaj3Y5zeSXLxGezLPyY4THwymz6N3vcFp4mSLXZsWqUU3d53fN3dy5bO3TjMcI5NmXckgpJRqokAADVu31K9KnPlNx8pRb/6o2kwPbaP9Ub5Sg/jb5me2dwqY56ADzlgAAAAAAAAAAbt2Af0VVftp++K/A2o0z0f1e9WhzUJLyck/vRuTPQ0/ZFam4KCUaoVAFE6iXEpnnjhO5XkFZ44p9yXhb3lE8Q+CONenLZ+JjUo46Far6tOMXHflu0qsXvU6sYaRb0vziuZx4/UNGzZ/Sxvzfz+F/bZ8ujbQwm+rr2l8VyMdRx1SOV7pcHw+Zadge1sMfh7tpV6aSrU9M+FSK+xL4O68czj8Dvd6PtcVz/Mys9t5XZL2dizrbRqSyXdXTX3l3s3CW78tXouV+PiU4LZzT3p8NI6+bPDtV2ho4HDuvVd37NOnfOpN6RXTi3wVx5vIePmtrwE+54N/j8z3ODeiuji8XtOrjp1pqEW51tycoxqTkrU6TSdnFLOz0UYridwhXfHPrxNc/XadGU1Z35447Ll2xcpFZ5wqp8T0OzDZhsncL1SzgAC4GB7av8Aqkusqf8AuT+RnjWO3tW1CEOMp38oxlf4tGe2/oqY0YANHnLAAAAAAAAAAAzPZHFbmLguE1KHvzXxSOiN/wAjklKo4tSTs000+qd0dRw+LVSlGrH60U10vqn4Z+46dW2YYZW/j5RZ8veVWKKXiFwRbpEnh7Pq+/L7eRpNcVSqt8SkA87Ztz2Xud6vJwLXaeApV6M6FWClTqRcZRfFPk1o+Ka0aLoFJbL2JfOnaTs5jtjYpV6M5erT+ixcVlZ/4ddWsnwaeUtVyW47C9LuHlFLGUpU5pZzpLfpvqo33o+GfidWr0Yzi4TipRkrOMknFrk08mjRtr+ifZdVuUI1KDfCjJbv+iakkukbHu6fqmvPGTfPn94pJlj9rF7W9LeDhH+r0qlab0vF0oebl3vdE0PC4PaO28VvSe81lKpZqhh467qj/wBb70srviul7N9EmzqbvUlWrW+rOajFeVOMW/Bs3nA4KlSgqVKnGEI5KEEoxXki236nq1z/AKZ2/vS+7L7ln2b2FRweGhhqK7sdZP2pyftTm+bfuySySMpYEng5ZXK3LLysFUajWjKQThsywvcbw8veOJ5o9I1o8y0IPR1/V9+PxeVS64yBovbvE71eFP7Ebvxm/wAEveblSqpQbbso3bfJLO5zDaOK9bWnUl9dt25LSKflY9zLfNmnHKflnzlWyRN2vkNP1qUowSkAEAAAAAAIlLmRbmTL4khLU2jsftHJ4eT4ucP+0fn7zViuhVlCSnF2cWmn4Ge3C54XGflM8unAs9lY+NamprXSUeUuKLw+cyxuN5WoDxqztKC5t/CLPYqkAAEMpX8yWgTAJQRJAAAAAeNOd5yXLd+NwPYEXPDF4mNODnN2S+PJLqyZLbyDE9qtoblL1MX3qmvSK19+nvNNUi4x+MlVm6klnJ+zyS0S6FsfRaNd165jfwxt7UIkA1QAAAAABO7nzPKdaKaTkk3orq78Eel8iRLfXPmQAQAAAvtkbSlQqbyzi8pR5r8UbpR2jFpSveEvZqL7pLg0c9LzZ20JUm17UJe1B6PquUupx+q9LNn6p5/ytjlxttas1VhneKd4vXKTzz6aGYNTpVoSV4Suvc14rgzaKFTeipc0vzPI243Hy0j0ABkkAAAAAAAAMOqzdaavZN956WUevlbzMrVqbsXLkmzWpTiu9OSS4yfyXF9DXVj1FZqWNi7tO0Y5yqvJLw5mpbe2s607JtU46R+0/tP9ZHntXarqfRxW7TX1PtP7U+pjT1vS+lmv9WXlS5AAO1QAAAAAAABZYuX0kU287WSdrtO+eWdlw69C9LHGP6WGnDil9a6urZ56dS+LXxAABUAAAAIuBXSqOLum0+aNm2Jt+MVuVcs8prNea1RrCWuf5EdDLbow2zmUTLx02jWjJb0ZKSfFNNe89DmeHxE6bvCbi+jt7+ZmMN2prxymoz6+y/esvgeZs+n5z7b1eZt0BrlLtbS+tSmvDdkvi0XMe0+G+1JeMX8jnvpd0/tq3YzQMM+02G+1J/wy+Zb1e1lFezTm/HdS+9/cRPTbb/bTsbCUzmkrtpJat5JeLNQxPauq/YhGPV3k/kvgYbFY2rUd6k3Lo3kvCOiOjX9P2X7rxW5Rs22+0FO25T774tZRy4X4+XvNXxGIlN3k/BcF4I8genp9Phqnwpb0ABsgAAAAAAAn8eAAFdwSLDFx78Hnlqu7Z5q2slmn95eFjjkvWU9L31dr2vklfjrpyfVO+JviAACoAEXAlFX66kbuRCAN/wAwAAAAAAAAAkABN8s0QAAAAAAAAAAFwJt+QbYeX4EEgACBZY2bVSmrcXd2Tyyy5rOz/OxelrisO5ThJJWWrz3uluH6ZdFr4gACxUCpePnyIjp+siGyRLZABAAAAAAAAsAtwZN/5BSIJAAEAAAAAAAE7v5ALZ6iTDf65EEgACAAAAAACYfgSAEtWUIAkSACAAAAAAQypaeTAApJAAAAAAAAAAhlUtH4gEilEgEAAAAAA//Z"
+              class="img-fluid">
+            <!-- <img width="115" height="115" class="round5" src="https://www.school.infomainia.in/uploads/student_images/default_male.jpg" alt="No Image"> -->
+          </div>
+
+          <div class="col-md-9">
+            <div class="row">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <th class="bozero">Name</th>
+                    <td class="bozero">{{records.first_name}} {{records.last_name}}</td>
+
+                    <th class="bozero">Class Section</th>
+                    <td class="bozero">{{records.Class}} ({{records.section}}) </td>
+                  </tr>
+                  <tr>
+                    <th>Father Name</th>
+                    <td>{{records.Father_name}}</td>
+                    <th>Admission No</th>
+                    <td>{{records.admission_no}}</td>
+                  </tr>
+                  <tr>
+                    <th>Mobile Number</th>
+                    <td>{{records.mobile_number}}</td>
+                    <th>Roll Number</th>
+                    <td> {{records.roll_number}} </td>
+                  </tr>
+                  <tr>
+                    <th>Category</th>
+                    <td>
+                      {{records.category}} </td>
+                    <th>RTE</th>
+                    <td><b class=""> {{records.rte}} </b>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <div class="card" style="padding: 10px; font-size:13px;">
+    <div class="card-body">
+      <div>
+
+      </div>
+      <br>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead style="background-color: rgb(106, 123, 160); color:white;">
+            <tr>
+              <th> </th>
+  
+              <th>Fees Group</th>
+              <th>Fees Code</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Amount ($)</th>
+              <th>Payment Id</th>
+              <th>Mode</th>
+              <th>Date</th>
+              <th>Discount ($)</th>
+              <th>Fine ($)</th>
+              <th>Paid ($)</th>
+              <th>Balance ($)</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            {% for data in fees_records %}
+            <tr>
+              
+              <td><input type="hidden" value="{{data.id}}" id="table_fees_id">{{data.fees.fees_group}}</td>
+              <td>{{data.fees.fees_type.Fees_code}}</td>
+              <td>{{data.fees.due_date|date:"d/m/Y"}}</td>
+              <td> {% if data.status == 'fully paid' %}<label class="label label-success">{{data.status}}{% else %}<label class="label label-warning">{{data.status}}{% endif %} </label></td>
+              <td> <input type="hidden" value="{{data.balance_amount}}" id="table_amount">{{data.fees.amount}}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><input type="hidden" value="{{data.fees.percentage}}" id="table_percentage">{{data.Dicount_amount}}
+              </td>
+              <td><input type="hidden" value="{{data.fees.fine_amount}}" id="table_fine_amount">{{data.fine_amount}}
+              </td>
+              <td>{{data.paid_amount}}</td>
+              <td>{{data.balance_amount}}</td>
+            
+
+            </tr>
+            {% for paid in paid_record %}
+            {% if paid.fess_id == data.id %}
+            <tr>
+              <td colspan="2"></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><img src="https://www.school.infomainia.in/backend/images/table-arrow.png" alt=""></td>
+              <td> <input type="hidden" value="{{data.fees.amount}}">{{paid.id}}</td>
+              <td>{{paid.payment_mode_fee}}</td>
+              <td>{{paid.created_at|date:"d/m/Y"}}</td>
+              <td>{{paid.amount_discount}}</td>
+              <td>{{paid.amount_fine}}</td>
+              <td>{{paid.paid_amount}}</td>
+              <td></td>
+              
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+
+            {% for data in fees_discount %}
+            <tr style="background-color: whitesmoke;">
+              <td colspan="2"></td>
+              <td>Discount</td>
+              <td> {{data.discount.name}}</td>
+              <td></td>
+              <td>
+                {% if data.status == 'applied' or data.status == 'appalied' %}
+                <p style="color:red;">Discount of ${{data.discount.amount}} applied</p>
+                {% elif data.status == 'pending' %}
+                Discount of ${{data.discount.amount}} Assigned
+                {% endif %}
+              </td>
+              <td colspan="9"> </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<br><br><br>
+     {% endif %}
+
+ </div>
+
+
+ {% endblock %}
+ {% block script_block %}
+
+<script>
+  $(document).ready(function () {
+      $(document).on('change', '#id_class', function () {
+          var class_id = $('#id_class').val();
+          var url = "{% url 'section_js' %}";
+
+          $.ajax({
+              url: url,
+              data: {
+                  'class_id': class_id
+              },
+              success: function (data) {
+                  $("#id_section").html(data);
+                  let html_data = '<option value="">--------</option>';
+                  data.forEach(function (section) {
+                      html_data += `<option value="${section.id}">${section.section_name}</option>`
+                  });
+                  console.log(html_data);
+                  $("#id_section").html(html_data);
+              },
+              error: function (data) {
+                  console.log(data);
+              }
+          });
+      });
+
+  });
+
+  $(document).ready(function () {
+      $(document).on('change', '#id_section', function () {
+          var section_id = $('#id_section').val();
+          var class_id = $('#id_class').val();
+          var url = "{% url 'student_report_finances_js' %}";
+          $.ajax({
+              url: url,
+              data: {
+                  'class_id': class_id,
+                  'section_id': section_id,
+              },
+              success: function (data) {
+                  $("#id_category").html(data);
+                  let html_data = '<option value="">--------</option>';
+                  data.forEach(function (subject) {
+                      html_data += `<option value="${subject.id}">${subject.first_name}</option>`
+                  });
+                  console.log(html_data);
+                  $("#id_category").html(html_data);
+              },
+              error: function (data) {
+                  console.log(data);
+              }
+          });
+      });
+
+  });
+</script>
+ {% endblock  %}

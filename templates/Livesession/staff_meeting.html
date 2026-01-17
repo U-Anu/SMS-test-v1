@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+
+
+{% block body_block %}
+{% load static %}
+
+<style>
+  /* General styling */
+  body {
+            font-family: Arial, sans-serif;
+        }   
+        h1 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .checkbox-container {
+            max-height: 200px; /* Adjust the maximum height based on your preference */
+            overflow-y: auto; /* Enable vertical scrolling when the content overflows */
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .checkbox-label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer; /* Add cursor style to indicate clickability */
+        }
+
+        /* Input field styling */
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            /* margin-right: 15px; */
+            padding-right: 130px;
+            /* display: none; */
+        }
+
+        /* Hide checkboxes and show them when labels are clicked */
+        .checkbox-label input[type="checkbox"] {
+            display: inline;
+        }
+</style>
+    <div class="row">
+        <div class="main-header">
+           <h4>Staff Meeting</h4>
+        </div>
+     </div>
+     <!-- modal Start -->
+     {% if 'staff_meeting_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}   
+     <div class="col" style="padding: 20px;">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Staff Meeting</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+        
+                <label for="meeting_title">Meeting Title:</label>
+                <input type="text" id="meeting_title" name="meeting_title" class="form-control" required>
+                <br>
+        
+                <label for="meeting_date_time">Date and Time:</label>
+                <input type="datetime-local" id="meeting_date_time" class="form-control" name="meeting_date_time" required>
+                <br>
+        
+                <label for="meeting_duration">Starting Time :</label>
+                <input type="Time" id="meeting_duration" class="form-control" name="start_time" required>
+                <label for="meeting_duration">Ending Time:</label>
+                <input type="Time" id="meeting_duration" class="form-control" name="end_time" required>
+                <br>
+                 <!-- Add the search field -->
+                 <label for="search_staff">Search and Select Staff:</label>
+                 <input type="text" id="search_staff" onkeyup="filterStaff()" placeholder="Search...">
+                 <br>
+
+        <label>Staff:</label>
+        <br>
+        <!-- Use div to group the checkboxes -->
+       <div class="container">
+        <div id="staff_checkboxes">
+            <!-- {% for staff in addstaff %}
+            <label class="checkbox-label" onclick="toggleCheckbox(this)">
+                <input type="checkbox" onclick="toggleCheckbox2(this)" id="staff_{{ staff.id }}" name="staff" value="{{ staff.id }}">
+                {{ staff.first_name }} ({{ staff.roles }})
+            </label>
+            {% endfor %} -->
+            {% for staff in addstaff %}
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="staff" value="{{ staff.id }}" id="staff_{{ staff.id }}" required>
+                <label class="form-check-label" for="staff_{{ staff.id }}">
+                    {{ staff.first_name }} ({{ staff.roles }})
+                </label>
+            </div>
+              {% endfor %}
+        </div>
+       </div>
+        <br>
+        
+                <label for="description">Meeting Notes:</label>
+                <textarea id="description" name="meeting_notes" class="form-control" rows="4" cols="50"></textarea>
+                <br>
+
+                <label for="meeting_url">Meeting URL:</label>
+                <input type="text" id="meeting_url" class="form-control" name="meeting_url" required>
+                <br>
+
+                <label for="meeting_url">Meeting Documents:</label>
+                <input type="file" id="meeting_document" class="form-control" name="meeting_document" required>
+                <br>
+        
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control" rows="4" cols="50"></textarea>
+                <br>
+        
+                <label for="status">Status:</label>
+                <select id="status" name="status" class="form-control" required>
+                    
+                    <option value="Awaited">Awaited</option>
+                    <option value="Cancelled!">Cancelled!</option>
+                    <option value="Finished">Finished</option>
+
+                </select>
+                <br>
+        
+                <button type="submit" class="btn btn-primary" style="float: right;">Save</button><br><br>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  
+  <script>
+    function filterStaff() {
+    var input, filter, checkboxes, i, label, txtValue;
+    input = document.getElementById("search_staff");
+    filter = input.value.toUpperCase();
+    checkboxes = document.querySelectorAll('.form-check-input');
+
+    for (i = 0; i < checkboxes.length; i++) {
+        label = checkboxes[i].nextElementSibling;
+        txtValue = label.textContent || label.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            checkboxes[i].parentNode.style.display = "";
+        } else {
+            checkboxes[i].parentNode.style.display = "none";
+        }
+    }
+}
+
+
+    function toggleCheckbox(labelElement) {
+        var checkbox = labelElement.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+    }
+    function toggleCheckbox2(input) {
+        var checkbox = input;
+        checkbox.checked = !checkbox.checked;
+    }
+</script>
+  
+
+{% if 'staff_meeting_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}   
+     <div class="col-md-12">
+         <div class="card" style="padding: 10px;">
+            <div class="table-responsive">
+            <table id="tableID" class="display"  >
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Date Time</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Created By</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in records %}
+                      <tr>
+                          <td>{{data.meeting_title}}</td>
+                          <td>{{data.description}}</td>
+                          <td>{{data.meeting_date_time}}</td>
+                          <td>{{data.start_time}}</td>
+                          <td>{{data.end_time}}</td>
+                          <td>{{data.created_by}}</td>
+                          <td >
+                           <span class="label label-{% if data.status == 'Finished' %}success{% elif data.status == 'Awaited' %}warning{% elif data.status == 'Cancelled!' %}danger{% endif %}">{{ data.status }}</span>
+                        </td>
+                                                
+                        <td>
+                          <a href="{{data.meeting_url}}"  class="bozero"><span data-toggle="tooltip" title="Meeting"style="color:white;" target="_blank" class="btn btn-success btn-sm " ><i class='fa fa-video'></i>Start</a>
+                            {% if 'staff_meeting_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}   
+                          <a href="{% url 'staff_meeting_edit' data.id %}"  class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                            {% endif %}
+                            {% if 'staff_meeting_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}   
+                          <a href="{% url 'staff_meeting_delete' data.id %}"  class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
+                            {% endif %}
+                            {% if 'staff_meeting_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}   
+                          <a href="{% url 'staff_meeting_view' data.id  %}"  class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"><i class='fa fa-eye'></i></a>
+                         {% endif %}
+                            {% if data.status == 'Finished' %}
+                          <a href="{% url 'staff_meetimg_backup' data.id  %}" class="bozero"><span data-toggle="tooltip" title="Add Meeting Notes" style="color: black;"><i class='fa fa-plus'></i></a>
+                          {% else %}
+                          <a href="" ><i class='fa fa-view'  ></i></a>
+                          {% endif %}
+                           </td>
+                    </tr>
+                    {% endfor %}
+                  
+                </tbody>
+        
+            </table>
+            </div>
+         </div>
+     </div>
+     {% endif %}
+ </div>
+
+ {% endblock %}
+ {% block script_block %}
+
+ {% endblock  %}

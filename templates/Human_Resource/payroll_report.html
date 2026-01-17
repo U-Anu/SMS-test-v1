@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+{% load static %}
+<br>
+<h4>Human Resource</h4>
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="container-fluid" style="padding: 10px;">
+            <div class="col-md-4  mb-3">
+                <a href="{% url 'Human_Resource' %}">Staff Report</a>
+            </div>
+            <div class="col-md-4  mb-3">
+                <a href="{% url 'payroll_report' %}" class="text-primary">Payroll Report</a>
+            </div>
+          
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+<form method="post" class="card">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label for="class">Role</label>
+        <select class="form-control" name="class">
+            <option value="" >---Select---</option>
+            {% for data in roles_records %}
+            <option value="{{data.id}}">{{data.name}}</option>
+            {% endfor %}
+
+        </select>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label for="class">Month</label>
+        <select class="form-control" name="months">
+            <option value="" >---Select---</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+
+        </select>
+    </div>
+    <div class="col-md-4 mb-3">
+        <label for="class">Year</label><span class="text-danger">*</span>
+        <select class="form-control" name="years" required>
+            <option value="" >---Select---</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            
+        </select>
+    </div>
+ 
+
+  <div class="col-md-12 mb-3"><br>
+
+    <button type="submit" class="btn btn-primary" name="search" value="search" style="float: right;">Submit</button>
+    </div>
+</div>
+</form>
+</div>
+<br>
+{% if records %}
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Designation</th>
+                        <th>Month - Year</th>
+                        <th>Payslip #</th>
+                        <th>Basic Salary ($)</th>
+                        <th>Earning ($)</th>
+                        <th>Deduction ($)</th>
+                        <th>Gross Salary ($)</th> 
+                        <th>Tax ($)</th> 
+                        <th>Net Salary ($)</th>                    
+                      
+                    </tr>
+                </thead>
+
+               										
+                <tbody>
+                    {% for data in records %}
+                    <tr>
+                        <td>{{data.Frist_name}}</td>
+                        <td>{{data.Frist_name.roles }}</td>
+                        <td>{{data.Frist_name.designation }}</td>
+                        <td>{{data.Months}}-{{data.year}}</td>
+                        <td>{{data.id}}</td>
+                        <td>{{data.Frist_name.basic_salary}}</td>
+                        <td>{{data.earning}}</td>
+                        <td>{{data.deduction}}</td>
+                        <td>{{data.gross_salary}}</td>
+                        <td>{{data.Tax}}</td>
+                        <td>{{data.net_salary}}</td>
+                    </tr>
+                    {% endfor %}
+
+
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<center> <h5>No Records Found </h5></center>
+{% endif %}
+</div></div>
+<!-- modal End -->
+
+{% endblock %}
+{% block script_block %}
+
+{% endblock %}
