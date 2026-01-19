@@ -17,6 +17,7 @@ from datetime import date
 from django.utils.crypto import get_random_string
 from .tenant_ways import tenant_create_save,pre_setup_tenant_create_save
 from .check_permission import check_user_role_return_db
+from .models import TransactionType 
 def exclude_field(field_name):
     return field_name not in ['created_at', 'updated_at', 'created_by','updated_by']
 
@@ -3134,7 +3135,7 @@ def post_receivable_and_payable_transaction(request):
         # get_txn_obj = TransactionType.objects.filter(name__iexact=transaction_type)
         records = TransactionType.objects.all()
         # print('not ',get_txn_obj)
-        print('======================')
+        print('======================',records)
         # if not get_txn_obj.exists():
         #     return redirect('account_receivable_list')
         # get payable and receivable details

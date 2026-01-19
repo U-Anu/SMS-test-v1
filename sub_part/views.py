@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 import json, random, string
 from django.shortcuts import render, redirect, get_object_or_404
 # from pesanile_accounting.normal_views import account_creation_finance
-from pesanile_accounting.models import AccountReceivable, TransactionType as FinanceTransactionType
+from pesanile_accounting.models import AccountPayable, AccountReceivable, TransactionType as FinanceTransactionType
 from pesanile_accounting.scripts_pr import receivable_atomic
 from pesanile_accounting.views_ms import post_receivable_and_payable_transaction_ms
 from sub_part.models import *
@@ -9696,7 +9696,7 @@ def add_staff(request):
             staffs = AddStaff.objects.filter(branch=branch_id)
             admin_value=request.user.is_superuser or request.user.is_school_admin
             print('staffs===',request.user.is_superuser or request.user.is_school_admin)
-            school_registration = SchoolRegistration.objects.filter(branch=branch_id)
+            school_registration = SchoolRegistration.objects.filter(branch_school=branch_id)
             print("school_registration",school_registration)
             leave_type = AddLeaveType.objects.filter(branch=branch_id)
             
@@ -9707,7 +9707,7 @@ def add_staff(request):
                 form = AddStaffForm(request.POST)
                 if form.is_valid():
                     staff = form.save(commit=False)
-                    staff.branch_id = branch_id
+                    staff.branch_school = branch_id
                     staff.school = school_name.school
                     staff.save()
                     password = generate_password()
@@ -10675,16 +10675,22 @@ def notice_board_edit(request, pk):
                 branch_id = branch_name       
             else:
                 branch_id = None  
-                print("branch_name@@@",branch_name)
+                print("branch_name4444",branch_name)
             notices = noticeBoard.objects.filter(branch=branch_id)
             notice = noticeBoard.objects.get(id=pk)
+            print("noticebranch_id",notice)
             form = noticeBoardForm(instance=notice)
             if request.method == "POST":
+                print("request.POST",request.POST)
                 form = noticeBoardForm(request.POST, instance=notice)
+                print("form",form.is_valid())
                 if form.is_valid():
+                    form.save(commit=False)
+                    form.instance.branch_id = branch_id
                     form.save()
                     messages.warning(request, "Record Updated Successfully")
                     return HttpResponseRedirect("/notice_board")
+                print("form.errors",form.errors)
             context = {
                 "form": form,
                 "records": notices,
@@ -11123,6 +11129,7 @@ def member_book_issued(request, pk):
                 book_id = request.POST.get("book")
                 IssueBook.objects.create(
                     book_id=book_id,
+                    branch_id=branch_id,    
                     member_id=pk,
                     due_return_date=request.POST.get("return_date"),
                     status="Issued",
