@@ -11318,128 +11318,326 @@ def non_returnable_items_view(request):
         return redirect("dashboard")
 
 
+# @login_required
+# @user_type_required("Staff")
+# def add_item_stock(request):
+#     if (
+#         "add_item_stock_view" in request.permissions
+#         or "add_item_stock_add" in request.permissions
+#         or request.user.is_superuser or request.user.is_school_admin
+#     ):
+#         try:
+#             branch_name = request.session.get('branch_id', None)
+#             if branch_name:
+#                 branch_id = branch_name       
+#             else:
+#                 branch_id = None  
+#                 print("branch_name@@@",branch_name)
+#             records = ItemStock.objects.filter(branch=branch_id)
+#             form = ItemStockForm()
+#             if request.method == "POST":
+#                 form = ItemStockForm(request.POST, request.FILES)
+#                 if form.is_valid():                   
+#                     obj=form.save()
+#                     obj.branch_id = branch_id
+#                     obj.save()  
+#                     detail_stock = ItemStockDeatail.objects.filter(
+#                         item_category=request.POST.get("item_category"),
+#                         item=request.POST.get("item"),branch_id=branch_id
+#                     ).last()
+#                     if detail_stock:
+#                         detail_stock.quantity = detail_stock.quantity + int(
+#                             request.POST.get("quantity")
+#                         )
+#                         detail_stock.available_quantity = (
+#                             detail_stock.available_quantity
+#                             + int(request.POST.get("quantity"))
+#                         )
+#                         detail_stock.save()
+#                     else:
+#                         detail_form = ItemStockDeatailForm(request.POST)
+#                         data = detail_form.save(commit=False)
+#                         data.available_quantity = request.POST.get("quantity")
+#                         data.branch_id = branch_id
+#                         data.save()
+#                     messages.success(request, "Record Saved Successfully")
+#                     return HttpResponseRedirect("/add_item_stock")
+#                 else:
+#                     print(form.errors)
+#             context = {"form": form, "records": records, "add_item_stock": "active"}
+#             return render(request, "Inventory/add_item_stock.html", context)
+#         except Exception as error:
+#             return render(request, "error.html", {"error": error})
+#     else:
+#         return redirect("dashboard")
+
+
+# @login_required
+# @user_type_required("Staff")
+# def add_item_stock_edit(request, pk):
+#     if "add_item_stock_edit" in request.permissions or request.user.is_superuser or request.user.is_school_admin:
+#         try:
+#             branch_name = request.session.get('branch_id', None)
+#             if branch_name:
+#                 branch_id = branch_name       
+#             else:
+#                 branch_id = None  
+#                 print("branch_name@@@",branch_name)
+#             records = ItemStock.objects.filter(branch=branch_id)
+#             record = ItemStock.objects.get(id=pk)
+#             data_branch_id = record.branch.id
+#             form = ItemStockForm(instance=record)
+#             if request.method == "POST":
+#                 form = ItemStockForm(request.POST, instance=record)
+#                 if form.is_valid():
+#                     if branch_id == data_branch_id:
+#                         form.save()
+#                     else:
+#                         form.instance.branch_id = branch_id
+#                     form.save()
+#                     messages.warning(request, "Record Updated Successfully")
+#                     return HttpResponseRedirect("/add_item_stock")
+#             context = {
+#                 "form": form,
+#                 "records": records,
+#                 "add_item_stock": "active",
+#                 "edit": True,
+#             }
+#             return render(request, "Inventory/add_item_stock_edit.html", context)
+#         except Exception as error:
+#             return render(request, "error.html", {"error": error})
+#     else:
+#         return redirect("dashboard")
+
+
+# @login_required
+# @user_type_required("Staff")
+# def view_item_stock(request, pk):
+#     if "add_item_stock_edit" in request.permissions or request.user.is_superuser or request.user.is_school_admin:
+#         try:
+#             branch_name = request.session.get('branch_id', None)
+#             if branch_name:
+#                 branch_id = branch_name       
+#             else:
+#                 branch_id = None  
+#                 print("branch_name@@@",branch_name)
+#             records = ItemStock.objects.filter(branch=branch_id)
+#             record = ItemStock.objects.get(id=pk)
+#             data_branch_id = record.branch.id
+#             form = ItemStockForm(instance=record)
+           
+#             context = {
+#                 "form": form,
+#                 "records": records,
+#                 "add_item_stock": "active",
+#                 "view": True,
+#             }
+#             return render(request, "Inventory/add_item_stock.html", context)
+#         except Exception as error:
+#             return render(request, "error.html", {"error": error})
+#     else:
+#         return redirect("dashboard")
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 @login_required
 @user_type_required("Staff")
 def add_item_stock(request):
     if (
         "add_item_stock_view" in request.permissions
         or "add_item_stock_add" in request.permissions
-        or request.user.is_superuser or request.user.is_school_admin
+        or request.user.is_superuser
+        or request.user.is_school_admin
     ):
         try:
-            branch_name = request.session.get('branch_id', None)
-            if branch_name:
-                branch_id = branch_name       
-            else:
-                branch_id = None  
-                print("branch_name@@@",branch_name)
-            records = ItemStock.objects.filter(branch=branch_id)
+            branch_id = request.session.get("branch_id")
+            records = ItemStock.objects.filter(branch_id=branch_id)
             form = ItemStockForm()
+
             if request.method == "POST":
                 form = ItemStockForm(request.POST, request.FILES)
-                if form.is_valid():                   
-                    obj=form.save()
+                if form.is_valid():
+                    obj = form.save(commit=False)
                     obj.branch_id = branch_id
-                    obj.save()  
+                    obj.save()
+
                     detail_stock = ItemStockDeatail.objects.filter(
                         item_category=request.POST.get("item_category"),
-                        item=request.POST.get("item"),branch_id=branch_id
+                        item=request.POST.get("item"),
+                        branch_id=branch_id,
                     ).last()
+
+                    qty = int(request.POST.get("quantity"))
+
                     if detail_stock:
-                        detail_stock.quantity = detail_stock.quantity + int(
-                            request.POST.get("quantity")
-                        )
-                        detail_stock.available_quantity = (
-                            detail_stock.available_quantity
-                            + int(request.POST.get("quantity"))
-                        )
+                        detail_stock.quantity += qty
+                        detail_stock.available_quantity += qty
                         detail_stock.save()
                     else:
-                        detail_form = ItemStockDeatailForm(request.POST)
-                        data = detail_form.save(commit=False)
-                        data.available_quantity = request.POST.get("quantity")
-                        data.branch_id = branch_id
-                        data.save()
+                        detail = ItemStockDeatailForm(request.POST).save(commit=False)
+                        detail.available_quantity = qty
+                        detail.branch_id = branch_id
+                        detail.save()
+
                     messages.success(request, "Record Saved Successfully")
-                    return HttpResponseRedirect("/add_item_stock")
-                else:
-                    print(form.errors)
-            context = {"form": form, "records": records, "add_item_stock": "active"}
-            return render(request, "Inventory/add_item_stock.html", context)
-        except Exception as error:
-            return render(request, "error.html", {"error": error})
-    else:
-        return redirect("dashboard")
+                    return redirect("add_item_stock")
+
+            return render(
+                request,
+                "Inventory/add_item_stock.html",
+                {
+                    "form": form,
+                    "records": records,
+                    "add_item_stock": "active",
+                },
+            )
+        except Exception as e:
+            return render(request, "error.html", {"error": e})
+    return redirect("dashboard")
 
 
 @login_required
 @user_type_required("Staff")
 def add_item_stock_edit(request, pk):
-    if "add_item_stock_edit" in request.permissions or request.user.is_superuser or request.user.is_school_admin:
+    if (
+        "add_item_stock_edit" in request.permissions
+        or request.user.is_superuser
+        or request.user.is_school_admin
+    ):
         try:
-            branch_name = request.session.get('branch_id', None)
-            if branch_name:
-                branch_id = branch_name       
-            else:
-                branch_id = None  
-                print("branch_name@@@",branch_name)
-            records = ItemStock.objects.filter(branch=branch_id)
-            record = ItemStock.objects.get(id=pk)
-            data_branch_id = record.branch.id
+            branch_id = request.session.get("branch_id")
+            record = get_object_or_404(ItemStock, pk=pk)
+            records = ItemStock.objects.filter(branch_id=branch_id)
             form = ItemStockForm(instance=record)
+
             if request.method == "POST":
                 form = ItemStockForm(request.POST, instance=record)
                 if form.is_valid():
-                    if branch_id == data_branch_id:
-                        form.save()
-                    else:
-                        form.instance.branch_id = branch_id
-                    form.save()
+                    obj = form.save(commit=False)
+                    obj.branch_id = branch_id
+                    obj.save()
                     messages.warning(request, "Record Updated Successfully")
-                    return HttpResponseRedirect("/add_item_stock")
-            context = {
-                "form": form,
-                "records": records,
-                "add_item_stock": "active",
-                "edit": True,
-            }
-            return render(request, "Inventory/add_item_stock_edit.html", context)
-        except Exception as error:
-            return render(request, "error.html", {"error": error})
-    else:
-        return redirect("dashboard")
+                    return redirect("add_item_stock")
+
+            return render(
+                request,
+                "Inventory/add_item_stock.html",
+                {
+                    "form": form,
+                    "records": records,
+                    "edit": True,
+                    "add_item_stock": "active",
+                },
+            )
+        except Exception as e:
+            return render(request, "error.html", {"error": e})
+    return redirect("dashboard")
 
 
 @login_required
 @user_type_required("Staff")
-def add_item_stock_delete(request, pk):
-    if "add_item_stock_delete" in request.permissions or request.user.is_superuser or request.user.is_school_admin:
+def view_item_stock(request, pk):
+    if (
+        "add_item_stock_view" in request.permissions
+        or request.user.is_superuser
+        or request.user.is_school_admin
+    ):
         try:
-            branch_name = request.session.get('branch_id', None)
-            if branch_name:
-                branch_id = branch_name       
-            else:
-                branch_id = None  
-                print("branch_name@@@",branch_name)
-            record = ItemStock.objects.get(id=pk)
-            detail_stock = ItemStockDeatail.objects.get(
-                item_category=record.item_category.id, item=record.item.id,branch_id=branch_id
+            branch_id = request.session.get("branch_id")
+            record = get_object_or_404(ItemStock, pk=pk)
+            records = ItemStock.objects.filter(branch_id=branch_id)
+            form = ItemStockForm(instance=record)
+
+            # 🔒 Disable all fields (backend safety)
+            # for field in form.fields:
+            #     form.fields[field].disabled = True
+
+            return render(
+                request,
+                "Inventory/add_item_stock.html",
+                {
+                    "form": form,
+                    "records": records,
+                    "view": True,
+                    "add_item_stock": "active",
+                },
             )
-            if detail_stock:
-                detail_stock.quantity = detail_stock.quantity - record.quantity
-                detail_stock.available_quantity = (
-                    detail_stock.available_quantity - record.quantity,
-                )
+        except Exception as e:
+            return render(request, "error.html", {"error": e})
+    return redirect("dashboard")
+
+# @login_required
+# @user_type_required("Staff")
+# def add_item_stock_delete(request, pk):
+#     if "add_item_stock_delete" in request.permissions or request.user.is_superuser or request.user.is_school_admin:
+#         try:
+#             branch_name = request.session.get('branch_id', None)
+#             if branch_name:
+#                 branch_id = branch_name       
+#             else:
+#                 branch_id = None  
+#                 print("branch_name@@@",branch_name)
+#             record = ItemStock.objects.get(id=pk)
+#             detail_stock = ItemStockDeatail.objects.get(
+#                 item_category=record.item_category.id, item=record.item.id,branch_id=branch_id
+#             )
+#             if detail_stock:
+#                 detail_stock.quantity = detail_stock.quantity - record.quantity
+#                 detail_stock.available_quantity = (
+#                     detail_stock.available_quantity - record.quantity,
+#                 )
                 
+#                 detail_stock.save()
+#             record.delete()
+#             messages.error(request, "Record Deleted Successfully")
+#             return HttpResponseRedirect("/add_item_stock")
+#         except Exception as error:
+#             return render(request, "error.html", {"error": error})
+#     else:
+#         return redirect("dashboard")
+
+@login_required
+@user_type_required("Staff")
+def add_item_stock_delete(request, pk):
+    if (
+        "add_item_stock_delete" in request.permissions
+        or request.user.is_superuser
+        or request.user.is_school_admin
+    ):
+        try:
+            branch_id = request.session.get("branch_id")
+
+            record = ItemStock.objects.get(id=pk)
+
+            # 🔍 SAFELY GET DETAIL STOCK
+            detail_stock = ItemStockDeatail.objects.filter(
+                item_category=record.item_category_id,
+                item=record.item_id,
+                branch_id=branch_id
+            ).first()
+
+            if detail_stock:
+                # 🛡 Prevent negative stock
+                detail_stock.quantity = max(
+                    0, detail_stock.quantity - record.quantity
+                )
+                detail_stock.available_quantity = max(
+                    0, detail_stock.available_quantity - record.quantity
+                )
                 detail_stock.save()
+
             record.delete()
-            messages.error(request, "Record Deleted Successfully")
-            return HttpResponseRedirect("/add_item_stock")
+
+            messages.success(request, "Record Deleted Successfully")
+            return redirect("add_item_stock")
+
         except Exception as error:
             return render(request, "error.html", {"error": error})
-    else:
-        return redirect("dashboard")
 
+    return redirect("dashboard")
 
 @login_required
 @user_type_required("Staff")  # Assign To Raji
@@ -26570,7 +26768,7 @@ def view_event(request, pk):
         else:
             form = AlumniEventsForm(instance=event) 
             records = AlumniEvents.objects.all()
-        return render(request, 'Alumni/events.html', {'form': form, 'records': records, 'edit': True})
+        return render(request, 'Alumni/events.html', {'form': form, 'records': records, 'view': True})
     except Exception as error:
             return render(request, "error.html", {"error": error})
 
