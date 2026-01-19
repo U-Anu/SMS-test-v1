@@ -384,6 +384,7 @@ urlpatterns = [
     path("add_item_stock", views.add_item_stock, name="add_item_stock"),
     path("add_item_stock_delete/<pk>",views.add_item_stock_delete,name="add_item_stock_delete"),
     path("add_item_stock_edit/<pk>",views.add_item_stock_edit,name="add_item_stock_edit"),
+    path("add_item_stock_view/<pk>",views.view_item_stock,name="view_item_stock"),
     # Assign To Raji
     path("add_item", views.add_item, name="add_item"),
     path("add_item_view/<pk>", views.add_item_view, name="add_item_view"),
@@ -785,7 +786,7 @@ urlpatterns = [
 
     # For event type
 
-    path('event-type/create/', views.create_event_type, name='create_event_type'),  
+    path('event-type/view_eventcreate/', views.create_event_type, name='create_event_type'),  
     path('event-type/edit/<int:pk>/', views.edit_event_type, name='edit_event_type'),  
     path('event-type/delete/<int:pk>/', views.delete_event_type, name='delete_event_type'),  
     path('event-type/view/<int:pk>/', views.view_event_type, name='view_event_type'),  
