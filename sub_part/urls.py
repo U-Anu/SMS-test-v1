@@ -352,8 +352,8 @@ urlpatterns = [
     path("designation_delete/<pk>", views.designation_delete, name="designation_delete"),
     # Communicate
     path("notice_board", views.notice_board, name="notice_board"),
-    path("notice_board_edit<pk>", views.notice_board_edit, name="notice_board_edit"),
-    path("notice_board_delete<pk>", views.notice_board_delete, name="notice_board_delete"),
+    path("notice_board_edit/<pk>", views.notice_board_edit, name="notice_board_edit"),
+    path("notice_board_delete/<pk>", views.notice_board_delete, name="notice_board_delete"),
     path("email_sms_log", views.email_sms_log, name="email_sms_log"),
     # Download Center
     path("upload_content", views.upload_content, name="upload_content"),

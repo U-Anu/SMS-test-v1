@@ -115,6 +115,7 @@ def transport_routes(request):
 @login_required
 @user_type_required('Student')
 def books(request):
+    print("books-----",request.Session.id)
     branch_name = request.session.get('branch_id', None)
     if branch_name:
         branch_id = branch_name       
@@ -122,7 +123,9 @@ def books(request):
         branch_id = None    
     print("branch_name@@@",branch_name)
     recordss =AddBook.objects.filter(branch=branch_id)
+    print('===',recordss)
     record=LibrayMember.objects.filter(student=request.student.id,branch_id=branch_id).last()
+    print('---',record)
     records=IssueBook.objects.filter(member=record,branch_id=branch_id)
     context={
         'records':records,'books':'active','record':record
@@ -139,8 +142,11 @@ def books_issued(request):
     else:
         branch_id = None    
     print("branch_name@@@",branch_name)
+    print("student@@@",request.student.pk)
     record=LibrayMember.objects.filter(student=request.student.id,branch_id=branch_id).last()
+    print("record@@@",record)
     records=IssueBook.objects.filter(member=record,branch_id=branch_id)
+    print("records@@@",records.values())
     context={
         'books_issued':'active','records':records
             }
@@ -198,6 +204,11 @@ def notice_board(request):
 @login_required
 @user_type_required('Student')
 def notice_board_view(request):
+    branch_name = request.session.get('branch_id', None)
+    if branch_name:
+        branch_id = branch_name       
+    else:
+        branch_id = None    
     records=noticeBoard.objects.filter(branch=branch_id)
     context={
         'records':records,'notice_board_view':'active'
@@ -1051,7 +1062,11 @@ def online_exam(request):
     return render(request,'Student_part/online_exam.html',context) 
 
 def online_papers(request):
- 
+        branch_name = request.session.get('branch_id', None)
+        if branch_name:
+            branch_id = branch_name       
+        else:
+            branch_id = None    
         records = QuestionPaper.objects.filter(branch=branch_id) 
         print("questions++",records)
         # l=[]
