@@ -9708,7 +9708,7 @@ def add_staff(request):
                 form = AddStaffForm(request.POST)
                 if form.is_valid():
                     staff = form.save(commit=False)
-                    staff.branch_school = branch_id
+                    staff.branch = branch_id
                     staff.school = school_name.school
                     staff.save()
                     password = generate_password()
@@ -14813,7 +14813,7 @@ def payroll_piad(request, pk):
             "student_name": f"{records.Frist_name.first_name}",
             "roll_no": f"{records.Frist_name.staff_id}"
         }
-        transaction_type=Finance_TransactionType.objects.get(name='Salary Payment') 
+        transaction_type=FinanceTransactionType.objects.get(name='Salary Payment') 
         print('transaction_type',transaction_type.pk)      
         total_amount=str(records.net_salary)
         check = post_receivable_and_payable_transaction_ms(transaction_type.pk,records,records,None,total_amount,request.user.pk)
@@ -23531,7 +23531,7 @@ def school_registration(request):
             address = request.POST.get("address")
             print('address',address)
             form = SchoolRegistrationForm()
-            records = SchoolRegistration.objects.filter(branch=branch_id)
+            records = SchoolRegistration.objects.filter(branch_school=branch_id)
             # response = call_get_method(BASE_URL,endpoint_currency,token)
             # currency_data = response.json()
             # # Extract all currency_code values into a list
@@ -26481,7 +26481,7 @@ def edit_alumni_type(request, pk):
         else:
             form = AluminitypeForm(instance=alumni_type)
             records  = AlumniType.objects.filter(branch=branch_id)
-        return render(request, 'Alumni/alumnitype.html', {'form': form,'records':records,'edit':True,"alumni_type":"active"})
+        return render(request, 'Alumni/alumnitype.html', {'form': form,'recordss':records,'edit':True,"alumni_type":"active"})
     except Exception as error:
             return render(request, "error.html", {"error": error})
 
@@ -26504,7 +26504,7 @@ def view_alumni_type(request, pk):
         else:
             form = AluminitypeForm(instance=alumni_type)
             records  = AlumniType.objects.filter(branch=branch_id)
-        return render(request, 'Alumni/alumnitype.html', {'form': form,'records':records,'view':True,"alumni_type":"active"})
+        return render(request, 'Alumni/alumnitype.html', {'form': form,'recordss':records,'view':True,"alumni_type":"active"})
     except Exception as error:
             return render(request, "error.html", {"error": error})
 

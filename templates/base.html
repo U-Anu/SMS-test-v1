@@ -1163,10 +1163,10 @@
                      <li class="{{issue_item}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'issue_item' %}"><i
                               class="icon-arrow-right"></i> Issue Item</a></li>
                      {% endif %}
-                     {% if 'non_returnable_items' in request.permissions or 'issue_item_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                     {% comment %} {% if 'non_returnable_items' in request.permissions or 'issue_item_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                      <li class="{{non_returnable_items}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'non_returnable_items_view' %}"><i
                               class="icon-arrow-right"></i>Non Returnable Item</a></li>
-                     {% endif %}
+                     {% endif %} {% endcomment %}
                     {% if 'add_item_stock_view' in request.permissions or 'add_item_stock_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                      <li class="{{add_item_stock}}"><a class="submenu-link waves-effect waves-dark"
                            href="{% url 'add_item_stock' %}"><i class="icon-arrow-right"></i> Add Item Stock</a></li>

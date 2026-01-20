@@ -37,7 +37,13 @@
                               <td>{{data.twitter_link}}</td>
                               <td>{{data.facebook_link}}</td>
                               <td>{{data.linkedIn_link}}</td>
-                              <td><img src="{{data.staff_image.url}}"  class="img-fluid img-responsive" style="height: 120px;width: auto;"></td>
+<td>
+    {% if data.staff_image %}
+        <img src="{{ data.staff_image.url }}"
+             class="img-fluid img-responsive"
+             style="height: 120px; width: auto;">
+    {% endif %}
+</td>
                             <td>
                                 {% if 'school_staff_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                               <a href="{% url 'school_staff_edit' data.id%}" style="color: black;"><i class='fa fa-edit'></i></a>

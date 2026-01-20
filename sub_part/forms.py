@@ -2075,7 +2075,7 @@ class SchoolRegistrationForm(forms.ModelForm):
         }
         exclude = (
             "created_at",
-            "branch",
+            "branch_school",
             "school_id",
             "reference_id"
         )

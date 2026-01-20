@@ -268,6 +268,12 @@ def post_receivable_and_payable_transaction_ms(transaction_type,reference_number
             # Dr_Acc.total_balance-=amount
             # Dr_Acc.save()
             entry_type='PL'
+            transaction_id = generate_txn_id()
+            txn_type_obj = TransactionType.objects.get(transaction_type_id=transaction_type)
+            dr_txn_code = txn_type_obj.debit_transaction_code
+            cr_txn_code = txn_type_obj.credit_transaction_code
+            local_currency_id = 'shelling-8837'
+            local_currency_name = 'KSH'
             get_ex_rate = get_exchange_rate(str(local_currency_name), str(local_currency_name),
                         base_currency=str(local_currency_name))
             if not get_ex_rate[0]:
@@ -275,13 +281,8 @@ def post_receivable_and_payable_transaction_ms(transaction_type,reference_number
             res_cal_mode, ex_rate_id, ex_rate = get_ex_rate[1], get_ex_rate[2], get_ex_rate[3]
             txn_type_obj = TransactionType.objects.get(pk=transaction_type)
             print('txn_type_obj',txn_type_obj)
-            transaction_id = generate_txn_id()
-            txn_type_obj = TransactionType.objects.get(transaction_type_id=transaction_type)
-            dr_txn_code = txn_type_obj.debit_transaction_code
-            cr_txn_code = txn_type_obj.credit_transaction_code
-            local_currency_id = 'shelling-8837'
-            local_currency_name = 'KSH'
-
+           
+            print('transaction type',transaction_type,transaction_type_id)
             obj = common_transaction_create(transaction_id, transaction_type_id, Dr_Acc.pk, local_currency_id, amount,
                                     Cr_Acc.pk,
                                     local_currency_id, amount, res_cal_mode, ex_rate_id,
