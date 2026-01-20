@@ -9696,7 +9696,8 @@ def add_staff(request):
             staffs = AddStaff.objects.filter(branch=branch_id)
             admin_value=request.user.is_superuser or request.user.is_school_admin
             print('staffs===',request.user.is_superuser or request.user.is_school_admin)
-            school_registration = SchoolRegistration.objects.filter(branch=branch_id)
+            school_registration = SchoolRegistration.objects.all()
+
             print("school_registration",school_registration)
             leave_type = AddLeaveType.objects.filter(branch=branch_id)
             

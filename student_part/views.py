@@ -139,6 +139,7 @@ def books_issued(request):
     else:
         branch_id = None    
     print("branch_name@@@",branch_name)
+    print("student@@@",request.student.pk)
     record=LibrayMember.objects.filter(student=request.student.id,branch_id=branch_id).last()
     records=IssueBook.objects.filter(member=record,branch_id=branch_id)
     context={

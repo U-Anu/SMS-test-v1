@@ -33,13 +33,19 @@
                     <tbody>
                           {% for data in records %}   
                           <tr>
-                              <td>{{data.head_name}}</td>
-                              <td>{{data.head_position}}</td>
-                              <td>{{data.quotes}}</td>
-                              <td>{{data.twitter_link}}</td>
-                              <td>{{data.facebook_link}}</td>
-                              <td>{{data.linkedIn_link}}</td>
-                              <td><img src="{{data.head_image.url}}"  class="img-fluid img-responsive" style="height: 120px;width: auto;"></td>
+                            <td>{{data.head_name}}</td>
+                            <td>{{data.head_position}}</td>
+                            <td>{{data.quotes}}</td>
+                            <td>{{data.twitter_link}}</td>
+                            <td>{{data.facebook_link}}</td>
+                            <td>{{data.linkedIn_link}}</td>
+                            <td>
+                                {% if data.head_image %}
+                                    <img src="{{ data.head_image.url }}" class="img-fluid img-responsive" style="height: 120px;width: auto;">
+                                {% else %}
+                                    <img src="{% static 'images/default-user.png' %}" class="img-fluid img-responsive" style="height: 120px;width: auto;">
+                                {% endif %}
+                            </td>                            
                             <td>
                                 {% if 'school_head_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                               <a href="{% url 'school_head_edit' data.id%}" style="color: black;"><i class='fa fa-edit'></i></a>
@@ -47,7 +53,7 @@
                               {% if 'school_head_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                               <a href="{% url 'school_head_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
                               {% endif %}
-                               </td>
+                            </td>
                         </tr>
                         {% endfor %}
                       
