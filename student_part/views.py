@@ -1,5 +1,5 @@
 from django.http import HttpResponse,HttpResponseRedirect
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from parent_part.models import *
 from parent_part.forms import *
 from sub_part.models import *
@@ -319,9 +319,11 @@ def homework(request):
         print("branch_name@@@",branch_name)
     records=AssingHomeWork.objects.filter(student=request.student.id,branch_id=branch_id)
     if request.method=='POST':
+        print("POST+++++",request.POST,request.FILES)
         obj=records.get(id=request.POST.get('id'))
         obj.message=request.POST.get('message')
-        obj.document=request.FILES.get('document')
+        if request.FILES.get('document'):
+            obj.document = request.FILES['document']
         obj.branch_id=branch_id
         obj.save()
         return redirect('homework_student')
@@ -331,22 +333,51 @@ def homework(request):
     return render(request,'Student_part/homework.html',context)
 
 
+# @login_required
+# @user_type_required('Student')
+# def homework_view(request,pk):
+#     branch_name = request.session.get('branch_id', None)
+#     if branch_name:
+#         branch_id = branch_name       
+#     else:
+#         branch_id = None  
+#     print("branch_nameeeee",branch_name,pk)
+#     homework=get_object_or_404(AssingHomeWork,id=pk,branch_id=branch_id)
+#     records=AddHomeWork.objects.filter(branch=branch_id)
+#     record=AddHomeWork.objects.get(id=homework.home_work,branch_id=branch_id)
+#     # print('form',form)
+#     context={
+#         'record':record,'records':records,'homework':'active'
+#             }
+#     return render(request,'Student_part/homework_view.html',context)
+
 @login_required
 @user_type_required('Student')
-def homework_view(request,pk):
-    branch_name = request.session.get('branch_id', None)
-    if branch_name:
-        branch_id = branch_name       
-    else:
-        branch_id = None  
-        print("branch_name@@@",branch_name)
-    records=AddHomeWork.objects.filter(branch=branch_id)
-    record=AddHomeWork.objects.get(id=pk,branch_id=branch_id)
-    # print('form',form)
-    context={
-        'record':record,'records':records,'homework':'active'
-            }
-    return render(request,'Student_part/homework_view.html',context)
+def homework_view(request, pk):
+
+    branch_id = request.session.get('branch_id')
+    print("branch_nameeeee",branch_id,pk,request.student.id)
+    homework = get_object_or_404(
+        AssingHomeWork,
+        id=pk,
+        branch_id=branch_id
+    )
+
+    # ✅ YOU ALREADY HAVE THE OBJECT
+    record = homework.home_work
+    print("RECORD OBJECT:", record)
+    print("RECORD DATA:", record.__dict__)
+    data=homework
+    records = AddHomeWork.objects.filter(branch_id=branch_id)
+    print("records===",records.values())
+    context = {
+        'record': record,
+        'records': records,
+        'homework': 'active',
+        'data':data
+    }
+
+    return render(request, 'Student_part/homework_view.html', context)
 
 # Download center
 
