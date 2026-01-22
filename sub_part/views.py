@@ -8015,7 +8015,7 @@ def printing_marksheet(request):
         print("first_mark =", first_mark)
         if first_mark != None:
             grad_record = AddGrade.objects.filter(
-            exam_type=first_mark.exam.exam_groupexam_type
+            exam_type=first_mark.exam.exam_group.exam_type
              ) 
             print("grad_record =", grad_record)
 
@@ -19051,38 +19051,80 @@ def add_homework(request):
         return redirect("dashboard")
 
 
+# @login_required
+# @user_type_required("Staff")
+# def add_homework_view(request, pk):
+#     if request.user.is_superuser or request.user.is_school_admin or "homework_view" in request.permissions:
+#         try:
+#             branch_name = request.session.get('branch_id', None)
+#             if branch_name:
+#                 branch_id = branch_name       
+#             else:
+#                 branch_id = None  
+#                 print("branch_name@@@",branch_name)
+#             records = AddHomeWork.objects.filter(branch=branch_id)
+#             record = AddHomeWork.objects.get(id=pk)
+#             recordss = AssingHomeWork.objects.filter(home_work=pk)
+#             if request.POST.get("save") == "save":
+#                 record.evaluation_date = request.POST.get("evaluation_date")
+#                 student_list = request.POST.getlist("student_ids")
+#                 for data in student_list:
+#                     obj = recordss.get(id=data)
+#                     obj.evaluation_date = request.POST.get("evaluation_date")
+#                     obj.status = "Submitted"
+#                     obj.save()
+#                 record.save()
+#                 return HttpResponseRedirect("/add_homework")
+#             context = {
+#                 "record": record,
+#                 "records": records,
+#                 "homework": "active",
+#                 "recordss": recordss,
+#                 "view": True,
+#             }
+#             return render(request, "Home_work/add_homework_view.html", context)
+#         except Exception as error:
+#             return render(request, "error.html", {"error": error})
+#     else:
+#         return redirect("dashboard")
+
 @login_required
 @user_type_required("Staff")
 def add_homework_view(request, pk):
     if request.user.is_superuser or request.user.is_school_admin or "homework_view" in request.permissions:
         try:
-            branch_name = request.session.get('branch_id', None)
-            if branch_name:
-                branch_id = branch_name       
-            else:
-                branch_id = None  
-                print("branch_name@@@",branch_name)
+            branch_id = request.session.get("branch_id")
+
             records = AddHomeWork.objects.filter(branch=branch_id)
-            record = AddHomeWork.objects.get(id=pk)
-            recordss = AssingHomeWork.objects.filter(home_work=pk)
-            if request.POST.get("save") == "save":
-                record.evaluation_date = request.POST.get("evaluation_date")
-                student_list = request.POST.getlist("student_ids")
-                for data in student_list:
-                    obj = recordss.get(id=data)
-                    obj.evaluation_date = request.POST.get("evaluation_date")
-                    obj.status = "Submitted"
-                    obj.save()
+            record = AddHomeWork.objects.get(id=pk, branch=branch_id)
+            recordss = AssingHomeWork.objects.filter(home_work=record)
+
+            if request.method == "POST" and request.POST.get("save") == "save":
+                evaluation_date = request.POST.get("evaluation_date")
+                student_ids = request.POST.getlist("student_ids")
+
+                record.evaluation_date = evaluation_date
                 record.save()
+
+                for obj in recordss:
+                    if str(obj.id) in student_ids:
+                        obj.status = "Submitted"
+                        obj.evaluation_date = evaluation_date
+                    else:
+                        obj.status = "Not Submitted"
+                    obj.save()
+
                 return HttpResponseRedirect("/add_homework")
+
             context = {
                 "record": record,
                 "records": records,
-                "homework": "active",
                 "recordss": recordss,
                 "view": True,
+                "homework": "active",
             }
             return render(request, "Home_work/add_homework_view.html", context)
+
         except Exception as error:
             return render(request, "error.html", {"error": error})
     else:

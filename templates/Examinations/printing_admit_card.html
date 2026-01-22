@@ -29,8 +29,14 @@
 <body>
     <button type="button" id="print_btn" class="btn btn-primary" onclick="window.print()">Print</button>
 {% for student in records %}
+ {% if student.background_image %}
+    <div class="col-md-12 container"  style="background-image: url({{student.background_image.url}}); background-repeat: no-repeat; background-position: center; height:100%; width:100%;">
+        {% else %}
+        <div class="col-md-12 container">
+        {% endif %}
     <div class="card" style="padding: 20px; page-break-after: always;" >
         <div class="row" style="background-color: #ADD8E6;padding: 10px;">
+            
             <div class="col-md-2">
                 {% if data.left_logo %}
                     <img src="{{data.left_logo.url}}" alt=""  style="float: left; max-height: 80px; width: auto;" id="logo">

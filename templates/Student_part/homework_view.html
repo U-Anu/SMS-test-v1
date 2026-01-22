@@ -108,7 +108,14 @@
           <div class="card">
             <div class="row">
               <div class="col-md-6">
-                {{record.description}}
+                {{data.message}}<nr><br>
+{% if data.document %}
+    <a href="{{ data.document.url }}" target="_blank" class="btn btn-primary">
+        View Document
+    </a>
+{% else %}
+    <p>No document uploaded</p>
+{% endif %}
               </div>
               <div class="col-md-6" style="background-color: rgb(240, 241, 241);">
                 <div class="main-header">
@@ -123,7 +130,7 @@
                 <p>Class: {{record.Class}}</p>
                 <p>Section: {{record.section}}</p>
                 <p>Subject: {{record.subject}}</p>
-                <p>Status: </p>
+                <p>Status: {{data.status}}</p>
               </div>
             </div>
           </div>
@@ -174,7 +181,7 @@
     modal.style.display = "none"; // Hide the modal
 
     // Perform the redirection
-    window.location.href = "/parent/homework"; // R
+    window.location.href = "/student/homework_student"; // R
   }
 </script>
 {% endblock %}
