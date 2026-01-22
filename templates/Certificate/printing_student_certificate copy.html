@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/bootstrap/css/bootstrap.m.css' %}">
+
+    <style>
+        body, p, label {
+            font-size: small !important;
+        }
+
+        /* FIX: fixed A4 page size */
+        .certificate-wrapper {
+            position: relative;
+            width: 210mm;
+            height: 297mm;
+            margin: auto;
+            page-break-after: always;
+            overflow: hidden;
+        }
+
+        /* FIX: background image visible */
+        .bg-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .certificate-container {
+            position: relative;
+            z-index: 2;
+            padding: 40px;
+            height: 100%;
+        }
+
+        .certificate {
+            border: 20px solid {{ data.background_color_code }};
+            padding: 30px;
+            height: 100%;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            #print_btn {
+                display: none;
+            }
+
+            .col-md-4 {
+                float: left;
+                width: 33.333333%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<button id="print_btn" class="btn btn-primary m-3" onclick="window.print()">Print</button>
+
+{% for student in body_text %}
+
+<div class="certificate-wrapper">
+
+    {% if data.background_image %}
+        <img src="{{ data.background_image.url }}" class="bg-image" alt="Certificate Background">
+    {% endif %}
+
+    <div class="certificate-container">
+        <div class="certificate">
+
+            <!-- HEADER -->
+            <div class="row text-center mb-4">
+                <div class="col-md-4">
+                    <p>{{ data.header_left_text }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p>{{ data.header_center_text }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p>{{ data.header_right_text }}</p>
+                </div>
+            </div>
+
+            <!-- BODY -->
+            <div class="text-center my-5">
+                <p class="topic-description text-muted">
+                    {{ student }}
+                </p>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="row text-center mt-5">
+                {% if data.footer_left_text %}
+                <div class="col-md-4">
+                    <p>{{ data.footer_left_text }}</p>
+                </div>
+                {% endif %}
+
+                {% if data.footer_center_text %}
+                <div class="col-md-4">
+                    <p>{{ data.footer_center_text }}</p>
+                </div>
+                {% endif %}
+
+                {% if data.footer_right_text %}
+                <div class="col-md-4">
+                    <p>{{ data.footer_right_text }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endfor %}
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django.urls import path,include
 from student_part import views
+
 urlpatterns=[
     path('',views.signup,name='signup'),
     path('student_dashboard', views.student_dashboard,name='student_dashboard_student'),
@@ -14,7 +15,7 @@ urlpatterns=[
     path('apply_leave_edit/<pk>', views.apply_leave_edit,name='apply_leave_edit_student'),
     path('apply_leave_delete/<pk>', views.apply_leave_delete,name='apply_leave_delete_student'),
     path('online_exam', views.online_exam,name='online_exam_student'),
-    path('homework', views.homework,name='homework_student'),
+    path('homework_student', views.homework,name='homework_student'),
     path('homework_view/<pk>', views.homework_view,name='homework_view'),
 # Download sneter
     path('assignment_list', views.assignment_list,name='assignment_list_student'),

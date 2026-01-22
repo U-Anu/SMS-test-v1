@@ -11214,6 +11214,7 @@ def issue_item(request):
                 issue.save()
                 stock.save()
                 return HttpResponseRedirect("/issue_item")
+            print("records",records.values())
             context = {"records": records, "issue_item": "active"}
             return render(request, "Inventory/issue_item.html", context)
         except Exception as error:
@@ -11257,7 +11258,9 @@ def add_issue_item(request):
                 request.POST.get("quantity")
             )
             item_records.save()
-            form.save()
+            obj=form.save(commit=False)
+            obj.branch_id = branch_id
+            obj.save()
             messages.success(request, "Record Saved Successfully")
             return HttpResponseRedirect("/issue_item")
     context = {"form": form, "records": records, "issue_item": "active"}
@@ -20428,47 +20431,97 @@ def send_email(request):
         return redirect("dashboard")
 
 
-@login_required
-# @user_type_required("Staff")
-def indvidula_send_mail(request):
-    if request.user.is_superuser or request.user.is_school_admin or "email_view" in request.permissions:
-        try:
-            print("indvidula_send_mail")
-            if request.method == "POST":
-                title = request.POST.get("individual_title")
-                message = request.POST.get("individual_message")
-                attachments = request.FILES.getlist("individual_attachment")
-                subject = "Title: {}".format(title)
-                message = """
-                Message: {}
-                Regards,
-                Yours bharathbrands
-                """.format(
-                    message
-                )
-                mail_for = MailSearchTemp.objects.filter(branch=branch_id)
-                emails = []
-                print("emails0090-------------------",emails)
-                for data in mail_for:
-                    if data.type == "Student":
-                        emails.append(data.Student.email)
-                    elif data.type == "Guardian":
-                        emails.append(data.Parent.guardian_email)
-                    elif data.type == "Staff":
-                        emails.append(data.Staff.email)
-                print("emailsemailsemails",emails)
-                send_email_notification1(subject, message, emails, attachments)
+# @login_required
+# # @user_type_required("Staff")
+# def indvidula_send_mail(request):
+#     if request.user.is_superuser or request.user.is_school_admin or "email_view" in request.permissions:
+#         try:
+#             branch_name = request.session.get('branch_id', None)
+#             if branch_name:
+#                 branch_id = branch_name       
+#             else:
+#                 branch_id = None  
+#                 print("branch_name@@@",branch_name)
+#             print("indvidula_send_mail")
+#             if request.method == "POST":
+#                 title = request.POST.get("individual_title")
+#                 message = request.POST.get("individual_message")
+#                 attachments = request.FILES.getlist("individual_attachment")
+#                 subject = "Title: {}".format(title)
+#                 message = """
+#                 Message: {}
+#                 Regards,
+#                 Yours bharathbrands
+#                 """.format(
+#                     message
+#                 )
+#                 mail_for = MailSearchTemp.objects.filter(branch=branch_id)
+#                 emails = []
+#                 print("emails0090-------------------",emails)
+#                 for data in mail_for:
+#                     if data.type == "Student":
+#                         emails.append(data.Student.email)
+#                     elif data.type == "Guardian":
+#                         emails.append(data.Parent.guardian_email)
+#                     elif data.type == "Staff":
+#                         emails.append(data.Staff.email)
+#                 print("emailsemailsemails",emails)
+#                 send_email_notification1(subject, message, emails, attachments)
 
-                return redirect("/indvidula_send_mail")
-            roles_records = Role.objects.filter(branch=branch_id)
-            MailSearchTemp.objects.filter(branch=branch_id).delete()
-            context = {"roles_records": roles_records, "send_email": "active"}
-            return render(request, "Communicate/indvidula_send_mail.html", context)
-        except Exception as error:
-            return render(request, "error.html", {"error": error})
-    else:
+#                 return redirect("/indvidula_send_mail")
+#             roles_records = Role.objects.filter(branch=branch_id)
+#             MailSearchTemp.objects.filter(branch=branch_id).delete()
+#             context = {"roles_records": roles_records, "send_email": "active"}
+#             return render(request, "Communicate/indvidula_send_mail.html", context)
+#         except Exception as error:
+#             return render(request, "error.html", {"error": error})
+#     else:
+#         return redirect("dashboard")
+
+@login_required
+def indvidula_send_mail(request):
+    if not (request.user.is_superuser or request.user.is_school_admin or "email_view" in request.permissions):
         return redirect("dashboard")
 
+    branch_id = request.session.get('branch_id')
+
+    if request.method == "POST":
+        title = request.POST.get("individual_title")
+        body = request.POST.get("individual_message")
+        attachments = request.FILES.getlist("individual_attachment")
+
+        recipients = MailSearchTemp.objects.filter(branch=branch_id)
+        emails = []
+
+        for r in recipients:
+            if r.type == "Student" and r.Student and r.Student.email:
+                emails.append(r.Student.email)
+            elif r.type == "Guardian" and r.Parent and r.Parent.guardian_email:
+                emails.append(r.Parent.guardian_email)
+            elif r.type == "Staff" and r.Staff and r.Staff.email:
+                emails.append(r.Staff.email)
+
+        emails = list(set(emails))
+
+        if not emails:
+            messages.error(request, "No valid email recipients selected")
+            return redirect("indvidula_send_mail")
+
+        subject = f"Title: {title}"
+        message = f"Message:\n{body}\n\nRegards,\nBharathbrands"
+
+        send_email_notification1(subject, message, emails, attachments)
+
+        MailSearchTemp.objects.filter(branch=branch_id).delete()
+        messages.success(request, "Email sent successfully")
+        return redirect("indvidula_send_mail")
+
+    roles_records = Role.objects.filter(branch=branch_id)
+    MailSearchTemp.objects.filter(branch=branch_id).delete()
+
+    return render(request, "Communicate/indvidula_send_mail.html", {
+        "roles_records": roles_records
+    })
 
 @login_required
 @user_type_required("Staff")
@@ -21418,64 +21471,106 @@ def mail_search_delete_js(request):
 @login_required
 @user_type_required("Staff")
 
-def online_class(request):
-    # if (
-    #     request.user.is_superuser or request.user.is_school_admin
-    #     or "online_live_class_view" in request.permissions
-    #     or "online_live_class_add" in request.permissions
-    # ):
-    #     try:
-            branch_name = request.session.get('branch_id', None)
-            if branch_name:
-                branch_id = branch_name       
-            else:
-                branch_id = None  
-                print("branch_name@@@",branch_name)
+# def online_class(request):
+#     # if (
+#     #     request.user.is_superuser or request.user.is_school_admin
+#     #     or "online_live_class_view" in request.permissions
+#     #     or "online_live_class_add" in request.permissions
+#     # ):
+#     #     try:
+#             branch_name = request.session.get('branch_id', None)
+#             if branch_name:
+#                 branch_id = branch_name       
+#             else:
+#                 branch_id = None  
+#                 print("branch_name@@@",branch_name)
             
-            records = OnlineClass.objects.filter(branch=branch_id)
-            meeting_links = MeetingLinkMaster.objects.filter(branch=branch_id)
+#             records = OnlineClass.objects.filter(branch=branch_id)
+#             meeting_links = MeetingLinkMaster.objects.filter(branch=branch_id)
 
-            if request.method == "POST":
-                form = OnlineClassForm(request.POST)
-                print("form===if")
-                meeting_link_id = request.POparent_meetingST.get('meeting_link')
-                print('meeting_link_id---',meeting_link_id)
-                if meeting_link_id == 'new':
-                    # If "New" is selected, get the input from the user
-                    meeting_url = request.POST.get('meeting_url')
-                    print('meeting_url---',meeting_url)
-                else:
-                    # Otherwise, get the selected link from MeetingLinkMaster
-                    meeting_link = MeetingLinkMaster.objects.get(id=meeting_link_id)
-                    meeting_url = meeting_link.link
-                if form.is_valid():
-                    print("form===if_is_valid")
-                    # Save the form with the updated meeting_url
-                    obj = form.save()
-                    obj.created_by = request.user
-                    obj.meeting_url = meeting_url
-                    obj.branch_id = branch_id
-                    obj.save()
+#             if request.method == "POST":
+#                 form = OnlineClassForm(request.POST)
+#                 print("form===if")
+#                 meeting_link_id = request.POparent_meetingST.get('meeting_link')
+#                 print('meeting_link_id---',meeting_link_id)
+#                 if meeting_link_id == 'new':
+#                     # If "New" is selected, get the input from the user
+#                     meeting_url = request.POST.get('meeting_url')
+#                     print('meeting_url---',meeting_url)
+#                 else:
+#                     # Otherwise, get the selected link from MeetingLinkMaster
+#                     meeting_link = MeetingLinkMaster.objects.get(id=meeting_link_id)
+#                     meeting_url = meeting_link.link
+#                 if form.is_valid():
+#                     print("form===if_is_valid")
+#                     # Save the form with the updated meeting_url
+#                     obj = form.save()
+#                     obj.created_by = request.user
+#                     obj.meeting_url = meeting_url
+#                     obj.branch_id = branch_id
+#                     obj.save()
 
-                    messages.success(request, "Record Saved Successfully")
-                    return redirect("/online_class")  
-                else:                    
-                    print("error+=+",form.errors)
-            else:
-                form =  OnlineClassForm()
-                print("error",form.errors)
+#                     messages.success(request, "Record Saved Successfully")
+#                     return redirect("/online_class")  
+#                 else:                    
+#                     print("error+=+",form.errors)
+#             else:
+#                 form =  OnlineClassForm()
+#                 print("error",form.errors)
               
 
-            context = {"records": records,
-                       "form": form,
-                       "online_class": "active",
-                       "meeting_links": meeting_links
-                       }
-            return render(request, "Livesession/online_class.html", context)
+#             context = {"records": records,
+#                        "form": form,
+#                        "online_class": "active",
+#                        "meeting_links": meeting_links
+#                        }
+#             return render(request, "Livesession/online_class.html", context)
     #     except Exception as error:
     #         return render(request, "error.html", {"error": error})
     # else:
     #     return render(request, "page_not_found.html")
+
+def online_class(request):
+    branch_name = request.session.get('branch_id')
+    branch_id = branch_name if branch_name else None
+
+    records = OnlineClass.objects.filter(branch=branch_id)
+    meeting_links = MeetingLinkMaster.objects.filter(branch=branch_id)
+
+    if request.method == "POST":
+        form = OnlineClassForm(request.POST, request.FILES)
+
+        meeting_link_id = request.POST.get('meeting_link')
+
+        if meeting_link_id == 'new':
+            meeting_url = request.POST.get('meeting_url')
+        else:
+            meeting_link = MeetingLinkMaster.objects.get(id=meeting_link_id)
+            meeting_url = meeting_link.link
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.created_by = request.user
+            obj.meeting_url = meeting_url
+            obj.branch_id = branch_id
+            obj.save()
+
+            messages.success(request, "Record Saved Successfully")
+            return redirect("/online_class")
+        else:
+            print("Form Errors:", form.errors)
+
+    else:
+        form = OnlineClassForm()
+
+    context = {
+        "records": records,
+        "form": form,
+        "online_class": "active",
+        "meeting_links": meeting_links
+    }
+
+    return render(request, "Livesession/online_class.html", context)
 
 @login_required
 @user_type_required("Staff")
@@ -24200,7 +24295,7 @@ def add_questions(request, paper_id):
                 options=request.POST.getlist(f"part-{i}-form-{j}-option")
                 correct_options=request.POST.getlist(f"part-{i}-form-{j}-correct_option")
                 mark=request.POST.get(f"part-{i}-form-{j}-marks")
-             
+                print("que_text",que_text,choice,options,correct_options,mark)
                 # Create a dictionary to hold the options and correct options
                 # options_dict = {}
 
@@ -24210,7 +24305,7 @@ def add_questions(request, paper_id):
                 #     print('karan',f"{idx}" , correct_options)
                 #     options_dict[f'option_{idx + 1}'] = {'text': option, 'is_correct': is_correct}
                 # print("options_dict===",options_dict)  
-                
+                print("----",options,correct_options)
                 options_list = []
                 # Populate the list
                 for idx, option in enumerate(options):

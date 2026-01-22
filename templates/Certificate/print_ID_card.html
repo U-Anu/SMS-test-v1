@@ -24,11 +24,17 @@
      body, p, label {
         font-size: small!important;
      }
-     @media print{
-        #print_btn{
-            display: none;
+    @media print {
+            body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            @page {
+                size: A5 portrait;
+                margin: 0;
+            }
         }
-     }
 
 </style>
 </head>
