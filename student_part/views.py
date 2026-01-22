@@ -324,7 +324,7 @@ def homework(request):
         obj.document=request.FILES.get('document')
         obj.branch_id=branch_id
         obj.save()
-        return redirect('homework')
+        return redirect('homework_student')
     context={
         'records':records,'homework':'active'
             }

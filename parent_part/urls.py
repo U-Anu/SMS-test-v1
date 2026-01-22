@@ -13,8 +13,8 @@ urlpatterns=[
     path('apply_leave_edit/<pk>', views.apply_leave_edit,name='apply_leave_edit'),
     path('apply_leave_delete/<pk>', views.apply_leave_delete,name='apply_leave_delete'),
     path('online_exam', views.online_exam,name='online_exam'),
-    path('homework', views.homework,name='homework'),
-    path('homework_view/<pk>', views.homework_view,name='homework_view'),
+    path('parent_homework', views.homework,name='parent_homework'),
+    path('parent_homework_view/<pk>', views.homework_view,name='parent_homework_view'),
 # Download sneter
     path('assignment_list', views.assignment_list,name='assignment_list_parent'),
     path('study_material', views.study_material,name='study_material_parent'),

@@ -17,9 +17,9 @@
                 <div class="card card-body" style=" border-top: 5px solid black;">
                     <div class="main-header">
                         {% if view %}
-                            <h4>View Expense</h4>
+                            <h4>View Enrollment</h4>
                         {% elif edit %}
-                            <h4>Edit Expense</h4>
+                            <h4>Edit Enrollment</h4>
                         {% else %}
                             <h4>Question Paper List</h4>          
                         {% endif %}
@@ -143,10 +143,10 @@
                                 <td>  
                                    
                                   {% if 'expense_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
-                                  <a href="{% url 'add_expense_view' data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
+                                  <a href="{% url 'enrollment_assign_view' question_paper_id=records.id data_id=data.id %}" class="bozero"><span data-toggle="tooltip" title="view"style="color: black;"  ><i class='fa fa-server'></i></a>
                                   {% endif %}
-                                  {% if 'expense_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
-                                  <a href="{% url 'add_expense_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
+                                  {% if 'enrollment_assign_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                  <a href="{% url 'enrollment_assign_edit' question_paper_id=records.id data_id=data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
                                   {% endif %}
                                   {% if 'expense_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                                   <a href="{% url 'enrollment_assign_delete' question_paper_id=records.id data_id=data.id %}" class="bozero">

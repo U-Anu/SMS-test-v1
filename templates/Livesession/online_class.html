@@ -1,325 +1,227 @@
 {% extends 'base.html' %}
-
-
-{% block body_block %}
 {% load static %}
 
+{% block body_block %}
 
-    <div class="row">
-        <div class="main-header">
-           <h4>Online Classes</h4>
-        </div>
-     </div>
-     <!-- modal Start -->
-     {% comment %} {% if 'online_live_class_add' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}     {% endcomment %}
-
-     <div class="col" style="padding: 30px;">
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br>
-</div>
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-         
-          {% if edit %}         
-          <h4> Edit Online Classes </h4>
-          {% else %}
-          <h5 class="modal-title">Online Classess</h5>                         
-          {% endif %} 
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="online_class_form" method="post">
-            {% csrf_token %}
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label for="meeting_link">Class Title</label>
-                {{form.class_title}}
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="meeting_link">Class Date Time</label>
-                  {{form.class_date_time}}
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="meeting_link">Start Time</label>
-                    {{form.start_time}}
-                    </div>
-                    <div class="col-md-4 mb-3">
-                      <label for="meeting_link">End Time</label>
-                      {{form.end_time}}
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="meeting_link">Role</label>
-                        {{form.role}}
-                        </div>
-                        <div class="col-md-4 mb-3">
-                          <label for="meeting_link">Staff</label>
-                          {{form.staff}}
-                          </div>
-                          <div class="col-md-4 mb-3">
-                            <label for="meeting_link">Class</label>
-                            {{form.Class}}
-                            </div>
-                            <div class="col-md-4 mb-3">
-                              <label for="meeting_link">Section</label>
-                              {{form.section}}
-                              </div>
-                <div class="col-md-4 mb-3">
-                    <label for="meeting_link">Meeting Link:</label>
-                    <select id="meeting_link" name="meeting_link" class="form-control">
-                        <option value="" selected disabled>-- Select Link --</option>
-                        <option value="new">Add New Link</option>
-                        {% for link in meeting_links %}
-                            <option value="{{ link.id }}" data-url="{{ link.link }}">{{ link.link_for }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label for="meeting_url">Meeting URL:</label>
-                    <input type="text" id="meeting_url" name="meeting_url" class="form-control" readonly>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="meeting_link">Description</label>
-                  {{form.description}}
-                  </div>
-                  <div class="col-md-4 mb-3">
-                    <label for="meeting_link">Status</label>
-                    {{form.status}}
-                    </div>
-                    <div class="col-md-4 mb-3">
-                      <label for="meeting_link">Meeting Document</label>
-                      {{form.meeting_document}}
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="meeting_link">Meeting Notes</label>
-                        {{form.meeting_notes}}
-                        </div>
-            </div>
-            <!-- Other form fields -->
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-      </div>
+<div class="row">
+    <div class="main-header">
+        <h4>Online Classes</h4>
     </div>
-  </div>
-  {% comment %} {% endif %} {% endcomment %}
-  
-     <!-- modal End -->
+</div>
 
-     {% comment %} {% if 'online_live_class_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}     {% endcomment %}
-   
-     <div class="col-md-12">
-         <div class="card" style="padding: 10px;">
-            <div class="table-responsive">
-            <table id="tableID" class="display"  >
+<!-- ADD BUTTON -->
+<div class="col" style="padding: 30px;">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">
+        Add
+    </button>
+</div>
+
+<!-- ================= MODAL START ================= -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Online Classes</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <!-- IMPORTANT: enctype added -->
+                <form id="online_class_form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                            <label>Class Title</label>
+                            {{ form.class_title }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Class Date Time</label>
+                            {{ form.class_date_time }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Start Time</label>
+                            {{ form.start_time }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>End Time</label>
+                            {{ form.end_time }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Role</label>
+                            {{ form.role }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Staff</label>
+                            {{ form.staff }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Class</label>
+                            {{ form.Class }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Section</label>
+                            {{ form.section }}
+                        </div>
+
+                        <!-- MEETING LINK -->
+                        <div class="col-md-4 mb-3">
+                            <label>Meeting Link</label>
+                            <select id="meeting_link" name="meeting_link" class="form-control">
+                                <option value="" selected disabled>-- Select Link --</option>
+                                <option value="new">Add New Link</option>
+                                {% for link in meeting_links %}
+                                    <option value="{{ link.id }}" data-url="{{ link.link }}">
+                                        {{ link.link_for }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Meeting URL</label>
+                            <input type="text" id="meeting_url" name="meeting_url" class="form-control" readonly>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Description</label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Status</label>
+                            {{ form.status }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Meeting Document</label>
+                            {{ form.meeting_document }}
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label>Meeting Notes</label>
+                            {{ form.meeting_notes }}
+                        </div>
+
+                    </div>
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ================= MODAL END ================= -->
+
+<!-- ================= TABLE ================= -->
+<div class="col-md-12">
+    <div class="card" style="padding:10px;">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Description</th>
                         <th>Date Time</th>
-                        <th>Start Time </th>
-                        <th>End Time </th>
+                        <th>Start</th>
+                        <th>End</th>
                         <th>Created By</th>
-                        <th>Created For</th>
+                        <th>Staff</th>
                         <th>Class</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    {% for data in records %}
-                      <tr>
-                          <td>{{data.class_title}}</td>
-                          <td>{{data.description}}</td>
-                          <td>{{data.class_date_time}}</td>
-                          <td>{{data.start_time}}</td>
-                          <td>{{data.end_time}}</td>
-                          <td>{{data.created_by}}</td>
-                          <td>{{data.staff}}</td>
-                          
-                            <td>Class {{ data.Class }}
-                                ( {% for rec in data.section.all %}
-                                    {{ rec.section_name }}{% if not forloop.last %}, {% endif %}
-                                {% endfor %})
-                            </td>
-                          
-                            <td>
-                              <span class="label label-{% if data.status == 'Finished' %}success{% elif data.status == 'Awaited' %}warning{% elif data.status == 'Cancelled!' %}danger{% endif %}">{{ data.status }}</span>
-                            </td>                       
-                           <td>
-                            
-                            <a href="{{ data.meeting_url }}" class="bozero" target="_blank" style="text-decoration: none;">
-                              <button type="button" class="btn btn-success" style="color: black;">
+                {% for data in records %}
+                    <tr>
+                        <td>{{ data.class_title }}</td>
+                        <td>{{ data.description }}</td>
+                        <td>{{ data.class_date_time }}</td>
+                        <td>{{ data.start_time }}</td>
+                        <td>{{ data.end_time }}</td>
+                        <td>{{ data.created_by }}</td>
+                        <td>{{ data.staff }}</td>
+
+                        <td>
+                            Class {{ data.Class }}
+                            (
+                            {% for sec in data.section.all %}
+                                {{ sec.section_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            )
+                        </td>
+
+                        <td>
+                            <span class="badge
+                                {% if data.status == 'Finished' %}badge-success
+                                {% elif data.status == 'Awaited' %}badge-warning
+                                {% else %}badge-danger{% endif %}">
+                                {{ data.status }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <a href="{{ data.meeting_url }}" target="_blank" class="btn btn-success btn-sm">
                                 <i class="fa fa-video"></i> Start
-                              </button>
                             </a>
-                            {% if 'online_live_class_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}    
-                          <a href="{% url 'online_class_edit' data.id %}" class="bozero"><span data-toggle="tooltip" title="edit"style="color: black;"><i class='fa fa-edit'></i></a>
-                            {% endif %}
-                            {% if 'online_live_class_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}    
-                          <a href="{% url 'online_class_delete' data.id %}" class="bozero"><span data-toggle="tooltip" title="delete"style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
-                            {% if data.status != 'Finished' %}
-                            <a href="{% url 'finish_class' data.id %}" class="bozero">
-                              <span data-toggle="tooltip" title="Finish Class" style="color: black;">
-                                  <i class="fa fa-check"></i>
-                              </span>
-                          </a>                           
-                          {% endif %}
-                            {% endif %}
-                           </td>
-                           
-                           <td>
-                           <a href="{% url 'oline_class_attendance' data.id%}"  class="bozero"><span data-toggle="tooltip" title="Online Attendance"style="color: black;"  ><i class='fa fa-plus'></i></a>
-                            <td>
-                          
-                       
+                        </td>
                     </tr>
-                    {% endfor %}
-                  
+                {% endfor %}
                 </tbody>
-        
+
             </table>
-            </div>
-         </div>
-     </div>
-     {% comment %} {% endif %} {% endcomment %}
- </div>
-     <!-- modal Start -->
+        </div>
+    </div>
+</div>
 
-        <div class="modal fade edit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Online Classes</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Save</button>
-                    </form>
-                    <form>
-                  <div class="row">
-                    <!-- {% for data in form %} -->
-                    <div class="col-md-4 mb-3">
-                        {{data.label_tag}}
-                      {{ data }}
-                    </div>
-                    <!-- {% endfor %} -->
-                  </div>
-                  <br>
-                  <center>
-                  <button type="button" class="btn btn-primary">Submit</button>
-                </center>
-                </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-             <!-- modal End -->
+{% endblock %}
 
- {% endblock %}
- {% block script_block %}
- <script>
-  $(function () {
+{% block script_block %}
+
+<!-- TOOLTIP -->
+<script>
+$(function () {
     $('[data-toggle="tooltip"]').tooltip();
-  });
- </script>
-
- <script>
-    $(document).ready(function () {
-  $(document).on('change', '#id_role', function () {
-    var role_id = $('#id_role').val();
-    var url = "{% url 'demo_js' %}";
-    $.ajax({
-      url: url,
-      data: {
-        'role_id': role_id
-      },
-      success: function (data) {
-          $("#id_staff").html(data);
-          let html_data = '<option value="">--------</option>';
-          data.forEach(function (classs) {
-              html_data += `<option value="${classs.id}">${classs.first_name}</option>`
-          });
-          console.log(html_data);
-          $("#id_staff").html(html_data);
-      },
-      error: function (data) {
-        console.log(data);
-      }
-    });
-  });
-
 });
+</script>
 
+<!-- MEETING LINK SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-$(document).ready(function () {
-  $(document).on('change', '#id_staff', function () {
-    var name = $('#id_staff').val();
-    var url = "{% url 'leave_type_js' %}";
-    $.ajax({
-      url: url,
-      data: {
-        'name': name,
-      },
-      success: function (data) {
-          $("#id_leave_type").html(data);
-          let html_data = '<option value="">--------</option>';
-          data.forEach(function (leave) {
-              html_data += `<option value="${leave.leave_type_id}">${leave.leave_type__name}(${leave.available_leave})</option>`
-          });
-          console.log(html_data);
-          $("#id_leave_type").html(html_data);
-      },
-      error: function (data) {
-        console.log(data);
-      }
+    const meetingLink = document.getElementById("meeting_link");
+    const meetingUrl = document.getElementById("meeting_url");
+
+    meetingLink.addEventListener("change", function () {
+        const option = meetingLink.options[meetingLink.selectedIndex];
+
+        if (option.value === "new") {
+            meetingUrl.readOnly = false;
+            meetingUrl.value = "";
+        } else {
+            meetingUrl.readOnly = true;
+            meetingUrl.value = option.getAttribute("data-url");
+        }
     });
-  });
 
 });
 </script>
-<!-- For Meeting Url change -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      const meetingLinkSelect = document.getElementById("meeting_link");
-      const meetingUrlInput = document.getElementById("meeting_url");
-  
-      // Add change event listener to the meeting link select element
-      meetingLinkSelect.addEventListener("change", function() {
-          // Get the selected option
-          const selectedOption = meetingLinkSelect.options[meetingLinkSelect.selectedIndex];
-          
-          if (selectedOption.value === "new") {
-              // If "Add New Link" is selected, make the meeting URL field editable
-              meetingUrlInput.readOnly = false;
-              meetingUrlInput.value = ""; // Clear meeting URL field
-          } else {
-              // Otherwise, display the selected link's URL in the meeting URL field
-              meetingUrlInput.readOnly = true;
-              // Retrieve the data-url attribute value of the selected option and set it as the meeting URL
-              meetingUrlInput.value = selectedOption.getAttribute("data-url");
-          }
-      });
-  
-      const onlineClassForm = document.getElementById("online_class_form");
-      onlineClassForm.addEventListener("submit", function(event) {
-          const meetingLinkSelect = document.getElementById("meeting_link");
-          if (meetingLinkSelect.value === "new") {
-              // If "Add New Link" is selected, use the value entered in the meeting URL field
-              meetingUrlInput.value = meetingUrlInput.value;
-          }
-          // Continue with form submission
-      });
-  });
-  
-  </script>
- 
- {% endblock  %}
+
+{% endblock %}

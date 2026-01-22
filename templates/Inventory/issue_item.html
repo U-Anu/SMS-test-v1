@@ -41,7 +41,7 @@
                       <td>{{data.issued_to}} - {{data.issued_to.department.name}}</td>
                       <td>{{data.issued_by}} - {{data.issued_to.department.name}}</td>
                       <td><input type="hidden" value="{{data.quantity}}" id="item_return_qty">{{data.quantity}}</td>
-                      <td>Issued</td>
+                      <td>{{data.status}}</td>
                        
                         {% comment %} <td><button type="button" class="btn btn-warning">Click to return</button></td> {% endcomment %}
                         <td>
@@ -99,7 +99,7 @@
             </div>
             <div class="col-md-6 mb-3">
               <label for="">Quantity</label>
-              <input type="number" name="item_qty" class="form-control" id="item_qty" required>
+              <input type="number" name="item_qty" class="form-control" id="item_qty" readonly>
               <input type="hidden" name="id" class="form-control" id="idd" required>
             </div>
             <div class="col-md-12 mb-3">
