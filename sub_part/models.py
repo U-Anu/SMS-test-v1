@@ -43,7 +43,7 @@ class SchoolRegistration(models.Model):
     last_name = models.CharField(max_length=30,blank=True, null=True)
     phone_number = models.PositiveBigIntegerField(blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    incorporation_number = models.PositiveBigIntegerField(blank=True, null=True)
+    incorporation_number = models.CharField(max_length=100, blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     number_of_branches = models.PositiveBigIntegerField(blank=True, null=True)
     number_of_staffs = models.PositiveBigIntegerField(blank=True, null=True)
