@@ -106,23 +106,23 @@
 
 
 
-                            {% if data.father_name %}
+                            {% comment %} {% if data.father_name %}
                             <div class="form-group row">
                                 <label class="col-sm-4 ">FATHER / HUSBAND NAME</label>
                                 <div class="col-sm-8 ">
-                                    <label>{{ student.student_obj.Father_name }}</label>
+                                    <label>{{ student.user_parent.first_name}}</label>
                                 </div>
                             </div>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
 
-                            {% if data.mother_name %}
+                            {% comment %} {% if data.mother_name %}
                             <div class="form-group row">
                                 <label class="col-sm-4 ">MOTHER NAME</label>
                                 <div class="col-sm-8 ">
                                     <label>{{ student.student_obj.mother_name }}</label>
                                 </div>
                             </div>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
                             {% if data.section %}
                             <div class="form-group row">
                                 <label class="col-sm-4 ">CLASS</label>

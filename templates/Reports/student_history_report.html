@@ -117,8 +117,8 @@
                         <td>2023-24</td>
                         <td>2023</td>
                         <td>{{ data.mobile_number }}</td>
-                        <td>{{ data.guardian_name }}</td>
-                        <td>{{ data.guardian_phone }}</td>
+                        <td>{{ data.user_parent.first_name }}
+                        <td>{{ data.user_parent.phone_number }}</td>
                         
                     </tr>
                     {% endfor %}

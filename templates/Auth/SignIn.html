@@ -169,7 +169,8 @@ label {
      
     
 
-      <form method="POST" class="mt-4 custom-form">
+      <form method="post" class="mt-4 custom-form" action='{% url "signin" %}'>
+        {% csrf_token %}
         <div class="logo">
           <h3>Vyas EduERP</h3>
           {% comment %} <img src="{% static 'assets/images/sign.png' %}" alt="Logo"><br> {% endcomment %}
@@ -189,7 +190,7 @@ label {
 
       {% endfor %}
 
-        {% csrf_token %}
+        
         <div class="form-group">
           <input type="text" class="form-control" id="username" name="username" required>
           <label for="username">User Name (or) Email</label>

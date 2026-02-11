@@ -107,7 +107,7 @@
                         <td>{{data.student.admission_no}}</td>
                         <td>{{data.student.first_name}}</td>
                         <td>{{data.student.Class}}({{data.student.section}})</td>
-                        <td>{% if data.student.Father_name %}{{data.student.Father_name}}{% endif %}</td>
+                        <td>{% if data.student.user_parent.first_name %}{{data.student.user_parent.first_name}}{% endif %}</td>
                         <td>{{data.student.date_of_birth}}</td>
                         <td>{{data.student.admission_date}}</td>
                         <td>{{data.student.gender}}</td>

@@ -84,7 +84,7 @@
                 <thead>
                     <tr>
                         <th>Staff ID</th>
-                        <th>Role</th>
+                        {% comment %} <th>Role</th> {% endcomment %}
                         <th>Designation</th>
                         <th>Department</th>
                         <th>Name</th>
@@ -121,7 +121,7 @@
                     {% for data in records %}
                     <tr>
                         <td>{{data.staff_id}}</td>
-                        <td>{{ data.store }}</td>
+                        {% comment %} <td>{{ data.role }}</td> {% endcomment %}
                         <td>{{ data.designation }}</td>
                         <td>{{ data.department }}</td>
                         <td>{{ data.first_name }}</td>

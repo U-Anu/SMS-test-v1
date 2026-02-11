@@ -105,6 +105,7 @@
                         <tbody>
                             {% regroup records by subject as group_list %}
                             {% for records in group_list %}
+                            <tr>
                             <td>{{ forloop.counter }}</td>
                                 <td>{{records.list.0.Class}}</td>
                                 <td>{{records.list.0.section}}</td>
@@ -133,6 +134,7 @@
 
                             </tr>
                             {% endfor %}
+                            </tr>
                             {% endfor %}
 
                         </tbody>

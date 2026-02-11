@@ -43,9 +43,12 @@ class MiddlewareExecutionStart(object):
                 print('the acess in middleware is ',access)
                 print('the acess in middleware is ',access.roles)
                 print('the acess in middleware is ',type(access.roles.permissions))
-                if access:                    
+                if access:     
+                    print('=====access==',access)           
+                    print('===access.roles.permissions==',access.roles.permissions)    
                     request.permissions=access.roles.permissions 
                     if not access.roles.permissions:
+                        print('===No Permissions===')
                         request.permissions=[]
                         logout(request)
                         return redirect("signin")         

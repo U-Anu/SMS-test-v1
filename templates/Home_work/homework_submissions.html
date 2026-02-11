@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="row">
+    <div class="main-header">
+        <h4>Student Homework Submissions</h4>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="card" style="padding: 10px;">
+        <div class="table-responsive">
+            <table id="tableID" class="display">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Subject</th>
+                        <th>Homework Date</th>
+                        
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for assign in assign_records %}
+                    <tr>
+                        <td>{{ assign.student.first_name }}</td>
+                        <td>{{ assign.student.Class }}</td>
+                        <td>{{ assign.student.section }}</td>
+                        <td>{{ assign.home_work.subject }}</td>
+                        <td>{{ assign.home_work.homework_date }}</td>
+
+                        
+
+                        <td>
+                            {% if assign.status == "Submitted" %}
+                                <span class="badge badge-warning">Submitted</span>
+                            {% elif assign.status == "Evaluated" %}
+                                <span class="badge badge-success">Evaluated</span>
+                            {% else %}
+                                <span class="badge badge-secondary">{{ assign.status }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if assign.status == "Submitted" %}
+                                <a href="{% url 'homework_evaluate' assign.id %}" class="bozero">
+                                    <span data-toggle="tooltip" title="Evaluate" style="color: green;">
+                                        <i class='fa fa-check-square'></i>
+                                    </span>
+                                </a>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No submissions yet</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -215,7 +215,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Mental Health Survey Form</title>
-        <link rel="stylesheet" href="styles.css">
+        {% comment %} <link rel="stylesheet" href="styles.css"> {% endcomment %}
     </head>
     <body>       
         <br>
@@ -263,6 +263,7 @@
                 <div class="right-content" style="text-align: right; flex-shrink: 0;">
                     <p>Total Mark: {{single_value.total_mark}}</p>
                     <p>Pass Mark: {{single_value.pass_mark}}</p>
+
                     <input type="hidden" name="pass_mark" value="{{single_value.pass_mark}}">
                   
                     <p style="display: inline;">Final Mark: <span id="final-mark">0</span></p>

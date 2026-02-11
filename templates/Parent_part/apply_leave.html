@@ -11,7 +11,7 @@
      </div>
      <div class="col-md-12">
          <div class="card" style="padding: 10px;">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br>
+          {% comment %} <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;">Add</button><br> {% endcomment %}
             <br><div class="table-responsive">
             <table id="tableID" class="display">
                 <thead>
@@ -22,7 +22,7 @@
                         <th>From Date</th>
                         <th>To Date</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        {% comment %} <th>Action</th> {% endcomment %}
                     </tr>
                 </thead>
                 <tbody>
@@ -34,10 +34,10 @@
                           <td>{{data.from_date}}</td>
                           <td>{{data.to_date}}</td>
                           <td>{% if data.status == 'disapprove' %} Pending {% else %}{{data.status}}{% endif %}</td>
-                        <td>
+                        {% comment %} <td>
                           <a href="{% url 'apply_leave_edit' data.id %}" style="color: black;"><i class='fa fa-edit' data-toggle="tooltip" title="Edit"></i></a>
                           <a href="{% url 'apply_leave_delete' data.id %}" style="color: black;"><i class='fa fa-trash'data-toggle="tooltip" title="Delete"  onclick="alert('You want to Delete this Item..?')"></i></a>
-                           </td>
+                           </td> {% endcomment %}
                     </tr>
                     {% endfor %}
                   

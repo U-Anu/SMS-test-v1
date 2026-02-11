@@ -97,7 +97,7 @@
                         <th>Admission No</th>
                         <th>Student Name</th>
                         <th>Class</th>
-                        <th>Father Name</th>
+                        {% comment %} <th>Father Name</th> {% endcomment %}
                         <th>Date of Birth</th>
                         <th>Admission Date</th>
                         <th>Gender</th>
@@ -107,11 +107,12 @@
                 </thead>                
                 <tbody>
                     {% for data in records %}
+                    
                     <tr>
                         <td>{{data.admission_no}}</td>
                         <td>{{ data.first_name }}</td>
                         <td>{{ data.Class }} ({{ data.section }})</td>                       
-                        <td>{{ data.Father_name }}</td>
+                        {% comment %} <td>{{ data.Father_name }}</td> {% endcomment %}
                         <td>{{ data.date_of_birth }}</td>
                         <td>{{data.admission_date}}</td>
                         <td>{{ data.gender }}</td>

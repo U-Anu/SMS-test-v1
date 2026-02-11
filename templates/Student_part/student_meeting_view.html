@@ -22,6 +22,7 @@
                     
                     <table class="table table-hover  tmb0">
                         <tbody>
+                            {{ record }}
                             <tr>
                                 <td >Title</td>
                                 <td >
@@ -48,12 +49,7 @@
                                 <td>class</td>
                                 <td> {{record.Class.Class}} </td>
                             </tr>
-                            <tr>
-                                <td>section</td>
-                                <td>{% for staff in record.section.all %}
-                                    {{ staff.section_name }}                                  
-                                    {% endfor %}</td>
-                            </tr>
+                            
                           
                          
                             <tr>

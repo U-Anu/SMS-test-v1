@@ -1,0 +1,70 @@
+{% extends 'parent_base.html' %}
+{% block body_block %}
+{% load static %}
+
+<style>
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+    }
+    .pass { background-color: #28a745; }
+    .fail { background-color: #dc3545; }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+            <h4>Child Online Exam Result</h4>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card" style="padding: 10px;border-top: 5px solid black;">
+            <div class="table-responsive">
+                <table id="tableID" class="display">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Question Paper</th>
+                            <th>Exam Date</th>
+                            <th>Total Mark</th>
+                            <th>Pass Mark</th>
+                            <th>Student Score</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in record %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ data.question_paper.question_paper_name }}</td>
+                            <td>{{ data.exam_date }}</td>
+                            <td>{{ data.question_paper.total_mark }}</td>
+                            <td>{{ data.question_paper.pass_mark }}</td>
+                            <td>{{ data.total_mark }}</td>
+                            <td>
+                                {% if data.is_pass %}
+                                    <span class="status pass">Pass</span>
+                                {% else %}
+                                    <span class="status fail">Fail</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">No results available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block script_block %}{% endblock %}

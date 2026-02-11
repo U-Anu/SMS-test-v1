@@ -285,26 +285,29 @@ def signup(request):
 
 
 def signin(request):
-    if request.method == "GET":
-        # if not request.user.is_authenticated:
-        form = AuthenticationForm()
-        context = {
-            "form": form,
-        }
-        return render(request, "Auth/SignIn.html", context)
+    # if request.method == "GET":
+    #     # if not request.user.is_authenticated:
+    #     form = LoginAuthenticationForm()
+    #     context = {
+    #         "form": form,
+    #     }
+    #     return render(request, "Auth/SignIn.html", context)
         # else:
         #     return redirect("dashboard")
     if request.method == "POST":
         print('the request post is ',request.POST)
-        form = AuthenticationForm(data=request.POST)
+        form = LoginAuthenticationForm(data=request.POST)
         if form.is_valid():
+            print('==form==cleaned data==',form.cleaned_data)
             un = form.cleaned_data["username"]
-            pwd = form.cleaned_data["password"]            
+            # password = form.cleaned_data["password"]   
+            pwd = request.POST.get('password')
+            # print('==password',password)         
             print('un---',un)
             print('pwd---',pwd)
               
             user = authenticate(username=un, password=pwd)
-           
+            print('==user==',user)
             if user is not None:                   
                 login(request, user)              
                 try: 
@@ -449,7 +452,7 @@ def signin(request):
                     print('package_check---',package_check)
                     if package_check.status_code == 200:
                         if staff:
-                            print("---okay",staff)                                              
+                            print("---okay1234",staff)                                              
                             return redirect("dashboard")    
                         else: 
                             messages.error(request, 'Invalid username (or) password')
@@ -556,12 +559,19 @@ def signin(request):
                 }
                 return render(request, "Auth/SignIn.html", context)
         else:
-            print(form.errors)
+            print('form.errors===',form.errors)
             messages.error(request, 'Invalid username (or) password')
+            form = LoginAuthenticationForm()
             context = {
                 "form": form,
             }
             return render(request, "Auth/SignIn.html", context)
+    else:
+        form = LoginAuthenticationForm()
+        context = {
+            "form": form,
+        }
+        return render(request, "Auth/SignIn.html", context)
 
 
 def signout(request):
@@ -6450,7 +6460,7 @@ def fees_carry_forward(request):
                 pre_fess = FeesAssign.objects.filter(
                     student__Class__id=request.POST.get("class"),
                     student__section__id=request.POST.get("section"),
-                    session=session,                    
+                    # session=session,                    
                     status__in=["pending", "partially paid"],
                     branch_id = branch_id, 
                 )
@@ -7872,7 +7882,7 @@ def design_marksheet_edit(request, pk):
 @user_type_required("Staff")
 def design_marksheet_view(request, pk):
     if request.user.is_superuser or request.user.is_school_admin or "design_admit_card_view" in request.permissions:
-        try:
+        # try:
             branch_name = request.session.get('branch_id', None)
             if branch_name:
                 branch_id = branch_name       
@@ -7889,9 +7899,9 @@ def design_marksheet_view(request, pk):
                 "view": True,
                 "record": record,
             }
-            return render(request, "Examinations/design_marksheet.html", context)
-        except Exception as error:
-            return render(request, "error.html", {"error": error})
+            return render(request, "Examinations/design_marksheet_view.html", context)
+        # except Exception as error:
+        #     return render(request, "error.html", {"error": error})
     else:
         return redirect("dashboard")
 
@@ -8015,7 +8025,7 @@ def printing_marksheet(request):
         print("first_mark =", first_mark)
         if first_mark != None:
             grad_record = AddGrade.objects.filter(
-            exam_type=first_mark.exam.exam_groupexam_type
+            exam_type=first_mark.exam.exam_group.exam_type
              ) 
             print("grad_record =", grad_record)
 
@@ -8570,6 +8580,12 @@ def edit_manage_lesson_js(request):
 @login_required
 @user_type_required("Staff")
 def manage_lesson_save(request):
+    branch_name = request.session.get('branch_id', None)
+    if branch_name:
+        branch_id = branch_name       
+    else:
+        branch_id = None  
+        print("branch_name@@@lesson",branch_name)
     lesson_plan_id = request.POST.get("lesson_plan_id")
     print(lesson_plan_id)
     if lesson_plan_id:
@@ -8589,9 +8605,12 @@ def manage_lesson_save(request):
         record.comprehensive_questions = request.POST.get("comprehensive_questions")
         record.presentation = request.POST.get("presentation")
         record.date = request.POST.get("date")
+        record.branch_id = branch_id
         record.save()
     else:
         print("else")
+        
+            
         LessonPlan.objects.create(
             lesson_id=request.POST.get("lesson"),
             topic_id=request.POST.get("topic"),
@@ -8607,6 +8626,7 @@ def manage_lesson_save(request):
             presentation=request.POST.get("presentation"),
             date=request.POST.get("date"),
             created_by=request.user,
+            branch_id = branch_id,
         )
     return redirect("manage_lesson_plan")
 
@@ -9673,7 +9693,7 @@ def teacher_timetable(request):
 @user_type_required("Staff")
 def add_staff(request):
     if request.user.is_superuser or request.user.is_school_admin or "staff_add" in request.permissions:
-        try:
+        # try:
             token = request.session['user_token']
             branch_name = request.session.get('branch_id', None)
             buyer_name = request.session.get('buyer_id', None)
@@ -9701,15 +9721,26 @@ def add_staff(request):
             print("school_registration",school_registration)
             leave_type = AddLeaveType.objects.filter(branch=branch_id)
             
-            school_name=Branch.objects.get(id=branch_id)
-            print("school_name===",school_name.school)
+            # school_name=Branch.objects.get(id=branch_id)
+            # staff.branch = school_name
+            # print("school_name===",school_name.school)
             form = AddStaffForm()
             if request.method == "POST":
                 form = AddStaffForm(request.POST)
                 if form.is_valid():
                     staff = form.save(commit=False)
-                    staff.branch = branch_id
-                    staff.school = school_name.school
+                    # staff.branch = branch_id
+                    # staff.branch_id = branch_id
+                    # staff.school = school_name.school
+                    # admin_school = request.user.school
+                    # if not admin_school:
+                    #     messages.error(request, "Admin is not assigned to any school")
+                    #     return redirect("add_staff")
+                    # staff.school = admin_school
+                    branch_obj = Branch.objects.get(id=branch_id)  # get Branch instance
+                    staff.branch = branch_obj                      # ✅ correct
+                    staff.school = branch_obj.school
+                    staff.created_by = request.user
                     staff.save()
                     password = generate_password()
                     if staff.last_name:
@@ -9724,17 +9755,20 @@ def add_staff(request):
                         dob=staff.date_of_birth,
                         phone_number=staff.phone_no,
                         user_type="Staff",
-                        buyer_id = buyer_id
+                        buyer_id = buyer_id,
+                        school = request.user.school
 
                     )
                     user.set_password(password)
+                    # user.school = request.user.school
                     print(password)
                     user.save()
                     staff.user = user
                     staff.created_by = request.user
                     staff.save()
-                    branch = Branch.objects.get(id=branch_id)
-                    print("branch+++", branch.school.reference_id)            
+                    branch = branch_obj
+                    # branch = Branch.objects.get(id=branch_id)
+                    # print("branch+++", branch.school.reference_id)            
 
                     data = {
                         'password': password,
@@ -9824,8 +9858,8 @@ def add_staff(request):
             }
             return render(request, "Human_Resource/add_staff.html", context)
 
-        except Exception as error:
-            return render(request, "error.html", {"error": error})
+        # except Exception as error:
+        #     return render(request, "error.html", {"error": error})
     else:
         return redirect("dashboard")
 
@@ -9844,16 +9878,19 @@ def approve_leave_request(request):
                 branch_id = branch_name       
             else:
                 branch_id = None  
-                print("branch_name@@@",branch_name)
+                print("branch_name@@@pppp",branch_name)
             records = ApproveLeave.objects.filter(branch=branch_id)
             roles_records = Role.objects.filter(branch=branch_id)
+            print("roles_recordslllllll",roles_records)
             if request.method == "POST":
+                print("kdjflkajlk")
                 lop = int(request.POST.get("lop"))
                 dates_str = request.POST.get("dates")
                 leave_dates = dates_str.split(", ")
                 leave_type = request.POST.get("available_leave")
                 if lop:
                     leave_days = len(leave_dates) - lop
+                    print("leave_daysssss",leave_days)
                     if leave_type:
                         lop_dates = leave_dates[leave_days:]
                     else:
@@ -9878,6 +9915,7 @@ def approve_leave_request(request):
                     created_by=request.user,
                     branch_id=branch_id
                 )
+                print("request.POST.get('available_leave')",request.POST.get("available_leave"))
                 available_leave = AvailableLeave.objects.filter(
                     staff_leave__leave_type=request.POST.get("available_leave"),
                     session=request.Session,branch_id=branch_id
@@ -9966,14 +10004,16 @@ def apply_leave(request):
                     branch_id = branch_name       
                 else:
                     branch_id = None  
-                    print("branch_name@@@",branch_name)
-                print('ggggsgsggsgsg',request.user)
+                    print("branch_name@@@9999",branch_name)
+                print('ggggsgsggsgsgkkkk',request.user)
                 staff = AddStaff.objects.get(user=request.user) if request.user.user_type == 'Staff' else None       
                 leaves = StaffLeave.objects.filter(staff=staff)
+                print("leavesiiiiiiiii",leaves)
                 available_leaves = AvailableLeave.objects.filter(
                     staff_leave__in=leaves.values("id"), session=request.Session,branch_id=branch_id
                 )
-                print("request.Session",request.Session)
+                print("available_leavesketan",available_leaves)
+                print("request.Sessioncheck",request.Session)
                 if not available_leaves:
                     for data in leaves:
                         AvailableLeave.objects.get_or_create(
@@ -9986,9 +10026,12 @@ def apply_leave(request):
                 approval_leaves = ApproveLeave.objects.filter(name=staff)
                 if request.method == "POST":
                     lop = int(request.POST.get("lop"))
+                    print("loppppppppp",lop)
                     dates_str = request.POST.get("dates")
+                    print("datesssssssslll",dates_str)
                     leave_dates = dates_str.split(", ")
                     leave_type = request.POST.get("available_leave")
+                    print("leave_typeeeeee",leave_type)
                     if lop:
                         leave_days = len(leave_dates) - lop
                         if leave_type:
@@ -10031,6 +10074,7 @@ def apply_leave(request):
                     "available_leaves": available_leaves.filter(available_leave__gt=0),
                     "approval_leaves": approval_leaves,
                 }
+                print("contexthhhgg",context)
                 return render(request, "Human_Resource/apply_leave.html", context)
     #     except Exception as error:
     #        return render(request,'error.html',{'error':error})
@@ -13836,7 +13880,7 @@ def student_information_report(request):
 @user_type_required("Staff")
 def guardian_report(request):
     if request.user.is_superuser or request.user.is_school_admin or "student_report_view" in request.permissions:
-        try:
+        # try:
             branch_name = request.session.get('branch_id', None)
             if branch_name:
                 branch_id = branch_name       
@@ -13876,8 +13920,8 @@ def guardian_report(request):
             }
 
             return render(request, "Reports/guardian_report.html", context)
-        except Exception as error:
-            return render(request, "error.html", {"error": error})
+        # except Exception as error:
+        #     return render(request, "error.html", {"error": error})
     else:
         return redirect("dashboard")
 
@@ -13913,6 +13957,7 @@ def student_history_report(request):
                     filters["branch_id"] = branch_id    
 
                 records = StudentAdmission.objects.filter(**filters)
+                print("recordsssssssssssssssssssssss",records)
 
                 context = {
                     "student_information_report": "active",
@@ -14597,9 +14642,8 @@ def add_staffs_edit(request, pk):
 
 
 @login_required
-@user_type_required("Staff")
 def staff_attendance_view(request):
-    if request.user.is_superuser or request.user.is_school_admin or "staff_attendance_view" in request.permissions:
+    if request.user.is_superuser or request.user.is_school_admin  or "staff_attendance_view" in request.permissions and request.user.user_type != 'Staff':
         try:
             branch_name = request.session.get('branch_id', None)
             if branch_name:
@@ -15014,6 +15058,12 @@ def mange_alumini(request):
 def Mange_alumini_add(request, pk):
     if request.user.is_superuser or request.user.is_school_admin or "manage_alumni_add" in request.permissions:
         try:
+            branch_name = request.session.get('branch_id', None)
+            if branch_name:
+                branch_id = branch_name       
+            else:
+                branch_id = None  
+                print("branch_name@@@ooooo",branch_name)
             record = StudentAdmission.objects.get(id=pk)
             form = ManagealuminiForm()
             if request.method == "POST":
@@ -15021,6 +15071,7 @@ def Mange_alumini_add(request, pk):
                 if form.is_valid():
                     student = form.save(commit=False)
                     student.students_id = record
+                    student.branch_id = branch_id
                     student.save()
                     return HttpResponseRedirect("/mange_alumini")
                 else:
@@ -15080,7 +15131,7 @@ def mange_alumini_report(request):
                 branch_id = branch_name       
             else:
                 branch_id = None  
-                print("branch_name@@@",branch_name)
+                print("branch_name@@@kkkk",branch_name)
             class_records = Class.objects.filter(branch=branch_id)
             section_records = Section.objects.filter(branch=branch_id)
             session_records = Session.objects.filter(branch=branch_id)
@@ -15460,7 +15511,9 @@ def attendence_report(request):
         classs = request.POST.get("class")
         section = request.POST.get("section")
         months = request.POST.get("months")
+        print("monthsppppppppp",months)
         years = request.POST.get("years")
+        print("yearsllllllllllll",years)
         if classs and section and months and years:
             records = StudentAttendance.objects.filter(
                 student__Class=classs,
@@ -15674,6 +15727,7 @@ def student_attendance_type_report(request):
         records = StudentAttendance.objects.filter(
             student__Class=classs, attendance_status=presentt, **filters
         )
+        print("attendacereeeea",records)
 
         context = {
             "record": records,
@@ -15704,10 +15758,14 @@ def staff_attendance_report(request):
     if request.method == "POST":
         roles = request.POST.get("roles")
         months = request.POST.get("months")
+        print("monthassskk",months)
         years = request.POST.get("years")
+        print("yearsssskkk",years)
+        header = []
+        body = []
         if roles and months and years:
-            header = []
-            body = []
+            
+            
             print(int(months), int(years))
             cal = calendar.monthcalendar(int(years), int(months))
             # List of day names for header
@@ -19005,6 +19063,7 @@ def upload_content_delete(request, pk):
 @login_required
 @user_type_required("Staff")
 def add_homework(request):
+    print("\n===== TEACHER ADD HOMEWORK FUNCTION =====")
     if (
         request.user.is_superuser or request.user.is_school_admin
         or "homework_view" in request.permissions
@@ -19016,22 +19075,30 @@ def add_homework(request):
                 branch_id = branch_name       
             else:
                 branch_id = None  
-                print("branch_name@@@",branch_name)
+                print("branch_name@@@ooo",branch_name)
+            print("Teacher:", request.user)
+            print("Branch ID:22", branch_id)
             records = AddHomeWork.objects.filter(branch=branch_id)
             form = AddHomeWorkForm()
             if request.method == "POST":
+                print("\n--- HOMEWORK FORM SUBMITTED ---")
+                print("POST data:33", request.POST)
+                print("FILES data:33", request.FILES)
                 form = AddHomeWorkForm(request.POST, request.FILES)
                 if form.is_valid():
                     homework = form.save(commit=False)
                     homework.created_by = request.user
                     homework.branch_id = branch_id
                     homework.save()
+                    print("Homework created successfully with ID:kk", homework.id)
                     student = StudentAdmission.objects.filter(
                         Class=request.POST.get("Class"),
                         section=request.POST.get("section"),
                         session=request.Session,
                         branch_id=branch_id
                     )
+                    
+                    print("Students found for assignment:l", student.count())
                     for data in student:
                         AssingHomeWork.objects.get_or_create(
                             home_work_id=homework.pk,
@@ -19044,6 +19111,7 @@ def add_homework(request):
                 else:
                     print(form.errors)
             context = {"form": form, "records": records, "add_homework": "active"}
+            print("cpmteect",context)
             return render(request, "Home_work/add_homework.html", context)
         except Exception as error:
             return render(request, "error.html", {"error": error})
@@ -19054,6 +19122,8 @@ def add_homework(request):
 @login_required
 @user_type_required("Staff")
 def add_homework_view(request, pk):
+    print("\n===== TEACHER VIEW HOMEWORK SUBMISSIONS =====oo")
+    print("Homework ID:ll", pk)
     if request.user.is_superuser or request.user.is_school_admin or "homework_view" in request.permissions:
         try:
             branch_name = request.session.get('branch_id', None)
@@ -19061,10 +19131,13 @@ def add_homework_view(request, pk):
                 branch_id = branch_name       
             else:
                 branch_id = None  
-                print("branch_name@@@",branch_name)
+                print("branch_name@@@pp",branch_name)
             records = AddHomeWork.objects.filter(branch=branch_id)
             record = AddHomeWork.objects.get(id=pk)
+            #  Teacher opens homework details.
             recordss = AssingHomeWork.objects.filter(home_work=pk)
+            print("Total student submissions:aaa", recordss.count())
+            
             if request.POST.get("save") == "save":
                 record.evaluation_date = request.POST.get("evaluation_date")
                 student_list = request.POST.getlist("student_ids")
@@ -19146,6 +19219,48 @@ def add_homework_delete(request, pk):
             return render(request, "error.html", {"error": error})
     else:
         return redirect("dashboard")
+
+
+from django.shortcuts import get_object_or_404, render, redirect
+from django.utils.timezone import now
+from django.contrib import messages
+
+@login_required
+def homework_evaluate(request, pk):
+
+    # ✅ Permission check same as sidebar
+    if not (
+        request.user.is_superuser or
+        request.user.is_school_admin or
+        'homework_evaluate' in request.permissions
+    ):
+        messages.error(request, "Unauthorized access")
+        return redirect('dashboard')
+
+    record = get_object_or_404(AssingHomeWork, id=pk)
+
+    if request.method == "POST":
+        record.status = "Evaluated"
+        record.evaluation_date = now().date()
+        record.save()
+        messages.success(request, "Homework evaluated successfully")
+        return redirect('homework_submissions')
+
+    return render(request, "Home_work/homework_evaluate.html", {"record": record})
+
+@login_required
+@user_type_required("Staff")
+def homework_submissions(request):
+    branch_id = request.session.get("branch_id")
+
+    assign_records = AssingHomeWork.objects.filter(
+        branch_id=branch_id,
+        status="Submitted"
+    ).select_related("student", "home_work")
+
+    return render(request, "Home_work/homework_submissions.html", {
+        "assign_records": assign_records
+    })
 
 
 # Front office
@@ -19386,6 +19501,7 @@ def admission_report(request):
                 context = {
                     "records": records,
                 }
+                print("recordssssss",records)
                 return render(request, "Reports/admission_report.html", context)
 
             context = {"student_information_report": "active"}
@@ -19663,14 +19779,17 @@ def expense_report(request):
 @login_required
 @user_type_required("Staff")
 def fees_collection_report(request):
-    roles_rcords = AddStaff.objects.filter(branch=branch_id)
-    class_records = Class.objects.filter(branch=branch_id)
+
     branch_name = request.session.get('branch_id', None)
+    
     if branch_name:
         branch_id = branch_name       
     else:
         branch_id = None  
         print("branch_name@@@",branch_name)
+        
+    roles_rcords = AddStaff.objects.filter(branch=branch_id)
+    class_records = Class.objects.filter(branch=branch_id)
     if request.method == "POST":
         from_date = request.POST.get("from_date")
         to_date = request.POST.get("to_date")
@@ -20080,7 +20199,7 @@ def student_gender_ratio_report(request):
             )
 
             # Calculate the boys-girls ratio for each class/section
-            print(gender_counts)
+            print("gender_counts", gender_counts)
 
             # Calculate the grand total
             grand_total_boys = gender_counts.aggregate(Sum("total_boys"))[
@@ -20242,6 +20361,7 @@ def student_profile_report(request):
                     "records": records,
                     "class_records": class_records,
                 }
+                print("context2222",context)
                 return render(request, "Reports/student_profile_report.html", context)
 
             context = {
@@ -21187,11 +21307,17 @@ def subject_lesson_paln_report(request):
         branch_id = None  
         print("branch_name@@@",branch_name)
     class_records = Class.objects.filter(branch=branch_id)
+    print("class_records+++",class_records)
+    percentage = "No lesson progress available"
     if request.method == "POST":
         classs = request.POST.get("class")
+        print("classsuuu",classs)
         suction = request.POST.get("section")
+        print("suctionoooo",suction)
         subject_grp = request.POST.get("subject_group")
+        print("subject_grpppp",subject_grp)
         subject = request.POST.get("subject")
+        print("subjectlll",subject)
         subjects_name = Subjects.objects.get(id=subject,branch_id=branch_id)
         Lesson_plan = LessonPlan.objects.filter(
             time_table__Class=classs,
@@ -21200,10 +21326,12 @@ def subject_lesson_paln_report(request):
             time_table__subject=subject,
             branch_id=branch_id
         )
+        print("Lesson_plan+++2222",Lesson_plan)
 
         lesson_records = Lesson.objects.filter(
             Class_id=classs, section_id=suction, subject=subject,branch_id=branch_id
         )
+        print("lesson_recordslll",lesson_records)
         total = 0
         percent = 1
         for data in lesson_records:
@@ -21218,6 +21346,10 @@ def subject_lesson_paln_report(request):
                 total += 1
         if total > 0:
             percentage = f"{subjects_name.subject_name} Complete {percent*100}%"
+            print("percentagelll",percentage)
+        else:
+
+            percentage = "No completed topics found"
         context = {
             "class_records": class_records,
             "Lesson_plan": Lesson_plan,
@@ -21635,6 +21767,43 @@ def online_class_edit(request, pk):
     #         return render(request, "error.html", {"error": error})
     # else:
     #     return render(request, "page_not_found.html")
+    
+    
+@login_required
+@user_type_required("Staff")
+def online_class_view(request, pk):
+    if request.user.is_superuser or request.user.is_school_admin or "online_class_view" in request.permissions:
+        try:
+            # ✅ Get branch id
+            branch_name = request.session.get('branch_id', None)
+            branch_id = branch_name if branch_name else None
+
+            # ✅ Get all online class records (for listing if needed)
+            records = OnlineClass.objects.filter(branch=branch_id)
+
+            # ✅ Get specific record
+            record = OnlineClass.objects.get(id=pk)
+
+            # ✅ check record belongs to same branch
+            if record.branch and str(record.branch.id) != str(branch_id):
+                return render(request, "page_not_found.html")
+
+            context = {
+                "records": records,
+                "online_class": "active",
+                "record": record,   # ✅ single view record
+            }
+
+            return render(request, "Livesession/online_class_view.html", context)
+
+        except OnlineClass.DoesNotExist:
+            return render(request, "error.html", {"error": "Online Class record not found"})
+
+        except Exception as error:
+            return render(request, "error.html", {"error": error})
+
+    else:
+        return render(request, "page_not_found.html")
 
 def finish_class(request, pk):
     if request.user.is_superuser or request.user.is_school_admin or "online_live_class_edit" in request.permissions:
@@ -22154,13 +22323,15 @@ def student_details_delete(request, pk):
 
 @login_required
 @user_type_required("Staff")
+
 def payment_method(request):
+    print("dsakdsajfkldsajflkdsa")
     branch_name = request.session.get('branch_id', None)
     if branch_name:
         branch_id = branch_name       
     else:
         branch_id = None  
-        print("branch_name@@@",branch_name)
+        print("branch_name@@@7777",branch_name)
     last_record = PaymentKeys.objects.filter(branch=branch_id).last()
     if last_record:
         if request.POST.get("payment_gateway_btn") == "payment_gateway_btn":
@@ -23611,7 +23782,7 @@ def school_registration(request):
     #     or "" in request.permissions
     #     or "" in request.permissions
     # ):
-        try:
+        # try:
             branch_name = request.session.get('branch_id', None)
             if branch_name:
                 branch_id = branch_name       
@@ -23626,7 +23797,8 @@ def school_registration(request):
             address = request.POST.get("address")
             print('address',address)
             form = SchoolRegistrationForm()
-            records = SchoolRegistration.objects.filter(branch_school=branch_id)
+            records = SchoolRegistration.objects.all()
+            print("recordtamillllll",records)
             # response = call_get_method(BASE_URL,endpoint_currency,token)
             # currency_data = response.json()
             # # Extract all currency_code values into a list
@@ -23641,10 +23813,17 @@ def school_registration(request):
             if request.method == "POST":
                 form = SchoolRegistrationForm(request.POST)
                 if form.is_valid():
-                    local_currency = form.cleaned_data['local_currency']
-                    print("reference_id", local_currency.currency_id)
-                    currency_value = sub_part_Currency.objects.get(currency_id=local_currency.currency_id)
-                    print("currency_value", currency_value.reference_id)
+                    # local_currency = form.cleaned_data['local_currency']
+                    
+                    currency = form.cleaned_data.get('currency')
+                    if not currency:
+                        messages.error(request, "Currency is required.")
+                        return redirect("school_registration")
+
+                    currency_value = Currency.objects.get(currency_id=currency.currency_id)
+                    # print("reference_id", local_currency.currency_id)
+                    # currency_value = sub_part_Currency.objects.get(currency_id=local_currency.currency_id)
+                    # print("currency_value", currency_value.reference_id)
                     data = {
                         'company_name': form.cleaned_data['school_name'],
                         'address': form.cleaned_data['address'],
@@ -23659,6 +23838,7 @@ def school_registration(request):
                         'end_of_month_date': form.cleaned_data['end_of_month_date'].strftime('%Y-%m-%d'),
                         'amount_rounded_to': form.cleaned_data['amount_rounded_to'],
                         'local_currency': currency_value.reference_id,
+                        
                     }
 
                     print("++++++++++++++++++")
@@ -23687,8 +23867,8 @@ def school_registration(request):
                 print("Not comes")
             context = {"records": records,"form":form, "school_registrations": "active",}
             return render(request, "System_setting/school_registration.html", context)
-        except Exception as error:
-            return render(request, "error.html", {"error": error})
+        # except Exception as error:
+        #     return render(request, "error.html", {"error": error})
     # else:
     #     return redirect("dashboard")
 
@@ -24092,48 +24272,103 @@ MODEL_NAMES = [
 ]
 
 def export_all_data_zip(request):
+    import io, zipfile, csv, os
+    from datetime import datetime
+    from django.apps import apps
+    from django.http import HttpResponse
+
+    # ✅ GET BRANCH ID FROM SESSION
+    branch_id = request.session.get('branch_id', None)
+
     zip_buffer = io.BytesIO()
     current_datetime = datetime.now().strftime("%Y%m%d%H%M%S")
-    zip_filename =  f"{str(current_datetime)}.zip"
-    # zip_filename = "all_data.zip"
+    zip_filename = f"{current_datetime}.zip"
+
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
 
         for model_name in MODEL_NAMES:
-            # Get the model class from the sub_part app
             model = apps.get_model(app_label='sub_part', model_name=model_name)
 
-            # Create a CSV in memory
             csv_buffer = io.StringIO()
             writer = csv.writer(csv_buffer)
+
             fields = [field.name for field in model._meta.fields]
             writer.writerow(fields)
 
-            # Write each row of the model's data
-            for record in model.objects.filter(branch=branch_id):
+            # ✅ FILTER ONLY IF MODEL HAS branch FIELD
+            if 'branch' in [f.name for f in model._meta.fields]:
+                queryset = model.objects.filter(branch_id=branch_id)
+            else:
+                queryset = model.objects.all()
+
+            for record in queryset:
                 writer.writerow([getattr(record, field) for field in fields])
 
-            # Add CSV to the ZIP file
             csv_filename = f"{model_name.lower()}_data.csv"
             zip_file.writestr(csv_filename, csv_buffer.getvalue())
-    
-    
+
     base_path = os.path.abspath('Backup/')
+    os.makedirs(base_path, exist_ok=True)  # ✅ ensure folder exists
     zip_file_path = os.path.join(base_path, zip_filename)
 
-    # zip_file_path = os.path.join(settings.MEDIA_ROOT, zip_filename)
     with open(zip_file_path, 'wb') as f:
         f.write(zip_buffer.getvalue())
 
     DownloadRecord.objects.create(
         user=request.user,
         file_path=zip_filename,
-        created_by=request.user.username  
+        created_by=request.user.username
     )
 
     response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
     response['Content-Disposition'] = f'attachment; filename="{zip_filename}"'
-
     return response
+
+
+
+# def export_all_data_zip(request):
+#     zip_buffer = io.BytesIO()
+#     current_datetime = datetime.now().strftime("%Y%m%d%H%M%S")
+#     zip_filename =  f"{str(current_datetime)}.zip"
+#     # zip_filename = "all_data.zip"
+#     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+
+#         for model_name in MODEL_NAMES:
+#             # Get the model class from the sub_part app
+#             model = apps.get_model(app_label='sub_part', model_name=model_name)
+
+#             # Create a CSV in memory
+#             csv_buffer = io.StringIO()
+#             writer = csv.writer(csv_buffer)
+#             fields = [field.name for field in model._meta.fields]
+#             writer.writerow(fields)
+
+#             # Write each row of the model's data
+#             for record in model.objects.filter(branch=branch_id):
+#                 writer.writerow([getattr(record, field) for field in fields])
+
+#             # Add CSV to the ZIP file
+#             csv_filename = f"{model_name.lower()}_data.csv"
+#             zip_file.writestr(csv_filename, csv_buffer.getvalue())
+    
+    
+#     base_path = os.path.abspath('Backup/')
+#     zip_file_path = os.path.join(base_path, zip_filename)
+
+#     # zip_file_path = os.path.join(settings.MEDIA_ROOT, zip_filename)
+#     with open(zip_file_path, 'wb') as f:
+#         f.write(zip_buffer.getvalue())
+
+#     DownloadRecord.objects.create(
+#         user=request.user,
+#         file_path=zip_filename,
+#         created_by=request.user.username  
+#     )
+
+#     response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
+#     response['Content-Disposition'] = f'attachment; filename="{zip_filename}"'
+
+#     return response
 
 #=============20/08========================
 from django.shortcuts import render, redirect, get_object_or_404
@@ -24633,6 +24868,9 @@ def question_paper_sent(request):
         return render(request, "OnlineExamination/question_models.html", context)
     except Exception as error:
         return render(request, "error.html", {"error": error})    
+    
+    
+    
                             
 def online_exam_assign(request,pk):
  
@@ -24661,47 +24899,61 @@ def online_exam_assign(request,pk):
         # print("Total value:", value_calculate)
         print("student_answer+++",student_answer)
         final_mark=request.POST.get('final_mark')
+        print("finalmarklllll",final_mark)
         pass_mark=request.POST.get('pass_mark')
         print("pass_mark",pass_mark)
         print("final_mark",type(final_mark))
         paragraph_value=request.POST.get('paragraph_value')
-        paragraph_mark = int(paragraph_value) if paragraph_value else 0
-        final_marks = int(final_mark) if final_mark else 0
-        print("paragraph_value",type(paragraph_value))
-        total_marks = paragraph_mark+final_marks
+        
         if request.method == "POST":
-            for question_id in student_answer:
-                print("question_id+++",question_id.questiones.id)
-                # Get the option from the request.POST dictionary for each question
-                selected_option = request.POST.get(f"option_{question_id.questiones.id}")
+            total_marks = 0  # 🔥 NEW TOTAL CALCULATION
 
-                print("selected_option",selected_option)    
-                
-                
-                question_id.student_answers = question_id.student_answers
-                question_id.questiones = question_id.questiones             
+            for question_id in student_answer:
+                print("question_id+++", question_id.questiones.id)
+
+                selected_option = request.POST.get(f"option_{question_id.questiones.id}")
+                print("selected_option", selected_option)
+
                 question_id.options = selected_option
-                question_id.mark = question_id.questiones.mark
+                question_id.questiones = question_id.questiones
                 question_id.validation = True
                 question_id.branch_id = branch_id
+
+                # ✅ Calculate mark per question
+                if question_id.questiones.question_type == "paragraph":
+                    para_mark = request.POST.get("paragraph_value")
+                    mark_value = int(para_mark) if para_mark else 0
+                else:
+                    mark_value = question_id.questiones.mark if selected_option else 0
+
+                question_id.mark = mark_value
                 question_id.save()
-            if int(pass_mark) < total_marks:
+
+                total_marks += mark_value  # 🔥 ADDING EACH QUESTION MARK
+
+            print("FINAL TOTAL MARKS:", total_marks)
+
+            # 🔥 UPDATE LAST CORRECTION OR CREATE NEW
+            last_correction = PaperCorrection.objects.filter(
+                student_id=question_id.student_answers.student.id,
+                question_paper=question_id.questiones.question_paper
+            ).order_by('-id').first()
+
+            if last_correction:
+                last_correction.total_mark = total_marks
+                last_correction.is_pass = total_marks >= int(pass_mark)
+                last_correction.branch_id = branch_id
+                last_correction.save()
+            else:
                 PaperCorrection.objects.create(
                     student_id=question_id.student_answers.student.id,
-                    question_paper=question_id.questiones.question_paper,  # Assuming 'questiones' refers to the question instance
-                    total_mark=total_marks,  # Save the selected option directly
-                    is_pass=True,
+                    question_paper=question_id.questiones.question_paper,
+                    total_mark=total_marks,
+                    is_pass=total_marks >= int(pass_mark),
                     branch_id=branch_id
                 )
-            else:   
-                PaperCorrection.objects.create(
-                    student_id=question_id.student_answers.student.id,                   
-                    question_paper=question_id.questiones.question_paper,  # Assuming 'questiones' refers to the question instance
-                    total_mark=total_marks,  # Save the selected option directly
-                    is_pass=False,
-                    branch_id=branch_id
-                )     
-            
+
+            return redirect('answer_paper_correction')    
               
         
         for data in student_answer:
@@ -24723,8 +24975,94 @@ def online_exam_assign(request,pk):
         return render(request, "error.html", {"error": error})   
     
     
+    
+    
+
+# def online_exam_assign(request, pk):
+#     # try:
+#         branch_name = request.session.get('branch_id', None)
+#         if branch_name:
+#             branch_id = branch_name
+#         else:
+#             branch_id = None
+#             print("branch_name@@@", branch_name)
+
+#         student_answer = AnswerPeperSubmit.objects.filter(student_answers=pk)
+#         print("student_answer+++", student_answer)
+
+#         # 👉 GET FIRST OBJECT FOR REUSE
+#         first_obj = student_answer.first()
+#         question_paper = first_obj.questiones.question_paper
+#         student_obj = first_obj.student_answers.student
+
+#         # ✅ CHECK EXISTING CORRECTION
+#         existing_correction = PaperCorrection.objects.filter(
+#             student_id=student_obj.id,
+#             question_paper=question_paper
+#         ).order_by('-id').first()
+
+#         final_mark = request.POST.get('final_mark')
+#         pass_mark = request.POST.get('pass_mark')
+#         paragraph_value = request.POST.get('paragraph_value')
+
+#         paragraph_mark = int(paragraph_value) if paragraph_value else 0
+#         final_marks = int(final_mark) if final_mark else 0
+#         total_marks = paragraph_mark + final_marks
+
+#         if request.method == "POST":
+#             for question_id in student_answer:
+#                 selected_option = request.POST.get(f"option_{question_id.questiones.id}")
+#                 print("selected_option", selected_option)
+#                 question_id.options = selected_option
+#                 question_id.mark = question_id.questiones.mark
+#                 question_id.validation = True
+#                 question_id.branch_id = branch_id
+#                 question_id.save()
+
+#             # ✅ UPDATE INSTEAD OF ALWAYS CREATE
+#             # ✅ UPDATE LAST RECORD IF EXISTS, ELSE CREATE NEW
+#             last_correction = PaperCorrection.objects.filter(
+#                 student_id=student_obj.id,
+#                 question_paper=question_paper
+#             ).order_by('-id').first()
+
+#             if last_correction:
+#                 last_correction.total_mark = total_marks
+#                 last_correction.is_pass = total_marks >= int(pass_mark)
+#                 last_correction.branch_id = branch_id
+#                 last_correction.save()
+#             else:
+#                 PaperCorrection.objects.create(
+#                     student_id=student_obj.id,
+#                     question_paper=question_paper,
+#                     total_mark=total_marks,
+#                     is_pass=total_marks >= int(pass_mark),
+#                     branch_id=branch_id
+#                 )
+
+#             # ✅ Redirect back to correction list page
+#             return redirect('answer_paper_correction')
+
+#         # Existing code for question paper info
+#         for data in student_answer:
+#             record = data.questiones.question_paper
+#         single_value = QuestionPaper.objects.filter(id=record.id).last()
+#         print("single_value", single_value)
+         
+#         context = {
+#             "questions": student_answer,
+#             "single_value": single_value,
+#             "existing_correction": existing_correction,  # 👈 SEND TO TEMPLATE
+#             "question_models": "active"
+#         }
+#         return render(request, "OnlineExamination/online_exam_assign.html", context)
+
+#     # except Exception as error:
+#     #     return render(request, "error.html", {"error": error})
+
+    
 def answer_paper_correction(request):  
-    try:
+    # try:
         branch_name = request.session.get('branch_id', None)
         if branch_name:
             branch_id = branch_name  
@@ -24750,21 +25088,30 @@ def answer_paper_correction(request):
             
             print("filters+++", filters)
             try:
-                records = EnrollmentAssign.objects.get(**filters)
+                # records = EnrollmentAssign.objects.get(**filters)
+                records = EnrollmentAssign.objects.filter(**filters)
+
             except EnrollmentAssign.DoesNotExist:
                 records = None
 
             if records:  # Ensure records exist before proceeding
                 try:
-                    en_rollment = Enrollment.objects.get(id=records.enrollment.id)
+                    # en_rollment = Enrollment.objects.get(id=records.enrollment.id)
+                    enrollment_ids = records.values_list('enrollment_id', flat=True)
+                    enrollments = Enrollment.objects.filter(id__in=enrollment_ids)
                 except Enrollment.DoesNotExist:
-                    en_rollment = None
+                    enrollments = None
             else:
-                en_rollment = None
+                enrollments = None
 
-            if en_rollment:  # Ensure en_rollment exists before accessing question_paper
+            if enrollments:  # Ensure enrollments exists before accessing question_paper
                 try:
-                    student_answers = StudentAnswers.objects.filter(question_paper=en_rollment.question_paper)
+                    question_paper_ids = enrollments.values_list('question_paper_id', flat=True)
+
+                    student_answers = StudentAnswers.objects.filter(
+                        question_paper_id__in=question_paper_ids
+                    )
+                    # student_answers = StudentAnswers.objects.filter(question_paper=enrollments.question_paper)
                 except StudentAnswers.DoesNotExist:
                     student_answers = None
             else:
@@ -24790,8 +25137,8 @@ def answer_paper_correction(request):
                    
                    }
         return render(request, "OnlineExamination/answer_paper_correction.html", context)
-    except Exception as error:
-        return render(request, "error.html", {"error": error})  
+    # except Exception as error:
+    #     return render(request, "error.html", {"error": error})  
     
     
 @login_required

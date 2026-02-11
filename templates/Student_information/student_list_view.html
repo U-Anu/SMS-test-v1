@@ -244,14 +244,14 @@
                                             <td>Mobile Number</td>
                                             <td> {{student.mobile_number}}</td>
                                         </tr>
-                                        <tr>
+                                        {% comment %} <tr>
                                             <td>Caste</td>
                                             <td> {{student.Caste}}</td>
                                         </tr>
                                         <tr>
                                             <td>Religion</td>
                                             <td> {{student.religion}}</td>
-                                        </tr>
+                                        </tr> {% endcomment %}
                                         <tr>
                                             <td>Email</td>
                                             <td> {{student.email}}</td>
@@ -266,7 +266,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="tshadow mb25 bozero">
+                        {% comment %} <div class="tshadow mb25 bozero">
                             <div class="card-header">
                                 <h3 class="pagetitleh2">Address</h3>
 
@@ -351,7 +351,7 @@
                                 </table>
                             </div>
                         </div>
-
+ {% endcomment %}
 
                         <div class="tshadow mb25  bozero">
                             <div class="card-header">
@@ -366,11 +366,11 @@
                                             <td >{{student.Blood_group}}</td>
                                             <td></td>
                                         </tr>
-                                        <tr>
+                                        {% comment %} <tr>
                                             <td >Student House</td>
                                             <td >{{student.student_house}}</td>
                                             <td></td>
-                                        </tr>
+                                        </tr> {% endcomment %}
                                         <tr>
                                             <td >Height</td>
                                             <td >{{student.height}}</td>

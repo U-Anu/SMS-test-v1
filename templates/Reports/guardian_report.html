@@ -99,12 +99,12 @@
                         <th>Student Name</th>
                         <th>Mobile Number</th>
                         <th>Guardian Name</th>
-                        <th>Guardian Relation</th>
+                        {% comment %} <th>Guardian Relation</th> {% endcomment %}
                         <th>Guardian Phone</th>
-                        <th>Father Name</th>
+                        {% comment %} <th>Father Name</th>
                         <th>Father Phone</th>
                         <th>Mother Name</th>
-                        <th>Mother Phone</th>
+                        <th>Mother Phone</th>  {% endcomment %}
                     </tr>
                 </thead>
                 <tbody>
@@ -114,13 +114,13 @@
                         <td>{{ data.admission_no }}</td>
                         <td>{{ data.first_name }} {{ data.last_name }}</td>
                         <td>{{ data.mobile_number }}</td>
-                        <td>{{ data.guardian_name }}</td>
-                        <td>{{ data.guardian_relation }}</td>
-                        <td>{{ data.guardian_phone }}</td>
-                        <td>{{ data.Father_name }}</td>
+                        <td>{{ data.user_parent.first_name }}
+                        {% comment %} <td>{{ data.guardian_relation }}</td> {% endcomment %}
+                        <td>{{ data.user_parent.phone_number }}</td>
+                        {% comment %} <td>{{ data.Father_name }}</td>
                         <td>{{ data.Father_phone }}</td>
                         <td>{{ data.mother_name }}</td>
-                        <td>{{ data.mother_phone }}</td>
+                        <td>{{ data.mother_phone }}</td>   {% endcomment %}
                         
                     </tr>
                     {% endfor %}

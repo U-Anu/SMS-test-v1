@@ -9,6 +9,13 @@
                 display: none;
             }
                  }
+
+                 #print_btn_btn {
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    z-index: 9999;
+                }
 </style>
 
 <br>
@@ -165,8 +172,9 @@
                 <div class="card" >
                     <div class="certificate-container" >
 
-                        <img src="#" class="img-fluid img-responsive"
-                            style="height: 120px;width: auto;">
+                        <img src="{{ general_setting.edit_admin_logo.url }}"
+                            class="img-fluid img-responsive"
+                            style="height: 120px; width: auto;">
 
                     </div>
                     <br>
@@ -175,15 +183,14 @@
                     </center>
                     <br>    
                   
-                        <label class="col-sm-12 col-form-label"><strong>Payslip</strong> #{{data.id}}</label>
+                        {% comment %} <label class="col-sm-12 col-form-label"><strong>Payslip</strong> #{{data.id}}</label> {% endcomment %}
                         <div class="row">
                             <table class="table mb0 font13">
                                 <tbody>
                                     <tr>
                                         <th>Staff ID</th>
                                         <td>{{data.Frist_name.staff_id}} </td>
-                                        <th>Staff ID</th>
-                                        <td>{{data.staff_id}}</td>
+                                        
                                     </tr>
                                     <tr>
                                         <th>Name</th>
@@ -256,8 +263,12 @@
                 <hr>
             </div>
             <div class="container">
-                <button type="button" id="print_btn_btn" class="btn btn-primary"  onclick="printCard()">Print</button>
-        </div> 
+                <button type="button" id="print_btn_btn"
+                        class="btn btn-primary"
+                        onclick="printCard()">
+                    Print
+                </button>        
+            </div> 
         </div>
     </div>
 </div>

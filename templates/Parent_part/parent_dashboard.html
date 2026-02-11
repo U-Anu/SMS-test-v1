@@ -119,6 +119,22 @@
     .timeline-inverse>li>.timeline-item>.timeline-header {
         border-bottom-color: #ddd
     }
+
+    .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px auto;
+    border: 3px solid #d2d6de;
+    text-transform: uppercase;
+}
 </style>
 {% endblock %}
 
@@ -138,9 +154,9 @@
                 <div class="box box-primary">
                     <div class="box-body box-profile" >
                         <center>
-                            <img class="profile-user-img img-responsive img-circle"
-                                src="https://www.school.infomainia.in/uploads/student_images/default_male.jpg"
-                                alt="User profile picture">
+                            <div class="profile-avatar">
+                                {{ student.first_name|slice:":1"|upper }}{{ student.last_name|slice:":1"|upper }}
+                            </div>
                         </center>
                         <h3 class="profile-username text-center">{{student.first_name}} {{student.last_name}}</h3>
 
@@ -228,20 +244,20 @@
                                             <td>Mobile Number</td>
                                             <td> {{student.mobile_number}}</td>
                                         </tr>
-                                        <tr>
+                                        {% comment %} <tr>
                                             <td>Caste</td>
                                             <td> {{student.Caste}}</td>
                                         </tr>
                                         <tr>
                                             <td>Religion</td>
                                             <td> {{student.religion}}</td>
-                                        </tr>
+                                        </tr> {% endcomment %}
                                         <tr>
                                             <td>Email</td>
                                             <td> {{student.email}}</td>
                                         </tr>
                                         <tr>
-                                            <td>nil</td>
+                                            {% comment %} <td>nil</td> {% endcomment %}
                                             <td>
                                             </td>
                                         </tr>
@@ -250,7 +266,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="tshadow mb25 bozero">
+                        {% comment %} <div class="tshadow mb25 bozero">
                             <div class="card-header">
                                 <h3 class="pagetitleh2">Address</h3>
 
@@ -403,7 +419,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                 </div>
 

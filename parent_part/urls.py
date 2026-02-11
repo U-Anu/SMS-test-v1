@@ -15,6 +15,8 @@ urlpatterns=[
     path('online_exam', views.online_exam,name='online_exam'),
     path('parent_homework', views.homework,name='parent_homework'),
     path('parent_homework_view/<pk>', views.homework_view,name='parent_homework_view'),
+    path('parent_online_exam_result', views.parent_online_exam_result, name='parent_online_exam_result'),
+
 # Download sneter
     path('assignment_list', views.assignment_list,name='assignment_list_parent'),
     path('study_material', views.study_material,name='study_material_parent'),

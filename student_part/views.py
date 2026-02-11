@@ -67,6 +67,7 @@ def fees_parent(request):
     print("branch_name@@@",branch_name)
     toady_date=datetime.now().date()
     records=StudentAdmission.objects.get(id=request.student.id,branch_id=branch_id)
+    print("records=jjj==",records)
 
     fees_records=FeesAssign.objects.filter(student_id=request.student.id,branch_id=branch_id)
     # fees_discount=FeesTypeDiscount.objects.filter(branch=branch_id)
@@ -77,6 +78,7 @@ def fees_parent(request):
         'records':records,'fees_records':fees_records,'toady_date':toady_date,'fees_discount':fees_discount,
         'paid_record':paid_record,'fees_parent':'active'
     }
+    print("conext==kkkkk=",context)
     return render(request,'Student_part/fees_parent.html',context)
 
 @login_required
@@ -169,18 +171,31 @@ def teacher_reviews(request):
         records=assign_teacher.class_teacher.all()
     else:
         records=[]
-    if request.method=='POST':
-        TeacherRating.objects.get_or_create(
-            student=student_obj,
-            Class=student_obj.Class,
-            section=student_obj.section,
-            assign_teacher=assign_teacher,
-            staff_id=request.POST.get('teacher_id'),
-            rating=request.POST.get('rating'),
-            comment=request.POST.get('comment'),
-            branch_id=branch_id
-        )
+    if request.method == 'POST':
+
+        staff_id = request.POST.get('teacher_id')
+        rating_value = request.POST.get('rating')
+        comment_value = request.POST.get('comment')
+
+        print("staff_idlll", staff_id)
+
+        if staff_id and staff_id.isdigit():
+
+            TeacherRating.objects.update_or_create(
+                student=student_obj,
+                staff_id=int(staff_id),
+                branch_id=branch_id,
+                defaults={
+                    "Class": student_obj.Class,
+                    "section": student_obj.section,
+                    "assign_teacher": assign_teacher,
+                    "rating": rating_value,
+                    "comment": comment_value
+                }
+            )
+
         return redirect('teacher_reviews_student')
+
     context={
         'teacher_reviews':'active','records':records,'rating_staff':rating_staff,'rating':rating
     }
@@ -306,42 +321,154 @@ def apply_leave_delete(request,pk):
         messages.error(request, "School id Doesn't match record no delete")   
     return HttpResponseRedirect('/student/apply_leave')
 
-
-
 @login_required
 @user_type_required('Student')
 def homework(request):
-    branch_name = request.session.get('branch_id', None)
-    if branch_name:
-        branch_id = branch_name       
-    else:
-        branch_id = None  
-        print("branch_name@@@",branch_name)
-    records=AssingHomeWork.objects.filter(student=request.student.id,branch_id=branch_id)
-    if request.method=='POST':
-        obj=records.get(id=request.POST.get('id'))
-        obj.message=request.POST.get('message')
-        obj.document=request.FILES.get('document')
-        obj.branch_id=branch_id
-        obj.save()
-        return redirect('homework_student')
-    context={
-        'records':records,'homework':'active'
-            }
-    return render(request,'Student_part/homework.html',context)
+    print("\n===== STUDENT HOMEWORK LIST FUNCTION =====")
+
+    branch_id = request.session.get('branch_id')
+    print("Logged in user:", request.user)
+    print("Student ID:", request.student.id)
+    print("Branch ID from session:", branch_id)
+
+    records = AssingHomeWork.objects.filter(
+        student=request.student.id,
+        branch_id=branch_id
+    )
+
+    print("Total homework records found:", records.count())
+
+    if request.method == 'POST':
+        print("\n--- HOMEWORK SUBMISSION RECEIVED ---")
+        print("POST:", request.POST)
+        print("FILES:", request.FILES)
+
+        hw_id = request.POST.get("id")
+        message = request.POST.get("message")
+        document = request.FILES.get("document")
+
+        try:
+            obj = AssingHomeWork.objects.get(
+                id=hw_id,
+                student=request.student.id,   # ✅ security check
+                branch_id=branch_id
+            )
+
+            obj.message = message
+            obj.status = "Submitted"
+
+            if document:   # ✅ Only update file if uploaded
+                print("File received:", document.name)
+                obj.document = document
+
+            obj.save()
+            print("Homework updated successfully:", obj.id)
+
+            messages.success(request, "Homework Submitted Successfully")
+            return redirect('homework_student')   # ✅ VERY IMPORTANT
+
+        except AssingHomeWork.DoesNotExist:
+            print("Homework record not found!")
+            messages.error(request, "Invalid homework submission")
+
+    return render(request, 'Student_part/homework.html', {
+        "records": records
+    })
+
+
+
+# @login_required
+# @user_type_required('Student')
+# def homework(request):
+#     print("\n===== STUDENT HOMEWORK LIST FUNCTION =====")
+#     branch_name = request.session.get('branch_id', None)
+#     if branch_name:
+#         branch_id = branch_name       
+#     else:
+#         branch_id = None  
+#         print("branch_name@@@",branch_name)
+#     print("Logged in user:", request.user)
+#     print("Student ID:", request.student.id)
+#     print("Branch ID from session:", branch_id)
+#     records=AssingHomeWork.objects.filter(student=request.student.id,branch_id=branch_id)
+#     print("Total homework records found:", records.count())
+#     print("Homework IDs:", list(records.values_list('id', flat=True)))
+    
+    
+#     if request.method=='POST':
+        
+#         hw_id = request.POST.get("id")
+#         message = request.POST.get("message")
+#         document = request.FILES.get("document")
+#         obj = AssingHomeWork.objects.get(id=hw_id)
+#         obj.message = message
+#         obj.document = document
+#         obj.status = "Submitted"   # ✅
+#         if document:   # ✅ only update if file uploaded
+#             obj.document = document
+#         obj.save()
+        
+#         messages.success(request, "Homework Submitted Successfully")
+#         # obj=records.get(id=request.POST.get('id'))
+#         # obj.message=request.POST.get('message')
+#         # obj.document=request.FILES.get('document')
+#         # obj.branch_id=branch_id
+#         # obj.save()
+#         # return redirect('homework_student')
+#     # context={
+#     #     'records':records,'homework':'active'
+#     #         }
+#     return render(request,'Student_part/homework.html',{"records": records})
+
+
+# @login_required
+# @user_type_required("Staff")
+# def homework_evaluate(request, pk):
+
+#     branch_id = request.session.get("branch_id")
+#     record = AddHomeWork.objects.get(id=pk, branch_id=branch_id)
+#     recordss = AssingHomeWork.objects.filter(home_work=pk, branch_id=branch_id)
+
+#     if request.method == "POST":
+#         evaluation_date = request.POST.get("evaluation_date")
+#         student_ids = request.POST.getlist("student_ids")
+
+#         record.evaluation_date = evaluation_date
+#         record.save()
+
+#         for sid in student_ids:
+#             obj = recordss.get(id=sid)
+#             obj.status = "Evaluated"   # 🔥 This makes student side "Completed"
+#             obj.evaluation_date = evaluation_date
+#             obj.save()
+
+#         messages.success(request, "Homework Evaluated Successfully")
+#         return redirect("add_homework")
+
+#     return render(request, "Home_work/homework_evaluate.html", {
+#         "record": record,
+#         "recordss": recordss
+#     })
 
 
 @login_required
 @user_type_required('Student')
 def homework_view(request,pk):
+    print("\n===== STUDENT VIEW HOMEWORK =====")
+    print("Homework PK:", pk)
     branch_name = request.session.get('branch_id', None)
     if branch_name:
-        branch_id = branch_name       
+        branch_id = branch_name 
+        print("Branch ID:", branch_id)      
     else:
         branch_id = None  
-        print("branch_name@@@",branch_name)
+        print("branch_name@@@lll",branch_name)
     records=AddHomeWork.objects.filter(branch=branch_id)
-    record=AddHomeWork.objects.get(id=pk,branch_id=branch_id)
+    print("recordsssssssssssss",records)
+    assign_record = AssingHomeWork.objects.get(id=pk, student=request.student, branch_id=branch_id)
+    record = assign_record.home_work
+    print("Fetched homework record:", record)
+    print("Homework record fetched:", record.__dict__)
     # print('form',form)
     context={
         'record':record,'records':records,'homework':'active'
@@ -721,6 +848,7 @@ def student_meeting_view(request,pk):
         context={
             'form':form,'records':records,'staff_meeting':'active','record':record,
                 }
+        print("context===11111",context)
         return render(request,'Student_part/student_meeting_view.html',context)
 
 
@@ -1086,6 +1214,12 @@ def online_papers(request):
 
    
 from datetime import timedelta
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.utils import timezone
+
+
    
 def question_models(request,pk):
         branch_name = request.session.get('branch_id', None)
@@ -1094,7 +1228,7 @@ def question_models(request,pk):
         else:
             branch_id = None  
         
-
+        print('wertyuiopoiuytr',pk)
         enrollment_assign = EnrollmentAssign.objects.get(id=pk, branch_id=branch_id)
         print("111enrollment_assign++", enrollment_assign)
         enrollment_record = Enrollment.objects.get(id=enrollment_assign.enrollment.id)
@@ -1105,7 +1239,7 @@ def question_models(request,pk):
        
         question_paper_record = QuestionPaper.objects.get(id=enrollment_record.question_paper.id)
         print("question_paper----",question_paper_record.duration)
-        questionss = Question.objects.filter(question_paper=question_paper_record,branch_id=branch_id)
+        questionss = Question.objects.filter(question_paper=question_paper_record)
         print("questionss===----",questionss)
         # Enrollment_record.start_time = 
         
@@ -1155,15 +1289,13 @@ def question_models(request,pk):
         }
         return render(request, "Student_part/online_exam_assign.html",context)      
         
-        
-                
-
        
 
     # except Exception as error:
     #     return render(request, "error.html", {"error": error})      
 
 def time_check(request,pk):
+        print('==pk',pk)
         branch_name = request.session.get('branch_id', None)
         if branch_name:
             branch_id = branch_name       
@@ -1193,8 +1325,9 @@ def time_check(request,pk):
         # Extracting just the time portion
         new_time = new_time_as_datetime.time()
         print("===time",new_time)
+        print('===pk====',pk)
         if start_time <= current_time_obj <= new_time:
-            print("ifpass") 
+            print("ifpass",pk) 
             return redirect(f"/student/question_models/{pk}") 
         elif enrollment_record.any_time == True :
             return redirect(f"/student/question_models/{pk}")            
@@ -1228,10 +1361,12 @@ def online_exam_result(request):
     exam_date=[]
     for data in  stuednt_result: 
         question=data.question_paper
-        stuednt_results=Enrollment.objects.get(question_paper=question)
-        print("stuednt_results",stuednt_results.exam_date) 
-        exam_date.append(stuednt_results.exam_date)
-    print("exam_date",exam_date)     
+        stuednt_results = Enrollment.objects.filter(question_paper=question).order_by('-id').first()
+
+        if stuednt_results:
+            print("stuednt_results", stuednt_results.exam_date)
+            exam_date.append(stuednt_results.exam_date)
+            print("exam_date",exam_date)     
 
     
     context={

@@ -33,9 +33,9 @@
           <div class="col-md-4  mb-3">
             <a href="{% url 'fees_collection_report' %}" class="text-primary">Fees collection Report</a>
           </div>
-          <div class="col-md-4  mb-3">
+          {% comment %} <div class="col-md-4  mb-3">
               <a href=""> Online Fees Collection Report</a>
-            </div>           
+            </div>            {% endcomment %}
             <div class="col-md-4  mb-3">
               <a href="{% url 'income_report' %}">Income Report</a>
             </div>
@@ -122,7 +122,7 @@
               <tr>
                 <td>{{data.fess.id}}</td>
                 <td>{{data.created_at}}</td>
-                <td>{{data.student.Frist_name}}</td>
+                <td>{{ data.student.first_name }} {{ data.last_name }}</td>
                 <td>{{data.student.Class}}</td>
                 <td>{{data.fess.fees.fees_type.name}}</td>
                 <td>{{data.created_by.first_name}}</td>

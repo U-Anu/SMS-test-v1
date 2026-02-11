@@ -32,9 +32,9 @@
             <div class="col-md-4  mb-3">
               <a href="{% url 'fees_collection_report' %}">Fees collection Report</a>
             </div>
-            <div class="col-md-4  mb-3">
+            {% comment %} <div class="col-md-4  mb-3">
                 <a href=""> Online Fees Collection Report</a>
-              </div>           
+              </div>            {% endcomment %}
               <div class="col-md-4  mb-3">
                 <a href="{% url 'income_report' %}">Income Report</a>
               </div>
@@ -128,7 +128,7 @@
                         <td>{{data.student.first_name}}</td>
                         <td>{{data.student.admission_no}}</td>
                         <td>{{data.student.roll_number}}</td>
-                        <td>{{data.student.Father_name}}</td>                       
+                        <td>{{data.student.user_parent.first_name }}</td>                       
                         <td>{{data.fees.amount}}</td>
                         <td>{{data.paid_amount}}</td>
                         <td>{{data.fees.amount}}</td>                       

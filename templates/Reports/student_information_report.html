@@ -131,7 +131,7 @@
                         <th>Local Identification Number</th>
                         <th>National Identification Number</th>
                         <th>RTE</th>
-                        <th>Action</th>
+                        {% comment %} <th>Action</th> {% endcomment %}
                     </tr>
                 </thead>
                 <tbody>
@@ -140,7 +140,7 @@
                         <td>{{data.section}}</td>
                         <td>{{ data.admission_no }}</td>
                         <td>{{ data.first_name }} {{ data.last_name }}</td>
-                        <td>{{ data.Father_name }}</td>
+                        <td>{{ data.user_parent.first_name }}
                         <td>{{ data.date_of_birth }}</td>
                         <td>{{ data.gender }}</td>
                         <td>{{ data.category }}</td>

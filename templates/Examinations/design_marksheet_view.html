@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block body_block %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-header">
+           <h4>Marksheet</h4>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+
+            <!-- LEFT SIDE (VIEW DETAILS) -->
+            <div class="col-md-4">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <h4>View Marksheet</h4>
+                    <hr>
+
+                    <div class="mb-3">
+                        <label>Template:</label>
+                        <input type="text" class="form-control" value="{{record.template}}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Heading:</label>
+                        <input type="text" class="form-control" value="{{record.heading}}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Title:</label>
+                        <input type="text" class="form-control" value="{{record.title}}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>School Name:</label>
+                        <input type="text" class="form-control" value="{{record.school_name}}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Exam Center:</label>
+                        <input type="text" class="form-control" value="{{record.exam_center}}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Footer Text:</label>
+                        <input type="text" class="form-control" value="{{record.footer_text}}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Left Logo:</label><br>
+                        {% if record.left_logo %}
+                        <a href="{{record.left_logo.url}}" target="_blank">
+                            {{record.left_logo}}
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Right Logo:</label><br>
+                        {% if record.right_logo %}
+                        <a href="{{record.right_logo.url}}" target="_blank">
+                            {{record.right_logo}}
+                        </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE (LIST) -->
+            <div class="col-md-8">
+                <div class="card" style="padding: 10px;border-top: 5px solid black;">
+                    <h4>Marksheet List</h4>
+                    <hr>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Template Name</th>
+                                <th>Background</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in records %}
+                            <tr>
+                                <td>{{ data.template }}</td>
+                                <td>{{ data.background_image }}</td>
+                                <td>
+                                    <a href="{% url 'design_marksheet_view' data.id %}">
+                                        <i class="fa fa-server"></i>
+                                    </a>
+                                    <a href="{% url 'design_marksheet_edit' data.id %}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'design_marksheet_delete' data.id %}">
+                                        <i class="fa fa-remove"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

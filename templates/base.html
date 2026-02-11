@@ -379,7 +379,11 @@
    <div class="wrapper">
       <!-- Navbar-->
       <header class="main-header-top hidden-print">
-         <a href="#" class="logo"><img class="img-fluid able-logo" src="{{general_setting.edit_admin_logo.url}}"
+         <a href="#" class="logo">
+            <img class="img-fluid able-logo"
+                  src="{{ general_setting.edit_admin_logo.url }}"
+                  style="height:50px; width:auto;">
+         </a>
          {% comment %} <a href="#" class="logo"><img class="img-fluid able-logo" src=""
                alt="Theme-logo"></a> {% endcomment %}
          <nav class="navbar navbar-static-top">
@@ -772,46 +776,46 @@
 
                <li
                   class="treeview menu-item {{print_marksheet}} {{marks_grade}}{{design_marksheet}}{{print_admit_card}}{{design_admit_card}} {{exam_result}} {{exam_schedule}} {{exam_group}} {{exam_type_list}}">
-                  <a class="menu-toggle waves-effect waves-dark" href="#!"><i class="fa fa-map-o ftlayer"></i><span>
+                  <a class="menu-toggle waves-effect waves-dark" href="#!" style="text-decoration: none;"><i class="fa fa-map-o ftlayer"></i><span>
                         Examinations</span><i class="icon-arrow-down toggle-icon"></i></a>
                   <ul class="treeview-menu">
                      {% if request.user.is_superuser or request.user.is_school_admin or 'exam_group_view' in request.permissions or 'exam_group_add' in request.permissions %}
-                     <li class="{{exam_type_list}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_type_list' %}"><i
+                     <li class="{{exam_type_list}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_type_list' %}" style="text-decoration: none;"><i
                               class="icon-arrow-right"></i> Exam Type</a></li>
                      {% endif %}
                      {% if request.user.is_superuser or request.user.is_school_admin or 'exam_group_view' in request.permissions or 'exam_group_add' in request.permissions %}
-                     <li class="{{exam_group}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_group' %}"><i
+                     <li class="{{exam_group}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_group' %}" style="text-decoration: none;"><i
                               class="icon-arrow-right"></i> Exam Group</a></li>
                      {% endif %}
                      {% if request.user.is_superuser or request.user.is_school_admin or 'exam_schedule_view' in request.permissions or 'exam_group_add' in request.permissions %}
                      <li class="{{exam_schedule}}"><a class="submenu-link waves-effect waves-dark"
-                           href="{% url 'exam_schedule' %}"><i class="icon-arrow-right"></i> Exam Schedule</a></li>
+                           href="{% url 'exam_schedule' %}" style="text-decoration: none;"><i class="icon-arrow-right"></i> Exam Schedule</a></li>
                      {% endif %}
                      {% if request.user.is_superuser or request.user.is_school_admin or 'exam_result_view' in request.permissions or 'exam_group_add' in request.permissions %}
-                     <li class="{{exam_result}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_result' %}"><i
+                     <li class="{{exam_result}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'exam_result' %}" style="text-decoration: none;"><i
                               class="icon-arrow-right"></i> Exam Result</a></li>
                       {% endif %}
                       {% if request.user.is_superuser or request.user.is_school_admin or 'design_admit_card_view' in request.permissions or 'design_admit_card_add' in request.permissions %}
                      <li class="{{design_admit_card}}"><a class="submenu-link waves-effect waves-dark"
-                           href="{% url 'design_admit_card' %}"><i class="icon-arrow-right"></i> Design Admit Card</a>
+                           href="{% url 'design_admit_card' %}" style="text-decoration: none;"><i class="icon-arrow-right"></i> Design Admit Card</a>
                      </li>
                      {% endif %}
                      {% if request.user.is_superuser or request.user.is_school_admin or 'print_admit_card_view' in request.permissions %}
                      <li class="{{print_admit_card}}"><a class="submenu-link waves-effect waves-dark"
-                           href="{% url 'print_admit_card' %}"><i class="icon-arrow-right"></i> Print Admit Card </a>
+                           href="{% url 'print_admit_card' %}" style="text-decoration: none;"><i class="icon-arrow-right"></i> Print Admit Card </a>
                      </li>
                      {% endif %}
                      {% if request.user.is_superuser or request.user.is_school_admin or 'design_marksheet_add' in request.permissions or 'design_marksheet_view' in request.permissions %}
                      <li class="{{design_marksheet}}"><a class="submenu-link waves-effect waves-dark"
-                           href="{% url 'design_marksheet' %}"><i class="icon-arrow-right"></i> Design Marksheet </a>
+                           href="{% url 'design_marksheet' %}" style="text-decoration: none;"><i class="icon-arrow-right"></i> Design Marksheet </a>
                      </li>
                      {% endif %}
                      {% if request.user.is_superuser or request.user.is_school_admin or 'print_marksheet_view' in request.permissions %}
                      <li class="{{print_marksheet}}"><a class="submenu-link waves-effect waves-dark"
-                           href="{% url 'print_marksheet' %}"><i class="icon-arrow-right"></i> Print Marksheet</a></li>
+                           href="{% url 'print_marksheet' %}" style="text-decoration: none;"><i class="icon-arrow-right"></i> Print Marksheet</a></li>
                      {% endif %}
                       <li class="{{marks_grade}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'marks_grade' %}"><i
-                              class="icon-arrow-right"></i> Marks Grade</a></li> 
+                              class="icon-arrow-right" style="text-decoration: none;"></i> Marks Grade</a></li> 
                   </ul>
                </li>
                {% endif %}
@@ -1119,6 +1123,14 @@
                      {% if request.user.is_superuser or request.user.is_school_admin or 'homework_view' in request.permissions or 'homework_add' in request.permissions %}
                      <li class="{{add_homework}}"><a class="submenu-link waves-effect waves-dark" href="{% url 'add_homework' %}"><i
                               class="icon-arrow-right"></i> Add Homework</a></li>
+                     {% endif %}
+
+                     {% if request.user.is_superuser or request.user.is_school_admin or 'homework_view' in request.permissions %}
+                     <li class="{{homework_submissions}}">
+                           <a class="submenu-link waves-effect waves-dark" href="{% url 'homework_submissions' %}">
+                              <i class="icon-arrow-right"></i> Student Submissions
+                           </a>
+                     </li>
                      {% endif %}
 
                   </ul>
@@ -1900,9 +1912,14 @@
          {% endblock %}
          <footer>
    
-            <div class="container-fluid" > <hr>
-               <center><b>Powered By &nbsp;&nbsp;&nbsp;  </b> <a href="https://www.bharathbrands.in/" target="_blank">
-                  <img src="https://www.bharathbrands.in/images/logo.png" style="height: 70px;">  </a>  </center>
+            <div class="container-fluid">
+               <hr>
+               <center>
+                  <b>Powered By&nbsp;&nbsp;</b>
+                  <a href="https://www.bharathbrands.in/" target="_blank">
+                        <img src="/media/bharathbrandslogo_bOlm4LO.png" style="height:70px;">
+                  </a>
+               </center>
             </div> 
          
          </footer>

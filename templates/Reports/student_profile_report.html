@@ -120,29 +120,29 @@
             <th>Email</th>
             <th>Admission Date</th>
             <th>Blood Group</th>
-            <th>Student House</th>
+            {% comment %} <th>Student House</th> {% endcomment %}
             <th>Height</th>
             <th>Weight</th>
             <th>As on Date</th>
-            <th>Fees Discount</th>
-            <th>Father Name</th>
+            {% comment %} <th>Fees Discount</th> {% endcomment %}
+            {% comment %} <th>Father Name</th>
             <th>Father Phone</th>
             <th>Father Occupation</th>
             <th>Mother Name</th>
-            <th>Mother Phone</th>
-            <th>Mother Occupation</th>
-            <th>If Guardian Is</th>
+            <th>Mother Phone</th> {% endcomment %}
+            {% comment %} <th>Mother Occupation</th> {% endcomment %}
+            {% comment %} <th>If Guardian Is</th>
             <th>Guardian Name</th>
             <th>Guardian Relation</th>           
             <th>Guardian Phone</th>
             <th>Guardian Occupation</th>
             <th>Guardian Email</th>
-            <th>Guardian Address</th>
-            <th>Current Address</th>
-            <th>Permanent Address</th>
+            <th>Guardian Address</th> {% endcomment %}
+            {% comment %} <th>Current Address</th> {% endcomment %}
+            {% comment %} <th>Permanent Address</th> {% endcomment %}
             <th>Route List</th>
             <th>Hostel Details</th>
-            <th>Room Number</th>
+            {% comment %} <th>Room Number</th> {% endcomment %}
             <th>Bank Account  Number</th>
             <th>Bank Name</th>
             <th>IFSC Code</th>
@@ -170,28 +170,28 @@
             <td>{{data.email}}</td>
             <td>{{data.admission_date}}</td>
             <td>{{data.Blood_group}}</td>
-            <td>{{data.student_house}}</td>
+            {% comment %} <td>{{data.student_house}}</td> {% endcomment %}
             <td>{{data.height}}</td>
             <td>{{data.weight}}</td>
             <td>{{data.as_on_date}}</td>
-            <td></td>
-            <td>{{data.Father_name}}</td>
+            
+            {% comment %} <td>{{data.Father_name}}</td>
             <td>{{data.Father_phone}}</td>
             <td>{{data.mother_name}}</td>
-            <td>{{data.mother_phone}}</td>
-            <td>{{data.mother_occupation}}</td>
-            <td>{{data.if_guardian_is}}</td>
+            <td>{{data.mother_phone}}</td> {% endcomment %}
+            {% comment %} <td>{{data.mother_occupation}}</td> {% endcomment %}
+            {% comment %} <td>{{data.if_guardian_is}}</td>
             <td>{{data.guardian_name}}</td>
             <td>{{data.guardian_relation}}</td>
             <td>{{data.guardian_phone}}</td>
             <td>{{data.guardian_occupation}}</td>
             <td>{{data.guardian_email}}</td>
-            <td>{{data.guardian_address}}</td>
-            <td>{{data.current_address}}</td>
-            <td>{{data.permanent_address}}</td>
+            <td>{{data.guardian_address}}</td> {% endcomment %}
+            {% comment %} <td>{{data.current_address}}</td>
+            <td>{{data.permanent_address}}</td> {% endcomment %}
             <td>{{data.route_list}}</td>
             <td>{{data.hostel}}</td>
-            <td>{{data.room_number}}</td>
+            {% comment %} <td>{{data.room_number}}</td> {% endcomment %}
             <td>{{data.bank_account_number}}</td>
             <td>{{data.bank_name}}</td>
             <td>{{data.ifsc_code}}</td>

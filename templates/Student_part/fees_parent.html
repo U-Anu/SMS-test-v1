@@ -40,7 +40,7 @@
                   </tr>
                   <tr>
                     <th>Father Name</th>
-                    <td>{{records.Father_name}}</td>
+                    <td>{{records.user_parent.first_name}}</td>
                     <th>Admission No</th>
                     <td>{{records.admission_no}}</td>
                   </tr>
@@ -95,7 +95,7 @@
               <th>Fine</th>
               <th>Paid</th>
               <th>Balance</th>
-              <th>Action</th>
+              {% comment %} <th>Action</th> {% endcomment %}
             </tr>
           </thead>
           <tbody>
@@ -116,7 +116,7 @@
               </td>
               <td>{{data.paid_amount}}</td>
               <td>{{data.balance_amount}}</td>
-              <td><button type="button" class="btn btn-primary">Pay</button>
+              {% comment %} <td><button type="button" class="btn btn-primary">Pay</button> {% endcomment %}
               </td>
 
             </tr>

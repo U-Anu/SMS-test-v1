@@ -65,9 +65,9 @@
                         <th>Student Name</th>
                         <th>Mobile Number</th>
                         <th>Guardian Phone</th>                       
-                        <th>Room Number/ Name</th>
-                        <th>Room Type</th>
-                        <th>Cost Per Bed ($)</th>
+                        <th>Hostel Name</th>
+                        <th>hostel Type</th>
+                        {% comment %} <th>Cost Per Bed ($)</th> {% endcomment %}
                       
                     </tr>
                 </thead>                
@@ -78,10 +78,10 @@
                         <td>{{data.admission_no}}</td>
                         <td>{{data.first_name}}</td>
                         <td>{{data.mobile_number}}</td>
-                        <td>{{data.guardian_phone}}</td>
-                        <td>{{data.room_number.room_name}}</td> 
-                        <td>{{data.room_number.room_type}}</td>
-                        <td>{{data.room_number.cost_per_bed}}</td>   
+                        <td>{{ data.user_parent.phone_number }}</td>
+                        <td>{{data.hostel.hostel_name}}</td> 
+                        <td>{{data.hostel.hostel_type}}</td>
+                        {% comment %} <td>{{data.room_number.cost_per_bed}}</td>    {% endcomment %}
                                        
             
                     </tr>

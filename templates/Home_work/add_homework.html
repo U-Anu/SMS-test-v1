@@ -75,6 +75,7 @@
                 
                 <tbody>
                     {% for data in records %}
+                    
                     <tr>
                         <td>{{data.Class}}</td>
                         <td>{{data.section}}</td>
@@ -94,7 +95,14 @@
                                 {% if 'homework_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                             <a href="{% url 'add_homework_delete' data.id %}"class="bozero"><span data-toggle="tooltip" title="delete" style="color: black;"><i class='fa fa-remove'
                                     onclick="alert('You want to Delete this Item..?')"></i></a>
-                                    {% endif %}
+                                {% endif %}
+                            {% comment %}
+                            {% if 'homework_evaluate' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                            <a href="{% url 'homework_evaluate' data.id %}">
+                                <i class="fa fa-check-square" style="color:green;"></i>
+                            </a>
+                            {% endif %}
+                            {% endcomment %}
                         </td>
                     </tr>
                     {% endfor %}

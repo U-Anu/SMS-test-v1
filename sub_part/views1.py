@@ -101,12 +101,12 @@ def feedback_create(request):
         print('the request user type is ',request.user.user_type)
         if request.user.user_type == 'Student':
             print('in student redirect')
-            return redirect(f"student/{return_url}")
+            return redirect(f"student/{'feedback_list'}")
         elif request.user.user_type == 'parent':
             print('in parent redirect')
-            return redirect(f"parent/{return_url}")
+            return redirect(f"parent/{'feedback_list'}")
         else:
-            return redirect(return_url)
+            return redirect('feedback_list')
 
     reasons = Feedback_Reasons.objects.all()
 
@@ -120,3 +120,89 @@ def feedback_create(request):
             "name": name,
         }
     )
+    
+    
+    
+    
+
+# def online_exam_assign(request, pk):
+#     # try:
+#         branch_name = request.session.get('branch_id', None)
+#         if branch_name:
+#             branch_id = branch_name
+#         else:
+#             branch_id = None
+#             print("branch_name@@@", branch_name)
+
+#         student_answer = AnswerPeperSubmit.objects.filter(student_answers=pk)
+#         print("student_answer+++", student_answer)
+
+#         # 👉 GET FIRST OBJECT FOR REUSE
+#         first_obj = student_answer.first()
+#         question_paper = first_obj.questiones.question_paper
+#         student_obj = first_obj.student_answers.student
+
+#         # ✅ CHECK EXISTING CORRECTION
+#         existing_correction = PaperCorrection.objects.filter(
+#             student_id=student_obj.id,
+#             question_paper=question_paper
+#         ).order_by('-id').first()
+
+#         final_mark = request.POST.get('final_mark')
+#         pass_mark = request.POST.get('pass_mark')
+#         paragraph_value = request.POST.get('paragraph_value')
+
+#         paragraph_mark = int(paragraph_value) if paragraph_value else 0
+#         final_marks = int(final_mark) if final_mark else 0
+#         total_marks = paragraph_mark + final_marks
+
+#         if request.method == "POST":
+#             for question_id in student_answer:
+#                 selected_option = request.POST.get(f"option_{question_id.questiones.id}")
+#                 print("selected_option", selected_option)
+#                 question_id.options = selected_option
+#                 question_id.mark = question_id.questiones.mark
+#                 question_id.validation = True
+#                 question_id.branch_id = branch_id
+#                 question_id.save()
+
+#             # ✅ UPDATE INSTEAD OF ALWAYS CREATE
+#             # ✅ UPDATE LAST RECORD IF EXISTS, ELSE CREATE NEW
+#             last_correction = PaperCorrection.objects.filter(
+#                 student_id=student_obj.id,
+#                 question_paper=question_paper
+#             ).order_by('-id').first()
+
+#             if last_correction:
+#                 last_correction.total_mark = total_marks
+#                 last_correction.is_pass = total_marks >= int(pass_mark)
+#                 last_correction.branch_id = branch_id
+#                 last_correction.save()
+#             else:
+#                 PaperCorrection.objects.create(
+#                     student_id=student_obj.id,
+#                     question_paper=question_paper,
+#                     total_mark=total_marks,
+#                     is_pass=total_marks >= int(pass_mark),
+#                     branch_id=branch_id
+#                 )
+
+#             # ✅ Redirect back to correction list page
+#             return redirect('answer_paper_correction')
+
+#         # Existing code for question paper info
+#         for data in student_answer:
+#             record = data.questiones.question_paper
+#         single_value = QuestionPaper.objects.filter(id=record.id).last()
+#         print("single_value", single_value)
+         
+#         context = {
+#             "questions": student_answer,
+#             "single_value": single_value,
+#             "existing_correction": existing_correction,  # 👈 SEND TO TEMPLATE
+#             "question_models": "active"
+#         }
+#         return render(request, "OnlineExamination/online_exam_assign.html", context)
+
+    # except Exception as error:
+    #     return render(request, "error.html", {"error": error})

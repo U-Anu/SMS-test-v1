@@ -49,10 +49,14 @@
                                   {% endif  %}
                                 </td>
                                 <td>  
-                                  {% if 'approve_leave_request_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
-                                  
-                                    <a href="{% url 'approve_leave_request_edit' data.id %}" style="color: black;"><i class='fa fa-edit'></i></a>
-                                   {% endif %}
+                                    {% if 'approve_leave_request_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                    
+                                    <a href="{% url 'approve_leave_request_edit' data.id %}" class="bozero">
+                                        <span data-toggle="tooltip" title="Approve" style="color: green;">
+                                            <i class="fa fa-check"></i>
+                                        </span>
+                                    </a>                                   
+                                    {% endif %}
                                     {% if 'approve_leave_request_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
                                     <a href="{% url 'approve_leave_request_delete' data.id %}" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
                                     {% endif %} 

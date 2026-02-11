@@ -132,7 +132,8 @@
 <div class="col-md-12">
     <div class="card" style="padding:10px;">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
+
+            <table class="table table-bordered table-striped" id="tableID">
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -169,24 +170,52 @@
                         </td>
 
                         <td>
-                            <span class="badge
-                                {% if data.status == 'Finished' %}badge-success
-                                {% elif data.status == 'Awaited' %}badge-warning
-                                {% else %}badge-danger{% endif %}">
+                            <span class="label label-{% if data.status == 'Finished' %}success{% elif data.status == 'Awaited' %}warning{% else %}danger{% endif %}">
                                 {{ data.status }}
                             </span>
                         </td>
 
+                        <!-- ✅ ACTION COLUMN -->
                         <td>
+                            <!-- ✅ START -->
                             <a href="{{ data.meeting_url }}" target="_blank" class="btn btn-success btn-sm">
                                 <i class="fa fa-video"></i> Start
                             </a>
+
+                            <!-- ✅ EDIT -->
+                            {% if 'online_class_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                <a href="{% url 'online_class_edit' data.pk %}" class="bozero">
+                                    <span data-toggle="tooltip" title="edit" style="color:black;">
+                                        <i class="fa fa-edit"></i>
+                                    </span>
+                                </a>
+                            {% endif %}
+
+                            <!-- ✅ DELETE -->
+                            {% if 'online_class_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                <a href="{% url 'online_class_delete' data.pk %}" class="bozero"
+                                   onclick="return confirm('You want to Delete this Item..?')">
+                                    <span data-toggle="tooltip" title="delete" style="color:black;">
+                                        <i class="fa fa-remove"></i>
+                                    </span>
+                                </a>
+                            {% endif %}
+
+                            <!-- ✅ VIEW (Using Edit URL because no view URL available) -->
+                            {% if 'online_class_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                <a href="{% url 'online_class_view' data.pk %}" class="bozero">
+                                    <span data-toggle="tooltip" title="view" style="color:black;">
+                                        <i class="fa fa-eye"></i>
+                                    </span>
+                                </a>
+                            {% endif %}
                         </td>
+
                     </tr>
                 {% endfor %}
                 </tbody>
-
             </table>
+
         </div>
     </div>
 </div>

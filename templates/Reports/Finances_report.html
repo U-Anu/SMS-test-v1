@@ -31,9 +31,9 @@
             <div class="col-md-4  mb-3">
               <a href="{% url 'fees_collection_report' %}">Fees collection Report</a>
             </div>
-            <div class="col-md-4  mb-3">
+            {% comment %} <div class="col-md-4  mb-3">
                 <a href=""> Online Fees Collection Report</a>
-              </div>           
+              </div>            {% endcomment %}
               <div class="col-md-4  mb-3">
                 <a href="{% url 'income_report' %}">Income Report</a>
               </div>
@@ -115,7 +115,7 @@
                   </tr>
                   <tr>
                     <th>Father Name</th>
-                    <td>{{records.Father_name}}</td>
+                    <td>{{records.user_parent.first_name}}</td>
                     <th>Admission No</th>
                     <td>{{records.admission_no}}</td>
                   </tr>

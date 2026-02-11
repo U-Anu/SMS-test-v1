@@ -1571,6 +1571,10 @@ class TimelineForm(forms.ModelForm):
             visible.field.widget.attrs["class"] = "form-control"
 
 
+class LoginAuthenticationForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())
+
 class StudentDocumentsForm(forms.ModelForm):
     class Meta:
         model = StudentDocuments
@@ -2100,7 +2104,7 @@ class SchoolRegistrationForm(forms.ModelForm):
             "end_of_financial_year",
             "end_of_month_date",
             "amount_rounded_to",
-            "local_currency"
+            "currency"
         ]
         
         for field in required_fields:

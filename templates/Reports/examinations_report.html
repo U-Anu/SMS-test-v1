@@ -59,7 +59,7 @@
                     <select class="form-control" id="class" name="class" required>
                         <option value="">--Select--</option>
                         {% for data in class_records %}
-                        <option class="{{ data.id }}">{{data.Class}}</option>
+                        <option value="{{ data.id }}">{{data.Class}}</option>
                         {% endfor %}
                    
                     </select>
@@ -68,6 +68,7 @@
                     <label for="enquiry">Section </label><span class="text-danger">*</span>
                     <select class="form-control" id="section" name="section" required>
                         <option value="">--Select--</option>
+                        
                    
                     </select>
                 </div>

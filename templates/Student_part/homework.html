@@ -43,7 +43,10 @@
                           {% if data.status == 'Pending' %}
                           <button type="button" class="btn btn-danger">Incomplete</button>
                           {% elif data.status == 'Submitted' %}
-                          <button type="button" class="btn btn-success">Complete</button>
+                          <button type="button" class="btn btn-warning">Submitted</button>
+
+                          {% elif data.status == 'Evaluated' %}
+                              <button type="button" class="btn btn-success">Completed</button>
                           {% endif %}
                         </td>
                         
@@ -77,7 +80,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
           <div class="row">
            

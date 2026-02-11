@@ -17,6 +17,10 @@ urlpatterns=[
     path('online_exam', views.online_exam,name='online_exam_student'),
     path('homework_student', views.homework,name='homework_student'),
     path('homework_view/<pk>', views.homework_view,name='homework_view'),
+    # parent_part / admin urls.py
+    
+
+
 # Download sneter
     path('assignment_list', views.assignment_list,name='assignment_list_student'),
     path('study_material', views.study_material,name='study_material_student'),

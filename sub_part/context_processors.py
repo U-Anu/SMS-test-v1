@@ -4,7 +4,11 @@ from .models import *
 def users_and_projects(request):
     branch_id=None
     if request.user.is_authenticated and not request.user.is_superuser:
+        print('request.user in context processor',request.user.first_name)
+        print("chekingaaaa",request.user.school)
         branch_id=Branch.objects.filter(school__school_id=request.user.school.school_id).first()
+        
+        # print("chekingaaaa",request.user.school.school_id)
         general_setting=GeneralSetting.objects.filter(branch=branch_id).last()
     else:
         branch_id=None

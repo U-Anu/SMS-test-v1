@@ -27,7 +27,7 @@
                         <th>Submission Date</th>
                         <th>Evaluation Date</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        {% comment %} <th>Action</th> {% endcomment %}
                     </tr>
                 </thead>
                 <tbody>
@@ -47,13 +47,13 @@
                           {% endif %}
                         </td>
                         
-                        <td>
+                        {% comment %} <td>
                           {% if data.status == 'Pending' %}
                             <a style="color: black;" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="pass_id('{{data.id}}')"><i class='fa fa-upload'></i></a>
                             {% endif %}
                             <a href="{% url 'homework_view' data.id %}" style="color: black;"><i class='fa fa-reorder'></i></a>
                             
-                        </td>
+                        </td> {% endcomment %}
                     </tr>
                     {% endfor %}
 

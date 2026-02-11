@@ -270,4 +270,34 @@ admin.site.register(FeesMaster, FeesMasterAdmin)
 admin.site.register(Company1)
 admin.site.register(Employee)
 admin.site.register(UserSubscription)
+
+class AssingHomeWorkAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = [
+        'id',
+        'student',
+        'home_work',
+        'status',
+        'evaluation_date',
+        'branch',
+    ]
+
+    list_filter = [
+        'status',
+        'evaluation_date',
+        'branch',
+        'home_work',
+    ]
+
+    search_fields = [
+        'student__student_name',
+        'home_work__subject__name',
+        'message',
+    ]
+
+    readonly_fields = [
+        'evaluation_date',
+    ]
+
+
+admin.site.register(AssingHomeWork, AssingHomeWorkAdmin)
  

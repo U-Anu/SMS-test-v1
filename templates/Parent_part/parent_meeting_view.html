@@ -33,10 +33,10 @@
                                 <td>{{record.meeting_date_time}}
                                 </td>
                             </tr>
-                            <tr>
+                            {% comment %} <tr>
                                 <td>Meeting Duration (In Minutes)</td>
                                 <td> {{record.meeting_duration}}</td>
-                            </tr>
+                            </tr> {% endcomment %}
                           
                          
                             <tr>
@@ -54,10 +54,20 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>meeting_url</td>
-                                <td>{{record.meeting_url}} 
+                                <td>Meeting URL</td>
+                                <td>
+                                    {% if record.meeting_url %}
+                                        <a href="{{ record.meeting_url }}" 
+                                        target="_blank" 
+                                        style="color: green; font-weight: 600;">
+                                        Join Meeting
+                                        </a>
+                                    {% else %}
+                                        <span class="text-danger">No Meeting Link</span>
+                                    {% endif %}
                                 </td>
                             </tr>
+
 
                         </tbody>
                     </table>

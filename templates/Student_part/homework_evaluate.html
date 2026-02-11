@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block body_block %}
+
+<div class="container mt-4">
+    <div class="card p-4">
+
+        <h4>Homework Evaluation</h4>
+        <hr>
+
+        <p><b>Student:</b> {{ record.student }}</p>
+        <p><b>Subject:</b> {{ record.home_work.subject }}</p>
+        <p><b>Homework Date:</b> {{ record.home_work.homework_date }}</p>
+
+        <div class="form-group mt-3">
+            <label><b>Student Message</b></label>
+            <textarea class="form-control" readonly>{{ record.message }}</textarea>
+        </div>
+
+        <div class="form-group mt-3">
+            <label><b>Uploaded Document</b></label><br>
+            {% if record.document %}
+                <a href="{{ record.document.url }}" target="_blank">View Document</a>
+            {% else %}
+                <p class="text-danger">No file uploaded</p>
+            {% endif %}
+        </div>
+
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <center>
+                <button type="submit" class="btn btn-success">
+                    Mark as Evaluated
+                </button>
+                <a href="{% url 'add_homework' %}" class="btn btn-secondary">Back</a>
+            </center>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

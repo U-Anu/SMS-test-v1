@@ -113,26 +113,37 @@
                                 <small class="req"> *</small>
 
                                 <div class="minheight303">
-                                    <div class="col-md-3 mb-3 form-check">
-                                        <input class="form-check-input" type="checkbox" value="student" id="student"
-                                            name="noties_all[]">
-                                        <label class="form-check-label" for="student">
-                                            Student
-                                        </label>
-                                        <input class="form-check-input" type="checkbox" value="parent" id="parent"
-                                            name="noties_all[]">
-                                        <label class="form-check-label" for="parent">
-                                            Parent
-                                        </label>
+                                    <div class="col-md-3 mb-3">
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="student" id="student" name="noties_all[]">
+                                            <label class="form-check-label" for="student">
+                                                Student
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="parent" id="parent" name="noties_all[]">
+                                            <label class="form-check-label" for="parent">
+                                                Parent
+                                            </label>
+                                        </div>
+
                                         {% for data in forms %}
-                                        <input class="form-check-input" type="checkbox" value="{{ data.id }}"
-                                            id="{{ data.name }}_id" name="noties_all[]">
-                                        <label class="form-check-label" for="{{ data.name }}_id">
-                                            {{ data.name }}
-                                        </label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                value="{{ data.id }}"
+                                                id="{{ data.name|slugify }}_id"
+                                                name="noties_all[]">
+                                            <label class="form-check-label" for="{{ data.name|slugify }}_id">
+                                                {{ data.name }}
+                                            </label>
+                                        </div>
                                         {% endfor %}
+
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

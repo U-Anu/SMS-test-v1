@@ -12,12 +12,16 @@
            <h4>Approve Leave Request</h4>
         </div>
      </div>
-     {% if 'approve_leave_request_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+     {% comment %} {% if 'approve_leave_request_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
      <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add " style="float: right;">Add Leave Request</button>
-    {% endif %}
+    {% endif %} {% endcomment %}
     <br>
      {% if 'approve_leave_request_view' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
      <br>
+    {% comment %} {% with can_action='approve_leave_request_edit' in request.permissions
+        or 'approve_leave_request_delete' in request.permissions
+        or request.user.is_superuser
+        or request.user.is_school_admin %} {% endcomment %}
     <div class="col-md-12">
             
             <div class="col-md-12">
@@ -27,7 +31,7 @@
                         <thead>
                             <tr>
                                 <th>Staff</th>
-                                <th>Leave Date</th>
+                                <th>Leave Type</th>
                                 <th>Apply Date</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -48,15 +52,41 @@
                                   <small class="label label-danger">{{data.status}}</small>
                                   {% endif  %}
                                 </td>
-                                <td>  
+                                <td>
                                   {% if 'approve_leave_request_edit' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
-                                  
-                                    <a href="{% url 'approve_leave_request_edit' data.id %}"  class="bozero"><span data-toggle="tooltip" title="edit" style="color: black;"><i class='fa fa-edit'></i></a>
-                                   {% endif %}
-                                    {% if 'approve_leave_request_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
-                                    <a href="{% url 'approve_leave_request_delete' data.id %}"  class="bozero"><span data-toggle="tooltip" title="Delete" style="color: black;"><i class='fa fa-remove' onclick="alert('You want to Delete this Item..?')"></i></a>
-                                    {% endif %} 
-                                  </td>
+
+                                    {% if data.status == 'Pending' %}
+                                        <!-- Approve clickable -->
+                                        <a href="{% url 'approve_leave_request_edit' data.id %}" class="bozero">
+                                            <span data-toggle="tooltip" title="Approve" style="color: green;">
+                                                <i class="fa fa-check"></i>
+                                            </span>
+                                        </a>
+
+                                    {% elif data.status == 'Approve' %}
+                                        <!-- Approved: show tick only (NO link) -->
+                                        <span data-toggle="tooltip" title="Approved" style="color: green;">
+                                            <i class="fa fa-check-circle"></i>
+                                        </span>
+
+                                    {% elif data.status == 'Disaprove' %}
+                                        <!-- Disapproved -->
+                                        <span data-toggle="tooltip" title="Disapproved" style="color: red;">
+                                            <i class="fa fa-times-circle"></i>
+                                        </span>
+                                    {% endif %}
+
+                                  {% endif %}
+
+                                  {% if 'approve_leave_request_delete' in request.permissions or request.user.is_superuser or request.user.is_school_admin %}
+                                      <a href="{% url 'approve_leave_request_delete' data.id %}" class="bozero">
+                                          <span data-toggle="tooltip" title="Delete" style="color: black;">
+                                              <i class="fa fa-remove" onclick="return confirm('You want to Delete this Item..?')"></i>
+                                          </span>
+                                      </a>
+                                  {% endif %}
+                                </td>
+
                             </tr>
                             {% endfor %}
                           

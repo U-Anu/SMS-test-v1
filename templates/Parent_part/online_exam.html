@@ -1,44 +1,77 @@
 {% extends 'parent_base.html' %}
-
-
 {% block body_block %}
 {% load static %}
+
+<style>
+    .tick i {
+        color: green;
+        font-size: 1.5em;
+    }
+    .cross i {
+        color: red;
+        font-size: 1.5em;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <div class="container-fluid">
     <div class="row">
         <div class="main-header">
-            <h4>Online Exam </h4>
+            <h4>Child Online Exams</h4>
         </div>
     </div>
+
     <div class="col-md-12">
         <div class="card" style="padding: 10px;border-top: 5px solid black;">
-            
             <div class="table-responsive">
                 <table id="tableID" class="display">
                     <thead>
                         <tr>
-                            <th>Exam</th>
-                            <th>Date From</th>
-                            <th>Date To</th>
+                            <th>S.No</th>
+                            <th>Question Paper</th>
+                            <th>Total Mark</th>
+                            <th>Pass Mark</th>
                             <th>Duration</th>
-                            <th>Total Attempt</th>
-                            <th>Attempted</th>
+                            <th>Exam Date</th>
+                            <th>Start Time</th>
+                            <th>Any Time</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for data in question_records %}
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ data.enrollment.question_paper.question_paper_name }}</td>
+                            <td>{{ data.enrollment.question_paper.total_mark }}</td>
+                            <td>{{ data.enrollment.question_paper.pass_mark }}</td>
+                            <td>{{ data.enrollment.question_paper.duration }}</td>
+                            <td>{{ data.enrollment.exam_date }}</td>
+                            <td>{{ data.enrollment.start_time }}</td>
+
+                            <td>
+                                {% if data.enrollment.any_time %}
+                                    <span class="tick"><i class="fas fa-check"></i></span>
+                                {% else %}
+                                    <span class="cross"><i class="fas fa-times"></i></span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if data.enrollment.exam_date > current_date %}
+                                    <span class="badge bg-info">Upcoming</span>
+                                {% elif data.enrollment.exam_date == current_date %}
+                                    <span class="badge bg-warning text-dark">Today</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Completed</span>
+                                {% endif %}
+                            </td>
                         </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="text-center">No exams available</td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -46,9 +79,5 @@
     </div>
 </div>
 
-
-
 {% endblock %}
-{% block script_block %}
-
-{% endblock %}
+{% block script_block %}{% endblock %}

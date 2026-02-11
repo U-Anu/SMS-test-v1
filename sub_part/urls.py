@@ -331,6 +331,7 @@ urlpatterns = [
     path("grading_system_view/<pk>",views.grading_system_view,name="grading_system_view"),
     path("grading_system_delete/<pk>",views.grading_system_delete,name="grading_system_delete"),
     # Human Resource
+    
     path("add_staff", views.add_staff, name="add_staff"),
     
     path("approve_leave_request",views.approve_leave_request,name="approve_leave_request"),
@@ -368,6 +369,9 @@ urlpatterns = [
     path("other_download_list", views.other_download_list, name="other_download_list"),
     path("other_download_list_delete<pk>",views.other_download_list_delete,name="other_download_list_delete"),
     path("add_homework", views.add_homework, name="add_homework"),
+    path("homework/evaluate/<int:pk>/", views.homework_evaluate, name="homework_evaluate"),
+    path("homework/submissions/", views.homework_submissions, name="homework_submissions"),
+
     path("book_list", views.book_list, name="book_list"),
     path("book_list_edit/<pk>", views.book_list_edit, name="book_list_edit"),
     path("book_list_delete/<pk>", views.book_list_delete, name="book_list_delete"),
@@ -597,6 +601,7 @@ urlpatterns = [
     path("online_class", views.online_class, name="online_class"),
     path("online_class_edit/<pk>", views.online_class_edit, name="online_class_edit"),
     path("online_class_delete/<pk>",views.online_class_delete,name="online_class_delete"),
+    path("online_class_view/<pk>", views.online_class_view, name="online_class_view"),
     path("finish_class/<int:pk>/", views.finish_class, name="finish_class"),
 
     path("staff_meeting", views.staff_meeting, name="staff_meeting"),

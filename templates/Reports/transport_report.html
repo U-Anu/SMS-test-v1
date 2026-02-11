@@ -79,8 +79,8 @@
                         <th>Mobile Number</th>
                         <th>Father Name</th>                       
                         <th>Father Phone</th>
-                        <th>Mother Name</th>
-                        <th>Mother Phone</th>
+                        {% comment %} <th>Mother Name</th>
+                        <th>Mother Phone</th> {% endcomment %}
                         <th>Route Title</th>
                         <th>Vehicle Number</th>
                         <th>Driver Name</th>
@@ -97,10 +97,10 @@
                         <td>{{data.admission_no}}</td>
                         <td>{{data.first_name}}</td>
                         <td>{{data.mobile_number}}</td>
-                        <td>{{data.Father_name}}</td>
-                        <td>{{data.Father_phone}}</td> 
-                        <td>{{data.mother_name}}</td>
-                        <td>{{data.mother_phone}}</td>
+                        <td>{{ data.user_parent.first_name }}
+                        <td>{{ data.user_parent.phone_number }}</td>
+                        {% comment %} <td>{{data.mother_name}}</td>
+                        <td>{{data.mother_phone}}</td> {% endcomment %}
                         <td>{{data.route_list.route_title}}</td>
                         <td>{{data.vehicle_number.vehicle_number}}</td>   
                         <td>{{data.vehicle_number.driver_name}}</td>   

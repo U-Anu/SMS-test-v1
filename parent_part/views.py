@@ -22,9 +22,10 @@ def signup(request):
 @login_required
 @user_type_required('Parent')
 def parent_dashboard(request):
-    try:
+    # try:
         branch_name = request.session.get('branch_id', None)
         print("branch_name+++",branch_name)
+        print("request.parent.id+++",request.parent_modules)
         if branch_name:        
             branch_id = branch_name     
             print("branch_name==if",branch_name)  
@@ -52,8 +53,8 @@ def parent_dashboard(request):
             'form':form,'records':records,'parent_dashboard':'active','student':student,'reason':reason
                 }
         return render(request,'Parent_part/parent_dashboard.html',context)
-    except Exception as error:
-                return render(request, "error.html", {"error": error})
+    # except Exception as error:
+    #             return render(request, "error.html", {"error": error})
 
 @login_required
 @user_type_required('Parent')
@@ -266,35 +267,102 @@ def apply_leave_delete(request,pk):
         messages.error(request, "School id Doesn't match record no delete")
     return HttpResponseRedirect('/parent/apply_leave_parent')
 
+from datetime import date
+
 @login_required
 @user_type_required('Parent')
 def online_exam(request):
-    context={
-        'online_exam':'active'
+    print("\n===== PARENT ONLINE EXAM LIST =====")
+
+    branch_id = request.session.get('branch_id')
+    print("Parent user:", request.user)
+    print("Branch ID:", branch_id)
+
+    current_date = date.today()
+
+    try:
+        # ✅ Get student linked to this parent
+        student = StudentAdmission.objects.get(user_parent=request.user, branch_id=branch_id)
+        print("Linked student:", student, student.Class, student.section)
+
+        # ✅ Same logic as student side
+        enrollment_assign_records = EnrollmentAssign.objects.filter(
+            Class=student.Class,
+            section=student.section
+        )
+
+        print("Total exams found:", enrollment_assign_records.count())
+
+    except StudentAdmission.DoesNotExist:
+        print("No student linked to this parent")
+        enrollment_assign_records = EnrollmentAssign.objects.none()
+
+    context = {
+        'online_exam': 'active',
+        'question_records': enrollment_assign_records,
+        'current_date': current_date
     }
-    return render(request,'Parent_part/online_exam.html',context)
+
+    # 👇 Parent uses different template
+    return render(request, 'Parent_part/online_exam.html', context)
+
+
+
+# @login_required
+# @user_type_required('Parent')
+# def homework(request):
+#     branch_name = request.session.get('branch_id', None)
+#     if branch_name:
+#         branch_id = branch_name       
+#     else:
+#         branch_id = None  
+#         print("branch_name@@@",branch_name)
+#     records=AssingHomeWork.objects.filter(student=request.parent.id,branch_id=branch_id)
+#     if request.method=='POST':
+#         obj=records.get(id=request.POST.get('id'))
+#         obj.message=request.POST.get('message')
+#         obj.document=request.FILES.get('document')
+#         obj.branch_id=branch_id
+#         obj.save()
+#         return redirect('homework')
+#     context={
+#         'records':records,'homework':'active'
+#             }
+#     return render(request,'Parent_part/homework.html',context)
 
 @login_required
 @user_type_required('Parent')
 def homework(request):
-    branch_name = request.session.get('branch_id', None)
-    if branch_name:
-        branch_id = branch_name       
-    else:
-        branch_id = None  
-        print("branch_name@@@",branch_name)
-    records=AssingHomeWork.objects.filter(student=request.parent.id,branch_id=branch_id)
-    if request.method=='POST':
-        obj=records.get(id=request.POST.get('id'))
-        obj.message=request.POST.get('message')
-        obj.document=request.FILES.get('document')
-        obj.branch_id=branch_id
-        obj.save()
-        return redirect('homework')
-    context={
-        'records':records,'homework':'active'
-            }
-    return render(request,'Parent_part/homework.html',context)
+    print("\n===== PARENT HOMEWORK LIST FUNCTION =====")
+
+    branch_id = request.session.get('branch_id')
+    print("Logged in parent:", request.user)
+    print("Branch ID:", branch_id)
+
+    try:
+        # ✅ Get student linked to this parent user
+        student = StudentAdmission.objects.get(user_parent=request.user)
+        print("Student linked to parent:", student)
+
+        # ✅ Fetch homework for that student
+        records = AssingHomeWork.objects.filter(
+            student=student.id,
+            branch_id=branch_id
+        )
+
+        print("Homework records found:", records.count())
+
+    except StudentAdmission.DoesNotExist:
+        print("No student linked to this parent!")
+        records = AssingHomeWork.objects.none()
+
+    context = {
+        "records": records,
+        "homework": "active"
+    }
+
+    return render(request, 'Parent_part/homework.html', context)
+
 
 
 @login_required
@@ -313,6 +381,33 @@ def homework_view(request,pk):
         'record':record,'records':records,'homework':'active'
             }
     return render(request,'Parent_part/homework_view.html',context)
+
+
+@login_required
+@user_type_required('Parent')
+def parent_online_exam_result(request):
+
+    branch_id = request.session.get('branch_id')
+
+    try:
+        student = StudentAdmission.objects.get(user_parent=request.user, branch_id=branch_id)
+        student_results = PaperCorrection.objects.filter(student=student)
+
+        # Attach exam_date to each result
+        for data in student_results:
+            enrollment = Enrollment.objects.filter(
+                question_paper=data.question_paper
+            ).order_by('-id').first()
+
+            data.exam_date = enrollment.exam_date if enrollment else None
+
+    except StudentAdmission.DoesNotExist:
+        student_results = PaperCorrection.objects.none()
+
+    return render(request, 'Parent_part/online_exam_result.html', {
+        'record': student_results,
+        'online_exam_result': 'active'
+    })
 
 # Download center
 

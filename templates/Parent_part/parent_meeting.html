@@ -78,7 +78,7 @@
                     
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="meeting_date_time">Date and Time:</label>
+                    <label for="meeting_date_time">Date and Timeoooooooooooo:</label>
                     <input type="datetime-local" id="meeting_date_time" class="form-control" name="meeting_date_time" required>
                     </div>       
                 <div class="col-md-6 mb-3">
@@ -206,11 +206,12 @@
                     <tr>
                         <th>Meeting Title</th>
                         <th>Date Time</th>
-                        <th>Meeting Duration (In Minutes)</th>
+                        {% comment %} <th>Meeting Duration (In Minutes)</th> {% endcomment %}
                         <th>Staff</th>
                         <th>Students</th>
                         <th>Description</th>
                         <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -218,7 +219,7 @@
                       <tr>
                           <td>{{data.meeting_title}}</td>
                           <td>{{data.meeting_date_time}}</td>
-                          <td>{{data.meeting_duration}}</td>
+                          {% comment %} <td>{{data.meeting_duration}}</td> {% endcomment %}
                             <td>
                                 {% for staff in data.staff.all %}
                                     {{ staff.first_name }}   

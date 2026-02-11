@@ -374,38 +374,50 @@
                                             <td>Title 1</td>
                                             <td>{{record.title_1}}</td>
                                             <td>
-                                                <a href="{{ record.documents_1.url }}" style="color: black;" download><i
-                                                        class='fa fa-download'></i></a>
+                                                {% if record.documents_1 %}
+                                                    <a href="{{ record.documents_1.url }}" style="color: black;" download>
+                                                        <i class="fa fa-download"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-muted">No File</span>
+                                                {% endif %}
                 
                                             </td>
                                         </tr>
                                         <tr>
                                             <td >Title 2</td>
-                                            <td>{{record.title_2}}</td>
                                             <td>
-                                                <a href="{{ record.documents_2.url }}" style="color: black;" download><i
-                                                        class='fa fa-download'></i></a>
-                
+                                                {% if record.documents_2 %}
+                                                    <a href="{{ record.documents_2.url }}" style="color: black;" download>
+                                                        <i class="fa fa-download"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <span class="text-muted">No File</span>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td >Title 3</td>
-                                            
-                                            <td>{{record.title_3}}</td>
+                                            <tr>
+                                            <td>Title 3</td>
+                                            <td>{{ record.title_3 }}</td>
                                             <td>
-                                                <a href="{{ record.documents_1.url }}" style="color: black;" download><i
-                                                        class='fa fa-download'></i></a>
-                
+                                                {% if record.documents_3 %}
+                                                    <a href="{{ record.documents_3.url }}" download><i class="fa fa-download"></i></a>
+                                                {% else %}
+                                                    <span class="text-muted">No File</span>
+                                                {% endif %}
                                             </td>
                                         </tr>
+                                        </tr>
                                         <tr>
-                                            <td >Title 4</td>
-                                          
-                                            <td>{{record.title_3}}</td>
-                                                        <td>
-                                                <a href="{{ record.documents_1.url }}" style="color: black;" download><i
-                                                        class='fa fa-download'></i></a>
-                
+                                            <td>Title 4</td>
+                                            <td>{{ record.title_4 }}</td>
+                                            <td>
+                                                {% if record.documents_4 %}
+                                                    <a href="{{ record.documents_4.url }}" download><i class="fa fa-download"></i></a>
+                                                {% else %}
+                                                    <span class="text-muted">No File</span>
+                                                {% endif %}
                                             </td>
                                         </tr>
 

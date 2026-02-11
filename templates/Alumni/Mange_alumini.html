@@ -69,8 +69,8 @@
                         <th>Student Name</th>
                         <th>Class</th>
                         <th>Gender</th>
-                        <th>Current Email</th>
-                        <th>Current Phone</th>
+                        {% comment %} <th>Current Email</th>
+                        <th>Current Phone</th> {% endcomment %}
                         <th>Action</th>
                       
                     </tr>
@@ -82,8 +82,7 @@
                         <td>{{data.first_name}}</td>
                         <td>{{data.Class}}({{data.section}})</td>
                         <td>{{data.gender}}</td>
-                        <td></td>
-                        <td></td>
+                        
                         <td>
                             <a href="{% url 'Mange_alumini_add' data.id %}"><button type="button" class="btn btn-primary">+</button></a>
                         </td>

@@ -28,10 +28,12 @@
                         <th>Evaluation Date</th>
                         <th>Status</th>
                         <th>Action</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     {% for data in records %}
+                    {{data}}
                     <tr>
                         <td>{{data.Class}}</td>
                         <td>{{data.section}}</td>
@@ -39,13 +41,24 @@
                         <td>{{data.homework_date}}</td>
                         <td>{{data.submission_date}}</td>
                         <td>{{data.evaluation_date}}</td>
-                        <td><button type="button" class="btn btn-danger">Incomplete</button></td>                       
+                        <td>
+                            {% if data.status == "Pending" %}
+                                <button type="button" class="btn btn-danger">Incomplete</button>
+
+                            {% elif data.status == "Submitted" %}
+                                <button type="button" class="btn btn-warning">Submitted</button>
+
+                            {% elif data.status == "Evaluated" %}
+                                <button type="button" class="btn btn-success">Completed</button>
+                            {% endif %}
+                        </td>                      
                         <td>
                           <a href="{% url 'add_homework_view' data.id %}" style="color: black;"><i class='fa fa-server'></i></a>
                           <a href="{% url 'add_homework_edit' data.id  %}" style="color: black;"><i class='fa fa-edit'></i></a>
                           <a href="{% url 'add_homework_delete' data.id  %}" style="color: black;"><i class='fa fa-remove'
                               onclick="alert('You want to Delete this Item..?')"></i></a>
                         </td>
+                        
                     </tr>
                     {% endfor %}
 
@@ -109,6 +122,7 @@
             <div class="row">
               <div class="col-md-6">
                 {{record.description}}
+                {{record}}
               </div>
               <div class="col-md-6" style="background-color: rgb(240, 241, 241);">
                 <div class="main-header">
@@ -117,7 +131,7 @@
                 </div>
                 <h6><i class='fa fa-upload'></i>Homework Date:{{record.homework_date}}</h6>
                 <h6><i class='fa fa-upload'></i>Submission Date: {{record.submission_date}}</h6>
-                <h6><i class='fa fa-upload'></i>Evaluation Date: *Need to add in models*</h6><br>
+                <h6><i class='fa fa-upload'></i>Evaluation Date: {{record.evaluation_date}}</h6><br>
                 <h6>Created By: Super Admin</h6>
                 <h6>Evaluated By: Super Admin</h6>
                 <p>Class: {{record.Class}}</p>
@@ -174,7 +188,8 @@
     modal.style.display = "none"; // Hide the modal
 
     // Perform the redirection
-    window.location.href = "/parent/homework"; // R
+    window.location.href = "{% url 'homework_student' %}";
+// R
   }
 </script>
 {% endblock %}
